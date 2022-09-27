@@ -200,13 +200,14 @@ Use this space to list resources you find helpful and would like to give credit 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/project_members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-shield]: https://img.shields.io/gitlab/issues/open/se-ewa/2022-2023-1/sum-1?gitlab_url=https%3A%2F%2Fgitlab.fdmci.hva.nl
+
+[issues-url]: https://img.shields.io/gitlab/issues/open:se-ewa/2022-2023-1/sum-1?gitlab_url=https://gitlab.fdmci.hva.nl/
+
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1
 
 [product-screenshot]: https://uploads-ssl.webflow.com/61b75f7704ba6b6a2966c019/62ecefa33da29e9074f95292_PlanetVFF.png
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
