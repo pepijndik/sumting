@@ -1,23 +1,11 @@
-FROM gradle:jdk17 as builder
+FROM eclipse-temurin:17-jdk-focal
 
+WORKDIR /app
 
-COPY --chown=gradle:gradle . /home/gradle/src
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
-WORKDIR /home/gradle/src
+COPY src ./src
 
-RUN gradle clean build -x test --stacktrace
-
-FROM openjdk:17-jdk-alpine as finalApp
-#FROM openjdk:10-jre-slim as finalApp
-
-ENTRYPOINT ["sudo", "mkdir", "/app/"]
-
-WORKDIR app
-
-#COPY --from=builder /home/gradle/src/build/libs/Books-0.0.1-SNAPSHOT.jar /app
-
-COPY --from=builder /home/gradle/src/build/libs/sumting-0.0.1-SNAPSHOT.jar /app
-
-EXPOSE 8090
-
-ENTRYPOINT ["java", "-jar", "/app/sumting-0.0.1-SNAPSHOT.jar"]
+CMD ["./mvnw", "spring-boot:run"]

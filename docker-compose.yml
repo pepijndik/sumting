@@ -20,10 +20,10 @@ services:
       - 5433
 
   back:
+    image: sumting-backend
     build:
       context: ./Backend
-      target:  finalApp
-    image: pdik/sumting-admin-backend
+      dockerfile: Dockerfile
     container_name: sumting-admin-backend
     environment:
       WAIT_HOSTS: postgres:5433
@@ -32,13 +32,14 @@ services:
     depends_on:
       - db
     networks:
-      # - frontback
+      - sumting
       - sumtingDb
 
   front:
-    build: ./frontend
-    image: pdik/sumting-admin-front
     container_name: sumting-admin-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - 8080:8080
     depends_on:
