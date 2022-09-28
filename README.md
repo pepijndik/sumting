@@ -108,7 +108,7 @@ Read the <a href="#installation">Installation</a> section to get a local copy up
 * Docker (https://docs.docker.com/get-docker/)
 * Docker-compose (https://docs.docker.com/compose/install/)
 
-### Installation
+### Dev Installation
 
 1. Clone our repository with the tag @latest
    
@@ -116,22 +116,23 @@ Read the <a href="#installation">Installation</a> section to get a local copy up
    git clone https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1.git
    ```
 
-2. Use the MakeFile command to install the project as production ready
+2. Use the Docker compose command to build up the Containers
    ```sh
-   make setup.production
+   docker-compose build
    ```
 3. When the installation is done you can start the project with the following command
    ```sh
-   make adminpanel.start
+   docker-compose up
    ```
-   This will launch the Dockercontainer and start the project on port 8080
-4. You can now access the project on localhost:8080 if you are running the project on your local machine
+   This will launch the Dockercontainers and start the project on port 8080
+4. You can now access the project frontend on localhost:8080, the backend is avaible on localhost:8083 if you are running the project on your local machine
 
 5. To stop the project use the following command
    ```sh
-   make adminpanel.stop
+   docker-compose down
    ```
-   
+Test backend: localhost:8083/help
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
