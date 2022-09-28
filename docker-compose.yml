@@ -2,6 +2,9 @@ version: '3.6'
 services:
   db:
     image: postgres
+    build:
+      context: ./Docker/postgres
+      dockerfile: Dockerfile
     hostname: postgres
     container_name: sumting-docker-db
     environment:
