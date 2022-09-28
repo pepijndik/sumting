@@ -28,7 +28,7 @@ services:
     environment:
       WAIT_HOSTS: postgres:5433
     ports:
-      - 8090:8090
+      - 8083:8083
     depends_on:
       - db
     networks:
