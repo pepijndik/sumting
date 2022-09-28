@@ -121,7 +121,7 @@ Read the <a href="#installation">Installation</a> section to get a local copy up
    ```
 3. When the installation is done you can start the project with the following command
    ```sh
-   docker-compose up
+   docker-compose up -d
    ```
    This will launch the Dockercontainers and start the project on port 8080
 4. You can now access the project frontend on localhost:8080, the backend is avaible on localhost:8083 if you are running the project on your local machine
