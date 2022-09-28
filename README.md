@@ -35,7 +35,7 @@
 <h3 align="center">Admin panel</h3>
 
   <p align="center">
-    The admin panel for sumting to manage their contrubutions and orders
+    The admin panel for SumTing to manage their contrubutions and orders
     <br />
     <a href=""><strong>Explore the docs »</strong></a>
     <br />
@@ -80,7 +80,7 @@
 
 [![Sumting admin panel][product-screenshot]](https://sumting.org)
 
-Sumting admin panel is build to manage the orders and contributions of the sumting platform. It is build with the following technologies:
+SumTing admin panel is built to manage the orders and contributions of the SumTing platform. It is built with the following technologies:
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -89,7 +89,7 @@ Sumting admin panel is build to manage the orders and contributions of the sumti
 
 ### Built With
 
-In this section is a list of the used Frameworks/Libaries and technologies.
+In this section we list our used Frameworks/Libaries and technologies.
 * [![Vue][Vue.js]][Vue-url]
 * [![Vue][Spring-url]][spring-url]
 
@@ -174,7 +174,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Team 1 - [@Sum-1](ht) - Contact on teams or discord
 
-Project Link: [sumting admin panel](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1)
+Project Link: [SumTing admin panel](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -182,9 +182,6 @@ Project Link: [sumting admin panel](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
