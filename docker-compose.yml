@@ -1,0 +1,53 @@
+version: '3.6'
+services:
+  db:
+    image: postgres
+    hostname: postgres
+    container_name: sumting-docker-db
+    environment:
+      POSTGRES_PASSWORD: sumting
+      POSTGRES_USER: sumting
+      POSTGRES_DB: sumting
+    ports:
+      #- 5433:5432
+      - target: 5432
+        published: 5433
+        protocol: tcp
+        mode: host
+    networks:
+      - sumtingDb
+    expose:
+      - 5433
+
+  back:
+    build:
+      context: ./Backend
+      target:  finalApp
+    image: pdik/sumting-admin-backend
+    container_name: sumting-admin-backend
+    environment:
+      WAIT_HOSTS: postgres:5433
+    ports:
+      - 8090:8090
+    depends_on:
+      - db
+    networks:
+      # - frontback
+      - sumtingDb
+
+  front:
+    build: ./frontend
+    image: pdik/sumting-admin-front
+    container_name: sumting-admin-frontend
+    ports:
+      - 8080:8080
+    depends_on:
+      - back
+    networks:
+      - sumting
+
+networks:
+  sumtingDb:
+    driver: bridge
+  sumting:
+    driver: bridge
