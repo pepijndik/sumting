@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="DB-212.5284.17">
+    <data-source name="PostgreSQL - sumting@localhost" uuid="3be9d8c5-6ebf-482f-9ffd-9f83613db5d8">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" exact-version="0" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>sumting</user-name>
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>

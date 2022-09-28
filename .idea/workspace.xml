@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="57ed8dfe-7c56-4f73-b923-f2e0b17b9472" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Backend/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/ci_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitlab-ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.gitlab-ci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,24 +30,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pepij/Projecten/Sumting",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\pepij\Projecten\Sumting\Backend" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\pepij\Projecten\Sumting\docker\postgress" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.Backend/Dockerfile">
+  <component name="RunManager" selected="Database Script.KleineJongenDump31062022.sql">
     <configuration name="KleineJongenDump31062022.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/KleineJongenDump31062022.sql" />
       <script-mode>FILE</script-mode>
@@ -94,10 +91,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.Backend/Dockerfile" />
-        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.front: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.back: Compose Deployment" />
         <item itemvalue="Database Script.KleineJongenDump31062022.sql" />
       </list>
     </recent_temporary>
@@ -120,7 +113,7 @@
       <workItem from="1664370190681" duration="2357000" />
       <workItem from="1664374669309" duration="3331000" />
       <workItem from="1664384317075" duration="874000" />
-      <workItem from="1664385235918" duration="17000" />
+      <workItem from="1664385235918" duration="1319000" />
     </task>
     <servers />
   </component>

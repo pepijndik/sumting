@@ -1,11 +1,15 @@
-FROM eclipse-temurin:17-jdk-focal
-
-WORKDIR /app
-
+FROM eclipse-temurin:17-jdk-jammy as builder
+RUN addgroup sumting; adduser  --ingroup sumting --disabled-password sumyting
+USER sumyting:sumting
+#WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline
-
-COPY src ./src
-#CMD ["./mvnw" ,"spring-boot:build-image"]
+COPY ./src ./src
 CMD ["./mvnw", "spring-boot:run"]
+#
+#FROM eclipse-temurin:17-jre-jammy
+#WORKDIR /app
+#EXPOSE 8080
+#COPY --from=builder /app/target/*.jar /app/*.jar
+#ENTRYPOINT ["java", "-jar", "/app/*.jar" ]
