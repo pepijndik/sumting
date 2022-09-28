@@ -110,13 +110,12 @@ Read the <a href="#installation">Installation</a> section to get a local copy up
 
 ### Dev Installation
 
-1. Clone our repository with the tag @latest
+1. Clone our repository with the tag @latest , and go into the directory
    
  ```sh
    git clone https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1.git
    ```
-
-2. Use the Docker compose command to build up the Containers
+2. Use the Docker compose command to build up the Containers. Make sure Docker desktop is running!
    ```sh
    docker-compose build
    ```
