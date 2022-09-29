@@ -11,17 +11,18 @@ services:
       POSTGRES_PASSWORD: sumting
       POSTGRES_USER: sumting
       POSTGRES_DB: sumting
+      BACKUP_SQL_PATH: KleineJongenDump31062022.sql
     ports:
-      #- 5433:5432
-      - target: 5432
-        published: 5433
-        protocol: tcp
-        mode: host
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - sumtingDb
     expose:
       - 5433
-
   back:
     image: sumting-backend
     build:
@@ -30,6 +31,10 @@ services:
     container_name: sumting-admin-backend
     environment:
       WAIT_HOSTS: postgres:5433
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+        - SPRING_DATASOURCE_USERNAME=sumting
+        - SPRING_DATASOURCE_PASSWORD=sumting
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - 8083:8083
     depends_on:
@@ -37,7 +42,6 @@ services:
     networks:
       - sumting
       - sumtingDb
-
   front:
     container_name: sumting-admin-frontend
     build:
