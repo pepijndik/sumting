@@ -23,25 +23,25 @@ services:
       - sumtingDb
     expose:
       - 5433
-  back:
-    image: sumting-backend
-    build:
-      context: ./Backend
-      dockerfile: Dockerfile
-    container_name: sumting-admin-backend
-    environment:
-      WAIT_HOSTS: postgres:5433
-        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-        - SPRING_DATASOURCE_USERNAME=sumting
-        - SPRING_DATASOURCE_PASSWORD=sumting
-        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    ports:
-      - 8083:8083
-    depends_on:
-      - db
-    networks:
-      - sumting
-      - sumtingDb
+#  back:
+#    image: sumting-backend
+#    build:
+#      context: ./Backend
+#      dockerfile: Dockerfile
+#    container_name: sumting-admin-backend
+#    environment:
+#      WAIT_HOSTS: postgres:5433
+#        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+#        - SPRING_DATASOURCE_USERNAME=sumting
+#        - SPRING_DATASOURCE_PASSWORD=sumting
+#        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    ports:
+#      - 8083:8083
+#    depends_on:
+#      - db
+#    networks:
+#      - sumting
+#      - sumtingDb
   front:
     container_name: sumting-admin-frontend
     build:
