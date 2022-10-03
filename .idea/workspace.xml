@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="57ed8dfe-7c56-4f73-b923-f2e0b17b9472" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8/storage_v2/_src_/database/sumting.ufNJkQ/schema/public.abK9xQ.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/rest/ProjectController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/services/ProjectService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8/storage_v2/_src_/database/sumting.ufNJkQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8/storage_v2/_src_/database/sumting.ufNJkQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/postgres/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/postgres/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/repositories/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/repositories/ProjectRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,18 +33,12 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pepij/Projecten/Sumting",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenDatabaseViewOnStart" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\pepij\Projecten\Sumting\Backend" />
@@ -122,7 +123,7 @@
       <workItem from="1664444316397" duration="20000" />
       <workItem from="1664444596882" duration="46000" />
       <workItem from="1664445843995" duration="5290000" />
-      <workItem from="1664453035874" duration="1645000" />
+      <workItem from="1664453035874" duration="1857000" />
     </task>
     <servers />
   </component>
@@ -139,5 +140,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
