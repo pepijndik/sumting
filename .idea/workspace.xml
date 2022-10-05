@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57ed8dfe-7c56-4f73-b923-f2e0b17b9472" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/exceptions/ModelNotFound.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend/src/main/resources/translations/authentication_nl.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8/storage_v2/_src_/database/sumting.ufNJkQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8/storage_v2/_src_/database/sumting.ufNJkQ/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/Identifiable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/Identifiable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/Project.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/repositories/EntityRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/repositories/EntityRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/repositories/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/repositories/ProjectRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/rest/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/rest/ProjectController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend/src/main/java/nl/hva/backend/services/ProjectService.java" beforeDir="false" />
-    </list>
+    <list default="true" id="57ed8dfe-7c56-4f73-b923-f2e0b17b9472" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,7 +23,8 @@
     <option name="showVisibilityIcons" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="database.data.extractors.current.export.id" value="SQL Inserts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
