@@ -4,18 +4,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "pr_project")
-public class User implements Identifiable {
+public class User implements Identifiable<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @Override
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -24,7 +24,11 @@ public class User implements Identifiable {
     }
 
     @Override
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer findById(Integer id) {
+        return null;
     }
 }

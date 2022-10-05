@@ -1,7 +1,9 @@
 package nl.hva.backend.rest;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import nl.hva.backend.models.Project;
-import nl.hva.backend.services.ProjectService;
+import nl.hva.backend.repositories.ProjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,27 +15,34 @@ import java.util.List;
 
 @Controller
 public class ProjectController {
-    private final ProjectService projectService;
 
+    private ProjectRepository projectRepository;
 
-    public ProjectController(ProjectService projectService) {
-        this.projectService = projectService;
+    @Autowired
+    public void setProjectRepository(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
     }
 
+
     @GetMapping("/projects")
-    public ResponseEntity<List<Project>> getAllProjects(){
-        return new ResponseEntity<>(projectService.getAllProjects(), HttpStatus.OK);
+    public ResponseEntity<List<Project>> getAllProjects() {
+        return new ResponseEntity<>(projectRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/projects/{projectId}")
-    public ResponseEntity<Project> getProject(@PathVariable Long projectId){
-        return new ResponseEntity<>(projectService.getProjectRepository().findById(projectId), HttpStatus.OK);
+    public ResponseEntity<Project> getProject(@PathVariable Integer projectId) {
+        Project p = projectRepository.findById(projectId);
+        if (p != null) {
+            return new ResponseEntity<Project>(p, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/projects/{projectId}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long projectId){
-        Project projectToDelete = projectService.getProjectRepository().findById(projectId);
-        projectService.deleteProject(projectToDelete);
+    public ResponseEntity<Void> deleteProject(@PathVariable Integer projectId) {
+        Project projectToDelete = projectRepository.findById(projectId);
+        projectRepository.delete(projectToDelete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

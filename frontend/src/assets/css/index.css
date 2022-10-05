@@ -1,6 +1,7 @@
 /**
 Base css for the site
  */
+/* ./src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

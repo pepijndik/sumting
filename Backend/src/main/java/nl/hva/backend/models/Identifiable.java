@@ -1,6 +1,6 @@
 package nl.hva.backend.models;
 
-public interface Identifiable {
-    long getId();
-    void setId(long id);
+public interface Identifiable<T> {
+    T getId();
+    void setId(T id);
 }
