@@ -5,15 +5,20 @@ services:
     build:
       context: ./Docker/postgres
       dockerfile: Dockerfile
+    restart: always
     hostname: postgres
     container_name: sumting-docker-db
     environment:
       POSTGRES_PASSWORD: sumting
       POSTGRES_USER: sumting
       POSTGRES_DB: sumting
-      BACKUP_SQL_PATH: KleineJongenDump31062022.sql
     ports:
       - "5432:5432"
+    volumes:
+       - ./data/db:/var/lib/postgresql/data
+       - ./Docker/postgres/database.sql:/docker-entrypoint-initdb.d/create_tables.sql
+         # copy the sql script to fill tables
+       - ./Docker/postgres/example_data.sql:/docker-entrypoint-initdb.d/fill_tables.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -51,6 +56,8 @@ services:
       - 8080:8080
     networks:
       - sumting
+volumes:
+  data:
 
 networks:
   sumtingDb:

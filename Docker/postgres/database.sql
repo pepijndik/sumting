@@ -1,3 +1,6 @@
+create role  postgres  login ;
+ ALTER   ROLE   postgres   WITH   SUPERUSER ;
+
 create table if not exists auth_group
 (
     id   integer      not null
