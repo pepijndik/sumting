@@ -14,17 +14,16 @@ public class Project implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "project_key", nullable = false)
+    @Column(name = "project_key")
     private Long id;
 
-
-    @NotNull
-    @Column(name = "description", nullable = false)
-    private String title;
+    @Nullable
+    @Column(name = "description",columnDefinition = "varchar(255)")
+    private String description;
 
     @Nullable
     @Column(name = "description_long", columnDefinition = "TEXT")
-    private String description;
+    private String description_long;
 
     @Nullable
     @Column(name = "latitude", columnDefinition = "varchar(255)")
@@ -110,23 +109,15 @@ public class Project implements Identifiable<Long> {
         this.unitPrice = unitPrice;
     }
 
-    public Long getId() {
-        return id;
+
+
+
+    public String getDescription_long() {
+        return this.description_long;
     }
 
-    @Override
-    public void setId(Long id) {
-        System.out.println(id);
-        this.id = id;
-    }
-
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescription_long(String description_long) {
+        this.description_long = description_long;
     }
 
     public String getDescription() {
@@ -135,5 +126,16 @@ public class Project implements Identifiable<Long> {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        System.out.println(id);
+        this.id = id;
     }
 }

@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="57ed8dfe-7c56-4f73-b923-f2e0b17b9472" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Docker/postgres/example_data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3be9d8c5-6ebf-482f-9ffd-9f83613db5d8.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Layouts/AuthLayout.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Layouts/DashboardLayout.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/router/router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/postgres/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/postgres/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/HelloWorld.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/HelloWorld.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,8 +33,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pepij/Projecten/Sumting",
+    "last_opened_file_path": "C:/Users/pepij/Projecten/Sumting/frontend",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -133,7 +136,8 @@
       <workItem from="1664453035874" duration="1857000" />
       <workItem from="1664797162177" duration="951000" />
       <workItem from="1664798971480" duration="67000" />
-      <workItem from="1664971145614" duration="1553000" />
+      <workItem from="1664971145614" duration="2861000" />
+      <workItem from="1664976073285" duration="641000" />
     </task>
     <servers />
   </component>

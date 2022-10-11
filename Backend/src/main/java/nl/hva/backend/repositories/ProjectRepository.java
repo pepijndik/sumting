@@ -7,9 +7,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class ProjectRepository implements EntityRepository<Project> {
+public class ProjectRepository implements CrudRepository<Project, Long> {
 
     JdbcTemplate jdbcTemplate;
 
@@ -19,18 +20,24 @@ public class ProjectRepository implements EntityRepository<Project> {
     }
 
     @Override
-    public Project save(Project entity) {
-        return null;
-    }
-
-
-    public Project findById(Integer id) {
+    public <S extends Project> S save(S entity) {
         return null;
     }
 
     @Override
-    public Project update(Project entity) {
-        return null;
+    public Optional<Project> findById(Long primaryKey) {
+        return Optional.ofNullable((Project) jdbcTemplate.query("SELECT * FROM " + Project.TABLE_NAME +" WHERE project_key = ?", new BeanPropertyRowMapper<Project>(Project.class)));
+    }
+
+    @Override
+    public Iterable<Project> findAll() {
+        return jdbcTemplate.query("SELECT * FROM " + Project.TABLE_NAME, new BeanPropertyRowMapper<Project>(Project.class));
+
+    }
+
+    @Override
+    public long count() {
+        return 0;
     }
 
     @Override
@@ -38,13 +45,8 @@ public class ProjectRepository implements EntityRepository<Project> {
 
     }
 
-    /**
-     * Select all projects from the database
-     *
-     * @return List of all projects
-     */
     @Override
-    public List<Project> findAll() {
-        return jdbcTemplate.query("SELECT * FROM " + Project.TABLE_NAME, new BeanPropertyRowMapper<Project>(Project.class));
+    public boolean existsById(Long primaryKey) {
+        return false;
     }
 }

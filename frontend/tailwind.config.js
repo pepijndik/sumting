@@ -8,6 +8,7 @@ module.exports = {
                 "champagnePink": "#FDEAE2",
                 "yInMnBlue": "#355070",
                 "candyPink": "#E56B6F",
+                "shadow": "#555555"
             }
         },
     },

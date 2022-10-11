@@ -6,8 +6,10 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.io.PrintStream;
 
@@ -19,4 +21,5 @@ public class SumtingBackend {
         application.setBanner(new CustomBanner());
         application.run(args);
     }
+
 }

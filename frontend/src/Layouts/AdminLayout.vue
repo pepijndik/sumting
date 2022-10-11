@@ -1,0 +1,46 @@
+<template>
+
+  <div class="w-full h-full bg-white">
+    <div class="flex flex-no-wrap">
+      <div class="w-full">
+        <DashboardHeaderBar></DashboardHeaderBar>
+        <!-- Remove class [ h-64 ] when adding a card block -->
+        <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
+          <!-- Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border -->
+          <div class="w-full h-full rounded border-dashed border-2 border-gray-300">
+            <router-view/>
+          </div>
+        </div>
+      </div>
+      <Navigation @openMobile="$emit('openMobile')">
+        <template v-slot:items>
+          <NavigationItem to="/" name="Dashboard">
+            <template v-slot:icon>
+              <svg class="fill-yInMnBlue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
+                <path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 10 21 L 10 15 L 14 15 L 14 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z"/>
+              </svg>
+            </template>
+          </NavigationItem>
+        </template>
+      </Navigation>
+    </div>
+
+
+  </div>
+</template>
+
+<script>
+import Navigation from "@/Layouts/Navigation/Admin/Navigation";
+import DashboardHeaderBar from "@/Layouts/Header/Admin/AdminHeaderBar";
+import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
+import DashboardSvg from "@/Assets/img/icons/dashboard.svg";
+
+export default {
+  name: "DashboardLayout",
+  components: {NavigationItem, DashboardHeaderBar, Navigation},
+}
+</script>
+
+<style scoped>
+
+</style>
