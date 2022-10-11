@@ -1,7 +1,9 @@
 <template>
   <!-- Navigation starts -->
-  <nav
-      class="h-16 flex items-center lg:items-stretch justify-end lg:justify-between bg-champagnePink shadow relative z-10">
+  <nav class="h-16 flex items-center lg:items-stretch justify-end lg:justify-between bg-champagnePink shadow relative z-10">
+    <div class="h-16 w-full flex items-center px-8 xl:hidden visible" >
+      <img src="@/Assets/logo.png" alt="logo" class="h-9 w-32 lg">
+    </div>
     <div class="hidden lg:flex w-full pr-6">
       <div class="w-full hidden lg:flex">
         <div class="w-full flex items-center pl-8 justify-end">
@@ -61,9 +63,9 @@
       </div>
     </div>
 
-    <button aria-label="Main Menu" class="text-gray-600 mr-8 visible lg:hidden relative focus:outline-none focus:ring-2 focus:ring-gray-600 " @click="openMobile">
-      <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_header_and_icons-svg7.svg" alt="toggler">
-    </button>
+    <!--Mobile responsive sidebar-->
+    <MobileNavigation />
+    <!--Mobile responsive sidebar-->
   </nav>
   <!-- Navigation ends -->
 </template>
@@ -71,14 +73,15 @@
 <script>
 import Dropdown from "@/Components/Form/Dropdown";
 import DropdownItem from "@/Components/Form/Dropdown/DropdownItem";
+import MobileNavigation from "@/Layouts/Navigation/Admin/MobileNavigation";
 
 export default {
   name: "DashboardHeaderBar",
-  components: {DropdownItem, Dropdown},
+  components: {MobileNavigation, DropdownItem, Dropdown},
   methods: {
     openMobile() {
-      console.log("Emit to root")
-      this.$emit('openMobile')
+      console.log('open mobile from head')
+      this.$emit('open-mobile',true);
     },
   },
 }

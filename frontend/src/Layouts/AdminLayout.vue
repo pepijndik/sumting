@@ -2,6 +2,19 @@
 
   <div class="w-full h-full bg-white">
     <div class="flex flex-no-wrap">
+      <Navigation>
+        <template v-slot:items>
+          <NavigationItem to="/" name="Dashboard">
+            <template v-slot:icon>
+              <svg class="fill-yInMnBlue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px"
+                   height="24px">
+                <path
+                    d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 10 21 L 10 15 L 14 15 L 14 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z"/>
+              </svg>
+            </template>
+          </NavigationItem>
+        </template>
+      </Navigation>
       <div class="w-full">
         <DashboardHeaderBar></DashboardHeaderBar>
         <!-- Remove class [ h-64 ] when adding a card block -->
@@ -12,17 +25,6 @@
           </div>
         </div>
       </div>
-      <Navigation @openMobile="$emit('openMobile')">
-        <template v-slot:items>
-          <NavigationItem to="/" name="Dashboard">
-            <template v-slot:icon>
-              <svg class="fill-yInMnBlue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">
-                <path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 10 21 L 10 15 L 14 15 L 14 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z"/>
-              </svg>
-            </template>
-          </NavigationItem>
-        </template>
-      </Navigation>
     </div>
 
 
@@ -38,6 +40,18 @@ import DashboardSvg from "@/Assets/img/icons/dashboard.svg";
 export default {
   name: "DashboardLayout",
   components: {NavigationItem, DashboardHeaderBar, Navigation},
+  methods: {
+    toggle() {
+      console.log("toggle")
+      this.mobileOpen = !this.mobileOpen
+    },
+
+  },
+  data() {
+    return {
+      mobileOpen: false,
+    };
+  },
 }
 </script>
 
