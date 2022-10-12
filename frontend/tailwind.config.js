@@ -9,6 +9,10 @@ module.exports = {
                 "yInMnBlue": "#355070",
                 "candyPink": "#E56B6F",
                 "shadow": "#555555"
+            },
+            fontFamily: {
+                'Alatsi': ['"Alatsi"', 'sans-serif'],
+                'inter': ['"inter"', 'sans-serif'],
             }
         },
     },

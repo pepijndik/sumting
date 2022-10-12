@@ -4,4 +4,13 @@ Base css for the site
 /* ./src/index.css */
 @tailwind base;
 @tailwind components;
+
+@font-face {
+    font-family: "Alatsi";
+    src: local('Alatsi'), url(../fonts/Alatsi/Alatsi-Regular.ttf) format('ttf');
+}
+@font-face {
+    font-family: "inter";
+    src: local('inter'), url(../fonts/inter/inter-Regular.ttf) format('ttf');
+}
 @tailwind utilities;
