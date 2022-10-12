@@ -11,6 +11,6 @@ Base css for the site
 }
 @font-face {
     font-family: "inter";
-    src: local('inter'), url(../fonts/inter/inter-Regular.ttf) format('ttf');
+    src: local('inter'), url(../fonts/inter/Inter-Regular.ttf) format('ttf');
 }
 @tailwind utilities;
