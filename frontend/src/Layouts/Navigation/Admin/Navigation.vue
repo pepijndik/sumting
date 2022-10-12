@@ -4,7 +4,7 @@
     <div>
       <NavigationUserProfile/>
     </div>
-    <ul class="py-6 px-6 md:px-8 lg:px-12">
+    <ul class="px-6 md:px-8 lg:px-12">
       <slot name="items"></slot>
     </ul>
     <!-- Sidebar ends -->
