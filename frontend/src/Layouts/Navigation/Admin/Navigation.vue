@@ -1,10 +1,10 @@
 <template>
   <!-- Sidebar starts -->
-  <div class="absolute lg:relative h-screen px-6 md:px-8 lg:px-12 bg-champagnePink hidden lg:block">
+  <div class="absolute lg:relative w-80 h-screen bg-champagnePink hidden lg:block">
     <div>
       <NavigationUserProfile/>
     </div>
-    <ul>
+    <ul class="px-6 md:px-8 lg:px-12">
       <slot name="items"></slot>
     </ul>
     <!-- Sidebar ends -->
