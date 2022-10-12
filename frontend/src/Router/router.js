@@ -2,6 +2,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Dashboard from "@/Pages/Dashboard";
 import Login from "@/Pages/Auth/Login";
+import ListProjects from "@/Pages/Projects/ListProjects";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -29,6 +30,11 @@ const router = createRouter({
             },
             name: 'dashboard:home',
         },
+        {
+            name: 'admin:projects',
+            path: '/admin/projects',
+            component: ListProjects
+        }
     ]
 })
 
