@@ -13,6 +13,9 @@ module.exports = {
             fontFamily: {
                 'Alatsi': ['"Alatsi"', 'sans-serif'],
                 'inter': ['"inter"', 'sans-serif'],
+            },
+            boxShadow: {
+                'inner': 'inset 2px 2px 2px 0 rgb(0 0 0 / 0.15)',
             }
         },
     },
