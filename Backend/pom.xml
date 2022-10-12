@@ -79,6 +79,11 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>21.11.0</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
