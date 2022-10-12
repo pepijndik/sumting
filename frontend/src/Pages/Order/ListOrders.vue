@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import Table from "@/Components/Table";
+import Table from "@/Components/CustomTable";
 export default {
   components: {
     Table

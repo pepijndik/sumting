@@ -31,8 +31,8 @@ const router = createRouter({
             name: 'dashboard:home',
         },
         {
-            name: 'admin:projects',
             path: '/admin/projects',
+            name: 'admin:projects',
             component: ListProjects
         }
     ]
