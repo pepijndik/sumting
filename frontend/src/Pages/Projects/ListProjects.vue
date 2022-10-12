@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import CustomTable from '@/Components/CustomTable'
+
 export default {
   name: "ListProjects",
   components: {
-    CustomTable
+
   }
 }
 </script>
