@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="to" class="cursor-pointer text-sm">
+  <router-link :to="to" class="cursor-pointer">
     <div class="flex items-center justify-between text-yInMnBlue font-bold">
       <span v-text="name"></span>
       <slot name="icon"></slot>
