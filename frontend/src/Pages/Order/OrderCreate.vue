@@ -9,6 +9,7 @@
         placeholder="Choose a client">
     </SearchableDropDown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
+    <p class="font-inter text-yInMnBlue">Description</p>
     <ckeditor class="resize rounded-full border-2" :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
