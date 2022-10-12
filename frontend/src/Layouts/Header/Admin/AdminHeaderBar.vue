@@ -62,12 +62,16 @@
         </div>
       </div>
     </div>
-
-    <!--Mobile responsive sidebar-->
-    <MobileNavigation />
-    <!--Mobile responsive sidebar-->
+    <div>
+      <button aria-label="Main Menu" class="text-gray-600 mr-8 visible lg:hidden relative focus:outline-none focus:ring-2 focus:ring-gray-600 " @click="openMobile">
+        <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_header_and_icons-svg7.svg" alt="toggler">
+      </button>
+    </div>
   </nav>
   <!-- Navigation ends -->
+  <!--Mobile responsive sidebar-->
+  <MobileNavigation ref="mNav" />
+  <!--Mobile responsive sidebar-->
 </template>
 
 <script>
@@ -80,8 +84,7 @@ export default {
   components: {MobileNavigation, DropdownItem, Dropdown},
   methods: {
     openMobile() {
-      console.log('open mobile from head')
-      this.$emit('open-mobile',true);
+      this.$refs.mNav.toggle();
     },
   },
 }
