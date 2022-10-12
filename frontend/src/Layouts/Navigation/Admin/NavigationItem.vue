@@ -1,10 +1,8 @@
 <template>
-  <router-link :to="to" class="pl-6 cursor-pointer text-sm leading-3  hover:fill-shadow tracking-normal pb-4 pt-5 text-indigo-700 focus:text-indigo-700 focus:outline-none">
-    <div class="flex items-center text-yInMnBlue  hover:text-shadow font-bold">
-      <span class="ml-8" v-text="name"></span>
-      <div class="ml-8">
-        <slot name="icon"></slot>
-      </div>
+  <router-link :to="to" class="cursor-pointer text-sm">
+    <div class="flex items-center justify-between text-yInMnBlue font-bold">
+      <span v-text="name"></span>
+      <slot name="icon"></slot>
     </div>
   </router-link>
 </template>
