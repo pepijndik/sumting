@@ -3,6 +3,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import Dashboard from "@/Pages/Dashboard";
 import Login from "@/Pages/Auth/Login";
 import ListProjects from "@/Pages/Projects/ListProjects";
+import OrderCreate from "@/Pages/Order/OrderCreate";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -34,6 +35,11 @@ const router = createRouter({
             path: '/admin/projects',
             name: 'admin:projects',
             component: ListProjects
+        },
+        {
+            path: '/admin/orders',
+            name: 'admin:Order',
+            component: OrderCreate
         }
     ]
 })

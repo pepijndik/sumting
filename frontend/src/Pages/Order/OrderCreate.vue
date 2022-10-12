@@ -1,10 +1,43 @@
 <template>
+<div>
+  <h4 class="text-candyPink text-2xl font-inter font-bold">CREATE</h4>
+  <h1 class="text-yInMnBlue text-4xl font-Alatsi font-bold">Client order</h1>
+  <div class="mt-6">
+    <p class="font-inter text-yInMnBlue">Client</p>
+    <SearchableDropDown
+        class="mt-2"
+        placeholder="Choose a client">
+    </SearchableDropDown>
+    <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
+    <ckeditor class="resize rounded-full border-2" :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
 
+    <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
+    <SearchableDropDown
+        class="mt-2"
+        placeholder="Select project(s)">
+    </SearchableDropDown>
+
+    <button class="my-2 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-indigo-600">Create order</button>
+
+  </div>
+</div>
 </template>
 
 <script>
+import SearchableDropDown from "@/Components/Form/SearchableDropDown";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export default {
-  name: "OrderCreate"
+  name: "OrderCreate",
+  components: {SearchableDropDown},
+  data() {
+    return {
+      editor: ClassicEditor,
+      editorData: '<p>Sumting project description</p>',
+      editorConfig: {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ]
+      }
+    }
+  }
 }
 </script>
 
