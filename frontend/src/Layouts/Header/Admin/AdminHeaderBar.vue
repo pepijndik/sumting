@@ -4,7 +4,7 @@
     <div>
       <img src="@/Assets/logo.png" alt="logo" class="h-auto w-36 lg:w-48">
     </div>
-    <div class="flex gap-8">
+    <div class="flex gap-2 md:gap-6">
       <div class="w-full flex">
         <div class="w-full flex items-center">
           <Dropdown>
@@ -14,9 +14,9 @@
                      src="https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png"
                      alt="display avatar" role="img">
               </div>
-              <p class="text-yInMnBlue font-bold text-sm mr-2 ml-3 hidden md:block">David Grey. H</p>
+              <p class="text-yInMnBlue font-bold text-sm ml-3 hidden md:block">David Grey. H</p>
               <button role="button"
-                      class="cursor-pointer text-gray-600">
+                      class="cursor-pointer text-gray-600 ml-2">
                 <img src="@/Assets/img/icons/arrow-down.svg"
                      alt="down">
               </button>
@@ -60,7 +60,7 @@
         </div>
       </div>
       <button aria-label="Main Menu" class="visible lg:hidden relative" @click="openMobile">
-        <img src="@/Assets/img/icons/hamburger.svg" class="w-14 h-14" alt="toggler">
+        <img src="@/Assets/img/icons/hamburger.svg" class="w-12 md:w-10 h-12 md:h-10" alt="toggler">
       </button>
     </div>
   </nav>
