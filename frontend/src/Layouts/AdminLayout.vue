@@ -20,7 +20,7 @@
         </template>
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">
-        <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
+        <div class="container px-6 md:px-8 lg:px-12 py-8">
           <div class="w-full h-full rounded border-gray-300">
             <router-view/>
           </div>
