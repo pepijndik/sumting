@@ -1,6 +1,6 @@
 <template>
   <!-- Navigation starts -->
-  <nav class="flex items-center justify-between px-6 md:px-8 lg:px-12 py-3 lg:py-5 bg-champagnePink z-10 relative">
+  <nav class="flex items-center justify-between px-6 md:px-8 lg:px-12 py-3 lg:py-5 bg-champagnePink z-20 relative">
     <div>
       <img src="@/Assets/logo.png" alt="logo" class="h-auto w-36 lg:w-48">
     </div>

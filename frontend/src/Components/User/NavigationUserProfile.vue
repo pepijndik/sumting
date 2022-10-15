@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center gap-6 border-y border-white py-3 px-6 md:px-8 lg:px-12">
-    <div class="relative">
+  <div class="flex justify-center items-center gap-6 border-y border-white py-3 px-6 md:px-8 lg:px-12">
+    <div class="relative w-12">
       <img class="rounded-full h-12 w-12 object-cover"
            :src="user.avatar" alt="display avatar" role="img">
     </div>
-    <div class="w-24">
+    <div class="w-2/3">
       <p class="text-yInMnBlue text-sm font-bold truncate" v-text="user.name"></p>
       <p class="text-yInMnBlue text-sm truncate" v-text="user.role"></p>
     </div>

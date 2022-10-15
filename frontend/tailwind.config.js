@@ -15,6 +15,7 @@ module.exports = {
                 'inter': ['"inter"', 'sans-serif'],
             },
             boxShadow: {
+                'r': '-2px 2px 2px 0 rgb(0 0 0 / 0.15)',
                 'inner': 'inset 2px 2px 2px 0 rgb(0 0 0 / 0.15)',
                 't-inner': 'inset 0 2px 2px 0 rgb(0 0 0 / 0.15)',
             }
