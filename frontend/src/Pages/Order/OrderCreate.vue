@@ -1,8 +1,6 @@
 <template>
 <div>
-  <h4 class="text-candyPink text-2xl font-inter font-bold">CREATE</h4>
-  <h1 class="text-yInMnBlue text-4xl font-Alatsi font-bold">Client order</h1>
-  <div class="mt-6">
+  <div>
     <p class="font-inter text-yInMnBlue">Client</p>
     <SearchableDropDown
         class="mt-2"

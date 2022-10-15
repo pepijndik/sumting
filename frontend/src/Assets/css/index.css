@@ -7,10 +7,10 @@ Base css for the site
 
 @font-face {
     font-family: "Alatsi";
-    src: local('Alatsi'), url(../fonts/Alatsi/Alatsi-Regular.ttf) format('ttf');
+    src: local('Alatsi-Regular'), url(../fonts/Alatsi/Alatsi-Regular.ttf) format('ttf');
 }
 @font-face {
     font-family: "inter";
-    src: local('inter'), url(../fonts/inter/Inter-Regular.ttf) format('ttf');
+    src: local('Inter-Regular'), url(../fonts/inter/Inter-Regular.ttf) format('ttf');
 }
 @tailwind utilities;

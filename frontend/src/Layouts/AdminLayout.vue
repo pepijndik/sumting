@@ -1,5 +1,4 @@
 <template>
-
   <div class="w-full h-full bg-white">
     <DashboardHeaderBar></DashboardHeaderBar>
     <div class="flex flex-no-wrap">
@@ -21,9 +20,11 @@
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">
         <div class="container px-6 md:px-8 lg:px-12 py-8">
-          <div class="w-full h-full rounded border-gray-300">
-            <router-view/>
+          <div class="mb-4">
+            <h4 class="text-candyPink text-base font-inter font-bold uppercase">{{ this.subTitle }}</h4>
+            <h1 class="text-yInMnBlue text-3xl xl:text-4xl font-Alatsi">{{ this.title }}</h1>
           </div>
+          <router-view />
         </div>
       </div>
     </div>
@@ -39,18 +40,13 @@ import DashboardSvg from "@/Assets/img/icons/dashboard.svg";
 export default {
   name: "DashboardLayout",
   components: {NavigationItem, DashboardHeaderBar, Navigation},
-  methods: {
-    toggle() {
-      console.log("toggle")
-      this.mobileOpen = !this.mobileOpen
-    },
-
-  },
   data() {
     return {
       mobileOpen: false,
+      title: "Graphs & Charts",
+      subTitle: "Statistics"
     };
-  },
+  }
 }
 </script>
 
