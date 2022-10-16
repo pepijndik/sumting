@@ -14,7 +14,6 @@
 
 <script>
 import NavigationUserProfile from "@/Components/User/NavigationUserProfile";
-import MobileNavigation from "@/Layouts/Navigation/Admin/MobileNavigation";
 
 export default {
   name: "DashboardNavigation",

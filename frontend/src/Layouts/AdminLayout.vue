@@ -35,7 +35,6 @@
 import Navigation from "@/Layouts/Navigation/Admin/Navigation";
 import DashboardHeaderBar from "@/Layouts/Header/Admin/AdminHeaderBar";
 import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
-import DashboardSvg from "@/Assets/img/icons/dashboard.svg";
 
 export default {
   name: "DashboardLayout",
