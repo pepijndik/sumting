@@ -1,19 +1,17 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.models.Project;
+import nl.hva.backend.models.Project.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
 @Repository
-public class ProjectRepository implements CrudRepository<Project, Long> {
+public class ProjectRepository implements CrudRepository<Project, Integer> {
 
-    JdbcTemplate jdbcTemplate;
 
+    private JdbcTemplate jdbcTemplate;
+    
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -25,8 +23,9 @@ public class ProjectRepository implements CrudRepository<Project, Long> {
     }
 
     @Override
-    public Optional<Project> findById(Long primaryKey) {
-        return Optional.ofNullable((Project) jdbcTemplate.query("SELECT * FROM " + Project.TABLE_NAME +" WHERE project_key = ?", new BeanPropertyRowMapper<Project>(Project.class)));
+    public Project findById(Integer id) {
+        String sql = "SELECT * FROM " + Project.TABLE_NAME +" WHERE project_key = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Project>(Project.class), id);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class ProjectRepository implements CrudRepository<Project, Long> {
     }
 
     @Override
-    public boolean existsById(Long primaryKey) {
+    public boolean existsById(Integer primaryKey) {
         return false;
     }
 }

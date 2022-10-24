@@ -1,21 +1,33 @@
-package nl.hva.backend.models;
+package nl.hva.backend.models.Project;
 
-import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
+import nl.hva.backend.models.Identifiable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = Project.TABLE_NAME)
-public class Project implements Identifiable<Long> {
-    public static final String TABLE_NAME = "pr_project";
+public class Project implements  Identifiable<Integer> {
+    public static final String TABLE_NAME = "project";
 
-    @Id
+    @Id()
+    @Column(name = "project_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "project_key")
-    private Long id;
+    private Integer id;
+
+    public Project(){
+
+    }
+    public Project(Integer id, String description, String description_long, String latitude,String longitude) {
+        super();
+        this.id = id;
+        this.description = description;
+        this.description_long = description_long;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     @Nullable
     @Column(name = "description",columnDefinition = "varchar(255)")
@@ -53,6 +65,27 @@ public class Project implements Identifiable<Long> {
     @Column(name = "unit_price", columnDefinition = "double")
     private Double unitPrice;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_type_key", referencedColumnName = "project_type_key")
+    private ProjectType type;
+
+    @Override
+    public Integer getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        System.out.println("Setted id" +id);
+        this.id = id;
+    }
+
+    public ProjectType setType(ProjectType type) {
+        return this.type = type;
+    }
+    public ProjectType getType() {
+        return type;
+    }
     public String getLatitude() {
         return latitude;
     }
@@ -128,14 +161,5 @@ public class Project implements Identifiable<Long> {
         this.description = description;
     }
 
-    @Override
-    public Long getId() {
-        return this.id;
-    }
 
-    @Override
-    public void setId(Long id) {
-        System.out.println(id);
-        this.id = id;
-    }
 }
