@@ -14,10 +14,18 @@
             </template>
           </NavigationItem>
           <NavigationDropdownItem to="/" name="Order" source="shopping_cart.svg"/>
-<!--            <SubDropdownItem/>-->
+            <SubDropdownItem to="/" name="Create order" source="create.svg"/>
+            <SubDropdownItem to="/" name="Edit order" source="edit.svg"/>
           <NavigationDropdownItem to="/" name="Batch" source="file.svg"/>
+            <SubDropdownItem to="/" name="Create batch" source="create.svg"/>
+            <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>
+            <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>
           <NavigationDropdownItem to="/" name="Project" source="file.svg"/>
+            <SubDropdownItem to="/" name="Create project" source="create.svg"/>
+            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>
           <NavigationDropdownItem to="/" name="Client" source="user.svg"/>
+            <SubDropdownItem to="/" name="Create client" source="create.svg"/>
+            <SubDropdownItem to="/" name="Edit client" source="edit.svg"/>
         </template>
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">
@@ -38,10 +46,11 @@ import Navigation from "@/Layouts/Navigation/Admin/Navigation";
 import DashboardHeaderBar from "@/Layouts/Header/Admin/AdminHeaderBar";
 import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
+import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
 
 export default {
   name: "DashboardLayout",
-  components: {NavigationItem, NavigationDropdownItem, DashboardHeaderBar, Navigation},
+  components: {NavigationItem, NavigationDropdownItem, SubDropdownItem, DashboardHeaderBar, Navigation},
   data() {
     return {
       mobileOpen: false,

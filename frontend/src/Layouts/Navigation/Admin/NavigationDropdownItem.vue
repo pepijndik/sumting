@@ -1,6 +1,6 @@
 <template>
   <router-link :to="to">
-    <div class="flex justify-between cursor-pointer my-6 text-yInMnBlue hover:text-candyPink font-bold border-b border-candyPink" @click="openTab">
+    <div class="flex justify-between cursor-pointer my-6 mx-2 pb-2 text-yInMnBlue hover:text-candyPink font-bold border-b-2 border-candyPink" @click="openTab">
       <img :src="require(`@/Assets/img/icons/${source}`)" alt="" width="24" class="ml-6">
       <span v-text="name"></span>
       <slot name="icon"></slot>
