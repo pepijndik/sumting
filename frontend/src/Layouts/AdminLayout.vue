@@ -13,19 +13,23 @@
               </svg>
             </template>
           </NavigationItem>
-          <NavigationDropdownItem to="/" name="Order" source="shopping_cart.svg"/>
+          <NavigationDropdownItem to="/" name="Order" source="shopping_cart.svg">
             <SubDropdownItem to="/" name="Create order" source="create.svg"/>
             <SubDropdownItem to="/" name="Edit order" source="edit.svg"/>
-          <NavigationDropdownItem to="/" name="Batch" source="file.svg"/>
+          </NavigationDropdownItem>
+          <NavigationDropdownItem to="/" name="Batch" source="file.svg">
             <SubDropdownItem to="/" name="Create batch" source="create.svg"/>
             <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>
             <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>
-          <NavigationDropdownItem to="/" name="Project" source="file.svg"/>
+          </NavigationDropdownItem>
+          <NavigationDropdownItem to="/" name="Project" source="file.svg">
             <SubDropdownItem to="/" name="Create project" source="create.svg"/>
             <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>
-          <NavigationDropdownItem to="/" name="Client" source="user.svg"/>
+          </NavigationDropdownItem>
+          <NavigationDropdownItem to="/" name="Client" source="user.svg">
             <SubDropdownItem to="/" name="Create client" source="create.svg"/>
             <SubDropdownItem to="/" name="Edit client" source="edit.svg"/>
+          </NavigationDropdownItem>
         </template>
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">

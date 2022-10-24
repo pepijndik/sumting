@@ -4,9 +4,10 @@
       <img :src="require(`@/Assets/img/icons/${source}`)" alt="" width="24" class="ml-6">
       <span v-text="name"></span>
       <slot name="icon"></slot>
-      <img src="@/Assets/img/icons/dropdown.svg" alt="" class="float-right">
+      <img src="@/Assets/img/icons/dropdown.svg" alt="" class="float-right" :style="{ transform: transformValue}">
     </div>
   </router-link>
+  <slot v-if="dropdownOpen"/>
 </template>
 
 <script>
@@ -23,14 +24,28 @@ export default {
       default: "@/Assets/img/icons/dashboard.svg"
     }
   },
+  data() {
+    return {
+      dropdownOpen: false,
+      transformValue: "rotate(0deg)"
+    }
+  },
   methods: {
     openTab() {
-      this.$emit('openTab');
+      if (this.transformValue === "rotate(0deg)") {
+        this.transformValue = "rotate(270deg)";
+        this.dropdownOpen = true;
+      } else {
+        this.transformValue = "rotate(0deg)";
+        this.dropdownOpen = false;
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-
+.hide-on-close {
+  display: none;
+}
 </style>
