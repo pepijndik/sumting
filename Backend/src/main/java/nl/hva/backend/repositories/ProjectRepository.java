@@ -6,31 +6,33 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+
 @Repository
+@Transactional
 public class ProjectRepository implements CrudRepository<Project, Integer> {
 
 
-    private JdbcTemplate jdbcTemplate;
-    
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private EntityManager em;
 
     @Override
-    public <S extends Project> S save(S entity) {
-        return null;
+    public Project save(Project entity) {
+        return em.merge(entity);
     }
 
     @Override
     public Project findById(Integer id) {
-        String sql = "SELECT * FROM " + Project.TABLE_NAME +" WHERE project_key = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Project>(Project.class), id);
+        return em.find(Project.class,id);
     }
 
     @Override
     public Iterable<Project> findAll() {
-        return jdbcTemplate.query("SELECT * FROM " + Project.TABLE_NAME, new BeanPropertyRowMapper<Project>(Project.class));
+        TypedQuery<Project> query = (TypedQuery<Project>) em.createQuery("SELECT u FROM "+Project.TABLE_NAME+" u");
+
+        return query.getResultList();
 
     }
 
@@ -41,7 +43,8 @@ public class ProjectRepository implements CrudRepository<Project, Integer> {
 
     @Override
     public void delete(Project entity) {
-
+        Project toRemove = em.merge(entity);
+        em.remove(toRemove);
     }
 
     @Override
