@@ -13,7 +13,11 @@
               </svg>
             </template>
           </NavigationItem>
-          <NavigationDropdownItems/>
+          <NavigationDropdownItem to="/" name="Order" source="shopping_cart.svg"/>
+<!--            <SubDropdownItem/>-->
+          <NavigationDropdownItem to="/" name="Batch" source="file.svg"/>
+          <NavigationDropdownItem to="/" name="Project" source="file.svg"/>
+          <NavigationDropdownItem to="/" name="Client" source="user.svg"/>
         </template>
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">
@@ -33,11 +37,11 @@
 import Navigation from "@/Layouts/Navigation/Admin/Navigation";
 import DashboardHeaderBar from "@/Layouts/Header/Admin/AdminHeaderBar";
 import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
-import NavigationDropdownItems from "@/Layouts/Navigation/Admin/NavigationDropdownItems";
+import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 
 export default {
   name: "DashboardLayout",
-  components: {NavigationItem, NavigationDropdownItems, DashboardHeaderBar, Navigation},
+  components: {NavigationItem, NavigationDropdownItem, DashboardHeaderBar, Navigation},
   data() {
     return {
       mobileOpen: false,
