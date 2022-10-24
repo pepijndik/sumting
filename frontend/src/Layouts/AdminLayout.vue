@@ -17,19 +17,19 @@
             <SubDropdownItem to="/" name="Create order" source="create.svg"/>
             <SubDropdownItem to="/" name="Edit order" source="edit.svg"/>
           </NavigationDropdownItem>
-          <NavigationDropdownItem to="/" name="Batch" source="file.svg">
-            <SubDropdownItem to="/" name="Create batch" source="create.svg"/>
-            <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>
-            <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>
-          </NavigationDropdownItem>
-          <NavigationDropdownItem to="/" name="Project" source="file.svg">
-            <SubDropdownItem to="/" name="Create project" source="create.svg"/>
-            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>
-          </NavigationDropdownItem>
-          <NavigationDropdownItem to="/" name="Client" source="user.svg">
-            <SubDropdownItem to="/" name="Create client" source="create.svg"/>
-            <SubDropdownItem to="/" name="Edit client" source="edit.svg"/>
-          </NavigationDropdownItem>
+<!--          <NavigationDropdownItem to="/" name="Batch" source="file.svg">-->
+<!--            <SubDropdownItem to="/" name="Create batch" source="create.svg"/>-->
+<!--            <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
+<!--            <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
+<!--          </NavigationDropdownItem>-->
+<!--          <NavigationDropdownItem to="/" name="Project" source="file.svg">-->
+<!--            <SubDropdownItem to="/" name="Create project" source="create.svg"/>-->
+<!--            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>-->
+<!--          </NavigationDropdownItem>-->
+<!--          <NavigationDropdownItem to="/" name="Client" source="user.svg">-->
+<!--            <SubDropdownItem to="/" name="Create client" source="create.svg"/>-->
+<!--            <SubDropdownItem to="/" name="Edit client" source="edit.svg"/>-->
+<!--          </NavigationDropdownItem>-->
         </template>
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">
