@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -23,13 +24,14 @@ public class SumtingBackend {
         application.setBanner(new CustomBanner());
         application.run(args);
     }
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-               registry.addMapping("/**").allowedOriginPatterns("http://loclahost:*");
-            }
-        };
+
+    @Configuration
+    public static class APIConfig implements WebMvcConfigurer {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**")
+                    .allowedOriginPatterns("http://localhost:*")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE");
+        }
     }
 }
