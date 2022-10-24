@@ -37,7 +37,7 @@ public class SubscriptionController {
         Subscription subscription = Subscription.create(params);
     }
     @PutMapping("/subscription/{subscriptionId}")
-    public void UpdateSubscription(PathVariable String sub){
+    public void UpdateSubscription(@PathVariable String sub) throws StripeException {
         Subscription subscription =
                 Subscription.retrieve(
                         "sub_1LrskJ2eZvKYlo2CYB4MQwLh"
