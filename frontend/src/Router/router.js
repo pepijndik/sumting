@@ -17,7 +17,8 @@ const router = createRouter({
             name: 'auth:login',
             component: Login,
             meta: {
-                layout: 'AuthLayout', // we add new meta layout here to use it later
+                layout: 'AuthLayout', // we add new meta layout here to use it later,
+                title: 'Login',
             },
         },
         {
@@ -25,6 +26,7 @@ const router = createRouter({
             name: 'auth:sign_up',
             meta: {
                 layout: 'AuthLayout', // same here
+                title: 'Sinup',
             },
         },
         {
@@ -32,17 +34,26 @@ const router = createRouter({
             component: Dashboard,
             meta: {
                 layout: 'AdminLayout', // Not needed, but you can add it here DashboardLayout will automatically be used
+                title: 'Dashboard',
             },
             name: 'dashboard:home',
         },
         {
             path: '/admin/projects',
             name: 'admin:projects',
+            meta: {
+
+                title: 'Projects',
+            },
             component: ListProjects
         },
         {
             path: '/admin/orders',
             name: 'admin:Order',
+            meta: {
+
+                title: 'Order',
+            },
             component: OrderCreate
         }
     ]
