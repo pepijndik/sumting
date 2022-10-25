@@ -35,10 +35,10 @@
       </Navigation>
       <div class="w-full shadow-t-inner lg:shadow-inner">
         <div class="container px-6 md:px-8 lg:px-12 py-8">
-          <div class="mb-4">
-            <h4 class="text-candyPink text-base font-inter font-bold uppercase">{{ this.subTitle }}</h4>
-            <h1 class="text-yInMnBlue text-3xl xl:text-4xl font-Alatsi">{{ this.title }}</h1>
-          </div>
+<!--          <div class="mb-4">-->
+<!--            <h4 class="text-candyPink text-base font-inter font-bold uppercase">{{ this.subTitle }}</h4>-->
+<!--            <h1 class="text-yInMnBlue text-3xl xl:text-4xl font-Alatsi">{{ this.title }}</h1>-->
+<!--          </div>-->
           <router-view />
         </div>
       </div>
