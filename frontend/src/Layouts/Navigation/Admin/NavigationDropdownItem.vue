@@ -8,11 +8,14 @@
       <img :src="require(`@/Assets/img/icons/${source}`)" alt="Dropdown icon" width="17" class="mr-2">
       <span v-text="name"></span>
     </div>
-    <slot name="icon"></slot>
-    <svg :style="{ transform: transformValue}" width="24px" height="24px" viewBox="0 0 24 24"
-         xmlns="http://www.w3.org/2000/svg"><rect x="0" fill="none" width="17" height="17"/>
-      <g><path d="M7 10l5 5 5-5"/></g>
-    </svg>
+    <div>
+      <!-- :style="{ transform: transformValue}" -->
+      <svg viewBox="0 0 20 20"
+           width="20" height="20"
+           xmlns="http://www.w3.org/2000/svg">
+        <g><path d="M7 10l5 5 5-5"/></g>
+      </svg>
+    </div>
   </div>
   <slot v-if="dropdownOpen"/>
 </template>

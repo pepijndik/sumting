@@ -3,12 +3,12 @@
     <div class="bg-gray-700 opacity-10 absolute h-screen w-screen" @click="toggle"></div>
     <div class="relative overflow-visible sm:relative w-80 bg-champagnePink transition duration-150 ease-in-out
     h-screen shadow-r float-right">
-      <div class="flex flex-col justify-between h-full w-full">
+      <div class="flex flex-col h-full w-full">
         <div>
           <NavigationUserProfile/>
         </div>
-        <ul class="py-6">
-          <slot></slot>
+        <ul class="px-6 md:px-8 lg:px-12">
+          <slot name="items"></slot>
         </ul>
       </div>
     </div>
