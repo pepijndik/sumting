@@ -26,7 +26,7 @@ const router = createRouter({
             name: 'auth:sign_up',
             meta: {
                 layout: 'AuthLayout', // same here
-                title: 'Sinup',
+                title: 'Signup',
             },
         },
         {
