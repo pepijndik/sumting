@@ -18,7 +18,7 @@ export default {
     return {
       user: {
         avatar: "https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png",
-        name: "David Grey. H David Grey. H David Grey. H David Grey. H David Grey. H",
+        name: "David Grey. H",
         role: "Admin"
       }
     }
