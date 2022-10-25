@@ -2,7 +2,7 @@
   <router-link :to="to">
     <div class="flex justify-between cursor-pointer mt-6 text-yInMnBlue hover:text-candyPink font-Alatsi">
       <span v-text="name" class="ml-2"></span>
-      <img :src="require(`@/Assets/img/icons/${source}`)" alt="" width="24">
+      <img :src="require(`@/Assets/img/icons/${source}`)" alt="" width="17">
       <slot name="icon"></slot>
     </div>
   </router-link>
