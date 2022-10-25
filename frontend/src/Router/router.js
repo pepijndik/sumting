@@ -4,6 +4,7 @@ import Dashboard from "@/Pages/Dashboard";
 import Login from "@/Pages/Auth/Login";
 import ListProjects from "@/Pages/Projects/ListProjects";
 import OrderCreate from "@/Pages/Order/OrderCreate";
+import OrderView from "@/Pages/Order/OrderView";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -39,6 +40,24 @@ const router = createRouter({
             name: 'dashboard:home',
         },
         {
+            path: '/orders',
+            name: 'admin:Order',
+            meta: {
+
+                title: 'OrderView',
+            },
+            component: OrderView
+        },
+        {
+            path: '/orders/create',
+            name: 'admin:OrderCreate',
+            meta: {
+
+                title: 'CreateOrder',
+            },
+            component: OrderCreate
+        },
+        {
             path: '/admin/projects',
             name: 'admin:projects',
             meta: {
@@ -46,15 +65,6 @@ const router = createRouter({
                 title: 'Projects',
             },
             component: ListProjects
-        },
-        {
-            path: '/admin/orders',
-            name: 'admin:Order',
-            meta: {
-
-                title: 'Order',
-            },
-            component: OrderCreate
         }
     ]
 })
