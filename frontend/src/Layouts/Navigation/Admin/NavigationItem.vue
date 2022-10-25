@@ -1,6 +1,6 @@
 <template>
   <router-link :to="to">
-    <div class="flex items-center justify-between cursor-pointer my-6 text-yInMnBlue hover:text-candyPink font-bold">
+    <div class="flex items-center justify-between cursor-pointer mt-6 text-yInMnBlue hover:text-candyPink font-Alatsi">
       <span v-text="name"></span>
       <slot name="icon"></slot>
     </div>

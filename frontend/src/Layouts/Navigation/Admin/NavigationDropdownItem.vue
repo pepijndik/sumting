@@ -1,10 +1,19 @@
 <template>
   <router-link :to="to">
-    <div class="flex justify-between cursor-pointer my-6 mx-2 pb-2 text-yInMnBlue hover:text-candyPink font-bold border-b-2 border-candyPink" @click="openTab">
-      <img :src="require(`@/Assets/img/icons/${source}`)" alt="" width="24" class="ml-6">
-      <span v-text="name"></span>
+    <div class="flex justify-between cursor-pointer pb-2 mt-6 hover:text-candyPink hover:fill-candyPink font-Alatsi
+    border-b-2 border-candyPink"
+         @click="openTab"
+         v-on:click ="clicked = !clicked"
+         v-bind:class="clicked ? 'text-candyPink fill-candyPink' : 'text-yInMnBlue fill-yInMnBlue'">
+      <div class="flex">
+        <img :src="require(`@/Assets/img/icons/${source}`)" alt="Dropdown icon" width="24" class="mr-2">
+        <span v-text="name"></span>
+      </div>
       <slot name="icon"></slot>
-      <img src="@/Assets/img/icons/dropdown.svg" alt="" class="float-right" :style="{ transform: transformValue}">
+      <svg :style="{ transform: transformValue}" width="24px" height="24px" viewBox="0 0 24 24"
+           xmlns="http://www.w3.org/2000/svg"><rect x="0" fill="none" width="24" height="24"/>
+        <g><path d="M7 10l5 5 5-5"/></g>
+      </svg>
     </div>
   </router-link>
   <slot v-if="dropdownOpen"/>
@@ -27,13 +36,14 @@ export default {
   data() {
     return {
       dropdownOpen: false,
+      clicked: false,
       transformValue: "rotate(0deg)"
     }
   },
   methods: {
     openTab() {
       if (this.transformValue === "rotate(0deg)") {
-        this.transformValue = "rotate(270deg)";
+        this.transformValue = "rotate(180deg)";
         this.dropdownOpen = true;
       } else {
         this.transformValue = "rotate(0deg)";
