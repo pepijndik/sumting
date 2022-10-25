@@ -1,6 +1,6 @@
 <template>
   <!-- Sidebar starts -->
-  <div class="absolute lg:relative w-80 h-auto bg-champagnePink hidden lg:block">
+  <div class="absolute lg:relative w-80 h-auto min-h-screen bg-champagnePink hidden lg:block">
     <div>
       <NavigationUserProfile/>
     </div>
