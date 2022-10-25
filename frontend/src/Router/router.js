@@ -7,6 +7,10 @@ import OrderCreate from "@/Pages/Order/OrderCreate";
 
 const router = createRouter({
     history: createWebHistory(),
+    beforeEach(toRoute, fromRoute, next) {
+        window.document.title = toRoute.meta && toRoute.meta.title ? toRoute.meta.title : 'Home';
+        next();
+    },
     routes: [
         {
             path: '/login',
