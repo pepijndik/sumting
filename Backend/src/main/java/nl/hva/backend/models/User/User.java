@@ -3,6 +3,8 @@ package nl.hva.backend.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -15,13 +17,31 @@ import java.util.Objects;
 public class User {
     public static final String TABLE_NAME = "user";
     @Id
-    private String email;
+    @Column(name = "user_key")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
+    @Column(name = "user_name")
     private String name;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime udatedAt;
     @JsonIgnore
+    @Column(name = "user_password", nullable = true)
     private String encodedPassword;
 
-    private boolean admin;
+
+    @Column(name = "user_secret_code",nullable = true)
+    private String secretCode;
+
+    @Column(name = "user_twofactor_enabled",nullable = true)
+    private Boolean TwoFactorEnabled;
+
 
     public String getEmail() {
         return email;
@@ -39,6 +59,7 @@ public class User {
         this.name = name;
     }
 
+
     public void setEncodedPassword(String encodedPassword) {
         this.encodedPassword = encodedPassword;
     }
@@ -47,13 +68,6 @@ public class User {
         return encodedPassword.equals(given);
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
 
     @Override
     public boolean equals(Object o) {

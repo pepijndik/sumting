@@ -1,15 +1,16 @@
 import BaseApi from "@/Services/BaseApi";
 
-export class ApiAdapter {
+export class ApiAdapter extends BaseApi{
     constructor(resource) {
+        super();
         this.resource = resource;
     }
 
     async findAll(){
-     return BaseApi.get(`/${this.resource}`);
+     return this.get(`/${this.resource}`);
     }
 
     async findOne(id){
-     return BaseApi.get(`/${this.resource}/${id}`);
+     return this.get(`/${this.resource}/${id}`);
     }
 }

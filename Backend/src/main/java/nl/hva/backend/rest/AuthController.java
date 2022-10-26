@@ -50,8 +50,7 @@ public class AuthController {
         user.setEmail(email);
         user.setName(name);
         user.setEncodedPassword(encoder.encode(givenPassword));
-        user.setAdmin(false);
-
+        
         User savedUser = userRepo.save(user);
 
         URI location = ServletUriComponentsBuilder.
@@ -82,7 +81,7 @@ public class AuthController {
         }
 
         // refresh the token for the user
-        String tokenString = tokenGenerator.encode(tokenInfo.getEmail(), tokenInfo.isAdmin());
+        String tokenString = tokenGenerator.encode(tokenInfo.getEmail());
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
@@ -111,10 +110,7 @@ public class AuthController {
         }
 
         // Issue a token for the user valid for some time
-        String tokenString = tokenGenerator.encode(user.getEmail(), user.isAdmin());
-
-        return ResponseEntity.accepted()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
-                .body(user);
+        String tokenString = tokenGenerator.encode(user.getEmail());
+        return ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).body(user);
     }
 }

@@ -123,7 +123,10 @@ create table "user"
         constraint unique_user_id_django
             unique,
     country_key    integer,
-    user_stripe_id varchar
+    user_stripe_id varchar,
+    user_password  varchar(255),
+    user_secret_code varchar(255),
+    user_twofactor_enabled boolean
 );
 
 alter table "user"

@@ -38,16 +38,14 @@ public class JWTokenUtils {
     /**
      * Generate a Json Web Token
      * @param id user id (or subject)
-     * @param admin is an administrator?
      * @return the token representation
      */
-    public String encode(String id, boolean admin) {
+    public String encode(String id) {
 
         Key key = getKey(passphrase);
 
         String token = Jwts.builder()
                 .claim(Claims.SUBJECT,id) // registered claim
-                .claim(JWT_ADMIN_CLAIM,Boolean.toString(admin)) // public claim
                 .setIssuer(issuer) // registered claim
                 .setIssuedAt(new Date()) // registered claim
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)) // registered claim
