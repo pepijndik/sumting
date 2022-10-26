@@ -4,8 +4,8 @@
 
     <div class="flex flex-col lg:mr-16">
       <div class="relative">
-        <div class="absolute text-gray-600 dark:text-gray-400 flex items-center pl-4 h-full cursor-pointer">
-          <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 487.95 487.95" width="17"
+        <div class="absolute text-gray-300 flex items-center pl-4 h-full cursor-pointer">
+          <svg class="fill-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 487.95 487.95" width="17"
                height="17" xml:space="preserve">
           <g>
             <g>
@@ -17,8 +17,8 @@
           </svg>
         </div>
         <input
-            class="text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2
-            focus:ring-candyPink dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-full sm:w-80 h-10 flex
+            class="text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2
+            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex
             items-center pl-10 text-sm border-gray-300 rounded border shadow font-inter"
             :name="name"
             @focus="showOptions()"
