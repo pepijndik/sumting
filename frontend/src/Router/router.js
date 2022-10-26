@@ -58,12 +58,12 @@ const router = createRouter({
             component: OrderCreate
         },
         {
-            path: '/admin/projects',
+            path: '/projects',
             name: 'admin:projects',
             meta: {
                 pageTitle: 'Projects',
                 title: 'Project',
-                subtitle: 'Create'
+                subtitle: 'View'
             },
             component: ListProjects
         }
