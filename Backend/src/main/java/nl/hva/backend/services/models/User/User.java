@@ -1,7 +1,6 @@
-package nl.hva.backend.models.User;
+package nl.hva.backend.services.models.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import nl.hva.backend.models.Identifiable;
 
 import javax.persistence.*;
 import java.util.Objects;

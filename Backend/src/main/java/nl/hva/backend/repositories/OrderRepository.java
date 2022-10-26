@@ -1,7 +1,6 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.models.Order.Order;
-import nl.hva.backend.models.Project.Project;
+import nl.hva.backend.services.models.Order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +27,13 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
 
     @Override
     public Iterable<Order> findAll() {
-        return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
+        try {
+            return em.createQuery("SELECT a FROM Order a", Order.class).getResultList();
+          //  return em.createQuery("SELECT o FROM Order o",Order.class).getResultList();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    return null;
     }
 
     @Override

@@ -1,15 +1,15 @@
-package nl.hva.backend.models.Project;
+package nl.hva.backend.services.models.Project;
 
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
-import nl.hva.backend.models.Identifiable;
+import nl.hva.backend.services.models.Identifiable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = Project.TABLE_NAME)
-public class Project implements  Identifiable<Integer> {
+public class Project implements Identifiable<Integer> {
     public static final String TABLE_NAME = "project";
 
     @Id()

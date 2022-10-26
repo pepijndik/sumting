@@ -1,14 +1,10 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.models.Project.Project;
+import nl.hva.backend.services.models.Project.Project;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 @Repository

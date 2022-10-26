@@ -1,25 +1,25 @@
-package nl.hva.backend.models.Order;
+package nl.hva.backend.services.models.Order;
 
 import com.sun.istack.Nullable;
-import nl.hva.backend.models.Identifiable;
+import nl.hva.backend.services.models.Identifiable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = nl.hva.backend.models.Project.ProjectType.TABLE_NAME)
-public class OrderType implements Identifiable<Long> {
+@Table(name = OrderType.TABLE_NAME)
+public class OrderType implements Identifiable<Integer> {
 
     public static final String TABLE_NAME = "order_type";
 
     @Id
     @Column(name = "order_type_key")
-    private Long id;
+    private Integer id;
 
     @Nullable
     @Column(name = "description",columnDefinition = "varchar")
     private String description;
 
     @Nullable
-    @Column(name = "type", columnDefinition = "varchar(255)")
+    @Column(name = "order_type", columnDefinition = "varchar(255)")
     private String type;
 
     @Nullable
@@ -27,12 +27,12 @@ public class OrderType implements Identifiable<Long> {
     private Integer isExt;
 
     @Override
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id= id;
     }
 

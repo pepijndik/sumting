@@ -4,12 +4,17 @@
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropDown
           class="mt-1"
+          :options="[]"
           placeholder="Choose a client">
       </SearchableDropDown>
     </div>
     <div class="mt-3 sm:mt-0">
       <p class="font-inter text-yInMnBlue">Project(s)</p>
       <SearchableDropDown
+          :options="projects"
+          :disabled="false"
+          autocomplete="off"
+          :maxItem="10"
           class="mt-1"
           placeholder="Select project(s)">
       </SearchableDropDown>
@@ -25,7 +30,17 @@ import SearchableDropDown from "@/Components/Form/SearchableDropDown";
 
 export default {
   name: "OrderView",
-  components: {SearchableDropDown}
+  components: {SearchableDropDown},
+  inject: ['ProjectApi'],
+  data() {
+    return {
+      projects: [],
+    };
+  },
+  async created() {
+    this.projects = await this.ProjectApi.SearchableDropDown();
+  },
+
 }
 </script>
 

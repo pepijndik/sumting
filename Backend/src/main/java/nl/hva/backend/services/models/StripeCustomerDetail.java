@@ -1,4 +1,4 @@
-package nl.hva.backend.models;
+package nl.hva.backend.services.models;
 
 import java.time.LocalDateTime;
 

@@ -1,10 +1,8 @@
 package nl.hva.backend.rest;
 
 import nl.hva.backend.exceptions.ModelNotFound;
-import nl.hva.backend.models.Order.Order;
-import nl.hva.backend.models.Project.Project;
+import nl.hva.backend.services.models.Order.Order;
 import nl.hva.backend.repositories.OrderRepository;
-import nl.hva.backend.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;

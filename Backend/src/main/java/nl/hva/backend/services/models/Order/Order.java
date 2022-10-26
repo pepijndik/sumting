@@ -1,9 +1,8 @@
-package nl.hva.backend.models.Order;
+package nl.hva.backend.services.models.Order;
 
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
-import nl.hva.backend.models.Identifiable;
-import org.checkerframework.checker.units.qual.C;
+import nl.hva.backend.services.models.Identifiable;
 
 import javax.persistence.*;
 import java.time.LocalDate;

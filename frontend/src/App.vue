@@ -1,16 +1,24 @@
 <template class="">
-  <component :is="layout"/>
+    <component :is="layout"/>
 </template>
 
 <script>
 import AuthLayout from "@/Layouts/AuthLayout";
 import AdminLayout from "@/Layouts/AdminLayout";
+import OrderApiService from "@/Services/Order/OrderApiService";
+import ProjectApiService from "@/Services/Projects/ProjectApiService";
 
 export default {
   name: 'App',
   components: {
     AuthLayout,
     AdminLayout,
+  },
+  provide() {
+    return {
+      OrderApi: new OrderApiService(),
+      ProjectApi: new ProjectApiService(),
+    }
   },
   data() {
     return {

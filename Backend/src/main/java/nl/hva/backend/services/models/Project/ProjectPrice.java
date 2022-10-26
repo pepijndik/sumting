@@ -1,7 +1,7 @@
-package nl.hva.backend.models.Project;
+package nl.hva.backend.services.models.Project;
 
 
-import nl.hva.backend.models.Identifiable;
+import nl.hva.backend.services.models.Identifiable;
 
 import javax.persistence.*;
 

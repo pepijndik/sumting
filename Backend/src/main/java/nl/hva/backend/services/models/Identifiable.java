@@ -1,4 +1,4 @@
-package nl.hva.backend.models;
+package nl.hva.backend.services.models;
 
 public interface Identifiable<T>{
     T getId();

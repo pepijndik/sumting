@@ -10,7 +10,7 @@ import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.time.SystemTimeProvider;
 import dev.samstevens.totp.time.TimeProvider;
-import nl.hva.backend.models.User.User;
+import nl.hva.backend.services.models.User.User;
 import org.springframework.stereotype.Service;
 
 import static dev.samstevens.totp.util.Utils.getDataUriForImage;

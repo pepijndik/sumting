@@ -1,12 +1,10 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.models.User.User;
-import nl.hva.backend.repositories.UserRepository;
+import nl.hva.backend.services.models.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
