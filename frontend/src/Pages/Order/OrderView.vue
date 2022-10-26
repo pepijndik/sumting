@@ -1,8 +1,4 @@
 <template>
-  <div class="mb-5">
-    <h4 class="text-candyPink text-base font-inter font-bold uppercase">View</h4>
-    <h1 class="text-yInMnBlue text-3xl xl:text-4xl font-Alatsi">Client order</h1>
-  </div>
   <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">
     <div>
       <p class="font-inter text-yInMnBlue">Client</p>

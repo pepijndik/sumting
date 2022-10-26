@@ -23,24 +23,27 @@ const router = createRouter({
             name: 'auth:sign_up',
             meta: {
                 layout: 'AuthLayout', // same here
-                title: 'Signup',
+                title: 'Sign up',
             },
         },
         {
             path: '/',
             component: Dashboard,
+            name: 'dashboard:home',
             meta: {
                 layout: 'AdminLayout', // Not needed, but you can add it here DashboardLayout will automatically be used
-                title: 'Dashboard',
+                pageTitle: 'Dashboard',
+                title: 'Graphs & Charts',
+                subtitle: 'Statistics'
             },
-            name: 'dashboard:home',
         },
         {
             path: '/orders',
             name: 'admin:Order',
             meta: {
-
-                title: 'OrderView',
+                pageTitle: 'Dashboard',
+                title: 'Client order',
+                subtitle: 'View'
             },
             component: OrderView
         },
@@ -48,8 +51,9 @@ const router = createRouter({
             path: '/orders/create',
             name: 'admin:OrderCreate',
             meta: {
-
-                title: 'CreateOrder',
+                pageTitle: 'Create order',
+                title: 'Client order',
+                subtitle: 'Create'
             },
             component: OrderCreate
         },
@@ -57,15 +61,16 @@ const router = createRouter({
             path: '/admin/projects',
             name: 'admin:projects',
             meta: {
-
-                title: 'Projects',
+                pageTitle: 'Projects',
+                title: 'Project',
+                subtitle: 'Create'
             },
             component: ListProjects
         }
     ]
 })
 router.beforeEach((to, from, next) => {
-    window.document.title = to.meta && to.meta?.title ? to.meta.title : 'Home';
+    window.document.title = to.meta && to.meta?.pageTitle ? to.meta.pageTitle : 'Home';
     next();
 });
 
