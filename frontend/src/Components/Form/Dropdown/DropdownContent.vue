@@ -1,6 +1,6 @@
 <template>
   <transition name="dropdownContent">
-    <div v-if="active" class="p-2 w-full border-r bg-white absolute rounded left-0 shadow mt-12 sm:mt-16">
+    <div v-if="active" class="p-2 w-32 border-r bg-white absolute rounded left-0 top-12 shadow">
       <slot/>
     </div>
   </transition>
