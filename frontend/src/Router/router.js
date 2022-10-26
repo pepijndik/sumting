@@ -41,7 +41,7 @@ const router = createRouter({
             path: '/orders',
             name: 'admin:Order',
             meta: {
-                pageTitle: 'Dashboard',
+                pageTitle: 'Orders',
                 title: 'Client order',
                 subtitle: 'View'
             },
