@@ -71,7 +71,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    window.document.title = to.meta && to.meta?.pageTitle ? to.meta.pageTitle : 'Home';
+    window.document.title = to.meta && to.meta?.pageTitle   ?  `${to.meta.pageTitle} | Sumting` : 'Sumting';
     next();
 });
 
