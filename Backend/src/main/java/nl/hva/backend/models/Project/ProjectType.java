@@ -6,13 +6,13 @@ import nl.hva.backend.models.Identifiable;
 import javax.persistence.*;
 @Entity
 @Table(name = ProjectType.TABLE_NAME)
-public class ProjectType implements Identifiable<Long> {
+public class ProjectType implements Identifiable<Integer> {
 
     public static final String TABLE_NAME = "project_type";
 
     @Id
     @Column(name = "project_type_key")
-    private Long id;
+    private Integer id;
 
     @Nullable
     @Column(name = "description",columnDefinition = "varchar(255)")
@@ -21,12 +21,12 @@ public class ProjectType implements Identifiable<Long> {
 
 
     @Override
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id= id;
     }
 }

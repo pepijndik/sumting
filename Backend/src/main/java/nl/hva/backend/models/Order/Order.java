@@ -65,7 +65,7 @@ public class Order implements Identifiable<Integer> {
     private Double transactionTotal;
 
     @OneToOne
-    @JoinColumn(name = "order_type_key")
+    @JoinColumn(name = "order_type_key",updatable = false, insertable = false)
     private OrderType orderTypeKey;
 
     @Nullable
