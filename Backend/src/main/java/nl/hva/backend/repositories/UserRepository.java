@@ -1,7 +1,7 @@
 package nl.hva.backend.repositories;
 
 
-import nl.hva.backend.services.models.User.User;
+import nl.hva.backend.models.User.User;
 
 import java.util.List;
 

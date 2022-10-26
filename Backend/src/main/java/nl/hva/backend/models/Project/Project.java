@@ -1,8 +1,8 @@
-package nl.hva.backend.services.models.Project;
+package nl.hva.backend.models.Project;
 
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
-import nl.hva.backend.services.models.Identifiable;
+import nl.hva.backend.models.Identifiable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -59,8 +59,8 @@ public class Project implements Identifiable<Integer> {
     private String updated_at;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "project_type_key", referencedColumnName = "project_type_key", insertable = false, updatable = false)
     private ProjectType type;
 
     @Override

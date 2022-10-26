@@ -1,4 +1,4 @@
-package nl.hva.backend.services.models.User;
+package nl.hva.backend.models.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

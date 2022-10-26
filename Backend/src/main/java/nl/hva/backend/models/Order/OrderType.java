@@ -1,7 +1,7 @@
-package nl.hva.backend.services.models.Order;
+package nl.hva.backend.models.Order;
 
 import com.sun.istack.Nullable;
-import nl.hva.backend.services.models.Identifiable;
+import nl.hva.backend.models.Identifiable;
 import javax.persistence.*;
 
 @Entity

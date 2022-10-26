@@ -1,6 +1,6 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.services.models.User.User;
+import nl.hva.backend.models.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

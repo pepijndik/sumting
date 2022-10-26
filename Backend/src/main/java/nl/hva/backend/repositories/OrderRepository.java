@@ -1,6 +1,6 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.services.models.Order.Order;
+import nl.hva.backend.models.Order.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

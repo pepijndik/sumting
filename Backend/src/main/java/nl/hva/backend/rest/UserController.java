@@ -1,6 +1,6 @@
 package nl.hva.backend.rest;
 
-import nl.hva.backend.services.models.User.User;
+import nl.hva.backend.models.User.User;
 import nl.hva.backend.repositories.UserRepository;
 import nl.hva.backend.exceptions.UserNotFoundException;
 import nl.hva.backend.exceptions.AuthorizationException;

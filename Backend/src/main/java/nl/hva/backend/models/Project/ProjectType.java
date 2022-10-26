@@ -1,7 +1,7 @@
-package nl.hva.backend.services.models.Project;
+package nl.hva.backend.models.Project;
 
 import com.sun.istack.Nullable;
-import nl.hva.backend.services.models.Identifiable;
+import nl.hva.backend.models.Identifiable;
 
 import javax.persistence.*;
 @Entity
@@ -19,6 +19,9 @@ public class ProjectType implements Identifiable<Integer> {
     private String description;
 
 
+    public String getDescription() {
+        return description;
+    }
 
     @Override
     public Integer getId() {

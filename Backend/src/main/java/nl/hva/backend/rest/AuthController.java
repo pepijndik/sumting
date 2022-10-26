@@ -1,7 +1,7 @@
 package nl.hva.backend.rest;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import nl.hva.backend.services.models.User.User;
+import nl.hva.backend.models.User.User;
 import nl.hva.backend.repositories.JPAUserRepository;
 import nl.hva.backend.exceptions.AuthenticationException;
 import nl.hva.backend.security.JWTokenInfo;
