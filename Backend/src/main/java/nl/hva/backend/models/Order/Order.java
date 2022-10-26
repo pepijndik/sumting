@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = Order.TABLE_NAME)
 public class Order implements Identifiable<Integer> {
-    public static final String TABLE_NAME = "pr_order";
+    public static final String TABLE_NAME = "order";
 
     @Id()
     @Column(name = "order_key", nullable = false, unique = true, updatable = false)

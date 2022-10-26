@@ -45,9 +45,6 @@ public class Project implements  Identifiable<Integer> {
     @Column(name = "longitude", columnDefinition = "varchar(255)")
     private String longitude;
 
-    @Nullable
-    @Column(name = "fee", columnDefinition = "double")
-    private Double fee;
 
     @Nullable
     @Column(name = "project_image_medium", columnDefinition = "char(255)")
@@ -61,12 +58,9 @@ public class Project implements  Identifiable<Integer> {
     @Column(name = "updated_at", columnDefinition = "timestamp")
     private String updated_at;
 
-    @Nullable
-    @Column(name = "unit_price", columnDefinition = "double")
-    private Double unitPrice;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_type_key", referencedColumnName = "project_type_key")
+    @PrimaryKeyJoinColumn
     private ProjectType type;
 
     @Override
@@ -102,14 +96,6 @@ public class Project implements  Identifiable<Integer> {
         this.longitude = longitude;
     }
 
-    public Double getFee() {
-        return fee;
-    }
-
-    public void setFee(Double fee) {
-        this.fee = fee;
-    }
-
     public String getImage() {
         return image;
     }
@@ -133,16 +119,6 @@ public class Project implements  Identifiable<Integer> {
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
-
-    public Double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-
 
 
     public String getDescription_long() {
