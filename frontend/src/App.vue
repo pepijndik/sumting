@@ -26,16 +26,6 @@ export default {
         this.layout = "AdminLayout" // this is default layout if route meta is not set
       }
     },
-  },
-  metaInfo: {
-    // if no subcomponents specify a metaInfo.title, this title will be used
-    title: 'Sumting Admin panel',
-    // all titles will be injected into this template
-    titleTemplate: '%s | Sumting admin panel',
-    htmlAttrs: {
-      lang: 'en',
-      amp: true
-    }
   }
 }
 </script>
