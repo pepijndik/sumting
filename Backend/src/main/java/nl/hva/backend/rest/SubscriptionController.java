@@ -3,13 +3,12 @@ package nl.hva.backend.rest;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
+import nl.hva.backend.exceptions.AuthorizationException;
+import nl.hva.backend.security.JWTokenInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +25,12 @@ public class SubscriptionController {
     }
 
     @PostMapping("/subscription")
-    public void CreateSubscription(String Customer, List<Object> items) throws StripeException {
+    public void CreateSubscription(String Customer, List<Object> items,@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) throws StripeException {
+        if(!tokenInfo.isAdmin()) {
+            throw new AuthorizationException("only administrators can remove members");
+        }
+
+
         items = new ArrayList<>();
         Map<String, Object> item1 = new HashMap<>();
         item1.put("price", "price_1Ls3482eZvKYlo2CxRn40GXd");

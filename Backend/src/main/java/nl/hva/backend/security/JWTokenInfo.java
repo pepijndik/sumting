@@ -1,5 +1,7 @@
 package nl.hva.backend.security;
 
+import nl.hva.backend.Enums.UserRole;
+
 import java.util.Date;
 
 /**
@@ -7,12 +9,13 @@ import java.util.Date;
  *
  * Author: MFK
  */
+
 public class JWTokenInfo {
 
     public static final String KEY = "tokenInfo";
 
     private String email;
-    private boolean admin;
+    private UserRole Role;
     private Date issuedAt;
     private Date expiration;
 
@@ -24,12 +27,31 @@ public class JWTokenInfo {
         this.email = email;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public UserRole getRole() {
+        return this.Role;
+    }
+
+    public boolean isAdmin(){
+        return this.Role == UserRole.ADMIN;
     }
 
     public void setAdmin(boolean admin) {
-        this.admin = admin;
+        if(admin){
+            this.setRole(UserRole.ADMIN);
+        }
+        else{
+            this.setRole(UserRole.USER);
+        }
+    }
+
+    public void setUser(boolean user) {
+        if(user){
+          this.setRole(UserRole.USER);
+        }
+
+    }
+    public void setRole(UserRole role){
+        this.Role = Role;
     }
 
     public Date getIssuedAt() {
@@ -52,7 +74,7 @@ public class JWTokenInfo {
     public String toString() {
         return "JWTokenInfo{" +
                 "email='" + email + '\'' +
-                ", admin=" + admin +
+                ", Role=" + this.getRole() +
                 ", issuedAt=" + issuedAt +
                 ", expiration=" + expiration +
                 '}';
