@@ -8,10 +8,6 @@ import OrderView from "@/Pages/Order/OrderView";
 
 const router = createRouter({
     history: createWebHistory(),
-    beforeEach(toRoute, fromRoute, next) {
-        window.document.title = toRoute.meta && toRoute.meta.title ? toRoute.meta.title : 'Home';
-        next();
-    },
     routes: [
         {
             path: '/login',
@@ -68,5 +64,9 @@ const router = createRouter({
         }
     ]
 })
+router.beforeEach((to, from, next) => {
+    window.document.title = to.meta && to.meta?.title ? to.meta.title : 'Home';
+    next();
+});
 
 export default router
