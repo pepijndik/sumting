@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Class with useful information of token
  *
- * Author: MFK
+ * Author: Pepijn dik
  */
 
 public class JWTokenInfo {

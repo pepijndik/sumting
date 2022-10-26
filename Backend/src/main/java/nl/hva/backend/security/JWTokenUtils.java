@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * An Utility class used to encode and decote JWT tokens
  *
- * Author: MFK
+ * Author: Pepijn dik
  */
 @Component
 public class JWTokenUtils {

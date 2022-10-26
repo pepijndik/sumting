@@ -2,7 +2,7 @@ package nl.hva.backend.rest;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import nl.hva.backend.models.User.User;
-import nl.hva.backend.repositories.UserRepository;
+import nl.hva.backend.repositories.JPAUserRepository;
 import nl.hva.backend.exceptions.AuthenticationException;
 import nl.hva.backend.security.JWTokenInfo;
 import nl.hva.backend.security.JWTokenUtils;
@@ -22,7 +22,7 @@ import java.net.URI;
 /**
  * Set of endpoints used to sign-up and sign-in users
  *
- * Author: MFK
+ * Author: Pepijn dik
  */
 @RestController
 public class AuthController {
@@ -34,7 +34,7 @@ public class AuthController {
     private PasswordEncoder encoder;
 
     @Autowired
-    private UserRepository userRepo;
+    private JPAUserRepository userRepo;
 
     @Autowired
     private JWTokenUtils tokenUtils;

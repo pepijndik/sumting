@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A definition of a user repository
  *
- * Author: MFK
+ * Author: Pepijn dik
  */
 public interface UserRepository {
     User save(User user);
