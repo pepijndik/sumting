@@ -49,7 +49,7 @@ const router = createRouter({
             name: 'admin:OrderCreate',
             meta: {
 
-                title: 'CreateOrder',
+                title: 'Create order',
             },
             component: OrderCreate
         },
