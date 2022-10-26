@@ -22,15 +22,14 @@ public class Order implements Identifiable<Integer> {
 
     }
 
-    public Order(Integer id, Integer orderIdExt, LocalDate createdAt, Character paymentMethod, Integer payerIdExt, LocalDate order_date, String description, Integer orderExtPaymentId, Double transactionTotal, OrderType orderTypeKey, Double transactionFee, Double transactionVat, Character currency) {
+    public Order(Integer id, Integer orderIdExt, LocalDate createdAt, Character paymentMethod, LocalDate order_date, String description, Double transactionTotal, OrderType orderTypeKey, Double transactionFee, Double transactionVat, Character currency) {
         this.id = id;
         this.orderIdExt = orderIdExt;
         this.createdAt = createdAt;
         this.paymentMethod = paymentMethod;
-        this.payerIdExt = payerIdExt;
+
         this.order_date = order_date;
         this.description = description;
-        this.orderExtPaymentId = orderExtPaymentId;
         this.transactionTotal = transactionTotal;
         this.orderTypeKey = orderTypeKey;
         this.transactionFee = transactionFee;
@@ -50,9 +49,6 @@ public class Order implements Identifiable<Integer> {
     @Column(name = "payment_method", columnDefinition = "char")
     private Character paymentMethod;
 
-    @Nullable
-    @Column(name = "payer_id_ext", columnDefinition = "int")
-    private Integer payerIdExt;
 
     @Timestamp
     @Column(name = "order_date", columnDefinition = "timestamp")
@@ -62,16 +58,14 @@ public class Order implements Identifiable<Integer> {
     @Column(name = "description", columnDefinition = "varchar(255)")
     private String description;
 
-    @Nullable
-    @Column(name = "order_ext_payment_id", columnDefinition = "varchar(255)")
-    private Integer orderExtPaymentId;
+
 
     @Nullable
     @Column(name = "transaction_total", columnDefinition = "double")
     private Double transactionTotal;
 
     @OneToOne
-    @JoinColumn(name = "order_type_key", referencedColumnName = "order_type_key")
+    @JoinColumn(name = "order_type_key")
     private OrderType orderTypeKey;
 
     @Nullable
@@ -137,13 +131,7 @@ public class Order implements Identifiable<Integer> {
         this.description = description;
     }
 
-    public Integer getOrderExtPaymentId() {
-        return orderExtPaymentId;
-    }
 
-    public void setOrderExtPaymentId(Integer orderExtPaymentId) {
-        this.orderExtPaymentId = orderExtPaymentId;
-    }
 
     public Double getTransactionTotal() {
         return transactionTotal;
@@ -177,13 +165,7 @@ public class Order implements Identifiable<Integer> {
         this.currency = currency;
     }
 
-    public Integer getPayerIdExt() {
-        return payerIdExt;
-    }
 
-    public void setPayerIdExt(Integer payerIdExt) {
-        this.payerIdExt = payerIdExt;
-    }
 
     public OrderType getOrderTypeKey() {
         return orderTypeKey;
