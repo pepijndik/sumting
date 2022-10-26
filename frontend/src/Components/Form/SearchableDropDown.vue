@@ -5,10 +5,21 @@
     <div class="flex flex-col lg:mr-16">
       <div class="relative">
         <div class="absolute text-gray-600 dark:text-gray-400 flex items-center pl-4 h-full cursor-pointer">
-          <img class="h-6 w-6 fill-shadow" :src="require(`@/Assets/img/icons/search.svg`)" alt="search icon">
+          <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 487.95 487.95" width="17"
+               height="17" xml:space="preserve">
+          <g>
+            <g>
+              <path d="M481.8,453l-140-140.1c27.6-33.1,44.2-75.4,44.2-121.6C386,85.9,299.5,0.2,193.1,0.2S0,86,0,191.4s86.5,191.1,192.9,191.1
+                c45.2,0,86.8-15.5,119.8-41.4l140.5,140.5c8.2,8.2,20.4,8.2,28.6,0C490,473.4,490,461.2,481.8,453z M41,191.4
+                c0-82.8,68.2-150.1,151.9-150.1s151.9,67.3,151.9,150.1s-68.2,150.1-151.9,150.1S41,274.1,41,191.4z"/>
+            </g>
+          </g>
+          </svg>
         </div>
         <input
-            class="text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-candyPink dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-64 h-10 flex items-center pl-12 text-sm border-gray-300 rounded border shadow"
+            class="text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2
+            focus:ring-candyPink dark:border-gray-700 dark:bg-gray-800 bg-white font-normal w-full sm:w-80 h-10 flex
+            items-center pl-10 text-sm border-gray-300 rounded border shadow font-inter"
             :name="name"
             @focus="showOptions()"
             @blur="exit()"
@@ -24,7 +35,8 @@
       <div class="rounded w-full px-3 py-2 absolute top-4 right-0 bg-white shadow-lg"
            v-show="optionsShown">
         <div
-            class="flex items-center justify-between hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800 p-3 hover:font-bold hover:cursor-default"
+            class="flex items-center justify-between hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800 p-3
+            hover:font-bold hover:cursor-default"
             @mousedown="selectOption(option)"
             v-for="(option, index) in filteredOptions"
             :key="index">

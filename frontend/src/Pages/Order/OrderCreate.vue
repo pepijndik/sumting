@@ -11,7 +11,7 @@
     </SearchableDropDown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
     <p class="font-inter text-yInMnBlue">Description</p>
-    <ckeditor class="resize rounded-full border-2" :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
     <SearchableDropDown
@@ -19,8 +19,9 @@
         placeholder="Select project(s)">
     </SearchableDropDown>
 
-    <button class="my-2 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-indigo-600">Create order</button>
-
+    <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+    text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+      Create order</button>
   </div>
 </template>
 

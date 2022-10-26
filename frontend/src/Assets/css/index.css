@@ -14,3 +14,7 @@ Base css for the site
     src: local('Inter-Regular'), url(../fonts/inter/Inter-Regular.ttf) format('ttf');
 }
 @tailwind utilities;
+
+.ck-content {
+    height: 200px;
+}
