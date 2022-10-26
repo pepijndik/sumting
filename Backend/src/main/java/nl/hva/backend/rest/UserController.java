@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class UserResource {
+public class UserController {
 
     @Autowired
     private UserRepository userRepo;
 
-    @GetMapping("/rest/users")
+    @GetMapping("/users")
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
 
-    @GetMapping("/rest/users/{email}")
+    @GetMapping("/users/{email}")
     public User getUserByEmail(
             @PathVariable String email) {
 
@@ -36,7 +36,7 @@ public class UserResource {
     }
 
 
-    @DeleteMapping("/rest/users/{email}")
+    @DeleteMapping("/users/{email}")
     public ResponseEntity<User> deleteUser(@PathVariable String email, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
 
         if(!tokenInfo.isAdmin()) {
@@ -51,7 +51,7 @@ public class UserResource {
 
     }
 
-    @PutMapping("/rest/users")
+    @PutMapping("/users")
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
 
         User userById = userRepo.findByEmail(user.getEmail());

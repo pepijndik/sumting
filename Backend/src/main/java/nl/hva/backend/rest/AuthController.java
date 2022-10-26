@@ -18,8 +18,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Set of endpoints used to sign-up and sign-in users
@@ -27,7 +25,7 @@ import java.util.Date;
  * Author: MFK
  */
 @RestController
-public class AuthResource {
+public class AuthController {
 
     @Autowired
     private JWTokenUtils tokenGenerator;
@@ -41,7 +39,7 @@ public class AuthResource {
     @Autowired
     private JWTokenUtils tokenUtils;
 
-    @PostMapping("/rest/auth/users")
+    @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
 
         String email = signupInfo.get("email") == null  ? null : signupInfo.get("email").asText();
@@ -63,7 +61,7 @@ public class AuthResource {
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(path = "/rest/refresh-token", produces = "application/json")
+    @PostMapping(path = "/auth/refresh-token", produces = "application/json")
     public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -89,7 +87,7 @@ public class AuthResource {
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
 
-    @PostMapping(path = "/rest/auth", produces = "application/json")
+    @PostMapping(path = "/auth", produces = "application/json")
     public ResponseEntity<User> authenticateUser(
             @RequestBody ObjectNode signOnInfo,
             HttpServletRequest request,
