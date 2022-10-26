@@ -2,7 +2,7 @@
   <div>
     <p class="font-inter text-yInMnBlue">Client</p>
     <SearchableDropDown
-        class="mt-2"
+        class="mt-1"
         placeholder="Choose a client">
     </SearchableDropDown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
@@ -11,7 +11,7 @@
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
     <SearchableDropDown
-        class="mt-2"
+        class="mt-1"
         placeholder="Select project(s)">
     </SearchableDropDown>
 
