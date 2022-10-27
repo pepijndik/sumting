@@ -29,7 +29,7 @@ public class UserController {
         User userById = userRepo.findByEmail(email);
 
         if(userById == null) {
-            throw new UserNotFoundException("id = " + email);
+            throw new UserNotFoundException("id = " + email );
         }
 
         return userById;

@@ -5,6 +5,7 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
 import nl.hva.backend.exceptions.TwofactorGenerationException;
 import nl.hva.backend.models.Country;
+import nl.hva.backend.models.Identifiable;
 import nl.hva.backend.services.TwoFactorService;
 
 import javax.persistence.*;
@@ -20,39 +21,45 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = User.TABLE_NAME)
-public class User {
+
+public class User implements Identifiable<Integer> {
 
     public static enum Type {
         PERSON,
         ADMIN
     }
-    public static final String TABLE_NAME = "user";
+    public static final String TABLE_NAME ="\"User\"";
     @Id
-    @Column(name = "user_key")
+    @Column(name = "user_key", nullable = false, unique = true, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "user_id_ext", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long  id;
-    @Column(name = "user_name")
+    private Integer user_key_ext;
+    @Column(name = "user_name",nullable = false)
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email",nullable = false)
     private String email;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",nullable = true)
     private LocalDateTime udatedAt;
     @JsonIgnore
     @Column(name = "user_password", nullable = true, columnDefinition = "varchar(255)")
     private String encodedPassword;
 
 
+    @JsonIgnore
     @Column(name = "user_secret_code",nullable = true)
     private String secretCode;
 
     @Column(name = "user_twofactor_enabled",nullable = true)
     private Boolean TwoFactorEnabled;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "user_type",nullable = false,columnDefinition = "varchar(255) default 'PERSON'")
     private User.Type user_type;
 
@@ -101,7 +108,15 @@ public class User {
     public boolean validateEncodedPassword(String given) {
         return encodedPassword.equals(given);
     }
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
+    @Override
+    public void setId(Integer id) {
+        this.id =id;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -110,7 +125,7 @@ public class User {
         User user = (User) o;
         return Objects.equals(email, user.email);
     }
-
+    @JsonIgnore
     public String getSecret() {
         return this.secretCode;
     }

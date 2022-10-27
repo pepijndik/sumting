@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class JPAUserRepository implements CrudRepository<User, Long > {
+public class JPAUserRepository implements CrudRepository<User, Integer > {
 
     @Autowired
     private EntityManager em;
@@ -28,7 +28,7 @@ public class JPAUserRepository implements CrudRepository<User, Long > {
     }
 
     @Override
-    public User findById(Long  primaryKey) {
+    public User findById(Integer  primaryKey) {
         return em.find(User.class, primaryKey);
     }
 
@@ -41,20 +41,21 @@ public class JPAUserRepository implements CrudRepository<User, Long > {
     }
 
     @Override
-    public boolean existsById(Long  primaryKey) {
+    public boolean existsById(Integer  primaryKey) {
         return this.findById(primaryKey) != null;
     }
 
 
     public User findByEmail(String email) {
-
-        return em.find(User.class,email);
+        return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+                .setParameter("email", email)
+                .getSingleResult();
     }
 
     @Override
     public List<User> findAll() {
 
-        TypedQuery<User> query = em.createQuery("SELECT u FROM User u",User.class);
+        TypedQuery<User> query = em.createQuery("SELECT a FROM User a",User.class);
 
         return query.getResultList();
     }

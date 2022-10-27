@@ -57,17 +57,15 @@ public class AuthController {
         user.setType(User.Type.PERSON);
         user.setCountry(countryId);
         user.setCreatedAt(LocalDateTime.now());
-        //try {
+        try {
             User savedUser = userRepo.save(user);
             URI location = ServletUriComponentsBuilder.
                     fromCurrentRequest().path("/{id}").
-                    buildAndExpand(savedUser.getEmail()).toUri();
-            return ResponseEntity.created(location).build();
-//        } catch (Exception e) {
-//            throw new UserNotFoundException("Could not create user");
-//        }
-
-
+                    buildAndExpand(savedUser.getId()).toUri();
+            return ResponseEntity.created(location).body(user);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user",e));
+        }
     }
 
     @PostMapping(path = "/auth/refresh-token", produces = "application/json")
@@ -97,7 +95,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/auth", produces = "application/json")
-    public ResponseEntity<User> authenticateUser(
+    public ResponseEntity<Object> authenticateUser(
             @RequestBody ObjectNode signOnInfo,
             HttpServletRequest request,
             HttpServletResponse response)
@@ -121,6 +119,12 @@ public class AuthController {
 
         // Issue a token for the user valid for some time
         String tokenString = tokenGenerator.encode(user.getEmail());
-        return ResponseEntity.accepted().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).body(user);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        Object body = new Object() {
+            public final String token = tokenString;
+            public final User me = user;
+        };
+
+        return ResponseEntity.accepted().location(location).header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).body(body);
     }
 }
