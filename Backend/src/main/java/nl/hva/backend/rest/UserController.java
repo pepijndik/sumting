@@ -1,9 +1,9 @@
 package nl.hva.backend.rest;
 
 import nl.hva.backend.models.User.User;
-import nl.hva.backend.repositories.UserRepository;
 import nl.hva.backend.exceptions.UserNotFoundException;
 import nl.hva.backend.exceptions.AuthorizationException;
+import nl.hva.backend.repositories.JPAUserRepository;
 import nl.hva.backend.security.JWTokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepo;
+    private JPAUserRepository userRepo;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {

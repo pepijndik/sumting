@@ -48,7 +48,7 @@ public class TwoFactorService {
             String mimeType = generator.getImageMimeType();
             dataUri = getDataUriForImage(imageData, mimeType);
         }catch (Exception e){
-            System.out.println(e);
+           throw new QrGenerationException("Error generating QR code", e);
         }
         return dataUri;
     }
@@ -64,6 +64,8 @@ public class TwoFactorService {
     public static QrData generateQRData(String secret, User user) {
         return new QrData.Builder()
                 .label(user.getName())
+                .label(user.getEmail())
+                .label(user.getUser_type().toString())
                 .secret(secret)
                 .issuer("Sumting admin panel")
                 .algorithm(HashingAlgorithm.SHA1) // More on this below

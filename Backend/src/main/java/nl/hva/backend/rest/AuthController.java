@@ -1,6 +1,7 @@
 package nl.hva.backend.rest;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import nl.hva.backend.exceptions.UserNotFoundException;
 import nl.hva.backend.models.User.User;
 import nl.hva.backend.repositories.JPAUserRepository;
 import nl.hva.backend.exceptions.AuthenticationException;
@@ -18,10 +19,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Set of endpoints used to sign-up and sign-in users
- *
+ * <p>
  * Author: Pepijn dik
  */
 @RestController
@@ -42,29 +45,36 @@ public class AuthController {
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
 
-        String email = signupInfo.get("email") == null  ? null : signupInfo.get("email").asText();
-        String name = signupInfo.get("name") == null  ? null : signupInfo.get("name").asText();
-        String givenPassword = signupInfo.get("password") == null  ? null : signupInfo.get("password").asText();
+        String email = signupInfo.get("email") == null ? null : signupInfo.get("email").asText();
+        String name = signupInfo.get("name") == null ? null : signupInfo.get("name").asText();
+        String givenPassword = signupInfo.get("password") == null ? null : signupInfo.get("password").asText();
+        Integer countryId = signupInfo.get("country") == null ? null : signupInfo.get("country").asInt();
 
         User user = new User();
         user.setEmail(email);
         user.setName(name);
         user.setEncodedPassword(encoder.encode(givenPassword));
-        
-        User savedUser = userRepo.save(user);
+        user.setType(User.Type.PERSON);
+        user.setCountry(countryId);
+        user.setCreatedAt(LocalDateTime.now());
+        //try {
+            User savedUser = userRepo.save(user);
+            URI location = ServletUriComponentsBuilder.
+                    fromCurrentRequest().path("/{id}").
+                    buildAndExpand(savedUser.getEmail()).toUri();
+            return ResponseEntity.created(location).build();
+//        } catch (Exception e) {
+//            throw new UserNotFoundException("Could not create user");
+//        }
 
-        URI location = ServletUriComponentsBuilder.
-                fromCurrentRequest().path("/{id}").
-                buildAndExpand(savedUser.getEmail()).toUri();
 
-        return ResponseEntity.created(location).build();
     }
 
     @PostMapping(path = "/auth/refresh-token", produces = "application/json")
     public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if(encodedToken == null) {
+        if (encodedToken == null) {
             // avoid giving clues to the caller (do not say that header is not present, for example)
             throw new AuthenticationException("authentication problem");
         }
@@ -76,7 +86,7 @@ public class AuthController {
         JWTokenInfo tokenInfo = tokenUtils.decode(encodedToken, true);
 
         // Check if the token can be refreshed (You can also check if the user or the token was blacklisted)
-        if(!tokenUtils.isRenewable(tokenInfo)) {
+        if (!tokenUtils.isRenewable(tokenInfo)) {
             throw new AuthenticationException("Token is not renewable");
         }
 
@@ -99,13 +109,13 @@ public class AuthController {
         // Authenticate the user using the credentials provided
         User user = userRepo.findByEmail(userEmail);
 
-        if(user == null) {
+        if (user == null) {
             throw new AuthenticationException("Invalid user and/or password");
         }
 
         String encodedPassword = encoder.encode(password);
 
-        if(!user.validateEncodedPassword(encodedPassword)) {
+        if (!user.validateEncodedPassword(encodedPassword)) {
             throw new AuthenticationException("Invalid user and/or password");
         }
 

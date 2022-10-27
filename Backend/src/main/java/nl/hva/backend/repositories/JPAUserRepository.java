@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class JPAUserRepository implements UserRepository {
+public class JPAUserRepository implements CrudRepository<User, Long > {
 
     @Autowired
     private EntityManager em;
@@ -24,6 +25,11 @@ public class JPAUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         return em.merge(user);
+    }
+
+    @Override
+    public User findById(Long  primaryKey) {
+        return em.find(User.class, primaryKey);
     }
 
     @Override
@@ -35,6 +41,11 @@ public class JPAUserRepository implements UserRepository {
     }
 
     @Override
+    public boolean existsById(Long  primaryKey) {
+        return this.findById(primaryKey) != null;
+    }
+
+
     public User findByEmail(String email) {
 
         return em.find(User.class,email);
@@ -46,6 +57,11 @@ public class JPAUserRepository implements UserRepository {
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u",User.class);
 
         return query.getResultList();
+    }
+
+    @Override
+    public long count() {
+        return 0;
     }
 
 }
