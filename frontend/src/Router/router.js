@@ -8,12 +8,12 @@ import OrderView from "@/Pages/Order/OrderView";
 
 const IsAuthenticated = (to, from, next) => {
 
-    if (to.name !== 'Login' && !localStorage.getItem('token')) next({ name: 'Login' })
+    if (to.name !== 'auth:login' && !localStorage.getItem('token')) next({ name: 'auth:login' })
     else next()
 }
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(),z
     routes: [
         {
             path: '/login',
