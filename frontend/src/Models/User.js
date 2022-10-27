@@ -5,11 +5,11 @@
  * @constructor
  */
 export default class User {
-    constructor(id, title, description, price, avatar, role = 'user') {
+    constructor(id, name, email, type, role = 'user') {
         this.id = id;
-        this.title = title;
-        this.description = description;
-        this.avatar = avatar;
+        this.name = name;
+        this.email = email;
+        this.type = type;
         this.role = role;
     }
 }

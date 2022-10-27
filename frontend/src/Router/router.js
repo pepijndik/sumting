@@ -1,4 +1,4 @@
-// router/index.js
+// router/axios.ts
 import {createRouter, createWebHistory} from "vue-router";
 import Dashboard from "@/Pages/Dashboard";
 import Login from "@/Pages/Auth/Login";

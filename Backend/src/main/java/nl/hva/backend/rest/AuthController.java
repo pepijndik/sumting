@@ -121,7 +121,6 @@ public class AuthController {
         String tokenString = tokenGenerator.encode(user.getEmail());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         Object body = new Object() {
-            public final String token = tokenString;
             public final User me = user;
         };
 

@@ -1,24 +1,31 @@
-import Api from "@/Services/BaseApi";
 
+import BaseApi from "@/Services/BaseApi";
+import User from "@/Models/User";
 
-export class AuthenticationService
+class AuthenticationService
 {
+    constructor() {
 
-    async login(credentials){
-        return await Api.post('/login', credentials).then(
+    }
+    async login(email, password, remember = false) {
+        if(!email || !password) return false;
+
+        return await BaseApi.post("auth", {email, password}).then(
             response => {
-                if (response.data.token) {
-                    localStorage.setItem('user', JSON.stringify(response.data));
-                }
-                return response.data;
+                const BearToken = response.headers.Authorization.slice(7);
+                localStorage.setItem('token', BearToken);
+                BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
+                return new User(response.data.id, response.data.name, response.data.email, response.data.avatar, response.data.user_type);
             }
-        );
+        ).catch(error => {
+            throw error;
+        });
     }
     logout() {
         localStorage.removeItem('user');
     }
     register(user = {}) {
-        return Api.post( 'signup', {
+        return BaseApi.post( 'users', {
             username: user?.username ?? '',
             email: user?.email ?? '',
             password: user?.password ?? '',
@@ -27,4 +34,4 @@ export class AuthenticationService
     }
 
 }
-export default new AuthenticationService();
+export default AuthenticationService;

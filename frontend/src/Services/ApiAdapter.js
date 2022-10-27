@@ -1,16 +1,25 @@
 import BaseApi from "@/Services/BaseApi";
+export default class ApiAdapter{
 
-export class ApiAdapter extends BaseApi{
     constructor(resource) {
-        super();
         this.resource = resource;
     }
-
+    setHeader(Header = {}){
+        BaseApi.defaults.headers = Header;
+    }
     async findAll(){
-     return this.get(`/${this.resource}`);
+     return BaseApi.get(`/${this.resource}`);
     }
 
     async findOne(id){
-     return this.get(`/${this.resource}/${id}`);
+     return BaseApi.get(`/${this.resource}/${id}`);
+    }
+
+    async delete(id){
+        return BaseApi.delete(`/${this.resource}/${id}`);
+    }
+
+    async save(data){
+        return BaseApi.post(`/${this.resource}`, data);
     }
 }

@@ -4,16 +4,16 @@
     <div class="-space-y-px rounded-md shadow-sm">
       <div>
         <label for="email-address" class="sr-only">Email address</label>
-        <InputComponent id="email" placeholder="Email adres" required="true" autocomplete="" type="email" name="email" :class="'rounded-t-md border'"/>
+        <InputComponent :model="email" id="email" placeholder="Email adres" required="'true'" autocomplete="" type="email" name="email" :class="'rounded-t-md border'"/>
       </div>
       <div>
         <label for="password" class="sr-only">Password</label>
-        <InputComponent id="password" name="password" type="password" autocomplete="current-password" required placeholder="Password" :class="'rounded-b-md'"></InputComponent>
+        <InputComponent :model="password" id="password" name="password" type="password" autocomplete="current-password" required placeholder="Password" :class="'rounded-b-md'"></InputComponent>
       </div>
     </div>
 
     <div class="flex items-center justify-between">
-      <Checkbox id="remember" name="remember" placeholder="Remember me"></Checkbox>
+      <Checkbox id="remember" :model="remember" name="remember" placeholder="Remember me"></Checkbox>
 
       <div class="text-sm">
         <a href="#" class="font-medium text-candyPink hover:text-yInMnBlue">Forgot your password?</a>
@@ -21,7 +21,7 @@
     </div>
 
     <div>
-      <button  class="group relative flex w-full justify-center rounded-md border border-transparent bg-candyPink py-2 px-4 text-sm font-medium text-white hover:bg-yInMnBlue focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+      <button @click="login()"  class="group relative flex w-full justify-center rounded-md border border-transparent bg-candyPink py-2 px-4 text-sm font-medium text-white hover:bg-yInMnBlue focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3">
             <!-- Heroicon name: mini/lock-closed -->
             <svg class="h-5 w-5 text-white group-hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -39,10 +39,19 @@ import InputComponent from "@/Components/Form/InputComponent";
 import Checkbox from "@/Components/Form/Checkbox";
 export default {
   name: "Login",
+  inject: ["Auth"],
   components: {Checkbox, InputComponent},
   data() {
     return {
-      remember: false
+      remember: false,
+      email: "",
+      password: "",
+    }
+  },
+  methods: {
+    login() {
+      console.log(this.email, this.password, this.remember);
+      return this.Auth.login(this.email,this.password, this.remember)
     }
   }
 }

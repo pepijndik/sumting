@@ -7,7 +7,7 @@ import AuthLayout from "@/Layouts/AuthLayout";
 import AdminLayout from "@/Layouts/AdminLayout";
 import OrderApiService from "@/Services/Order/OrderApiService";
 import ProjectApiService from "@/Services/Projects/ProjectApiService";
-
+import AuthenticationService from "@/Services/AuthenticationService";
 export default {
   name: 'App',
   components: {
@@ -17,6 +17,7 @@ export default {
   provide() {
     return {
       OrderApi: new OrderApiService(),
+      Auth: new AuthenticationService(),
       ProjectApi: new ProjectApiService(),
     }
   },
