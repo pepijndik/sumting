@@ -30,6 +30,7 @@ public class SumtingBackend {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
+                    .exposedHeaders("Authorization")
                     .allowedOriginPatterns("http://localhost:*")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
         }

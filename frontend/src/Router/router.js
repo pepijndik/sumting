@@ -6,6 +6,12 @@ import ListProjects from "@/Pages/Projects/ListProjects";
 import OrderCreate from "@/Pages/Order/OrderCreate";
 import OrderView from "@/Pages/Order/OrderView";
 
+const IsAuthenticated = (to, from, next) => {
+
+    if (to.name !== 'Login' && !localStorage.getItem('token')) next({ name: 'Login' })
+    else next()
+}
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -29,7 +35,8 @@ const router = createRouter({
         {
             path: '/',
             component: Dashboard,
-            name: 'dashboard:home',
+            name: 'dashboard',
+            beforeEnter: IsAuthenticated,
             meta: {
                 layout: 'AdminLayout', // Not needed, but you can add it here DashboardLayout will automatically be used
                 pageTitle: 'Dashboard',
@@ -39,6 +46,7 @@ const router = createRouter({
         },
         {
             path: '/orders',
+            beforeEnter: IsAuthenticated,
             name: 'admin:Order',
             meta: {
                 pageTitle: 'Orders',
@@ -50,6 +58,7 @@ const router = createRouter({
         {
             path: '/orders/create',
             name: 'admin:OrderCreate',
+            beforeEnter: IsAuthenticated,
             meta: {
                 pageTitle: 'Create order',
                 title: 'Client order',
@@ -60,6 +69,7 @@ const router = createRouter({
         {
             path: '/projects',
             name: 'admin:projects',
+            beforeEnter: IsAuthenticated,
             meta: {
                 pageTitle: 'Projects',
                 title: 'Project',

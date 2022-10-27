@@ -4,16 +4,16 @@
     <div class="-space-y-px rounded-md shadow-sm">
       <div>
         <label for="email-address" class="sr-only">Email address</label>
-        <InputComponent :model="email" id="email" placeholder="Email adres" required="'true'" autocomplete="" type="email" name="email" :class="'rounded-t-md border'"/>
+        <InputComponent :inputData="email" @update="email = $event;"  id="email" placeholder="Email adres" required autocomplete="" type="email" name="email" :class="'rounded-t-md border'" ref="loginEmail"/>
       </div>
       <div>
         <label for="password" class="sr-only">Password</label>
-        <InputComponent :model="password" id="password" name="password" type="password" autocomplete="current-password" required placeholder="Password" :class="'rounded-b-md'"></InputComponent>
+        <InputComponent ref="password" :inputData="password" @update="password = $event;" id="password" name="password" type="password" autocomplete="current-password" required placeholder="Password" :class="'rounded-b-md'"></InputComponent>
       </div>
     </div>
 
     <div class="flex items-center justify-between">
-      <Checkbox id="remember" :model="remember" name="remember" placeholder="Remember me"></Checkbox>
+      <Checkbox id="remember" :inputData="remember" @update="remember = $event;" name="remember" placeholder="Remember me"></Checkbox>
 
       <div class="text-sm">
         <a href="#" class="font-medium text-candyPink hover:text-yInMnBlue">Forgot your password?</a>
@@ -49,11 +49,16 @@ export default {
     }
   },
   methods: {
-    login() {
-      console.log(this.email, this.password, this.remember);
-      return this.Auth.login(this.email,this.password, this.remember)
+   async login() {
+      const user = await this.Auth.login(this.email,this.password, this.remember);
+     const borders = () => {
+       this.$refs.loginEmail.$el.classList.add('border-red-500');
+       this.$refs.password.$el.classList.add('border-red-500')
+     }
+      !user ? borders() : this.$router.push({name: "dashboard"});
+
+     }
     }
-  }
 }
 </script>
 
