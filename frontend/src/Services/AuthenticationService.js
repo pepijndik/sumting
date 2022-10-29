@@ -7,6 +7,9 @@ class AuthenticationService
     constructor() {
 
     }
+    static isLoggedIn() {
+        return localStorage.getItem('token') !== null;
+    }
     async login(email, password, remember = false) {
         if(!email || !password) return false;
 

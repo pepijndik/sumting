@@ -5,15 +5,15 @@ import Login from "@/Pages/Auth/Login";
 import ListProjects from "@/Pages/Projects/ListProjects";
 import OrderCreate from "@/Pages/Order/OrderCreate";
 import OrderView from "@/Pages/Order/OrderView";
-
+import AuthenticationService from "@/Services/AuthenticationService";
 const IsAuthenticated = (to, from, next) => {
 
-    if (to.name !== 'auth:login' && !localStorage.getItem('token')) next({ name: 'auth:login' })
+    if (to.name !== 'auth:login' && !AuthenticationService.isLoggedIn()) next({ name: 'auth:login' })
     else next()
 }
 
 const router = createRouter({
-    history: createWebHistory(),z
+    history: createWebHistory(),
     routes: [
         {
             path: '/login',
