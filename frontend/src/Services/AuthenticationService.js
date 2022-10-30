@@ -8,7 +8,7 @@ class AuthenticationService
 
     }
     static isLoggedIn() {
-        if(process.env.VUE_APP_ENV === 'development') {
+        if(process.env?.VUE_APP_ENV === 'development') {
             return true;
         }
         return localStorage.getItem('token') !== null;
