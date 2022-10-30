@@ -8,6 +8,9 @@ class AuthenticationService
 
     }
     static isLoggedIn() {
+        if(process.env.VUE_APP_ENV === 'development') {
+            return true;
+        }
         return localStorage.getItem('token') !== null;
     }
     async login(email, password, remember = false) {
