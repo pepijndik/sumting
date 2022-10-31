@@ -4,8 +4,8 @@
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropDown
           class="mt-1"
-          :options="orders"
-          :fields="['name']"
+          :options="users"
+          :fields="['email','user_name']"
           :primary-key="'id'"
           placeholder="Choose a client">
       </SearchableDropDown>
@@ -36,17 +36,19 @@ import SearchableDropDown from "@/Components/Form/SearchableDropDown";
 export default {
   name: "OrderView",
   components: {SearchableDropDown},
-  inject: ['ProjectApi','OrderApi'],
+  inject: ['ProjectApi','OrderApi','UserApi'],
   data() {
     return {
       projects: [],
       orders: [],
+      users:[],
       selectedProject: null,
     };
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
+    this.users = await  this.UserApi.findAll();
   },
 
 }
