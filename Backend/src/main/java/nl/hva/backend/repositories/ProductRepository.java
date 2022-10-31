@@ -2,9 +2,13 @@ package nl.hva.backend.repositories;
 
 import nl.hva.backend.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
+@Repository
+@Transactional
 public class ProductRepository implements CrudRepository<Product, Integer> {
 
     @Autowired
