@@ -20,16 +20,19 @@ export default {
     updateTotal(event) {
       this.costArrayForger(event);
       this.totalCost = 0;
-
-      for (this.costArrayIndex = 0; this.costArrayIndex < this.costArray.length; this.costArrayIndex++) {
-        this.totalCost += this.costArray[this.costArrayIndex];
-      }
+      this.recursiveCostCalculator(0)
     },
     costArrayForger(event) {
       if (this.costArray[event.index] === undefined) {
         this.costArray.push(event.total);
       } else {
         this.costArray[event.index] = event.total;
+      }
+    },
+    recursiveCostCalculator(i) {
+      if (i < this.costArray.length) {
+        this.totalCost += this.costArray[i];
+        this.recursiveCostCalculator(i + 1);
       }
     }
   },
