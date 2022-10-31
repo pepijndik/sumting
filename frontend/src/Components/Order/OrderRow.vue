@@ -2,29 +2,37 @@
   <div
     class="text-gray-300 dark:border-gray-700 bg-white font-normal w-full h-10 flex text-sm border-gray-300 border-b mt-4"
   >
-    <img
-      :src="require(`@/Assets/img/icons/file.svg`)"
-      alt="File icon"
-      width="24"
-      class="ml-2 mr-2 rounded-md"
-    />
-    <p class="font-inter text-yInMnBlue font-bold pr-4">ID {{ order.id }}</p>
+    <div class="float-left items-left flex pb-3 w-[250px]">
+      <img
+        :src="require(`@/Assets/img/icons/file.svg`)"
+        alt="File icon"
+        width="24"
+        class="ml-2 mr-2 rounded-md pb-2"
+      />
+      <p class="font-inter text-yInMnBlue font-bold pr-4">ID {{ order.id }}</p>
+    </div>
+
     <div class="divider" />
-    <div class="pl-10 pr-10 h-10 items-center justify-between flex">
-      <p class="font-inter text-yInMnBlue font-bold pr-4">Total amount:</p>
+
+    <div class="h-10 pb-3 items-center flex w-[200px]">
+      <p class="font-inter text-yInMnBlue font-bold">Total amount:&nbsp;</p>
       <p class="font-inter text-candyPink font-bold">
         € {{ order.transactionTotal }}
       </p>
     </div>
+
     <div class="divider" />
-    <div class="float-right pl-4 h-10 items-center justify-between flex">
-      <p class="font-inter text-yInMnBlue font-bold pr-4">Date:</p>
+
+    <div class="h-10 pb-3 items-center flex w-[150px]">
+      <p class="font-inter text-yInMnBlue font-bold">Date:&nbsp;</p>
       <p class="font-inter text-candyPink font-bold">{{ order.order_date }}</p>
     </div>
+
     <div class="divider" />
-    <button class="float-center h-10 items-center justify-between flex">
+
+    <button class="float-center items-center justify-between flex pb-2">
       <div
-        class="flex bg-yInMnBlue rounded-md m-4 w-[200px] justify-center h-[32px]"
+        class="flex bg-yInMnBlue rounded-md m-4 lg:w-[150px] md:w-[100px] justify-center h-[32px]"
       >
         <img
           :src="require(`@/Assets/img/icons/edit.svg`)"
@@ -34,9 +42,9 @@
         />
       </div>
     </button>
-    <button class="float-center h-10 items-center justify-between flex">
+    <button class="float-center items-center justify-between flex pb-2">
       <div
-        class="flex bg-candyPink rounded-md m-4 w-[200px] justify-center h-[32px]"
+        class="flex bg-candyPink rounded-md m-4 lg:w-[150px] md:w-[100px] justify-center h-[32px]"
       >
         <img
           :src="require(`@/Assets/img/icons/delete.svg`)"
