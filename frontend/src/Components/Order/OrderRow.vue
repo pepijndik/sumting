@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-gray-300 dark:border-gray-700 bg-white font-normal w-full h-10 flex items-center pl-10 text-sm border-gray-300 rounded border shadow font-inter"
+    class="text-gray-300 dark:border-gray-700 bg-white font-normal w-full h-10 flex text-sm border-gray-300 border-b mt-4"
   >
     <img
       :src="require(`@/Assets/img/icons/file.svg`)"
@@ -22,13 +22,29 @@
       <p class="font-inter text-candyPink font-bold">{{ order.order_date }}</p>
     </div>
     <div class="divider" />
-    <button class="float-center pl-4 h-10 items-center justify-between flex">
-      <img
-        :src="require(`@/Assets/img/icons/delete.svg`)"
-        alt="Close icon"
-        width="32"
-        class="ml-2 mr-2 bg-candyPink rounded-md"
-      />
+    <button class="float-center h-10 items-center justify-between flex">
+      <div
+        class="flex bg-yInMnBlue rounded-md m-4 w-[200px] justify-center h-[32px]"
+      >
+        <img
+          :src="require(`@/Assets/img/icons/edit.svg`)"
+          alt="Edit icon"
+          width="24"
+          class="ml-2 mr-2"
+        />
+      </div>
+    </button>
+    <button class="float-center h-10 items-center justify-between flex">
+      <div
+        class="flex bg-candyPink rounded-md m-4 w-[200px] justify-center h-[32px]"
+      >
+        <img
+          :src="require(`@/Assets/img/icons/delete.svg`)"
+          alt="Delete icon"
+          width="24"
+          class="ml-2 mr-2"
+        />
+      </div>
     </button>
   </div>
 </template>

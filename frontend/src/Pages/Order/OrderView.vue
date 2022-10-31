@@ -28,11 +28,11 @@
     </div>
   </div>
   <div
-    class="h-80 pl-4 pt-4 mt-4 text-sm border-gray-300 rounded border shadow items-center justify-center"
+    class="h-80 pl-4 pt-4 mt-4 text-sm border-gray-300 rounded border shadow"
   >
     <!--    <p v-if="this.orders" class="font-Alatsi text-gray-300 text-base">No client selected.</p>-->
     <div
-      class="w-full h-10 items-center pl-10 text-sm justify-between"
+      class="w-full h-10 items-center text-sm pr-4"
       v-for="item in computedObj"
       :key="item.id"
     >
