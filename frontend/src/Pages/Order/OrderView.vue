@@ -12,6 +12,8 @@
       <p class="font-inter text-yInMnBlue">Project(s)</p>
       <SearchableDropDown
           :options="projects"
+          :fields="['name']"
+          :primary-key="'id'"
           :disabled="false"
           autocomplete="off"
           :maxItem="10"

@@ -17,7 +17,7 @@
           </svg>
         </div>
         <input
-            class="text-gray-300 focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink  focus:border-0 focus:border-t-2 focus:border-l-2 focus:border-r-2 focus:border-b-1
+            class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink  focus:border-0 focus:border-t-2 focus:border-l-2 focus:border-r-2 focus:border-b-1
             items-center pl-10 text-sm border-gray-300 rounded-t-md border shadow font-inter"
             :name="name"
             @focus="showOptions()"
@@ -31,16 +31,21 @@
     </div>
     <div class="dropdown-one w-full sm:w-80 rounded-b-md outline-none bg-white relative mt-0 shadow-md">
       <!-- Dropdown content -->
-      <div class="rounded w-full px-3 py-2 absolute top-1 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32 border-candyPink  border-0 border-b-2 border-l-2 border-r-2"
-           v-show="optionsShown">
-
+      <div
+          class="rounded w-full px-3 py-2 absolute top-1 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32 border-candyPink  border-0 border-b-2 border-l-2 border-r-2"
+          v-show="optionsShown">
         <div
             class="flex items-center justify-between hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800 p-3
             hover:font-bold hover:cursor-default z-10"
             @mousedown="selectOption(option)"
             v-for="(option, index) in filteredOptions"
             :key="index">
-            <slot class="mr-0"><FileIcon/></slot> {{ populateFields}}
+          <div class="inline-block">
+            <slot class="">
+              <FileIcon/>
+            </slot>
+            <p class="">{{ this.populateFields(option) }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -70,14 +75,14 @@ export default {
       default: Array,
       note: 'Options of dropdown. An array of options with id and name',
     },
-    Fields:{
+    Fields: {
       type: Array,
       required: false,
       // eslint-disable-next-line vue/require-valid-default-prop
       default: ['description'],
       note: 'Possible fiels options'
     },
-    primaryKey:{
+    primaryKey: {
       type: String,
       required: false,
       default: 'id',
@@ -116,34 +121,44 @@ export default {
     filteredOptions() {
       const filtered = [];
       const regOption = new RegExp(this.searchFilter, 'ig');
-      for (const option of this.options) {
-        //Double For loop to find the option in the fields
-        this.Fields.forEach(field => {
-          if (this.searchFilter.length < 1 || option[field].match(regOption)) {
-            if (filtered.length < this.maxItem) filtered.push(option);
-          }
-        });
+        for (const option of this.options) {
+          //Double For loop to find the option in the fields
+          this.Fields.forEach(field => {
+            if (this.searchFilter.length < 1 || option[field].match(regOption)) {
+              if (filtered.length < this.maxItem) filtered.push(option);
+            }
+          });
 
-      }
+        }
+
       return filtered;
     },
-    populateFields(){
-      var finalString = "";
-     this.Fields.forEach((field) => {
-       console.log(this.options)
-        if(this.options[field])
-        {
-          finalString += this.options[field] + " | ";
-        }
-     });
-     return finalString;
-    }
   },
   methods: {
+    populateFields(option) {
+      var finalString = "";
+      this.Fields.forEach(field => {
+        finalString += this.extractFieldValue(option,field);
+        //Check if not the last field then append space with separator
+        if(this.Fields.indexOf(field) !== this.Fields.length -1)
+        {
+          finalString += " | "
+        }
+      });
+      return finalString
+    },
+    extractFieldValue(option,prop) {
+      // eslint-disable-next-line no-prototype-builtins
+      if(Object.hasOwn(option,prop))
+      {
+        return option[prop];
+      }
+    },
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-      this.searchFilter = this.selected.name;
+      console.log(this.selected[this.Fields[0]]);
+      this.searchFilter = this.selected[this.Fields[0]]; //Set the search filter to the first field
       this.$emit('selected', this.selected);
     },
     showOptions() {
@@ -153,11 +168,11 @@ export default {
       }
     },
     exit() {
-      if (!this.selected.id) {
+      if (!this.selected[this.primaryKey]) {
         this.selected = {};
         this.searchFilter = '';
       } else {
-        this.searchFilter = this.selected.name;
+        this.searchFilter = this.selected[this.Fields[0]];
       }
       this.$emit('selected', this.selected);
       this.optionsShown = false;

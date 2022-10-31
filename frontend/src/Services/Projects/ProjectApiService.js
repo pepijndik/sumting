@@ -9,9 +9,8 @@ class ProjectApiService extends ApiAdapter {
 
     async SearchableDropDown() {
         return await this.findAll().then(response => {
-            return response.data.map((project) => {
-                return project;
-            })
+            return response.data
+
              //return response.data;
         }).catch(error => {
             // You can handle the error, like show a notificaiton to the user
