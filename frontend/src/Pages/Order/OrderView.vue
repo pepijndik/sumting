@@ -36,7 +36,7 @@
       v-for="item in computedObj"
       :key="item.id"
     >
-      <OrderRow :order="item" />
+      <OrderRow :order="item" @deleteOrderEvent="this.deleteOrder" />
     </div>
   </div>
 </template>
@@ -68,7 +68,11 @@ export default {
       return this.limit ? this.orders.slice(0, this.limit) : this.orders;
     },
   },
-  methods() {},
+  methods: {
+    deleteOrder(id) {
+      this.OrderApi.delete(id);
+    },
+  },
 };
 </script>
 

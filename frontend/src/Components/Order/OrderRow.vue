@@ -42,7 +42,10 @@
         />
       </div>
     </button>
-    <button class="float-center items-center justify-between flex pb-2">
+    <button
+      @click="delOrder()"
+      class="float-center items-center justify-between flex pb-2"
+    >
       <div
         class="flex bg-candyPink rounded-md m-4 lg:w-[150px] md:w-[100px] justify-center h-[32px]"
       >
@@ -64,6 +67,11 @@ export default {
   name: "OrderSubItem",
   props: ["order"],
   methods: {
+    delOrder() {
+      this.$emit("deleteOrderEvent", this.order.id);
+      //console.log("delete" + this.order.id);
+    },
+
     dateFormat(inputDate, format) {
       //parse the input date
       const date = new Date(inputDate);
@@ -75,15 +83,11 @@ export default {
 
       //replace the month
       format = format.replace("MM", month.toString().padStart(2, "0"));
-
       //replace the year
-      if (format.indexOf("yy") > -1) {
-        format = format.replace("yy", year.toString().substr(2, 2));
-      }
-
+      format = format.replace("yy", year.toString().substr(2, 2));
       //replace the day
       format = format.replace("dd", day.toString().padStart(2, "0"));
-
+      //replaces the leading 0's
       format = format.replace(/(^|\/)0+/g, "$1");
 
       return format;
