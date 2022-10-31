@@ -2,6 +2,7 @@ package nl.hva.backend.rest;
 
 import nl.hva.backend.exceptions.ModelNotFound;
 import nl.hva.backend.models.Order.Order;
+import nl.hva.backend.models.Project.Project;
 import nl.hva.backend.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -30,10 +31,9 @@ public class OrderController {
 
     @GetMapping("/orders/{id}")
     public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId) {
-        Order p = orderRepository.findById(orderId);
-        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Order", "id", orderId),HttpStatus.NOT_FOUND);
+        Order o = orderRepository.findById(orderId);
+        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", orderId),HttpStatus.NOT_FOUND);
     }
-
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable(value = "id") Integer orderId) {
         Order OrderToDelete = orderRepository.findById(orderId);

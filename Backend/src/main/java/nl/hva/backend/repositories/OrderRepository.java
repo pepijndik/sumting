@@ -28,8 +28,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     @Override
     public Iterable<Order> findAll() {
         try {
-            return em.createQuery("SELECT a FROM Order a", Order.class).getResultList();
-          //  return em.createQuery("SELECT o FROM Order o",Order.class).getResultList();
+            return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
         }catch (Exception e){
             System.out.println(e);
         }

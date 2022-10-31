@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = Country.TABLE_NAME)
-public class Country {
+public class Country implements Identifiable<Integer> {
     public static final String TABLE_NAME = "country";
 
     @Id
@@ -25,4 +25,13 @@ public class Country {
     @Column(name = "alpha3", nullable = false)
     private String alpha3;
 
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
