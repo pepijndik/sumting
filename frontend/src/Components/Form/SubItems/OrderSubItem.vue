@@ -54,8 +54,9 @@ export default {
   },
   methods: {
     emitUpdate() {
-      console.log(this.amount * this.price_per);
-      this.$emit('totalCostUpdate', this.amount * this.price_per, this.index);
+      console.log("emitting update & my index is " + this.index);
+      console.log(this.amount + " " + this.price_per)
+      this.$emit('update', {total: (this.amount * this.price_per), index: this.index});
     }
   }
 }
