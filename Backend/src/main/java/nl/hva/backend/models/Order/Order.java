@@ -3,6 +3,7 @@ package nl.hva.backend.models.Order;
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
 import nl.hva.backend.models.Identifiable;
+import nl.hva.backend.models.User.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -48,6 +49,9 @@ public class Order implements Identifiable<Integer> {
     @Column(name = "payment_method", columnDefinition = "char")
     private Character paymentMethod;
 
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "payer_user_key", columnDefinition = "int")
+    private User payer;
 
     @Timestamp
     @Column(name = "order_date", columnDefinition = "timestamp")
@@ -78,6 +82,11 @@ public class Order implements Identifiable<Integer> {
     @Nullable
     @Column(name = "currency", columnDefinition = "char(5)")
     private Character currency;
+
+    @Nullable
+    @JoinColumn(name = "user_id_ext", columnDefinition = "int")
+    @OneToOne(cascade = CascadeType.DETACH, optional = true)
+    private User user;
 
     @Override
     public Integer getId() {
