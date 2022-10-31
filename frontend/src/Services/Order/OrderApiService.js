@@ -6,6 +6,7 @@ class OrderApiService extends ApiAdapter{
         super('orders');
         this.headers = AuthHeader()
     }
+
     // Add custom methods here
 }
 export default OrderApiService;
