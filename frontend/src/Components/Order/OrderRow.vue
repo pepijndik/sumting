@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-gray-300 dark:border-gray-700 bg-white font-normal w-full h-10 flex text-sm border-gray-300 border-b mt-4"
+    class="text-gray-300 dark:border-gray-700 bg-white w-full h-10 flex text-sm border-gray-300 border-b mt-4"
   >
     <div class="float-left items-left flex pb-3 w-[250px]">
       <img
@@ -25,7 +25,7 @@
 
     <div class="h-10 pb-3 items-center flex w-[150px]">
       <p class="font-inter text-yInMnBlue font-bold">Date:&nbsp;</p>
-      <p class="font-inter text-candyPink font-bold">{{ order.order_date }}</p>
+      <p class="font-inter text-candyPink font-bold">{{ orderDate }}</p>
     </div>
 
     <div class="divider" />
@@ -58,9 +58,40 @@
 </template>
 
 <script>
+let orderDate;
+
 export default {
   name: "OrderSubItem",
   props: ["order"],
+  methods: {
+    dateFormat(inputDate, format) {
+      //parse the input date
+      const date = new Date(inputDate);
+
+      //extract the parts of the date
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+
+      //replace the month
+      format = format.replace("MM", month.toString().padStart(2, "0"));
+
+      //replace the year
+      if (format.indexOf("yy") > -1) {
+        format = format.replace("yy", year.toString().substr(2, 2));
+      }
+
+      //replace the day
+      format = format.replace("dd", day.toString().padStart(2, "0"));
+
+      format = format.replace(/(^|\/)0+/g, "$1");
+
+      return format;
+    },
+  },
+  beforeMount() {
+    this.orderDate = this.dateFormat(this.order.order_date, "dd/MM/yy");
+  },
 };
 </script>
 
