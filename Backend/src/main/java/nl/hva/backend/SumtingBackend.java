@@ -1,6 +1,7 @@
 package nl.hva.backend;
 
 import nl.hva.backend.Server.CustomBanner;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
@@ -20,9 +21,9 @@ import java.io.PrintStream;
 public class SumtingBackend {
 
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(SumtingBackend.class);
-        application.setBanner(new CustomBanner());
-        application.run(args);
+            SpringApplication application = new SpringApplication(SumtingBackend.class);
+            application.setBanner(new CustomBanner());
+            application.run(args);
     }
 
     @Configuration

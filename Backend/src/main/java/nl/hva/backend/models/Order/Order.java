@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = Order.TABLE_NAME)
 public class Order implements Identifiable<Integer> {
-    public static final String TABLE_NAME = "order";
+    public static final String TABLE_NAME = "\"order\"";
 
     @Id()
     @Column(name = "order_key", nullable = false, unique = true, updatable = false)
@@ -63,8 +63,8 @@ public class Order implements Identifiable<Integer> {
     @Column(name = "transaction_total", columnDefinition = "double")
     private Double transactionTotal;
 
-    @OneToOne
-    @JoinColumn(name = "order_type_key",updatable = false, insertable = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "order_type_key",referencedColumnName = "order_type_key",updatable = false, insertable = false)
     private OrderType orderTypeKey;
 
     @Nullable

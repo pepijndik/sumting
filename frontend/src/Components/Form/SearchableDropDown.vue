@@ -17,9 +17,8 @@
           </svg>
         </div>
         <input
-            class="text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2
-            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex
-            items-center pl-10 text-sm border-gray-300 rounded border shadow font-inter"
+            class="text-gray-300 focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink  focus:border-0 focus:border-t-2 focus:border-l-2 focus:border-r-2 focus:border-b-1
+            items-center pl-10 text-sm border-gray-300 rounded-t-md border shadow font-inter"
             :name="name"
             @focus="showOptions()"
             @blur="exit()"
@@ -30,17 +29,18 @@
         />
       </div>
     </div>
-    <div class="dropdown-one w-80 rounded outline-none bg-white relative mt-2 shadow-md">
+    <div class="dropdown-one w-full sm:w-80 rounded-b-md outline-none bg-white relative mt-0 shadow-md">
       <!-- Dropdown content -->
-      <div class="rounded w-full px-3 py-2 absolute top-1 right-0 bg-white shadow-lg z-10"
+      <div class="rounded w-full px-3 py-2 absolute top-1 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32 border-candyPink  border-0 border-b-2 border-l-2 border-r-2"
            v-show="optionsShown">
+
         <div
             class="flex items-center justify-between hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800 p-3
             hover:font-bold hover:cursor-default z-10"
             @mousedown="selectOption(option)"
             v-for="(option, index) in filteredOptions"
             :key="index">
-          {{ option.name || option.id || '-' }}
+            <slot class="mr-0"><FileIcon/></slot> {{ populateFields}}
         </div>
       </div>
     </div>
@@ -49,9 +49,14 @@
 </template>
 
 <script>
+import FileIcon from "@/Components/SvgIcons/FileIcon";
+
+
 export default {
   name: 'SearchableDropDown',
+  components: {FileIcon},
   template: 'Dropdown',
+
   props: {
     name: {
       type: String,
@@ -64,6 +69,19 @@ export default {
       required: true,
       default: Array,
       note: 'Options of dropdown. An array of options with id and name',
+    },
+    Fields:{
+      type: Array,
+      required: false,
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default: ['description'],
+      note: 'Possible fiels options'
+    },
+    primaryKey:{
+      type: String,
+      required: false,
+      default: 'id',
+      note: 'Primary key of the object'
     },
     placeholder: {
       type: String,
@@ -99,11 +117,26 @@ export default {
       const filtered = [];
       const regOption = new RegExp(this.searchFilter, 'ig');
       for (const option of this.options) {
-        if (this.searchFilter.length < 1 || option.name.match(regOption)) {
-          if (filtered.length < this.maxItem) filtered.push(option);
-        }
+        //Double For loop to find the option in the fields
+        this.Fields.forEach(field => {
+          if (this.searchFilter.length < 1 || option[field].match(regOption)) {
+            if (filtered.length < this.maxItem) filtered.push(option);
+          }
+        });
+
       }
       return filtered;
+    },
+    populateFields(){
+      var finalString = "";
+     this.Fields.forEach((field) => {
+       console.log(this.options)
+        if(this.options[field])
+        {
+          finalString += this.options[field] + " | ";
+        }
+     });
+     return finalString;
     }
   },
   methods: {
