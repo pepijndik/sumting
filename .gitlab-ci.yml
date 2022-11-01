@@ -60,7 +60,7 @@ build:
   tags:
     - prod
   script:
-    - cd /backend
+    - cd /Backend
     - mvn clean install -Dspring.profiles.active=dev && mvn package -B -e -Dspring.profiles.active=dev
   artifacts:
     paths:
@@ -71,7 +71,7 @@ build:
 docker-build:
   stage: package
   script:
-    - docker build --build-arg SPRING_ACTIVE_PROFILE=dev -t $DOCKER_REPO:latest .
+    - docker-compose  build --build-arg SPRING_ACTIVE_PROFILE=dev -t $DOCKER_REPO:latest .
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
     - docker push $DOCKER_REPO:latest
   only:
