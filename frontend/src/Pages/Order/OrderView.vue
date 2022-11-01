@@ -28,7 +28,7 @@
     </div>
   </div>
   <div
-    class="h-80 pl-4 pt-4 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden"
+    class="h-80 pl-4 pt-4 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-yInMnBlue"
   >
     <!--    <p v-if="this.orders" class="font-Alatsi text-gray-300 text-base">No client selected.</p>-->
     <div
