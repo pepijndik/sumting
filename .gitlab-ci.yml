@@ -60,8 +60,9 @@ build:
   tags:
     - prod
   script:
+    - echo "started buildin"
     - ls
-    - cd /Backend
+    - cd Backend
     - mvn clean install -Dspring.profiles.active=dev && mvn package -B -e -Dspring.profiles.active=dev
   artifacts:
     paths:
