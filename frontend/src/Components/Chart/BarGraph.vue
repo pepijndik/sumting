@@ -19,14 +19,18 @@ export default {
   components: {
     Bar
   },
+  inject: ['DashboardApi'],
   data() {
     return {
+      projects: [],
+      current: new Date(),
       chartData: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        // projects: [],
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
           {
             label: 'Data Bar',
-            data: [40, 20, 12, 39, 10, 40],
+            data: [65, 60, 40, 50],
             backgroundColor: '#E56B6F',
             pointBackgroundColor: 'blue',
           }
@@ -45,6 +49,18 @@ export default {
   },
   metaInfo: {
     title: 'Dashboard',
+  },
+  methods: {
+    // sortedItems() {
+    //   this.projects.sort( (a, b) => {
+    //     return new Date(a.this.projects.getMonth()) === new Date(b.this.current.getMonth());
+    //   });
+    //   return this.projects.length;
+    // }
+  },
+  async created() {
+    this.projects = await this.DashboardApi.findAll();
+    console.log(this.projects.getMonth())
   }
 }
 </script>
