@@ -28,11 +28,11 @@
     </div>
   </div>
   <div
-    class="h-80 pl-4 pt-4 mt-4 text-sm border-gray-300 rounded border shadow"
+    class="h-80 pl-4 pt-4 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden"
   >
     <!--    <p v-if="this.orders" class="font-Alatsi text-gray-300 text-base">No client selected.</p>-->
     <div
-      class="w-full h-10 items-center text-sm pr-4"
+      class="w-full h-10 items-center text-sm pr-4 snap-y snap-mandatory"
       v-for="item in computedObj"
       :key="item.id"
     >
@@ -55,13 +55,13 @@ export default {
       orders: [],
       users: [],
       selectedProject: null,
-      limit: 5,
+      limit: 20,
     };
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
-    //this.users = await  this.UserApi.findAll();
+    this.users = await this.UserApi.findAll();
   },
   computed: {
     computedObj() {

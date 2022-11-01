@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-gray-300 dark:border-gray-700 bg-white w-full h-10 flex text-sm border-gray-300 border-b mt-4"
+    class="text-gray-300 dark:border-gray-700 bg-white w-full h-10 flex text-sm border-gray-300 border-b mt-4 font-Alatsi"
   >
     <div class="float-left items-left flex pb-3 w-[250px]">
       <img
@@ -9,28 +9,26 @@
         width="24"
         class="ml-2 mr-2 rounded-md pb-2"
       />
-      <p class="font-inter text-yInMnBlue font-bold pr-4">ID {{ order.id }}</p>
+      <p class="text-yInMnBlue pr-4">ID {{ order.id }}</p>
     </div>
 
     <div class="divider" />
 
     <div class="h-10 pb-3 items-center flex w-[200px]">
-      <p class="font-inter text-yInMnBlue font-bold">Total amount:&nbsp;</p>
-      <p class="font-inter text-candyPink font-bold">
-        € {{ order.transactionTotal }}
-      </p>
+      <p class="text-yInMnBlue">Total amount:&nbsp;</p>
+      <p class="text-candyPink">€ {{ order.transactionTotal }}</p>
     </div>
 
     <div class="divider" />
 
-    <div class="h-10 pb-3 items-center flex w-[150px]">
-      <p class="font-inter text-yInMnBlue font-bold">Date:&nbsp;</p>
-      <p class="font-inter text-candyPink font-bold">{{ orderDate }}</p>
+    <div class="h-10 pb-3 items-center flex w-[150px] font-Alatsi">
+      <p class="text-yInMnBlue">Date:&nbsp;</p>
+      <p class="text-candyPink">{{ orderDate }}</p>
     </div>
 
     <div class="divider" />
 
-    <button class="float-center items-center justify-between flex pb-2">
+    <button class="float-center items-center justify-between flex pb-4">
       <div
         class="flex bg-yInMnBlue rounded-md m-4 lg:w-[150px] md:w-[100px] justify-center h-[32px]"
       >
@@ -44,7 +42,7 @@
     </button>
     <button
       @click="delOrder()"
-      class="float-center items-center justify-between flex pb-2"
+      class="float-center items-center justify-between flex pb-4"
     >
       <div
         class="flex bg-candyPink rounded-md m-4 lg:w-[150px] md:w-[100px] justify-center h-[32px]"
@@ -72,9 +70,10 @@ export default {
       //console.log("delete" + this.order.id);
     },
 
-    dateFormat(inputDate, format) {
+    dateFormat(inputDate) {
       //parse the input date
       const date = new Date(inputDate);
+      let format = "dd / MM / yy";
 
       //extract the parts of the date
       const day = date.getDate();
@@ -88,13 +87,13 @@ export default {
       //replace the day
       format = format.replace("dd", day.toString().padStart(2, "0"));
       //replaces the leading 0's
-      format = format.replace(/(^|\/)0+/g, "$1");
+      format = format.replace(/(^|\/| )0+/g, "$1");
 
       return format;
     },
   },
   beforeMount() {
-    this.orderDate = this.dateFormat(this.order.order_date, "dd/MM/yy");
+    this.orderDate = this.dateFormat(this.order.order_date);
   },
 };
 </script>
