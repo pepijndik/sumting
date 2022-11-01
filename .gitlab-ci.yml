@@ -50,7 +50,7 @@ test:
       variables:
       - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   only:
-    - master
+    - main
 
 #Build the project using JDK17
 build:
@@ -65,7 +65,7 @@ build:
     paths:
       - target/*.jar
   only:
-    - master
+    - main
 
 docker-build:
   stage: package
@@ -91,4 +91,4 @@ deploy:
     - pwd
     - ssh root@$SERVER "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; docker stop $APP_NAME; docker system prune -a -f; docker run --name mysql --network host --env-file=mysql.env --volume=mysql-data:/var/lib/mysql -d mysql:latest; docker pull $DOCKER_REPO:latest; docker-compose up -d; docker logout"
   only:
-    - master
+    - main
