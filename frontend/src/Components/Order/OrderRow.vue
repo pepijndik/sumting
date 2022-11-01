@@ -14,27 +14,23 @@
         <p class="text-yInMnBlue">ID {{ order.id }}</p>
       </div>
 
-      <!-- <div class="divider" /> -->
       <div class="flex flex-row">
         <div
-          class="h-5 lg:h-10 items-center flex lg:w-[200px] md:w-[180px] w-[120px] text-xs md:text-sm border-r-2 pr-1 mr-1"
+          class="h-5 lg:h-10 items-center flex lg:w-[200px] md:w-[180px] w-[95px] text-xs md:text-sm border-r-2 mr-1"
         >
-          <p class="text-yInMnBlue">Total amount:&nbsp;</p>
+          <p v-if="mobile" class="text-yInMnBlue">Total:&nbsp;</p>
+          <p v-else class="text-yInMnBlue">Total amount:&nbsp;</p>
           <p class="text-candyPink">€ {{ order.transactionTotal }}</p>
         </div>
 
-        <!-- <div class="divider" /> -->
-
         <div
-          class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[100px] w-[85px] font-Alatsi text-xs md:text-sm"
+          class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[120px] w-[95px] font-Alatsi text-xs md:text-sm"
         >
           <p class="text-yInMnBlue">Date:&nbsp;</p>
           <p class="text-candyPink">{{ orderDate }}</p>
         </div>
       </div>
     </div>
-
-    <!-- <div class="divider" /> -->
 
     <button
       class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
@@ -60,16 +56,21 @@
 
 <script>
 let orderDate;
+let mobile;
 
 export default {
   name: "OrderSubItem",
   props: ["order"],
+  watch: {
+    mobile(newMobile, oldMobile) {
+      this.mobile = newMobile;
+    },
+  },
   methods: {
     delOrder() {
       this.$emit("deleteOrderEvent", this.order.id);
       //console.log("delete" + this.order.id);
     },
-
     dateFormat(inputDate) {
       //parse the input date
       const date = new Date(inputDate);
@@ -94,6 +95,7 @@ export default {
   },
   beforeMount() {
     this.orderDate = this.dateFormat(this.order.order_date);
+    this.mobile = window.innerWidth < 640 ? true : false;
   },
 };
 </script>
