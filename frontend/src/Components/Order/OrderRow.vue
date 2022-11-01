@@ -37,7 +37,7 @@
     <!-- <div class="divider" /> -->
 
     <button
-      class="items-center flex bg-yInMnBlue rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
+      class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
     >
       <img
         :src="require(`@/Assets/img/icons/edit.svg`)"
@@ -47,7 +47,7 @@
     </button>
     <button
       @click="delOrder()"
-      class="items-center flex bg-candyPink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
+      class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
     >
       <img
         :src="require(`@/Assets/img/icons/delete.svg`)"
