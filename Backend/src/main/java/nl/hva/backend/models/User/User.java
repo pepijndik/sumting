@@ -3,9 +3,9 @@ package nl.hva.backend.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
+
 import nl.hva.backend.exceptions.TwofactorGenerationException;
-import nl.hva.backend.models.Country;
-import nl.hva.backend.models.Identifiable;
+import nl.hva.backend.models.*;
 import nl.hva.backend.services.TwoFactorService;
 
 import javax.persistence.*;
@@ -21,10 +21,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = User.TABLE_NAME)
-
 public class User implements Identifiable<Integer> {
 
     public static enum Type {
+        BUSINESS,
         PERSON,
         ADMIN
     }
