@@ -29,8 +29,8 @@ export default {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
           {
-            label: 'Data Bar',
-            data: [65, 60, 40, 50],
+            label: 'Orders past 90 days',
+            data: [50, 55, 66, 12 ,70],
             backgroundColor: '#E56B6F',
             pointBackgroundColor: 'blue',
           }
@@ -60,7 +60,9 @@ export default {
   },
   async created() {
     this.projects = await this.DashboardApi.findAll();
-    console.log(this.projects.getMonth())
+    this.projects = await  this.DashboardApi.findByMonths();
+    console.log(this.projects)
+    console.log(this.projects.length)
   }
 }
 </script>
