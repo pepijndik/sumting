@@ -1,4 +1,31 @@
 <template>
+  <Index :open=modal source="warning.svg">
+    <template #body>
+      <h1
+        tabindex="0"
+        class="focus:outline-none text-center text-yInMnBlue dark:text-gray-100 font-lg font-bold tracking-normal leading-tight mb-4"
+      >
+        Are you sure?
+      </h1>
+      <p
+        tabindex="0"
+        class="focus:outline-none mb-5 text-sm text-yInMnBlue dark:text-gray-400 text-center font-normal"
+      >
+        You are about to delete order <span class="text-candyPink"> {{order.id}} </span>,<br/>
+        this action is not reversable.
+
+      </p>
+    </template>
+
+    <template #footer>
+      <button
+      @click=delOrder
+      class="transition duration-150 ease-in-out hover:bg-candyPink/50 bg-candyPink rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
+      >
+        Yes, delete it!
+      </button>
+    </template>
+  </Index>
   <div
     class="dark:border-gray-700 w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b mb-5 mt-5 font-Alatsi items-center pt-2 pb-2"
   >
@@ -42,7 +69,7 @@
       />
     </button>
     <button
-      @click="delOrder()"
+      @click="confirmDelete"
       class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
     >
       <img
@@ -55,8 +82,11 @@
 </template>
 
 <script>
+import Index from "../Modal/index.vue";
+
 let orderDate;
 let mobile;
+let modal = false;
 
 export default {
   name: "OrderSubItem",
@@ -71,16 +101,17 @@ export default {
       this.$emit("deleteOrderEvent", this.order.id);
       //console.log("delete" + this.order.id);
     },
+    confirmDelete(){
+        this.modal != true ? true : false;
+    },
     dateFormat(inputDate) {
       //parse the input date
       const date = new Date(inputDate);
       let format = "dd / MM / yy";
-
       //extract the parts of the date
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
-
       //replace the month
       format = format.replace("MM", month.toString().padStart(2, "0"));
       //replace the year
@@ -89,7 +120,6 @@ export default {
       format = format.replace("dd", day.toString().padStart(2, "0"));
       //replaces the leading 0's
       format = format.replace(/(^|\/| )0+/g, "$1");
-
       return format;
     },
   },
@@ -97,6 +127,7 @@ export default {
     this.orderDate = this.dateFormat(this.order.order_date);
     this.mobile = window.innerWidth < 640 ? true : false;
   },
+  components: { Index },
 };
 </script>
 
