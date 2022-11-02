@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-jammy as builder
+FROM maven:3.8.3-openjdk-17-slim as builder
 RUN addgroup sumting; adduser  --ingroup sumting --disabled-password sumyting
 USER sumyting:sumting
 #WORKDIR /app

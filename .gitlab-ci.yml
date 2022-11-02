@@ -13,6 +13,7 @@ stages:
   - test
   - package
   - deploy
+  - build
 
 #Backend
 backend-build:
@@ -24,7 +25,7 @@ backend-build:
   script:
     - echo "started building"
     - cd Backend
-    - mvn package -B
+    - mvn dependency:go-offline
   artifacts:
     paths:
       - target/Backend.jar
@@ -60,10 +61,12 @@ frontend-test:
     - npm install --progress=false
     - npm run unit
 
-##Deploy to dev environment
+##Deploy to OEGE environment
 deploy:
   image: ubuntu:latest
   stage: deploy
+  rules: 
+    - if: '$CI_COMMIT_TAG'
   tags:
     - hva
   before_script:
@@ -75,6 +78,4 @@ deploy:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - pwd
-    - ssh root@$SERVER "git pull origin main"
-  only:
-    - main
+    - ssh root@$SERVER "cd projects/sum-1; git pull origin main; cd Backend; mvn dependency:go-offline; mvn spring-boot:run"
