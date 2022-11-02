@@ -75,6 +75,6 @@ deploy:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - pwd
-    - ssh root@$SERVER "git pull origin main"
+    - ssh root@$SERVER "cd projects/sum-1; git pull origin main; docker-compose down; docker-compose up -d --build"
   only:
     - main
