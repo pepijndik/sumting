@@ -63,7 +63,7 @@ build:
     - echo "started building"
     - ls
     - cd Backend
-    - mvn clean install -Dspring.profiles.active=dev -X && mvn package -B -e -Dspring.profiles.active=dev -X
+    - mvn clean install -Dspring.profiles.active=dev && mvn package -B -e -Dspring.profiles.active=dev
   artifacts:
     paths:
       - target/*.jar
