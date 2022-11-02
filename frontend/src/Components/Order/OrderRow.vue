@@ -1,5 +1,5 @@
 <template>
-  <Index :open=modal source="warning.svg">
+  <Index :open="modal" source="warning.svg" :callback="delOrder">
     <template #body>
       <h1
         tabindex="0"
@@ -11,16 +11,15 @@
         tabindex="0"
         class="focus:outline-none mb-5 text-sm text-yInMnBlue dark:text-gray-400 text-center font-normal"
       >
-        You are about to delete order <span class="text-candyPink"> {{order.id}} </span>,<br/>
+        You are about to delete order
+        <span class="text-candyPink"> {{ order.id }} </span>,<br />
         this action is not reversable.
-
       </p>
     </template>
 
     <template #footer>
       <button
-      @click=delOrder
-      class="transition duration-150 ease-in-out hover:bg-candyPink/50 bg-candyPink rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
+        class="transition duration-150 ease-in-out hover:bg-candyPink/50 bg-candyPink rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
       >
         Yes, delete it!
       </button>
@@ -98,11 +97,11 @@ export default {
   },
   methods: {
     delOrder() {
-      this.$emit("deleteOrderEvent", this.order.id);
-      //console.log("delete" + this.order.id);
+      //this.$emit("deleteOrderEvent", this.order.id);
+      console.log("delete" + this.order.id);
     },
-    confirmDelete(){
-        this.modal != true ? true : false;
+    confirmDelete() {
+      this.modal != true ? true : false;
     },
     dateFormat(inputDate) {
       //parse the input date
