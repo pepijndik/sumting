@@ -25,7 +25,7 @@ backend-build:
   script:
     - echo "started building"
     - cd Backend
-    - mvn package -B
+    - mvn dependency:go-offline
   artifacts:
     paths:
       - target/Backend.jar
@@ -78,4 +78,4 @@ deploy:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - pwd
-    - ssh root@$SERVER "cd projects/sum-1; git pull origin main; docker-compose down; docker-compose up -d --build"
+    - ssh root@$SERVER "cd projects/sum-1; git pull origin main; cd Backend; mvn dependency:go-offline; mvn spring-boot:run"
