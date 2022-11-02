@@ -60,6 +60,9 @@ build:
   tags:
     - prod
   script:
+    - echo "started buildin"
+    - ls
+    - cd Backend
     - mvn clean install -Dspring.profiles.active=dev && mvn package -B -e -Dspring.profiles.active=dev
   artifacts:
     paths:
@@ -70,7 +73,7 @@ build:
 docker-build:
   stage: package
   script:
-    - docker build --build-arg SPRING_ACTIVE_PROFILE=dev -t $DOCKER_REPO:latest .
+    - docker-compose  build --build-arg SPRING_ACTIVE_PROFILE=dev -t $DOCKER_REPO:latest .
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io
     - docker push $DOCKER_REPO:latest
   only:
@@ -89,6 +92,6 @@ deploy:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - pwd
-    - ssh root@$SERVER "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; docker stop $APP_NAME; docker system prune -a -f; docker run --name mysql --network host --env-file=mysql.env --volume=mysql-data:/var/lib/mysql -d mysql:latest; docker pull $DOCKER_REPO:latest; docker-compose up -d; docker logout"
+    - ssh root@$SERVER "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; docker stop $APP_NAME; docker system prune -a -f; docker pull $DOCKER_REPO:latest; docker-compose up -d; docker logout"
   only:
     - main
