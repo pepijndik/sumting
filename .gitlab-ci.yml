@@ -58,7 +58,7 @@ build:
   stage: build
   environment: production
   tags:
-    - prod
+    - hva
   script:
     - echo "started buildin"
     - ls
@@ -92,6 +92,6 @@ deploy:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - pwd
-    - ssh root@$SERVER "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; docker stop $APP_NAME; docker system prune -a -f; docker pull $DOCKER_REPO:latest; docker-compose up -d; docker logout"
+    - ssh root@$SERVER "docker login -u $DOCKER_USER -p $DOCKER_PASSWORD docker.io; docker system prune -a -f; docker pull $DOCKER_REPO:latest; docker-compose up -d; docker logout"
   only:
     - main
