@@ -4,7 +4,10 @@
     <SearchableDropDown
         class="mt-1"
         placeholder="Choose a client"
-        :options="projects">
+        :options="users"
+        :fields="['id', 'name']"
+        :primary-key="'id'"
+        :max-item="20">
     </SearchableDropDown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
     <p class="font-inter text-yInMnBlue">Description</p>
@@ -39,11 +42,12 @@ export default {
       editorConfig: {
         toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ]
       },
-      projects: []
+      users: []
     }
   },
   async created() {
-    this.projects = await this.UserApi.GetAllUsers();
+    this.users = await this.UserApi.GetAllUsers();
+    console.log(this.users)
   },
 }
 </script>

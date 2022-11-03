@@ -60,8 +60,8 @@ export default {
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    this.orders = await this.OrderApi.findAll();
-    this.users = await this.UserApi.findAll();
+    // this.orders = await this.OrderApi.findAll();
+    this.users = await this.UserApi.GetAllUsers();
   },
   computed: {
     computedObj() {

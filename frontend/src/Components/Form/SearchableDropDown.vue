@@ -80,7 +80,7 @@ export default {
       required: false,
       // eslint-disable-next-line vue/require-valid-default-prop
       default: ['description'],
-      note: 'Possible fiels options'
+      note: 'Possible fields options'
     },
     primaryKey: {
       type: String,
