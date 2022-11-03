@@ -31,7 +31,7 @@ import OrderSubItem from "@/Components/Form/SubItems/OrderSubItem";
 export default {
   name: "OrderCreate",
   components: {OrderSubItem, SearchableDropDown},
-  inject: ['ProjectApi'],
+  inject: ['ProjectApi', 'UserApi'],
   data() {
     return {
       editor: ClassicEditor,
@@ -43,7 +43,7 @@ export default {
     }
   },
   async created() {
-    this.projects = await this.ProjectApi.SearchableDropDown();
+    this.projects = await this.UserApi.GetAllUsers();
   },
 }
 </script>
