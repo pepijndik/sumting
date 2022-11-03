@@ -5,8 +5,9 @@
         class="mt-1"
         placeholder="Choose a client"
         :options="users"
-        :fields="['id', 'name', 'email', 'user_role']"
+        :Fields="['id', 'name', 'email', 'user_role']"
         :primary-key="'id'"
+        :disabled="false"
         :max-item="20">
     </SearchableUserDropdown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
