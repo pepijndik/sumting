@@ -54,19 +54,18 @@
         </slot>
         <div class="flex items-center justify-center w-full">
           <button
-            class=" text-white bg-yInMnBlue transition duration-150 hover:bg-yInMnBlue/50 border rounded px-4 sm:px-8 py-2 text-xs sm:text-sm mx-2"
+            class="text-white bg-yInMnBlue transition duration-150 hover:bg-yInMnBlue/50 border rounded px-4 sm:px-8 py-2 text-xs sm:text-sm mx-2"
             @click="toggle"
           >
             Cancel
           </button>
-          <slot name="footer">
+          <slot name="footer" @click="oke">
             <button
               class="transition duration-150 ease-in-out hover:bg-candyPink/50 bg-candyPink rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
             >
               Yes
             </button>
           </slot>
-          
         </div>
       </div>
     </div>
@@ -118,7 +117,8 @@ export default {
   methods: {
     oke() {
       this.toggle();
-      this.callback(true); //Fire callback
+      this.callback(true);
+      //this.$emit("modalEmit"); //Fire callback
     },
     toggle() {
       this.modalOpen = !this.modalOpen;
