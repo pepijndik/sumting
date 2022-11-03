@@ -11,6 +11,7 @@
 <script>
 import {Bar} from 'vue-chartjs'
 import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js'
+import axios from "axios";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
@@ -22,15 +23,14 @@ export default {
   inject: ['DashboardApi'],
   data() {
     return {
-      projects: Number,
-      current: new Date(),
+      projects: [],
+      currentMonths: 0,
       chartData: {
-        // projects: [],
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        labels: ['Past 30 Days', 'Past 60 Days', 'Past 90 Days'],
         datasets: [
           {
             label: 'Orders past 90 days',
-            data: [this.projects, 55, 66, 12 ,70],
+            data: [40, 60 , 50],
             backgroundColor: '#E56B6F',
             pointBackgroundColor: 'blue',
           }
@@ -45,7 +45,7 @@ export default {
     chartId: {
       type: String,
       default: 'bar-chart'
-    },
+    }
   },
   metaInfo: {
     title: 'Dashboard',
@@ -58,9 +58,15 @@ export default {
     }
   },
   async created() {
-    this.projects = await this.DashboardApi.findByMonth(this.defaultEndDate)
-    console.log(this.projects.length)
-    // console.log(this.projects.length)
+    // this.projects = await this.DashboardApi.findByMonth(this.defaultEndDate)
+    //
+    // for (let i = 0; i < this.projects.length; i++) {
+    //   this.currentMonths++;
+    // }
+    // console.log(this.chartData.datasets.data)
+    // this.projects = await this.DashboardApi.findByMonth(this.defaultEndDate)
+    //
+    // console.log(this.projects)
   }
 }
 </script>
