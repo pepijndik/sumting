@@ -30,7 +30,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
     // path prefixes that will be protected by the authentication filter
     private static final Set<String> SECURED_PATHS =
-            Set.of("/rest/posts");
+            Set.of("/users", "/rest/posts");
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
@@ -61,7 +61,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
             // remove the bearer initial string
             encodedToken = encodedToken.replace("Bearer ", "");
-
+            System.out.println(encodedToken);
             // get a representation of the token for future usage
             JWTokenInfo tokenInfo = tokenUtils.decode(encodedToken,false);
 
