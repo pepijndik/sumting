@@ -46,6 +46,9 @@ export default {
       costArray: [],
       totalCost: 0
     }
+  },
+  created() {
+
   }
 }
 </script>

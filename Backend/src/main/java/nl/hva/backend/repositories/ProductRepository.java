@@ -1,6 +1,6 @@
 package nl.hva.backend.repositories;
 
-import nl.hva.backend.models.Product;
+import nl.hva.backend.models.Product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +27,11 @@ public class ProductRepository implements CrudRepository<Product, Integer> {
     @Override
     public Iterable<Product> findAll() {
         return em.createQuery("SELECT a FROM Product a", Product.class).getResultList();
+    }
+
+    public Iterable<Product> findByProjectId(int projectId) {
+        return em.createQuery("SELECT a FROM Product a WHERE project_key = :id", Product.class)
+                .setParameter("id", projectId).getResultList();
     }
 
     @Override
