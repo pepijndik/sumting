@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 
@@ -28,7 +29,7 @@ public class DashboardController {
     }
 
     @GetMapping("/orderMonths/{pastMonths}")
-    public ResponseEntity<Iterable<Graph>> ordersSorted(LocalDate pastMonths){
+    public ResponseEntity<Iterable<Long>> ordersSorted(LocalDate pastMonths){
             return new ResponseEntity<>(dashboardRepository.findByMonth(pastMonths), HttpStatus.OK);
     }
 

@@ -50,19 +50,17 @@ export default {
   metaInfo: {
     title: 'Dashboard',
   },
-  methods: {
-    // sortedItems() {
-    //   this.projects.sort( (a, b) => {
-    //     return new Date(a.this.projects.getMonth()) === new Date(b.this.current.getMonth());
-    //   });
-    //   return this.projects.length;
-    // }
+  computed: {
+    defaultEndDate() {
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      return new Date(currentDate.toJSON().slice(0, 10));
+    }
   },
   async created() {
     this.projects = await this.DashboardApi.findAll();
-    this.projects = await  this.DashboardApi.findByMonths();
     console.log(this.projects)
-    console.log(this.projects.length)
+    // console.log(this.projects.length)
   }
 }
 </script>

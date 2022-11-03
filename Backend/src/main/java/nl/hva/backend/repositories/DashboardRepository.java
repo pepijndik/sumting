@@ -1,16 +1,12 @@
 package nl.hva.backend.repositories;
 
-import net.bytebuddy.asm.Advice;
 import nl.hva.backend.models.Dashboard.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Repository
 @Transactional
@@ -35,11 +31,11 @@ public class DashboardRepository implements CrudRepository<Graph, Integer> {
         return em.createQuery("SELECT a FROM Graph a", Graph.class).getResultList();
     }
 
-    public Iterable<Graph> findByMonth(LocalDate pastMonths){
-//        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= '2022-09-01'",
-//                Graph.class).getResultList();
-        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= :pastMonths",
-                Graph.class).setParameter("pastMonths", pastMonths).getResultList();
+    public Iterable<Long> findByMonth(LocalDate pastMonths){
+//        return em.createQuery("SELECT COUNT (a) FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= '2022-09-01'",
+//                Long.class).getResultList();
+        return em.createQuery("SELECT COUNT(a) FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= :pastMonths",
+                Long.class).setParameter("pastMonths", pastMonths).getResultList();
     }
 
     @Override
