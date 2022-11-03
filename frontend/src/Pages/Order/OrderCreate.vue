@@ -1,14 +1,14 @@
 <template>
   <div>
     <p class="font-inter text-yInMnBlue">Client</p>
-    <SearchableDropDown
+    <SearchableUserDropdown
         class="mt-1"
         placeholder="Choose a client"
         :options="users"
-        :fields="['id', 'name']"
+        :fields="['id', 'name', 'email', 'user_role']"
         :primary-key="'id'"
         :max-item="20">
-    </SearchableDropDown>
+    </SearchableUserDropdown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
     <p class="font-inter text-yInMnBlue">Description</p>
     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
@@ -28,12 +28,13 @@
 </template>
 
 <script>
-import SearchableDropDown from "@/Components/Form/SearchableDropDown";
+// import SearchableDropDown from "@/Components/Form/SearchableDropDown";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OrderSubItem from "@/Components/Form/SubItems/OrderSubItem";
+import SearchableUserDropdown from "@/Components/Form/SearchableUserDropdown";
 export default {
   name: "OrderCreate",
-  components: {OrderSubItem, SearchableDropDown},
+  components: {SearchableUserDropdown, OrderSubItem},
   inject: ['ProjectApi', 'UserApi'],
   data() {
     return {
