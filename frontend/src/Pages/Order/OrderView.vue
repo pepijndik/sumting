@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import SearchableDropDown from "@/Components/Form/SearchableDropDown";
+import SearchableDropDown from "@/Components/Form/SearchableDropdown";
 import OrderRow from "@/Components/Order/OrderRow.vue";
 
 export default {

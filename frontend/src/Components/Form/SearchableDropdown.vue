@@ -75,7 +75,7 @@ export default {
       default: Array,
       note: 'Options of dropdown. An array of options with id and name',
     },
-    Fields: {
+    fields: {
       type: Array,
       required: false,
       // eslint-disable-next-line vue/require-valid-default-prop
