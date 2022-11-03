@@ -1,5 +1,6 @@
 package nl.hva.backend.repositories;
 
+import nl.hva.backend.models.Project.Project;
 import nl.hva.backend.models.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -53,11 +54,8 @@ public class JPAUserRepository implements CrudRepository<User, Integer > {
     }
 
     @Override
-    public List<User> findAll() {
-
-        TypedQuery<User> query = em.createQuery("SELECT a FROM User a",User.class);
-
-        return query.getResultList();
+    public Iterable<User> findAll() {
+        return em.createQuery("SELECT a FROM User a", User.class).getResultList();
     }
 
     @Override

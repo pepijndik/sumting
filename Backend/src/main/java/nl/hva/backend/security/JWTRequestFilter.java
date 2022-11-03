@@ -61,7 +61,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
             // remove the bearer initial string
             encodedToken = encodedToken.replace("Bearer ", "");
-
+            System.out.println(encodedToken);
             // get a representation of the token for future usage
             JWTokenInfo tokenInfo = tokenUtils.decode(encodedToken,false);
 

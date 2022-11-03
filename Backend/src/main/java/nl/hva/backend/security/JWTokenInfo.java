@@ -51,7 +51,7 @@ public class JWTokenInfo {
 
     }
     public void setRole(UserRole role){
-        this.Role = Role;
+        this.Role = role;
     }
 
     public Date getIssuedAt() {
