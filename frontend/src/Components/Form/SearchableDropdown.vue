@@ -44,7 +44,7 @@
             <slot class="">
               <FileIcon/>
             </slot>
-            <p class="">{{ this.populateFields(option) }}</p>
+            <p class="">{{ this.populatefields(option) }}</p>
           </div>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default {
       const regOption = new RegExp(this.searchFilter, 'ig');
         for (const option of this.options) {
           //Double For loop to find the option in the fields
-          this.Fields.forEach(field => {
+          this.fields.forEach(field => {
             if (this.searchFilter.length < 1 || option[field].match(regOption)) {
               if (filtered.length < this.maxItem) filtered.push(option);
             }
@@ -135,12 +135,12 @@ export default {
     },
   },
   methods: {
-    populateFields(option) {
+    populatefields(option) {
       var finalString = "";
-      this.Fields.forEach(field => {
+      this.fields.forEach(field => {
         finalString += this.extractFieldValue(option,field);
         //Check if not the last field then append space with separator
-        if(this.Fields.indexOf(field) !== this.Fields.length -1)
+        if(this.fields.indexOf(field) !== this.fields.length -1)
         {
           finalString += " | "
         }
@@ -157,8 +157,8 @@ export default {
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-      console.log(this.selected[this.Fields[0]]);
-      this.searchFilter = this.selected[this.Fields[0]]; //Set the search filter to the first field
+      console.log(this.selected[this.fields[0]]);
+      this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
       this.$emit('selected', this.selected);
     },
     showOptions() {
@@ -172,7 +172,7 @@ export default {
         this.selected = {};
         this.searchFilter = '';
       } else {
-        this.searchFilter = this.selected[this.Fields[0]];
+        this.searchFilter = this.selected[this.fields[0]];
       }
       this.$emit('selected', this.selected);
       this.optionsShown = false;

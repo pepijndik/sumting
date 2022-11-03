@@ -5,7 +5,7 @@
         class="mt-1"
         placeholder="Choose a client"
         :options="users"
-        :fields="['id', 'name', 'email', 'user_role']"
+        :fields="['name', 'email', 'user_role']"
         :primary-key="'id'"
         :disabled="false"
         :max-item="20">
@@ -29,7 +29,6 @@
 </template>
 
 <script>
-// import SearchableDropDown from "@/Components/Form/SearchableDropDown";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OrderSubItem from "@/Components/Form/SubItems/OrderSubItem";
 import SearchableDropdown from "@/Components/Form/SearchableDropdown";

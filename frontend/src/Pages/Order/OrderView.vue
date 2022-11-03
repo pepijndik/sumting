@@ -2,18 +2,18 @@
   <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">
     <div>
       <p class="font-inter text-yInMnBlue">Client</p>
-      <SearchableDropDown
+      <SearchableDropdown
         class="mt-1"
         :options="users"
-        :fields="['email', 'user_name']"
+        :fields="['name', 'email', 'user_role']"
         :primary-key="'id'"
         placeholder="Choose a client"
       >
-      </SearchableDropDown>
+      </SearchableDropdown>
     </div>
     <div class="mt-3 sm:mt-0">
       <p class="font-inter text-yInMnBlue">Project(s)</p>
-      <SearchableDropDown
+      <SearchableDropdown
         @selected="selectedProject = $event"
         :options="projects"
         :fields="['name']"
@@ -24,7 +24,7 @@
         class="mt-1"
         placeholder="Select project(s)"
       >
-      </SearchableDropDown>
+      </SearchableDropdown>
     </div>
   </div>
   <div
@@ -42,12 +42,12 @@
 </template>
 
 <script>
-import SearchableDropDown from "@/Components/Form/SearchableDropdown";
+import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import OrderRow from "@/Components/Order/OrderRow.vue";
 
 export default {
   name: "OrderView",
-  components: { SearchableDropDown, OrderRow },
+  components: { SearchableDropdown, OrderRow },
   inject: ["ProjectApi", "OrderApi", "UserApi"],
   data() {
     return {
