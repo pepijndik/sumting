@@ -31,11 +31,11 @@ public class DashboardRepository implements CrudRepository<Graph, Integer> {
         return em.createQuery("SELECT a FROM Graph a", Graph.class).getResultList();
     }
 
-    public Iterable<Long> findByMonth(LocalDate pastMonths){
-//        return em.createQuery("SELECT COUNT (a) FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= '2022-09-01'",
-//                Long.class).getResultList();
-        return em.createQuery("SELECT COUNT(a) FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= :pastMonths",
-                Long.class).setParameter("pastMonths", pastMonths).getResultList();
+    public Iterable<Graph> findByMonth(LocalDate pastMonths){
+//        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= '2022-10-03'",
+//                Graph.class).getResultList();
+        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= :pastMonths",
+                Graph.class).setParameter("pastMonths", pastMonths).getResultList();
     }
 
     @Override

@@ -29,7 +29,7 @@ public class DashboardController {
     }
 
     @GetMapping("/orderMonths/{pastMonths}")
-    public ResponseEntity<Iterable<Long>> ordersSorted(LocalDate pastMonths){
+    public ResponseEntity<Iterable<Graph>> ordersSorted(LocalDate pastMonths){
             return new ResponseEntity<>(dashboardRepository.findByMonth(pastMonths), HttpStatus.OK);
     }
 

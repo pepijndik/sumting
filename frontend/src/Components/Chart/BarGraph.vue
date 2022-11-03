@@ -22,7 +22,7 @@ export default {
   inject: ['DashboardApi'],
   data() {
     return {
-      projects: [],
+      projects: Number,
       current: new Date(),
       chartData: {
         // projects: [],
@@ -30,7 +30,7 @@ export default {
         datasets: [
           {
             label: 'Orders past 90 days',
-            data: [50, 55, 66, 12 ,70],
+            data: [this.projects, 55, 66, 12 ,70],
             backgroundColor: '#E56B6F',
             pointBackgroundColor: 'blue',
           }
@@ -58,8 +58,8 @@ export default {
     }
   },
   async created() {
-    this.projects = await this.DashboardApi.findAll();
-    console.log(this.projects)
+    this.projects = await this.DashboardApi.findByMonth(this.defaultEndDate)
+    console.log(this.projects.length)
     // console.log(this.projects.length)
   }
 }
