@@ -1,5 +1,5 @@
 <template>
-  <Index :open="modal" source="warning.svg" :callback="delOrder">
+  <Index :open="modal" source="warning.svg" :callback="test">
     <template #body>
       <h1
         tabindex="0"
@@ -19,6 +19,7 @@
 
     <template #footer>
       <button
+        @click="delOrder"
         class="transition duration-150 ease-in-out hover:bg-candyPink/50 bg-candyPink rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
       >
         Yes, delete it!
@@ -85,11 +86,14 @@ import Index from "../Modal/index.vue";
 
 let orderDate;
 let mobile;
-let modal = false;
-
 export default {
-  name: "OrderSubItem",
+  name: "OrderRow",
   props: ["order"],
+  data() {
+    return {
+      modal: false,
+    };
+  },
   watch: {
     mobile(newMobile, oldMobile) {
       this.mobile = newMobile;
@@ -97,11 +101,16 @@ export default {
   },
   methods: {
     delOrder() {
-      //this.$emit("deleteOrderEvent", this.order.id);
-      console.log("delete" + this.order.id);
+      this.$emit("deleteOrderEvent", this.order.id);
+      //console.log("delete" + this.order.id);
+    },
+    test(ding) {
+      this.modal = ding;
     },
     confirmDelete() {
-      this.modal != true ? true : false;
+      this.modal = true;
+      console.log(this.modal, this.order.id);
+      console.log("deleted");
     },
     dateFormat(inputDate) {
       //parse the input date
