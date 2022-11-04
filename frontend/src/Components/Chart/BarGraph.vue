@@ -23,16 +23,16 @@ export default {
   inject: ['DashboardApi'],
   data() {
     return {
-      projects: [],
-      currentMonths: 0,
+      projects: [0, 0, 0],
+      currentMonth: [0, 0, 0],
       chartData: {
         labels: ['Past 30 Days', 'Past 60 Days', 'Past 90 Days'],
+        data: this.currentMonth,
         datasets: [
           {
-            label: 'Orders past 90 days',
-            data: [40, 60 , 50],
+            data: [],
+            label: 'Total orders',
             backgroundColor: '#E56B6F',
-            pointBackgroundColor: 'blue',
           }
         ]
       },
@@ -47,26 +47,45 @@ export default {
       default: 'bar-chart'
     }
   },
-  metaInfo: {
-    title: 'Dashboard',
-  },
   computed: {
-    defaultEndDate() {
+    firstMonth() {
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 1);
       return new Date(currentDate.toJSON().slice(0, 10));
-    }
+    },
+    secondMonth() {
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 2);
+      return new Date(currentDate.toJSON().slice(0, 10));
+    },
+    thirdMonth() {
+      const currentDate = new Date();
+      currentDate.setMonth(currentDate.getMonth() - 3);
+      return new Date(currentDate.toJSON().slice(0, 10));
+    },
   },
   async created() {
-    // this.projects = await this.DashboardApi.findByMonth(this.defaultEndDate)
-    //
-    // for (let i = 0; i < this.projects.length; i++) {
-    //   this.currentMonths++;
-    // }
-    // console.log(this.chartData.datasets.data)
-    // this.projects = await this.DashboardApi.findByMonth(this.defaultEndDate)
-    //
-    // console.log(this.projects)
+
+    this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth)
+    for (let i = 0; i < this.projects[0].length; i++) {
+      this.currentMonth[0]++
+    }
+
+    this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth)
+    for (let i = 0; i < this.projects[1].length; i++) {
+      this.currentMonth[1]++
+    }
+
+    this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth)
+    for (let i = 0; i < this.projects[2].length; i++) {
+      this.currentMonth[2]++
+    }
+
+    // console.log(this.currentMonth[0])
+    // console.log(this.currentMonth[1])
+    // console.log(this.currentMonth[2])
+    this.chartData.datasets[0].data = this.currentMonth
+    console.log(this.chartData.datasets[0].data)
   }
 }
 </script>
