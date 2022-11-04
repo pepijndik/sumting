@@ -36,7 +36,7 @@
       v-for="item in computedObj"
       :key="item.id"
     >
-      <OrderRow :order="item" @deleteOrderEvent="this.deleteOrder" />
+      <OrderRow :order="item" @deleteOrderEvent="deleteOrder" />
     </div>
   </div>
 </template>
@@ -61,7 +61,7 @@ export default {
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
-    this.users = await this.UserApi.findAll();
+    //this.users = await this.UserApi.findAll();
   },
   computed: {
     computedObj() {
@@ -70,7 +70,8 @@ export default {
   },
   methods: {
     deleteOrder(id) {
-      this.OrderApi.delete(id);
+      //this.OrderApi.delete(id);
+      console.log("Deleted: " + id);
     },
   },
 };
