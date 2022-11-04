@@ -1,6 +1,6 @@
 package nl.hva.backend.security;
 
-import nl.hva.backend.Enums.UserRole;
+import nl.hva.backend.enums.UserRole;
 
 import java.util.Date;
 
@@ -51,7 +51,7 @@ public class JWTokenInfo {
 
     }
     public void setRole(UserRole role){
-        this.Role = Role;
+        this.Role = role;
     }
 
     public Date getIssuedAt() {

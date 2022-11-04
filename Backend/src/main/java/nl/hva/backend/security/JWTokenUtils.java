@@ -104,8 +104,9 @@ public class JWTokenUtils {
         JWTokenInfo tokenInfo = new JWTokenInfo();
         tokenInfo.setEmail(claims.get(Claims.SUBJECT).toString());
 
-        String isAdminString = claims.get(JWT_ADMIN_CLAIM).toString();
-        tokenInfo.setAdmin(Boolean.parseBoolean(isAdminString));
+
+//        String isAdminString = claims.get(JWT_ADMIN_CLAIM).toString();
+//        tokenInfo.setAdmin(Boolean.parseBoolean(isAdminString));
 
         tokenInfo.setIssuedAt(claims.getIssuedAt());
         tokenInfo.setExpiration(claims.getExpiration());
