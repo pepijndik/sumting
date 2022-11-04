@@ -5,7 +5,7 @@
         class="mt-1"
         placeholder="Choose a client"
         :options="users"
-        :fields="['name', 'email', 'user_role']"
+        :fields="['name', 'email']"
         :primary-key="'id'"
         :disabled="false"
         :max-item="20">
