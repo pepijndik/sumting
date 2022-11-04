@@ -1,6 +1,6 @@
 package nl.hva.backend.security;
 
-import nl.hva.backend.Enums.UserRole;
+import nl.hva.backend.enums.UserRole;
 
 import java.util.Date;
 

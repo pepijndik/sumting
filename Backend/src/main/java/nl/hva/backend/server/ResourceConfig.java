@@ -1,4 +1,4 @@
-package nl.hva.backend.Server;
+package nl.hva.backend.server;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

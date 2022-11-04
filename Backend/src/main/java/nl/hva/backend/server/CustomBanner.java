@@ -1,4 +1,4 @@
-package nl.hva.backend.Server;
+package nl.hva.backend.server;
 
 import org.springframework.boot.Banner;
 import org.springframework.core.env.Environment;
