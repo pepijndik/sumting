@@ -26,9 +26,10 @@ build:backend:
     - mvn clean install
     - mvn package -B -DskipTests=true
     - echo "Finished building"
+    - ls -la
   artifacts:
     paths:
-      - /Backend/target/*.jar #Save the jar file for the next stage
+      - /target/*.jar #Save the jar file for the next stage
   only:
     - main
 
@@ -42,9 +43,6 @@ test:backend:
   script:
       - cd Backend #first cd into the backend folder
       - mvn $MAVEN_CLI_OPTS clean test -P unit-test
-  artifacts:
-    paths:
-      - /Backend/target/*.jar
 
 ##Frontend
 build:frontend:
