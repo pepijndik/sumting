@@ -81,7 +81,8 @@ docker:build:
   tags:
     - hva
   script:
-    - docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB https://hub.docker.com/r/$DOCKER_IMAGE
+    - echo "Building docker image"
+    - docker login -u "$DOCKER_USER" --password-stdin "$DOCKER_HUB" https://hub.docker.com/r/"$DOCKER_IMAGE"
     - docker-compose build
     - docker-compose push
     - echo "Images builded"
@@ -116,7 +117,7 @@ deploy:prod:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB hub.docker.com/r/$DOCKER_IMAGE
+    - docker login -u "$DOCKER_USER" --password-stdin "$DOCKER_HUB" hub.docker.com/r/"$DOCKER_IMAGE"
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull
     - docker-compose -H "ssh://admin@$SERVER" up -d
