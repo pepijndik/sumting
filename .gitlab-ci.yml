@@ -52,7 +52,7 @@ build:frontend:
     - hva
   stage: build
   script:
-    -  cd frontend
+     - cd frontend
      - npm install --progress=false
      - npm run build
   artifacts:
@@ -73,12 +73,18 @@ test:frontend:
 docker:build:
   image: docker:stable
   stage: docker
+  needs:
+    - job: build:backend
+    - job: build:frontend
+    - job: test:frontend
+    - job: test:backend
   tags:
     - hva
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_HUB $DOCKER_IMAGE
     - docker-compose build
     - docker-compose push
+    - echo "Images builded"
   only:
     - main
 
