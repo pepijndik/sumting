@@ -1,42 +1,12 @@
 <template>
-  <svg :class="classes" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-       viewBox="0 0 490 490" style="enable-background:new 0 0 490 490;" xml:space="preserve">
-<g>
-	<g>
+  <svg :class="classes" x="0px" y="0px" style="..." xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
 
-		<path d="M320.45,0H64.95v490h360.1V112L320.45,0z M254.35,428.2h-124.4c-5.4,0-10.1-4.3-10.1-10.1c0-5.4,4.3-10.1,10.1-10.1h124.4 c5.4,0,10.1,4.3,10.1,10.1C264.45,423.5,260.25,428.2,254.35,428.2zM360.15,364.4h-230.2c-5.4,0-10.1-4.3-10.1-10.1c0-5.4,4.3-10.1,10.1-10.1h230.2c5.4,0,10.1,4.3,10.1,10.1C370.25,360.1,365.65,364.4,360.15,364.4z M360.15,301h-230.2c-5.4,0-10.1-4.3-10.1-10.1c0-5.4,4.3-10.1,10.1-10.1h230.2c5.4,0,10.1,4.3,10.1,10.1C370.25,296.7,365.65,301,360.15,301zM360.15,237.6h-230.2c-5.4,0-10.1-4.3-10.1-10.1s4.3-10.1,10.1-10.1h230.2c5.4,0,10.1,4.3,10.1,10.1S365.65,237.6,360.15,237.6zM360.15,173.8h-230.2c-5.4,0-10.1-4.3-10.1-10.1c0-5.4,4.3-10.1,10.1-10.1h230.2c5.4,0,10.1,4.3,10.1,10.1C370.25,169.6,365.65,173.8,360.15,173.8z M300.25,131.8v-112l104.6,112H300.25z"/>
-  </g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
-    <g>
-        </g>
+<defs>
+</defs>
+    <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
+    <path d="M 85.347 90 c 0 -22.283 -18.064 -40.347 -40.347 -40.347 S 4.653 67.717 4.653 90 H 85.347 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill-rule: nonzero; opacity: 1;" fill="#355070" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+      <circle cx="45.003" cy="21.413" r="21.413" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill-rule: nonzero; opacity: 1;" fill="#355070" transform="  matrix(1 0 0 1 0 0) "/>
+</g>
 </svg>
 </template>
 
