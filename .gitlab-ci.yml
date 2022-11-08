@@ -23,13 +23,12 @@ build:backend:
   script:
     - echo "started building"
     - cd Backend
-    - mvn clean install
-    - mvn package -B -DskipTests=true
+    - mvn clean package -Dmaven.test.skip=true
     - echo "Finished building"
     - ls -la
   artifacts:
     paths:
-      - target/*.jar
+      - target/SumtingBackend-*.jar
   only:
     - main
 
@@ -81,7 +80,7 @@ docker:build:
   tags:
     - hva
   script:
-    - docker login -u $DOCKER_USER -p $DOCKER_HUB $DOCKER_IMAGE
+    - docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB $DOCKER_IMAGE
     - docker-compose build
     - docker-compose push
     - echo "Images builded"
