@@ -192,7 +192,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>hva/SumtingBackend</repository>
+					<repository>hva/sumtinbackend</repository>
 					<tag>${project.version}</tag>
 					<buildArgs>
 						<JAR_FILE>target/${project.artifactId}-${project.version}.${repackage.classifier}.jar</JAR_FILE>
