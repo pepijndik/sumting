@@ -1,11 +1,12 @@
 package app.models.User;
 
+import app.models.Country;
+import app.models.Identifiable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
 
 import app.exceptions.TwofactorGenerationException;
-import nl.hva.backend.models.*;
 import app.services.TwoFactorService;
 
 import javax.persistence.*;
