@@ -52,7 +52,7 @@ build:frontend:
     - hva
   stage: build
   script:
-    -  cd  frontend
+    -  cd frontend
      - npm install --progress=false
      - npm run build
   artifacts:
@@ -65,6 +65,7 @@ test:frontend:
   tags:
     - hva
   script:
+    - cd frontend
     - npm install --progress=false
   needs:
     - job: build:frontend
