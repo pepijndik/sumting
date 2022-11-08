@@ -1,22 +1,21 @@
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_NAME"'
+stages:
+  - build
+  - test
+  - deploy
+  - docker
+
 cache:
   paths:
-    - maven.repository/
     - target/
     - build/
 variables:
-  JDK_IMAGE: maven:3.8.3-openjdk-17-slim
+  JDK_IMAGE: maven:3-openjdk-18
 
-
-stages:
-  - test
-  - package
-  - deploy
-  - build
 
 #Backend
-backend-build:
+build:backend:
   image: $JDK_IMAGE
   stage: build
   environment: production
@@ -26,26 +25,31 @@ backend-build:
     - echo "started building"
     - cd Backend
     - mvn clean install
+    - mvn package -B -DskipTests=true
+    - echo "Finished building"
   artifacts:
     paths:
       - build/Backend.jar
   only:
     - main
-backend-test:
+
+test:backend:
   image: $JDK_IMAGE
   stage: test
   tags:
     - hva
-  only:
-    - main
+  needs:
+    - job: build:backend
   script:
       - cd Backend #first cd into the backend folder
       - mvn $MAVEN_CLI_OPTS clean test -P unit-test
 
 
 ##Frontend
-frontend-build:
+build:frontend:
   image: node:latest
+  tags:
+    - hva
   stage: build
   script:
     -  cd  frontend
@@ -53,24 +57,50 @@ frontend-build:
      - npm run build
   artifacts:
      paths:
-       - build/frontend
+       - dist
 
-frontend-test:
-  image: node:16.17.0
+test:frontend:
+  image: node:latest
   stage: test
+  tags:
+    - hva
   script:
     - npm install --progress=false
-    - npm run unit
+  needs:
+    - job: build:frontend
 
-##Deploy to server
-deploy:
+docker:build:
+  image: docker:stable
+  stage: docker
+  tags:
+    - hva
+  script:
+    - docker login -u $DOCKER_USER -p $DOCKER_HUB $DOCKER_IMAGE
+    - docker-compose build
+    - docker-compose push
+  only:
+    - main
+
+
+##Deploy to Prod server
+deploy:prod:
   image: ubuntu:latest
   stage: deploy
-  rules: 
-    - if: '$CI_COMMIT_TAG'
+  needs:
+    - job: build:backend
+    - job: build:frontend
+    - job: test:frontend
+    - job: test:backend
+  rules:
+    - if: $CI_COMMIT_TAG
+  release:                               # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
+    name: 'Sumting Admin panel Release'
+    tag_name: '$CI_COMMIT_TAG'
+    description: '$CI_COMMIT_TAG'
   tags:
     - hva
   before_script:
+    - echo "Deploying!"
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
@@ -78,5 +108,7 @@ deploy:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - pwd
-    - ssh root@$SERVER "cd sum-1; git pull origin main; cd Backend; mvn dependency:go-offline; mvn spring-boot:run"
+    - docker login -u $DOCKER_USER -p $DOCKER_HUB $DOCKER_IMAGE
+    - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
+    - docker-compose -H "ssh://admin@$SERVER" pull
+    - docker-compose -H "ssh://admin@$SERVER" up -d
