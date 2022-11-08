@@ -73,6 +73,7 @@ test:frontend:
     - job: build:frontend
 
 docker:build:
+  environment: production
   image: docker:stable
   stage: docker
   needs:
@@ -93,6 +94,7 @@ docker:build:
 
 ##Deploy to Prod server
 deploy:prod:
+  environment: production
   image: ubuntu:latest
   stage: deploy
   needs:
