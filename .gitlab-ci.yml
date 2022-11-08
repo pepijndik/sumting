@@ -8,8 +8,7 @@ stages:
 
 cache:
   paths:
-    - target/
-    - builds/se-ewa/2022-2023-1/sum-1/Backend/target
+    - Backend/target/
 variables:
   JDK_IMAGE: maven:3-openjdk-18
 
@@ -29,7 +28,7 @@ build:backend:
     - echo "Finished building"
   artifacts:
     paths:
-      - builds/se-ewa/2022-2023-1/sum-1/Backend/target/*.jar #Save the jar file for the next stage
+      - /Backend/target/*.jar #Save the jar file for the next stage
   only:
     - main
 
@@ -45,7 +44,7 @@ test:backend:
       - mvn $MAVEN_CLI_OPTS clean test -P unit-test
   artifacts:
     paths:
-      - builds/se-ewa/2022-2023-1/sum-1/Backend/target/*.jar
+      - /Backend/target/*.jar
 
 ##Frontend
 build:frontend:
@@ -119,7 +118,7 @@ deploy:prod:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - docker login -u $DOCKER_USER -p $DOCKER_HUB $DOCKER_IMAGE
+    - docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB $DOCKER_IMAGE
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull
     - docker-compose -H "ssh://admin@$SERVER" up -d
