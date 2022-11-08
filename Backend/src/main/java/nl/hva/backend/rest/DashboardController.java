@@ -4,10 +4,12 @@ import nl.hva.backend.models.Dashboard.Graph;
 import nl.hva.backend.repositories.DashboardRepository;
 import org.apache.coyote.http11.upgrade.UpgradeServletOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;

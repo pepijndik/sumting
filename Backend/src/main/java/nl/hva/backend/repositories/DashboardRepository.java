@@ -5,7 +5,10 @@ import nl.hva.backend.models.Dashboard.Graph;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -36,8 +39,9 @@ public class DashboardRepository implements CrudRepository<Graph, Integer> {
     }
 
     @JsonFormat(pattern="yyyy-MM-dd")
-    public Iterable<Graph> findByMonth(@Param("pastMonths") LocalDate pastMonths){
-        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= '2022-10-03'",
+    public Iterable<Graph> findByMonth(@RequestParam("pastMonths")
+                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate pastMonths){
+        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= '2022-09-03'",
                 Graph.class).getResultList();
 //        return em.createQuery("SELECT a FROM Graph a WHERE a.createdAt<=current_date AND a.createdAt >= :pastMonths",
 //                Graph.class).setParameter("pastMonths", pastMonths).getResultList();
