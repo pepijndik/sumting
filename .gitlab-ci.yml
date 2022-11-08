@@ -29,7 +29,7 @@ build:backend:
     - ls -la
   artifacts:
     paths:
-      - /target/*.jar #Save the jar file for the next stage
+      - target/*.jar
   only:
     - main
 
