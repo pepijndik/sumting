@@ -9,7 +9,7 @@ stages:
 cache:
   paths:
     - target/
-    - build/
+    - builds/se-ewa/2022-2023-1/sum-1/Backend/target
 variables:
   JDK_IMAGE: maven:3-openjdk-18
 
@@ -29,7 +29,7 @@ build:backend:
     - echo "Finished building"
   artifacts:
     paths:
-      - target/*.jar #Save the jar file for the next stage
+      - builds/se-ewa/2022-2023-1/sum-1/Backend/target/*.jar #Save the jar file for the next stage
   only:
     - main
 
@@ -45,7 +45,7 @@ test:backend:
       - mvn $MAVEN_CLI_OPTS clean test -P unit-test
   artifacts:
     paths:
-      - target/*.jar
+      - builds/se-ewa/2022-2023-1/sum-1/Backend/target/*.jar
 
 ##Frontend
 build:frontend:
@@ -123,3 +123,4 @@ deploy:prod:
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull
     - docker-compose -H "ssh://admin@$SERVER" up -d
+    - echo "Deployed!"
