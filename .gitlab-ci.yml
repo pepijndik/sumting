@@ -29,7 +29,7 @@ build:backend:
     - echo "Finished building"
   artifacts:
     paths:
-      - build/Backend.jar
+      - target/*.jar #Save the jar file for the next stage
   only:
     - main
 
@@ -43,7 +43,9 @@ test:backend:
   script:
       - cd Backend #first cd into the backend folder
       - mvn $MAVEN_CLI_OPTS clean test -P unit-test
-
+  artifacts:
+    paths:
+      - target/*.jar
 
 ##Frontend
 build:frontend:
