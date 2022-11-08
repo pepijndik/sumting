@@ -7,9 +7,6 @@ class DashboardApiService extends ApiAdapter{
         this.headers = AuthHeader()
     }
 
-    // async selectByMonths(){
-    //     return await this.findByMonth();
-    // }
     // Add custom methods here
 }
 export default DashboardApiService;

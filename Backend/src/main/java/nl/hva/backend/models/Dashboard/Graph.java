@@ -4,6 +4,7 @@ import jdk.jfr.Timestamp;
 import nl.hva.backend.models.Identifiable;
 import nl.hva.backend.models.Order.Order;
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -20,14 +21,14 @@ public class Graph implements Identifiable<Integer> {
 
     }
 
-    public Graph(LocalDate createdAt) {
+    public Graph(Date createdAt) {
         this.createdAt = createdAt;
     }
 
 
     @Timestamp
     @Column(name = "created_at", columnDefinition = "timestamp")
-    private LocalDate createdAt;
+    private Date createdAt;
 
     @Override
     public Integer getId() {
@@ -39,11 +40,11 @@ public class Graph implements Identifiable<Integer> {
 
     }
 
-    public LocalDate getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
