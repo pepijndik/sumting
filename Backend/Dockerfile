@@ -1,16 +1,19 @@
-FROM maven:3.8.3-openjdk-17-slim as builder
-RUN addgroup sumting; adduser  --ingroup sumting --disabled-password sumyting
-USER sumyting:sumting
-#WORKDIR /app
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
-COPY ./src ./src
-CMD ["./mvnw", "spring-boot:run"]
-#
-#FROM eclipse-temurin:17-jre-jammy
-#WORKDIR /app
-#EXPOSE 8080
-#COPY --from=builder /app/target/*.jar /app/*.jar
-#ENTRYPOINT ["java", "-jar", "/app/*.jar" ]
+#FROM maven:3-openjdk-18 as builder
+FROM openjdk:17 as builder
+LABEL maintainer="info@pdik.nl"
+VOLUME /tmp
+
+RUN addgroup sumting; adduser  --ingroup sumting --disabled-password sumting
+USER sumting:sumting
+WORKDIR /app
+#COPY .mvn/ .mvn
+#COPY mvnw pom.xml ./
+#RUN ./mvnw dependency:go-offline
+#COPY ./src ./src
+#CMD ["./mvnw", "spring-boot:run"]
+
+EXPOSE 8083
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+COPY --from=builder /app/target/*.jar /app/*.jar
+ENTRYPOINT ["java","-Dspring.profiles.active=dev","-jar","app.jar"]
