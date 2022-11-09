@@ -82,9 +82,9 @@ docker:build:
     - hva
   script:
     - echo "Building docker image"
-    - docker login -u "$DOCKER_USER" --password-stdin "$DOCKER_HUB" "$DOCKER_IMAGE"
+    - docker login gitlab.fdmci.hva.nl:5050 -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker-compose build -t gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1 ./
-    - docker-compose push $DOCKER_IMAGE:latest
+    - docker-compose push gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1:latest
     - echo "Images builded"
   only:
     - main
@@ -117,7 +117,7 @@ deploy:prod:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - docker login -u "$DOCKER_USER" --password-stdin "$DOCKER_HUB" "$DOCKER_IMAGE"
+    - docker login gitlab.fdmci.hva.nl:5050 -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull
     - docker-compose -H "ssh://admin@$SERVER" up -d
