@@ -91,7 +91,7 @@ docker:build:
     - echo "Building docker image"
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
     - docker-compose build
-    - docker-compose push gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
+    - docker-compose push
     - echo "Images builded"
   only:
     - main
