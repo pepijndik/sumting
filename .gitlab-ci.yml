@@ -71,10 +71,11 @@ test:frontend:
     - job: build:frontend
 
 docker:build:
+
+  environment: production
+  image: creatiwww/docker-compose:latest
   services:
     - docker:dind
-  environment: production
-  image: tmaier/docker-compose:latest
   stage: docker
   before_script:
     - docker info
@@ -99,7 +100,7 @@ docker:build:
 ##Deploy to Prod server
 deploy:prod:
   environment: production
-  image: ubuntu:latest
+  image: creatiwww/docker-compose:latest
   services:
     - docker:dind
   stage: deploy
@@ -117,15 +118,9 @@ deploy:prod:
   tags:
     - hva
   before_script:
-    - apk add python python-dev py-pip build-base
-    - pip install docker-compose
     - echo "Deploying!"
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   script:
     - docker login gitlab.fdmci.hva.nl:5050 -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY_PASSWORD
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
