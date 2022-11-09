@@ -48,10 +48,11 @@ export default {
   },
   computed: {
     firstMonth() {
-      let firstMonth = "";
       const currentDate = new Date();
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      return currentDate.toLocaleString().split(',');
+      const firstDay = currentDate.getDay();
+      const firstMonth = currentDate.getMonth() - 1;
+      const firstYear = currentDate.getFullYear();
+      return firstYear + "-" + firstMonth + "-" + firstDay;
     },
     secondMonth() {
       const currentDate = new Date();
@@ -66,7 +67,9 @@ export default {
   },
   async created() {
 
-    this.projects[0] = await this.DashboardApi.findByMonth("2022-10-01")
+    console.log(this.firstMonth)
+
+    this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth)
     console.log(this.projects[0])
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++
