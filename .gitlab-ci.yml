@@ -100,8 +100,8 @@ docker:build:
         then tag="" echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'" 
         else tag=":$CI_COMMIT_REF_SLUG" echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag" 
       fi
-      - docker-compose build -t "$CI_REGISTRY_IMAGE${tag}" .
-      - docker-compose push "$CI_REGISTRY_IMAGE${tag}"
+    - docker-compose build -t "$CI_REGISTRY_IMAGE${tag}" .
+    - docker-compose push "$CI_REGISTRY_IMAGE${tag}"
 #  script:
 #    - echo "Building docker image"
 #    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
@@ -137,7 +137,7 @@ deploy:prod:
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   script:
-    - docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull
     - docker-compose -H "ssh://admin@$SERVER" up -d
