@@ -90,8 +90,8 @@ docker:build:
   script:
     - echo "Building docker image"
     - docker login gitlab.fdmci.hva.nl:5050 -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-    - docker-compose build -t gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1 ./
-    - docker-compose push gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1:latest
+    - docker-compose build
+    - docker-compose push
     - echo "Images builded"
   only:
     - main
