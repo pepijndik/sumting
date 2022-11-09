@@ -11,6 +11,7 @@ cache:
     - frontend/node_modules/
     - Backend/target/
 variables:
+  DOCKER_DRIVER: overlay
   JDK_IMAGE: maven:3-openjdk-18
 
 
@@ -70,9 +71,14 @@ test:frontend:
     - job: build:frontend
 
 docker:build:
+  services:
+    - docker:dind
   environment: production
-  image: docker:stable
+  image: tmaier/docker-compose:latest
   stage: docker
+  before_script:
+    - docker info
+    - docker-compose --version
   needs:
     - job: build:backend
     - job: build:frontend
@@ -94,6 +100,8 @@ docker:build:
 deploy:prod:
   environment: production
   image: ubuntu:latest
+  services:
+    - docker:dind
   stage: deploy
   needs:
     - job: build:backend
@@ -109,6 +117,8 @@ deploy:prod:
   tags:
     - hva
   before_script:
+    - apk add python python-dev py-pip build-base
+    - pip install docker-compose
     - echo "Deploying!"
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
@@ -117,7 +127,7 @@ deploy:prod:
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - docker login gitlab.fdmci.hva.nl:5050 -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker login gitlab.fdmci.hva.nl:5050 -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY_PASSWORD
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull
     - docker-compose -H "ssh://admin@$SERVER" up -d
