@@ -44,7 +44,11 @@ test:backend:
   script:
       - cd Backend #first cd into the backend folder
       - mvn $MAVEN_CLI_OPTS clean test -P unit-test
-
+      - mvn surefire-report:report
+  artifacts:
+    when: always
+    paths:
+      - Backend/target/surefire-reports/
 ##Frontend
 build:frontend:
   image: node:latest
@@ -85,10 +89,11 @@ docker:build:
     - hva
   before_script:
     - echo "Logging into docker registry"
-    - docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     # Default branch leaves tag empty (= latest tag)
     # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         tag=""
