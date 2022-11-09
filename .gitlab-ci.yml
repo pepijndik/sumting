@@ -120,8 +120,6 @@ deploy:prod:
     - docker:dind
   stage: deploy
   needs:
-    - job: build:backend
-    - job: build:frontend
     - job: test:frontend
     - job: test:backend
   rules:
