@@ -29,7 +29,7 @@ services:
 #    expose:
 #      - 5433
   back:
-    image: sumting-backend
+    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-backend
     build:
       context: ./Backend
       dockerfile: Dockerfile
@@ -49,7 +49,8 @@ services:
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
   front:
-    container_name: sumting-admin-frontend
+    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-frontend
+    container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
