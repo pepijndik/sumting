@@ -49,7 +49,6 @@ export default {
             data: [],
             label: 'Total orders',
             backgroundColor: '#E56B6F',
-            pointBackgroundColor: '#E56B6F'
           }
         ]
       },
@@ -61,39 +60,40 @@ export default {
   props: {
     chartId: {
       type: String,
-      default: 'line-chart'
+      default: 'bar-chart'
     }
   },
   computed: {
     firstMonth() {
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 1);
-      return new Date(currentDate.toJSON().slice(0, 10));
+      return currentDate.toLocaleString().split(',');
     },
     secondMonth() {
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 2);
-      return new Date(currentDate.toJSON().slice(0, 10));
+      return currentDate.toLocaleString().split(',')
     },
     thirdMonth() {
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 3);
-      return new Date(currentDate.toJSON().slice(0, 10));
+      return currentDate.toLocaleString().split(',')
     },
   },
   async created() {
 
-    this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth)
+    // console.log(this.firstMonth[0])
+    this.projects[0] = await this.DashboardApi.findByMonth("2022-10-01")
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++
     }
 
-    this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth)
+    this.projects[1] = await this.DashboardApi.findByMonth("2022-09-03")
     for (let i = 0; i < this.projects[1].length; i++) {
       this.currentMonth[1]++
     }
 
-    this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth)
+    this.projects[2] = await this.DashboardApi.findByMonth("2022-08-03")
     for (let i = 0; i < this.projects[2].length; i++) {
       this.currentMonth[2]++
     }
@@ -102,7 +102,7 @@ export default {
     // console.log(this.currentMonth[1])
     // console.log(this.currentMonth[2])
     this.chartData.datasets[0].data = this.currentMonth
-    console.log(this.chartData.datasets[0].data)
+    // console.log(this.chartData.datasets[0].data)
   }
 }
 </script>

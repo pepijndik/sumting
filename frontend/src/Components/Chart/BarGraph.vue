@@ -11,7 +11,6 @@
 <script>
 import {Bar} from 'vue-chartjs'
 import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js'
-import axios from "axios";
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
@@ -49,26 +48,26 @@ export default {
   },
   computed: {
     firstMonth() {
+      let firstMonth = "";
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 1);
-      return currentDate.toLocaleString().split(',')
-      // return new Date(currentDate.toJSON().slice(0, 10));
+      return currentDate.toLocaleString().split(',');
     },
     secondMonth() {
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 2);
-      return new Date(currentDate.toJSON().slice(0, 10));
+      return currentDate.toLocaleString().split(',')
     },
     thirdMonth() {
       const currentDate = new Date();
       currentDate.setMonth(currentDate.getMonth() - 3);
-      return new Date(currentDate.toJSON().slice(0, 10));
+      return currentDate.toLocaleString().split(',')
     },
   },
   async created() {
 
-    console.log(this.firstMonth)
-    this.projects[0] = await this.DashboardApi.findByMonth("2022-10-02")
+    this.projects[0] = await this.DashboardApi.findByMonth("2022-10-01")
+    console.log(this.projects[0])
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++
     }
