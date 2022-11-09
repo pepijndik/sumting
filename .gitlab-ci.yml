@@ -71,15 +71,11 @@ test:frontend:
     - job: build:frontend
 
 docker:build:
-
   environment: production
   image: creatiwww/docker-compose:latest
   services:
     - docker:dind
   stage: docker
-  before_script:
-    - docker info
-    - docker-compose --version
   needs:
     - job: build:backend
     - job: build:frontend
@@ -87,12 +83,27 @@ docker:build:
     - job: test:backend
   tags:
     - hva
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" --password-stdin "$REGISTRY_ACCESS_TOKEN" $CI_REGISTRY
+    # Default branch leaves tag empty (= latest tag)
+    # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
-    - echo "Building docker image"
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
-    - docker-compose build
-    - docker-compose push
-    - echo "Images builded"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+        else
+          tag=":$CI_COMMIT_REF_SLUG"
+          echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+        fi
+      - docker-compose build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
+      - docker-compose push "$CI_REGISTRY_IMAGE${tag}"
+#  script:
+#    - echo "Building docker image"
+#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
+#    - docker-compose build
+#    - docker-compose push se-ewa/2022-2023-1/sum-1
+#    - echo "Images builded"
   only:
     - main
 
