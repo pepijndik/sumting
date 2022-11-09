@@ -115,6 +115,8 @@ docker:build:
 ##Deploy to Prod server
 deploy:prod:
   environment: production
+  only:
+    - main
   image: creatiwww/docker-compose:latest
   services:
     - docker:dind
@@ -122,12 +124,10 @@ deploy:prod:
   needs:
     - job: test:frontend
     - job: test:backend
-  rules:
-    - if: $CI_COMMIT_TAG
   release:                               # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
     name: 'Sumting Admin panel Release'
-    tag_name: '$CI_COMMIT_TAG'
-    description: '$CI_COMMIT_TAG'
+    tag_name: '$CI_COMMIT_REF_SLUG'
+    description: '$CI_COMMIT_REF_SLUG'
   tags:
     - hva
   before_script:
