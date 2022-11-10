@@ -79,7 +79,7 @@ docker:build:
   image: creatiwww/docker-compose:latest
   services:
     - docker:dind
-  stage: docker
+  stage: deploy
   needs:
     - job: build:backend
     - job: build:frontend
@@ -114,6 +114,13 @@ docker:build:
 
 ##Deploy to Prod server
 deploy:prod:
+  dependencies:
+   - build:backend
+   - build:frontend
+   - test:frontend
+   - test:backend
+   - test:backend
+   - docker:build
   environment: production
   only:
     - main
@@ -130,8 +137,13 @@ deploy:prod:
     - hva
   before_script:
     - echo "Deploying!"
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - 'which rsync || ( apt-get update -y && apt-get install rsync -y )'
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - echo "$SSH_PRIVATE_KEY" | base64 --decode | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_HOST_KEY" > ~/.ssh/known_hosts
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - cd /home/docker/sumting #Dive into the docker user folder, where sumting project is located with the docker-compose file
