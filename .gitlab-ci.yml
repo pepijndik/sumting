@@ -121,8 +121,7 @@ deploy:prod:
   services:
     - docker:dind
   stage: deploy
-  needs:
-    - job: docker:build
+
   release:                               # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
     name: 'Sumting Admin panel Release'
     tag_name: '$CI_COMMIT_REF_SLUG'
