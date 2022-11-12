@@ -1,7 +1,7 @@
-package nl.hva.backend.models.Product;
+package app.models.Product;
 
 import com.sun.istack.Nullable;
-import nl.hva.backend.models.Identifiable;
+import app.models.Identifiable;
 
 import javax.persistence.*;
 

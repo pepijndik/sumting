@@ -1,7 +1,7 @@
-package nl.hva.backend.models.Product;
+package app.models.Product;
 
-import nl.hva.backend.models.Identifiable;
-import nl.hva.backend.models.Project.Project;
+import app.models.Identifiable;
+import app.models.Project.Project;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

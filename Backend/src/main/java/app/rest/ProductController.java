@@ -1,7 +1,7 @@
-package nl.hva.backend.rest;
+package app.rest;
 
-import nl.hva.backend.models.Product.Product;
-import nl.hva.backend.repositories.ProductRepository;
+import app.models.Product.Product;
+import app.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

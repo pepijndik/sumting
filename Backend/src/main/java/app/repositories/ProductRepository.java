@@ -1,6 +1,7 @@
-package nl.hva.backend.repositories;
+package app.repositories;
 
-import nl.hva.backend.models.Product.Product;
+import app.models.Product.Product;
+import app.repositories.interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
