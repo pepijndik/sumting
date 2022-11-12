@@ -29,7 +29,7 @@ services:
 #    expose:
 #      - 5433
   back:
-    image: sumting-backend
+    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-backend
     build:
       context: ./Backend
       dockerfile: Dockerfile
@@ -40,24 +40,34 @@ services:
 #        - SPRING_DATASOURCE_USERNAME=sumting
 #        - SPRING_DATASOURCE_PASSWORD=sumting
 #        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    restart: always
     ports:
       - 8083:8083
     networks:
       - sumting
+      - nginxproxymanager_default
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
   front:
-    container_name: sumting-admin-frontend
+    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-frontend
+    container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    restart: always
     ports:
       - 8080:8080
     networks:
       - sumting
+      - nginxproxymanager_default
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
 volumes:
   data:
 
 networks:
-  sumtingDb:
-    driver: bridge
   sumting:
     driver: bridge
+  nginxproxymanager_default:
+    external: true
