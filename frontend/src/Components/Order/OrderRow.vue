@@ -27,9 +27,9 @@
     </template>
   </Index>
   <div
-    class="dark:border-gray-700 w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b mb-5 mt-5 font-Alatsi items-center pt-2 pb-2"
+    class="dark:border-gray-700 w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center"
   >
-    <div class="m-2 flex lg:flex-row flex-wrap border-r-2 pbb-2">
+    <div class="m-2 flex lg:flex-row flex-wrap border-r-2">
       <div
         class="float-left items-left flex w-[80px] md:w-[100px] lg:w-[200px] items-center md:border-r-2 pr-1 mr-1"
       >
