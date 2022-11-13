@@ -30,8 +30,8 @@
   <div
     class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
     scrollbar-thin scrollbar-thumb-yInMnBlue">
-    <div class="p-3 flex gap-2 border-0 border-b">
-      <div class="relative">
+    <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
+      <div class="relative sm:w-80">
         <div class="absolute text-gray-300 flex items-center pl-4 h-full cursor-pointer">
           <svg class="fill-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 487.95 487.95" width="17"
                height="17" xml:space="preserve">
@@ -48,11 +48,12 @@
             class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full
             h-10 flex focus:border-yInMnBlue focus:border items-center pl-10 text-sm border-gray-300
             border font-inter"
-            v-model="search"
+            v-model="searchKeyWord"
             placeholder="Search for your order"
         />
       </div>
-      <div @click="changeListOrder()" class="flex px-2 font-inter text-yInMnBlue border border-gray-300 rounded">
+      <div @click="changeListOrder()" class="flex px-2 font-inter text-yInMnBlue border border-gray-300 rounded
+      cursor-pointer">
         <p v-if="searchOrder" class="flex m-auto">
           <span>Old</span>
           <svg class="fill-yInMnBlue rotate-90 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -92,6 +93,7 @@ export default {
       orders: [],
       users: [],
       selectedProject: null,
+      searchKeyWord: '',
       searchOrder: true,
       limit: 10,
     };
@@ -100,14 +102,27 @@ export default {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
     //this.users = await this.UserApi.findAll();
-
+    
     this.orders.sort((a,b) => {
       return a.order_date.localeCompare(b.order_date)
     });
   },
   computed: {
     computedObj() {
-      return this.limit ? this.orders.slice(0, this.limit) : this.orders;
+      const results = [];
+      const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
+
+      if (this.searchKeyWord === '') {
+        return this.limit ? this.orders.slice(0, this.limit) : this.orders;
+      }
+
+      for (const order of this.orders) {
+        if (order.match(regKeyWord)) {
+          results.push(order);
+        }
+      }
+
+      return this.limit ? results.slice(0, this.limit) : results;
     },
   },
   methods: {
