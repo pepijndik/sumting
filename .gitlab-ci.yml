@@ -139,6 +139,6 @@ deploy:prod:
     - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh admin@$SERVER "cd /home/docker/sumting/sum-1; docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY; docker-compose down --remove-orphans; docker-compose pull back; docker-compose pull front   docker-compose pull db; docker-compose up -d"
+    - ssh admin@$SERVER "cd /home/docker/sumting/sum-1; git pull -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD ;docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY; docker-compose down --remove-orphans; docker-compose pull back; docker-compose pull front   docker-compose pull db; docker-compose up -d"
     #- cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
     - echo "Deployed!"
