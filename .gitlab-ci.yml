@@ -139,9 +139,9 @@ deploy:prod:
     - echo "$SSH_HOST_KEY" > ~/.ssh/known_hosts
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
-    - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
-    - docker-compose -H "ssh://admin@$SERVER" pull back
-    - docker-compose -H "ssh://admin@$SERVER" pull front
-    - docker-compose -H "ssh://admin@$SERVER" up -d
+    #- cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
+    - docker-compose -H "ssh://admin@$SERVER; cd /home/docker/sumting/sum-1" down --remove-orphans
+    - docker-compose -H "ssh://admin@$SERVER; cd /home/docker/sumting/sum-1" pull back
+    - docker-compose -H "ssh://admin@$SERVER; cd /home/docker/sumting/sum-1" pull front
+    - docker-compose -H "ssh://admin@$SERVER; cd /home/docker/sumting/sum-1" up -d
     - echo "Deployed!"
