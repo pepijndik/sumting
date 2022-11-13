@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   db:
-    image: postgres:latest
+    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/db
     build:
       context: ./Docker/postgres
       dockerfile: Dockerfile
