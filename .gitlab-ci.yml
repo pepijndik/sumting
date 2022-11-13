@@ -115,10 +115,6 @@ docker:build:
 ##Deploy to Prod server
 deploy:prod:
   needs:
-    - job: build:backend
-    - job: build:frontend
-    - job: test:frontend
-    - job: test:backend
     - job: docker:build
   environment: production
   only:
@@ -143,7 +139,7 @@ deploy:prod:
     - echo "$SSH_HOST_KEY" > ~/.ssh/known_hosts
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - cd /home/docker/sumting #Dive into the docker user folder, where sumting project is located with the docker-compose file
+    - cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
     - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
     - docker-compose -H "ssh://admin@$SERVER" pull back
     - docker-compose -H "ssh://admin@$SERVER" pull front
