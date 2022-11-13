@@ -12,7 +12,7 @@ class ProductApiService extends ApiAdapter {
     }
 
     async findProductByProjectId(id) {
-        return BaseApi.get('/products/findByProjectId?id=' + id).then(response => {
+        return await BaseApi.get('/products/findByProjectId?id=' + id).then(response => {
             return response.data;
         }).catch(error => {
             throw error;

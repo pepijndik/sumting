@@ -15,9 +15,9 @@
         class="mt-1 pb-4"
         placeholder="Select project(s)"
         :options="projects"
-        @selected="searchSelection = $event">
-    </SearchableDropDown>
-    <OrderTotalCostSubItem v-if="selectedProjects.length > 0" :selectedProjects="selectedProjects"/>
+        :max-items="20"
+        @selected="searchSelection = $event"/>
+    <OrderTotalCostSubItem v-if="selectedProjects.length > 0" :products="products"/>
     <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create order
@@ -33,7 +33,7 @@ import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubI
 export default {
   name: "OrderCreate",
   components: {OrderTotalCostSubItem, SearchableDropDown},
-  inject: ['ProjectApi'],
+  inject: ['ProjectApi', "ProductApi"],
   data() {
     return {
       editor: ClassicEditor,
@@ -44,20 +44,27 @@ export default {
       searchSelection: null,
       selectedProjects: [],
       projects: [],
+      products: []
     }
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
   },
   watch: {
-    searchSelection: function (val) {
+    searchSelection(val) {
+      //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
       this.addProjectToSelected(val);
-      console.log("Selected project: " + val);
-    }
+      console.log(val);
+    },
+    // selectedProjects(newVal, oldVal) {
+    //   console.log("old: " + oldVal);
+    //   console.log("new: " + newVal);
+    //   this.selectedProjects = newVal;
+    //   // this.findProductsForProjects(newVal);
+    // }
   },
   methods: {
     addProjectToSelected(project) {
-      if (project === Array(1) || project === Object(Array(0, 1))) return;
       let found = false;
       for (let i = 0; i < this.selectedProjects.length; i++) {
         if (this.selectedProjects[i].id === project.id) {
@@ -67,8 +74,22 @@ export default {
       }
       if (!found) {
         this.selectedProjects.push(project);
+        this.findProductsForProjects(this.selectedProjects);
       }
+      console.log("SELECTED PROJECTS")
       console.log(this.selectedProjects);
+    },
+    findProductsForProjects(projects) {
+      projects.forEach(async (project) => {
+        console.log("test")
+        //Searches for the product corresponding to the project id.
+        await this.ProductApi.findProductByProjectId(project.id).then((response) => {
+          this.products.push(response.data);
+          console.log(this.products);
+        }).catch((error) => {
+          console.log(error);
+        });
+      });
     }
   }
 }

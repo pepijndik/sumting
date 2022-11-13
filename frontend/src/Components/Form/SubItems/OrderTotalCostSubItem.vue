@@ -19,8 +19,11 @@ export default {
   components: {OrderSubItem},
   inject: ['ProductApi', "ProjectApi"],
   props: {
-    selectedProjects: Array,
-    default: []
+    products: {
+      type: Array,
+      required: true,
+      note: "Array of selected projects"
+    },
   },
   methods: {
     updateTotal(event) {
@@ -40,40 +43,32 @@ export default {
         this.totalCost += this.costArray[i];
         this.recursiveCostCalculator(i + 1);
       }
-    },
-    findProductsForProjects(val) {
-      val.forEach((project) => {
-        console.log("test")
-        this.ProductApi.findProductByProjectId(project.id).then((response) => {
-          this.products.push(response.data);
-          console.log(this.products);
-        });
-      });
     }
   },
   data() {
     return {
-      products: [],
-      projects: [],
       costArray: [],
       totalCost: 0
     }
   },
   created() {
     this.projects = this.ProjectApi.SearchableDropDown();
-    this.products = this.ProductApi.SearchableDropDown();
+    // //NOTE: This was a test for the findProductsForProjects method. It returned an `object Promise`
+    // this.products = this.ProductApi.SearchableDropDown();
     // console.log(this.products);
     // for (let i = 0; i < this.selectedProjects.length; i++) {
     //   if (this.selectedProjects[i] === this.ProductApi.findProductByProjectId(19)) {
+    //     //Note: This code reaches and is executed
     //     this.selectedProjects.push(this.ProductApi.findProductByProjectId(19));
     //   }
     // }
     // console.log("Searched for project id=19, result is: " + this.ProductApi.findProductByProjectId(19));
   },
   watch: {
-    selectedProjects: function (newVal) {
-      console.log("selectedProjects changed");
-      this.findProductsForProjects(newVal);
+    products: function (val) {
+      //TODO The code doesn't reach here for some reason, fix it
+      console.log("Products have changed");
+      this.findProductsForProjects(val);
     }
   }
 }
