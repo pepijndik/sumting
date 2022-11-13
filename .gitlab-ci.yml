@@ -114,13 +114,12 @@ docker:build:
 
 ##Deploy to Prod server
 deploy:prod:
-  dependencies:
-   - build:backend
-   - build:frontend
-   - test:frontend
-   - test:backend
-   - test:backend
-   - docker:build
+  needs:
+    - job: build:backend
+    - job: build:frontend
+    - job: test:frontend
+    - job: test:backend
+    - job: docker:build
   environment: production
   only:
     - main
