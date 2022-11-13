@@ -28,9 +28,9 @@
     </div>
   </div>
   <div
-    class="h-80 mt-4 px-3 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
+    class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
     scrollbar-thin scrollbar-thumb-yInMnBlue">
-    <div class="flex">
+    <div class="p-3 flex gap-2 border-0 border-b">
       <div class="relative">
         <div class="absolute text-gray-300 flex items-center pl-4 h-full cursor-pointer">
           <svg class="fill-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 487.95 487.95" width="17"
@@ -47,16 +47,29 @@
         <input
             class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full
             h-10 flex focus:border-yInMnBlue focus:border items-center pl-10 text-sm border-gray-300
-            border shadow font-inter"
+            border font-inter"
             v-model="search"
+            placeholder="Search for your order"
         />
       </div>
-      <div @click="changeListOrder()">
-        <p v-if="searchOrder">Old > New</p>
-        <p v-if="!searchOrder">New > Old</p>
+      <div @click="changeListOrder()" class="flex px-2 font-inter text-yInMnBlue border border-gray-300 rounded">
+        <p v-if="searchOrder" class="flex m-auto">
+          <span>Old</span>
+          <svg class="fill-yInMnBlue rotate-90 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z" class="clr-i-outline clr-i-outline-path-1"></path>
+          </svg>
+          <span>New</span>
+        </p>
+        <p v-if="!searchOrder" class="flex m-auto">
+          <span>Old</span>
+          <svg class="fill-yInMnBlue rotate-270 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z" class="clr-i-outline clr-i-outline-path-1"></path>
+          </svg>
+          <span>New</span>
+        </p>
       </div>
     </div>
-    <div class="w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
+    <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
       v-for="item in computedObj"
       :key="item.id"
     >
