@@ -28,6 +28,8 @@ public class SumtingBackend {
             registry.addMapping("/**")
                     .exposedHeaders("Authorization")
                     .allowedOriginPatterns("http://localhost:*")
+                    .allowedOriginPatterns("https://sumting.pdik.nl/api/*")
+                    .allowedOriginPatterns("http://localhost/api/*")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
         }
     }
