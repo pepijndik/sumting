@@ -1,51 +1,53 @@
 version: '3.6'
 services:
-#  db:
-#    image: postgres
-#    build:
-#      context: ./Docker/postgres
-#      dockerfile: Dockerfile
-#    restart: always
-#    hostname: postgres
-#    container_name: sumting-docker-db
-#    environment:
-#      POSTGRES_PASSWORD: sumting
-#      POSTGRES_USER: sumting
-#      POSTGRES_DB: sumting
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#       - ./data/db:/var/lib/postgresql/data
-#       - ./Docker/postgres/database.sql:/docker-entrypoint-initdb.d/create_tables.sql
-#         # copy the sql script to fill tables
-#       - ./Docker/postgres/example_data.sql:/docker-entrypoint-initdb.d/fill_tables.sql
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    networks:
-#      - sumtingDb
-#    expose:
-#      - 5433
+  db:
+    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/db
+    build:
+      context: ./Docker/postgres
+      dockerfile: Dockerfile
+    restart: always
+    hostname: postgres
+    container_name: sumting-docker-db
+    environment:
+      POSTGRES_PASSWORD: sumting
+      POSTGRES_USER: sumting
+      POSTGRES_DB: sumting
+    ports:
+      - "5432:5432"
+    volumes:
+       - ./data/db:/var/lib/postgresql/data
+       - ./Docker/postgres/database.sql:/docker-entrypoint-initdb.d/create_tables.sql
+         # copy the sql script to fill tables
+       - ./Docker/postgres/example_data.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sumtingDb
+    expose:
+      - 5433
   back:
     image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-backend
     build:
       context: ./Backend
       dockerfile: Dockerfile
     container_name: sumting-admin-backend
-#    environment:
-#      WAIT_HOSTS: postgres:5433
-#        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
-#        - SPRING_DATASOURCE_USERNAME=sumting
-#        - SPRING_DATASOURCE_PASSWORD=sumting
-#        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    environment:
+      WAIT_HOSTS: db:5433
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+        - SPRING_DATASOURCE_USERNAME=sumting
+        - SPRING_DATASOURCE_PASSWORD=sumting
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     restart: always
     ports:
       - 8083:8083
     networks:
       - sumting
       - nginxproxymanager_default
+    depends_on:
+      - "db"
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
   front:
@@ -60,6 +62,7 @@ services:
     networks:
       - sumting
       - nginxproxymanager_default
+
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
 
@@ -67,6 +70,8 @@ volumes:
   data:
 
 networks:
+  sumtingDb:
+    driver: bridge
   sumting:
     driver: bridge
   nginxproxymanager_default:

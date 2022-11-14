@@ -114,13 +114,8 @@ docker:build:
 
 ##Deploy to Prod server
 deploy:prod:
-  dependencies:
-   - build:backend
-   - build:frontend
-   - test:frontend
-   - test:backend
-   - test:backend
-   - docker:build
+  needs:
+    - job: docker:build
   environment: production
   only:
     - main
@@ -129,24 +124,17 @@ deploy:prod:
     - docker:dind
   stage: deploy
 
-  release:                               # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
-    name: 'Sumting Admin panel Release'
-    tag_name: '$CI_COMMIT_REF_SLUG'
-    description: '$CI_COMMIT_REF_SLUG'
   tags:
     - hva
   before_script:
     - echo "Deploying!"
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | base64 --decode | tr -d '\r' | ssh-add - > /dev/null
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo "$SSH_HOST_KEY" > ~/.ssh/known_hosts
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
-    - cd /home/docker/sumting #Dive into the docker user folder, where sumting project is located with the docker-compose file
-    - docker-compose -H "ssh://admin@$SERVER" down --remove-orphans
-    - docker-compose -H "ssh://admin@$SERVER" pull back
-    - docker-compose -H "ssh://admin@$SERVER" pull front
-    - docker-compose -H "ssh://admin@$SERVER" up -d
+    - ssh admin@$SERVER "cd /home/docker/sumting/sum-1; git pull; docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY; docker-compose down --remove-orphans; docker-compose pull back; docker-compose pull front   docker-compose pull db; docker-compose up -d"
+    #- cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
     - echo "Deployed!"
