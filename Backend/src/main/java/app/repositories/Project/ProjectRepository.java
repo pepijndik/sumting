@@ -33,7 +33,7 @@ public class ProjectRepository implements CrudRepository<Project, Integer> {
 
     @Override
     public long count() {
-        return 0;
+        return this.findAll().spliterator().getExactSizeIfKnown();
     }
 
     @Override
@@ -44,6 +44,6 @@ public class ProjectRepository implements CrudRepository<Project, Integer> {
 
     @Override
     public boolean existsById(Integer primaryKey) {
-        return false;
+        return this.findById(primaryKey) != null;
     }
 }

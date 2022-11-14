@@ -26,12 +26,7 @@ public class ProjectController {
 
 
     @GetMapping("/projects")
-    public ResponseEntity<Iterable<Project>> getAllProjects(
-            @RequestParam(value = "pageNo", defaultValue = SumtingBackend.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = SumtingBackend.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = SumtingBackend.DEFAULT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = SumtingBackend.DEFAULT_SORT_DIRECTION, required = false) String sortDir
-    ) {
+    public ResponseEntity<Iterable<Project>> getAllProjects() {
         return new ResponseEntity<>(projectRepository.findAll(), HttpStatus.OK);
     }
 
