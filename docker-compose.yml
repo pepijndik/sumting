@@ -54,6 +54,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: always
+    environment:
+      - VUE_APP_BACKEND_API_URL=https://sumting.pdik.nl/api
+      - VUE_APP_ENV=production
     networks:
       - sumting
       - nginxproxymanager_default
