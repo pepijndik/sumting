@@ -3,15 +3,15 @@
             focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full h-12 flex
             text-sm border-gray-300 rounded border shadow font-inter justify-between text-left">
     <div class="w-1/3 flex items-center h-10 pl-4 overflow-hidden">
-      <p class="text-yInMnBlue font-bold pr-4 ">{{ name }}</p>
+      <p class="text-yInMnBlue font-bold pr-4 ">{{ product.project.description }}</p>
     </div>
     <div class="items-center flex">
       <div class="divider"/>
     </div>
     <div class="w-1/3 flex items-center justify-center">
-      <p class="text-candyPink font-bold">€ {{ price_per }}</p>
+      <p class="text-candyPink font-bold">€ {{ product.price }}</p>
         <p class="text-yInMrBlue font-bold p-1">/</p>
-        <p class="text-yInMnBlue font-bold">{{ target_item }}</p>
+        <p class="text-yInMnBlue font-bold">{{ product.type.product_type_name }}</p>
     </div>
     <div class="items-center flex">
       <div class="divider"/>
@@ -34,22 +34,24 @@ export default {
   name: "OrderSubItem",
   components: {InputComponentNumeric},
   props: {
-    name: String,
-    price_per: {
-      type: Number,
-      default: 0.00
+    product:{
+      type: Object,
+      default: () => ({
+        project:{
+          name: "Tree"
+        },
+        type:{
+          product_type_name: "Tree"
+        },
+        price: 0.00,
+      }),
+      required: true,
     },
-    target_item: {
-      type: String,
-      default: "Tree"
-    },
-    amount: {
-      type: Number,
-      default: 0
-    },
-    index: {
-      type: Number,
-      default: 0
+
+  },
+  data() {
+    return {
+      amount: 0,
     }
   },
   methods: {

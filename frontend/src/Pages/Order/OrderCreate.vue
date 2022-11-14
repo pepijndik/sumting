@@ -51,13 +51,13 @@ export default {
     this.projects = await this.ProjectApi.SearchableDropDown();
   },
   watch: {
-    searchSelection(val) {
+   async searchSelection(val) {
       //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
-      this.addProjectToSelected(val);
+      await this.addProjectToSelected(val);
     },
   },
   methods: {
-    addProjectToSelected(project) {
+    async addProjectToSelected(project) {
       let found = false;
       for (let i = 0; i < this.selectedProjects.length; i++) {
         if (this.selectedProjects[i].id === project.id) {
@@ -66,25 +66,29 @@ export default {
         }
       }
       if (!found) {
+
         this.selectedProjects.push(project);
-        this.findProductsForProjects(this.selectedProjects);
+       await this.findProductsForProjects(this.selectedProjects);
       }
       console.log("=={ Selected projects }==");
       console.log(this.selectedProjects);
+      console.log("=={ PRODUCTS }==")
+      console.log(this.products);
     },
-    findProductsForProjects(projects) {
+   async findProductsForProjects(projects) {
       let tempProducts = [];
-      projects.forEach(async (project) => {
+      for (const project of projects) {
         //Searches for the product corresponding to the project id.
         await this.ProductApi.findProductByProjectId(project.id).then((data) => {
-          return tempProducts.push(data);
+          data.forEach((product) => {
+            tempProducts.push(product);
+          });
         }).catch((error) => {
           throw error;
         });
-      });
-      this.products = tempProducts;
-      // console.log("=={ PRODUCTS }==")
-      // console.log(this.products);
+      }
+     this.products = tempProducts;
+
     }
   }
 }
