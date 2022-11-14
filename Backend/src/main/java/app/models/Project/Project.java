@@ -51,7 +51,7 @@ public class Project implements Identifiable<Integer> {
 
 
     @Nullable
-    @Column(name = "project_img", columnDefinition = "char(255)")
+    @Column(name = "project_image_medium", columnDefinition = "char(255)")
     private String image;
 
     @Timestamp
