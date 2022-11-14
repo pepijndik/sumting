@@ -117,7 +117,8 @@ export default {
       }
 
       for (const order of this.orders) {
-        if (order.match(regKeyWord)) {
+       const string = order.id.toString();
+        if (string.match(regKeyWord)) {
           results.push(order);
         }
       }
