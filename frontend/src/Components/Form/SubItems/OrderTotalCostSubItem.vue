@@ -20,6 +20,11 @@ export default {
   inject: ['ProductApi', "ProjectApi"],
   props: {
     products: {
+      default: () => [{
+        name: "Tree",
+        price: 0.00,
+        type: "Tree"
+      }],
       type: Array,
       required: true,
       note: "Array of selected projects"
@@ -66,7 +71,8 @@ export default {
          (add a character or comment and then go back to the browser without refreshing)
         */
       },
-      deep: true
+      deep: true,
+      immediate: true
     }
   }
 }
