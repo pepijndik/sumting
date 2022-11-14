@@ -27,9 +27,9 @@ public class SumtingBackend {
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
                     .exposedHeaders("Authorization")
+                    .allowedOriginPatterns("http://localhost/api/*")
                     .allowedOriginPatterns("http://localhost:*")
                     .allowedOriginPatterns("https://sumting.pdik.nl/api/*")
-                    .allowedOriginPatterns("http://localhost/api/*")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
         }
     }
