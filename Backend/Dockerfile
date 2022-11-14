@@ -9,7 +9,6 @@ WORKDIR /app
 #COPY ./src ./src
 #CMD ["./mvnw", "spring-boot:run"]
 
-EXPOSE 8083
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-Dspring.profiles.active=dev","-jar","app.jar"]
