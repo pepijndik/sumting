@@ -1,11 +1,11 @@
 <template>
-  <OrderSubItem v-bind:key="product.name" v-for="(product, index) in products" :name="product.name"
-                :price_per="product.price_per" :target_item="product.target_item" :amount="0" :index="index"
+  <OrderSubItem :key="product.name" v-for="(product, index) in products" :name="product.name"
+                :price_per="product.price" :target_item="product.type" :amount="0" :index="index"
                 @update="updateTotal"/>
-  <div class="w-full h-12">
-    <div class="focus:outline-none focus:ring-2 focus:ring-offset-2 h-12
-            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-1/3 flex text-sm float-right
-            border-gray-300 rounded border shadow font-inter justify-between text-left items-center h-10 pl-4 overflow-hidden ">
+  <div class="w-full h-12" v-if="products.length > 0">
+    <div class="focus:outline-none focus:ring-2 focus:ring-offset-2 h-12 w-1/3 h-10 pl-4
+            focus:ring-candyPink dark:border-gray-700 bg-white font-normal flex text-sm float-right
+            border-gray-300 rounded border shadow font-inter justify-between text-left items-center overflow-hidden">
       <p class="text-yInMnBlue font-bold">Total: {{ totalCost }} </p>
     </div>
   </div>
@@ -51,24 +51,22 @@ export default {
       totalCost: 0
     }
   },
-  created() {
-    this.projects = this.ProjectApi.SearchableDropDown();
+  // created() {
     // //NOTE: This was a test for the findProductsForProjects method. It returned an `object Promise`
-    // this.products = this.ProductApi.SearchableDropDown();
-    // console.log(this.products);
-    // for (let i = 0; i < this.selectedProjects.length; i++) {
-    //   if (this.selectedProjects[i] === this.ProductApi.findProductByProjectId(19)) {
-    //     //Note: This code reaches and is executed
-    //     this.selectedProjects.push(this.ProductApi.findProductByProjectId(19));
-    //   }
-    // }
+    // console.log(this.ProductApi.SearchableDropDown());
     // console.log("Searched for project id=19, result is: " + this.ProductApi.findProductByProjectId(19));
-  },
+  // },
   watch: {
-    products: function (val) {
-      //TODO The code doesn't reach here for some reason, fix it
-      console.log("Products have changed");
-      this.findProductsForProjects(val);
+    products: {
+      handler: function (val) {
+        console.log("=={ Products have changed }==");
+        console.log(val);
+        /*
+        TODO Items are now not being updated, but somehow do show up after a hotreload....
+         (add a character or comment and then go back to the browser without refreshing)
+        */
+      },
+      deep: true
     }
   }
 }

@@ -17,7 +17,7 @@
         :options="projects"
         :max-items="20"
         @selected="searchSelection = $event"/>
-    <OrderTotalCostSubItem v-if="selectedProjects.length > 0" :products="products"/>
+    <OrderTotalCostSubItem :products="products"/>
     <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create order
@@ -54,14 +54,7 @@ export default {
     searchSelection(val) {
       //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
       this.addProjectToSelected(val);
-      console.log(val);
     },
-    // selectedProjects(newVal, oldVal) {
-    //   console.log("old: " + oldVal);
-    //   console.log("new: " + newVal);
-    //   this.selectedProjects = newVal;
-    //   // this.findProductsForProjects(newVal);
-    // }
   },
   methods: {
     addProjectToSelected(project) {
@@ -69,27 +62,29 @@ export default {
       for (let i = 0; i < this.selectedProjects.length; i++) {
         if (this.selectedProjects[i].id === project.id) {
           found = true;
-          console.log("!!!!!!" + this.selectedProjects[i].id);
+          break;
         }
       }
       if (!found) {
         this.selectedProjects.push(project);
         this.findProductsForProjects(this.selectedProjects);
       }
-      console.log("SELECTED PROJECTS")
+      console.log("=={ Selected projects }==");
       console.log(this.selectedProjects);
     },
     findProductsForProjects(projects) {
+      let tempProducts = [];
       projects.forEach(async (project) => {
-        console.log("test")
         //Searches for the product corresponding to the project id.
-        await this.ProductApi.findProductByProjectId(project.id).then((response) => {
-          this.products.push(response.data);
-          console.log(this.products);
+        await this.ProductApi.findProductByProjectId(project.id).then((data) => {
+          return tempProducts.push(data);
         }).catch((error) => {
-          console.log(error);
+          throw error;
         });
       });
+      this.products = tempProducts;
+      // console.log("=={ PRODUCTS }==")
+      // console.log(this.products);
     }
   }
 }
