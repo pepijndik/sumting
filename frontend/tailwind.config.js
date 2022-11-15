@@ -20,6 +20,9 @@ module.exports = {
         inner: "inset 2px 2px 2px 0 rgb(0 0 0 / 0.15)",
         "t-inner": "inset 0 2px 2px 0 rgb(0 0 0 / 0.15)",
       },
+      rotate: {
+        '270': '270deg',
+      },
     },
   },
   variants: {},
