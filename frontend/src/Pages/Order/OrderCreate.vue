@@ -17,7 +17,8 @@
         :options="projects"
         :max-items="20"
         @selected="searchSelection = $event"/>
-    <OrderTotalCostSubItem :products="products"/>
+    <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected"/>
+<!--    <OrderTotalCostSubItem :products="products" @deleteProduct="console.log('found delete event in master parent ' + $event)"/>-->
     <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create order
@@ -51,12 +52,16 @@ export default {
     this.projects = await this.ProjectApi.SearchableDropDown();
   },
   watch: {
-   async searchSelection(val) {
+    async searchSelection(val) {
       //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
       await this.addProjectToSelected(val);
     },
   },
   methods: {
+    removeSelected(i) {
+      this.searchSelection = null;
+      this.selectedProjects.splice(i, 1);
+    },
     async addProjectToSelected(project) {
       let found = false;
       for (let i = 0; i < this.selectedProjects.length; i++) {
@@ -66,16 +71,15 @@ export default {
         }
       }
       if (!found) {
-
         this.selectedProjects.push(project);
-       await this.findProductsForProjects(this.selectedProjects);
+        await this.findProductsForProjects(this.selectedProjects);
       }
       console.log("=={ Selected projects }==");
       console.log(this.selectedProjects);
       console.log("=={ PRODUCTS }==")
       console.log(this.products);
     },
-   async findProductsForProjects(projects) {
+    async findProductsForProjects(projects) {
       let tempProducts = [];
       for (const project of projects) {
         //Searches for the product corresponding to the project id.
@@ -87,7 +91,7 @@ export default {
           throw error;
         });
       }
-     this.products = tempProducts;
+      this.products = tempProducts;
 
     }
   }

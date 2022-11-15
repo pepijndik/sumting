@@ -10,8 +10,8 @@
     </div>
     <div class="w-1/3 flex items-center justify-center">
       <p class="text-candyPink font-bold">€ {{ product.price }}</p>
-        <p class="text-yInMrBlue font-bold p-1">/</p>
-        <p class="text-yInMnBlue font-bold">{{ product.type.product_type_name }}</p>
+      <p class="text-yInMrBlue font-bold p-1">/</p>
+      <p class="text-yInMnBlue font-bold">{{ product.type.product_type_name }}</p>
     </div>
     <div class="items-center flex">
       <div class="divider"/>
@@ -19,10 +19,11 @@
     <div class="w-1/3 flex items-center">
       <label for="amountToOrder" class="font-inter text-yInMnBlue font-bold p-4 flex">Amount</label>
       <InputComponentNumeric :inputData="amount" @update="amount = $event" id="amount" placeholder="Amount"
-                      required autocomplete="" name="amount" type="number" @keyup="emitUpdate"
-                      :class="'rounded-md border font-inter text-yInMnBlue font-bold w-1/2 h-8'" ref="amountToOrder"/>
+                             required autocomplete="" name="amount" type="number" @keyup="emitUpdate"
+                             :class="'rounded-md border font-inter text-yInMnBlue font-bold w-1/2 h-8'"
+                             ref="amountToOrder"/>
       <img :src="require(`@/Assets/img/icons/close.svg`)" alt="Close icon" width="36"
-           class="ml-2 mr-2 bg-candyPink rounded-md">
+           class="ml-2 mr-2 bg-candyPink rounded-md" @click="this.$emit('deleteProduct', this.index)">
     </div>
   </div>
 </template>
@@ -34,20 +35,24 @@ export default {
   name: "OrderSubItem",
   components: {InputComponentNumeric},
   props: {
-    product:{
+    product: {
       type: Object,
       default: () => ({
-        project:{
+        project: {
           name: "Tree"
         },
-        type:{
+        type: {
           product_type_name: "Tree"
         },
         price: 0.00,
       }),
       required: true,
     },
-
+    index: {
+      type: Number,
+      default: 0,
+      required: true,
+    }
   },
   data() {
     return {
@@ -60,7 +65,8 @@ export default {
       console.log(this.amount + " " + this.price_per)
       this.$emit('update', {total: (this.amount * this.price_per), index: this.index});
     }
-  }
+  },
+  emits: ['update', 'deleteProduct'],
 }
 </script>
 
