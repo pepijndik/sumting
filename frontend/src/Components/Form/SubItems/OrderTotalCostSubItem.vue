@@ -52,9 +52,9 @@ export default {
     deleteProduct(i) {
       this.costArray.splice(i, 1);
       this.productList.splice(i, 1);
+      this.$emit('removeSelected', i);
       this.totalCost = 0;
       this.recursiveCostCalculator(0);
-      this.$emit('removeSelected', i);
     }
   },
   data() {
