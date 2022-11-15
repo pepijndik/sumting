@@ -18,7 +18,6 @@
         :max-items="20"
         @selected="searchSelection = $event"/>
     <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected"/>
-<!--    <OrderTotalCostSubItem :products="products" @deleteProduct="console.log('found delete event in master parent ' + $event)"/>-->
     <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create order
@@ -54,7 +53,9 @@ export default {
   watch: {
     async searchSelection(val) {
       //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
-      await this.addProjectToSelected(val);
+      if (val !== null) {
+        await this.addProjectToSelected(val);
+      }
     },
   },
   methods: {
@@ -74,23 +75,22 @@ export default {
         this.selectedProjects.push(project);
         await this.findProductsForProjects(this.selectedProjects);
       }
-      console.log("=={ Selected projects }==");
-      console.log(this.selectedProjects);
-      console.log("=={ PRODUCTS }==")
-      console.log(this.products);
     },
     async findProductsForProjects(projects) {
       let tempProducts = [];
       for (const project of projects) {
         //Searches for the product corresponding to the project id.
-        await this.ProductApi.findProductByProjectId(project.id).then((data) => {
-          data.forEach((product) => {
-            tempProducts.push(product);
+        if (project.id !== undefined) {
+          await this.ProductApi.findProductByProjectId(project.id).then((data) => {
+            data.forEach((product) => {
+              tempProducts.push(product);
+            });
+          }).catch((error) => {
+            throw error;
           });
-        }).catch((error) => {
-          throw error;
-        });
-      }
+        }
+        }
+
       this.products = tempProducts;
 
     }

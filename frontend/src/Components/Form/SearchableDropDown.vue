@@ -117,7 +117,7 @@ export default {
     }
   },
   created() {
-    this.$emit('startSelected', this.selected);
+    this.$emit('selected', this.selected);
   },
   computed: {
     filteredOptions() {
@@ -176,7 +176,7 @@ export default {
       } else {
         this.searchFilter = this.selected[this.fields[0]];
       }
-      this.$emit('finalSelected', this.selected);
+      this.$emit('selected', this.selected);
       this.optionsShown = false;
     },
     // Selecting when pressing Enter

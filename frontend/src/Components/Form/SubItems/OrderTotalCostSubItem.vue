@@ -24,11 +24,6 @@ export default {
       required: true,
     },
   },
-  created() {
-    this.products.forEach(product => {
-      console.log(product);
-    });
-  },
 
   computed: {
     productList() {
@@ -66,14 +61,6 @@ export default {
     return {
       costArray: [],
       totalCost: 0,
-    }
-  },
-  watch: {
-    productList: {
-      handler: function (val) {
-        console.log("=={ Products have changed }==");
-        console.log(val);
-      },
     }
   },
   emits: ['removeSelected'],

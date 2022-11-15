@@ -61,9 +61,17 @@ export default {
   },
   methods: {
     emitUpdate() {
-      console.log("emitting update & my index is " + this.index);
-      console.log(this.amount + " " + this.price_per)
-      this.$emit('update', {total: (this.amount * this.price_per), index: this.index});
+      // console.log("emitting update & my index is " + this.index);
+      // console.log(this.amount + " " + this.product.price)
+      let total = Math.round(this.amount * this.product.price * 100) / 100;
+      this.$emit('update', {total: total, index: this.index});
+    }
+  },
+  watch : {
+    amount: function () {
+      if (!Number(this.amount)) {
+        this.amount = 0;
+      }
     }
   },
   emits: ['update', 'deleteProduct'],
