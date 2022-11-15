@@ -2,7 +2,7 @@
   <OrderSubItem :key="index" v-for="(product, index) in productList" :name="product.name" :product="product"
                 @update="updateTotal" :index="index" @deleteProduct="deleteProduct"/>
   <div class="w-full h-12" v-if="productList.length > 0">
-    <div class="focus:outline-none focus:ring-2 focus:ring-offset-2 h-12 w-1/3 h-10 pl-4
+    <div class="focus:outline-none focus:ring-2 focus:ring-offset-2 h-12 w-1/3 pl-4
             focus:ring-candyPink dark:border-gray-700 bg-white font-normal flex text-sm float-right
             border-gray-300 rounded border shadow font-inter justify-between text-left items-center overflow-hidden">
       <p class="text-yInMnBlue font-bold">Total: {{ totalCost }} </p>
@@ -20,7 +20,9 @@ export default {
   props: {
     products: {
       type: Array,
-      default: () => [],
+      default: () => [{
+
+      }],
       required: true,
     },
   },
