@@ -43,7 +43,7 @@ test:backend:
     - job: build:backend
   script:
       - cd Backend #first cd into the backend folder
-      - mvn $MAVEN_CLI_OPTS clean test -P unit-test
+      - mvn $MAVEN_CLI_OPTS -Dspring.profiles.active=test clean test -P unit-test
       - mvn surefire-report:report
   artifacts:
     when: always
