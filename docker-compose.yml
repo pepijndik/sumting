@@ -25,8 +25,8 @@ services:
     networks:
       - sumtingDb
       - nginxproxymanager_default
-    expose:
-      - "5432"
+    ports:
+      - "5432:5432"
   back:
     image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-backend
     build:
