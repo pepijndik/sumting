@@ -29,7 +29,7 @@ public class SumtingBackend {
                     .exposedHeaders("Authorization")
                     .allowedOriginPatterns("http://localhost/api/*")
                     .allowedOriginPatterns("http://localhost:*")
-                    .allowedOriginPatterns("https://sumting.pdik.nl/api/*")
+                    .allowedOriginPatterns("https://sumting.pdik.nl/*")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
         }
     }
