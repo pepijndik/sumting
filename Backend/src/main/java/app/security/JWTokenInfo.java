@@ -1,6 +1,7 @@
 package app.security;
 
 import app.enums.UserRole;
+import app.models.User.User;
 
 import java.util.Date;
 
@@ -14,17 +15,21 @@ public class JWTokenInfo {
 
     public static final String KEY = "tokenInfo";
 
-    private String email;
     private UserRole Role;
+    private User user;
+
+    private int id;
     private Date issuedAt;
     private Date expiration;
-
-    public String getEmail() {
-        return email;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public int getId() {
+        return id;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public UserRole getRole() {
@@ -35,6 +40,10 @@ public class JWTokenInfo {
         return this.Role == UserRole.ADMIN;
     }
 
+    public boolean twoFactorEnabled(){
+        return this.user.isTwoFactorEnabled();
+    }
+
     public void setAdmin(boolean admin) {
         if(admin){
             this.setRole(UserRole.ADMIN);
@@ -43,8 +52,10 @@ public class JWTokenInfo {
             this.setRole(UserRole.USER);
         }
     }
-
-    public void setUser(boolean user) {
+    public User getUser(){
+        return this.user;
+    }
+    public void setUserRole(boolean user) {
         if(user){
           this.setRole(UserRole.USER);
         }
@@ -73,7 +84,8 @@ public class JWTokenInfo {
     @Override
     public String toString() {
         return "JWTokenInfo{" +
-                "email='" + email + '\'' +
+                "id = " + this.getId() +
+                ", User = " + this.getUser() +
                 ", Role=" + this.getRole() +
                 ", issuedAt=" + issuedAt +
                 ", expiration=" + expiration +

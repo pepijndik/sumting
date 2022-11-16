@@ -1,8 +1,11 @@
 package app.security;
 
+import app.models.User.User;
+import app.repositories.JPAUserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import app.exceptions.AuthenticationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +23,11 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
+    @Autowired
+    private JPAUserRepository userRepo;
+
     // A claim indicating if the user is an administrator
     public static final String JWT_ADMIN_CLAIM = "admin";
-
     @Value("${jwt.issuer:MyOrganisation}")
     private String issuer;
 
@@ -47,6 +52,7 @@ public class JWTokenUtils {
         String token = Jwts.builder()
                 .claim(Claims.SUBJECT,id) // registered claim
                 .setIssuer(issuer) // registered claim
+
                 .setIssuedAt(new Date()) // registered claim
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)) // registered claim
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -77,7 +83,6 @@ public class JWTokenUtils {
         try {
             // Validate the token
             Key key = getKey(passphrase);
-
             Jws<Claims> jws = Jwts.parserBuilder().
                                     setSigningKey(passphrase.getBytes()).
                                     build().
@@ -102,11 +107,9 @@ public class JWTokenUtils {
     private JWTokenInfo generateTokenInfo(Claims claims) {
 
         JWTokenInfo tokenInfo = new JWTokenInfo();
-        tokenInfo.setEmail(claims.get(Claims.SUBJECT).toString());
 
-
-//        String isAdminString = claims.get(JWT_ADMIN_CLAIM).toString();
-//        tokenInfo.setAdmin(Boolean.parseBoolean(isAdminString));
+        tokenInfo.setId(Integer.parseInt(claims.get(Claims.SUBJECT).toString()));
+        tokenInfo.setUser(userRepo.findById(tokenInfo.getId()));
 
         tokenInfo.setIssuedAt(claims.getIssuedAt());
         tokenInfo.setExpiration(claims.getExpiration());
