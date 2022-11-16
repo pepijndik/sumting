@@ -26,7 +26,7 @@ services:
       - sumtingDb
       - nginxproxymanager_default
     expose:
-      - "5432"
+      - "5432:5432"
   back:
     image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-backend
     build:
@@ -41,6 +41,8 @@ services:
       - SPRING_DATASOURCE_USERNAME=sumting
       - SPRING_DATASOURCE_PASSWORD=sumting
     restart: always
+    ports:
+      - "8083:8083"
     networks:
       - sumting
       - sumtingDb
@@ -56,13 +58,14 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
+      - NGINX_HOST=sumting.pdik.nl
       - VUE_APP_BACKEND_API_URL=https://sumting.pdik.nl/api
       - VUE_APP_ENV=production
     networks:
       - sumting
       - nginxproxymanager_default
-#    ports:
-#      - "80:80"
+    ports:
+      - "80:80"
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
 
