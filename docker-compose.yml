@@ -40,7 +40,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/sumting
       - SPRING_DATASOURCE_USERNAME=sumting
       - SPRING_DATASOURCE_PASSWORD=sumting
-      - SPRING_PROFILES_ACTIVE=prod
     restart: always
     networks:
       - sumting
