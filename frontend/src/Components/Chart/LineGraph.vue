@@ -89,7 +89,6 @@ export default {
   async created() {
 
     this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth)
-    console.log(this.projects[0])
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++
     }
