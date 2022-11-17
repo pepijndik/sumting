@@ -1,7 +1,7 @@
 package app.models.Order;
 
-import app.models.Identifiable;
 import com.sun.istack.Nullable;
+import app.models.Identifiable;
 
 import javax.persistence.*;
 

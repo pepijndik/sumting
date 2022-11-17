@@ -1,8 +1,8 @@
 package app.models.Project;
 
-import app.models.Identifiable;
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
+import app.models.Identifiable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,6 +36,10 @@ public class Project implements Identifiable<Integer> {
     @Nullable
     @Column(name = "description_long", columnDefinition = "TEXT")
     private String description_long;
+
+    @Nullable
+    @Column(name = "name", columnDefinition = "varchar(255)")
+    private String name;
 
     @Nullable
     @Column(name = "latitude", columnDefinition = "varchar(255)")

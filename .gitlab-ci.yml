@@ -1,22 +1,22 @@
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_NAME"'
+stages:
+  - build
+  - test
+  - deploy
+  - docker
+
 cache:
   paths:
-    - maven.repository/
-    - target/
-    - build/
+    - frontend/node_modules/
+    - Backend/target/
 variables:
-  JDK_IMAGE: maven:3.8.3-openjdk-17-slim
+  DOCKER_DRIVER: overlay
+  JDK_IMAGE: maven:3-openjdk-18
 
-
-stages:
-  - test
-  - package
-  - deploy
-  - build
 
 #Backend
-backend-build:
+build:backend:
   image: $JDK_IMAGE
   stage: build
   environment: production
@@ -25,58 +25,116 @@ backend-build:
   script:
     - echo "started building"
     - cd Backend
-    - mvn clean install
+    - mvn clean package -Dmaven.test.skip=true
+    - echo "Finished building"
+    - ls -la
   artifacts:
     paths:
-      - build/Backend.jar
+      - Backend/target/*.jar
   only:
     - main
-backend-test:
+
+test:backend:
   image: $JDK_IMAGE
   stage: test
   tags:
     - hva
-  only:
-    - main
+  needs:
+    - job: build:backend
   script:
       - cd Backend #first cd into the backend folder
-      - mvn $MAVEN_CLI_OPTS clean test -P unit-test
-
-
+      - mvn $MAVEN_CLI_OPTS -Dspring.profiles.active=test clean test -P test
+      - mvn surefire-report:report
+  artifacts:
+    when: always
+    paths:
+      - Backend/target/surefire-reports/
 ##Frontend
-frontend-build:
+build:frontend:
   image: node:latest
+  tags:
+    - hva
   stage: build
   script:
-    -  cd  frontend
+     - cd frontend
      - npm install --progress=false
      - npm run build
   artifacts:
      paths:
-       - build/frontend
+       - dist
 
-frontend-test:
-  image: node:16.17.0
+test:frontend:
+  image: node:latest
   stage: test
+  tags:
+    - hva
   script:
+    - cd frontend
     - npm install --progress=false
-    - npm run unit
+  needs:
+    - job: build:frontend
 
-##Deploy to server
-deploy:
-  image: ubuntu:latest
+docker:build:
+  environment: production
+  image: creatiwww/docker-compose:latest
+  services:
+    - docker:dind
   stage: deploy
-  rules: 
-    - if: '$CI_COMMIT_TAG'
+  needs:
+    - job: build:backend
+    - job: build:frontend
+    - job: test:frontend
+    - job: test:backend
   tags:
     - hva
   before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - echo "Logging into docker registry"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # Default branch leaves tag empty (= latest tag)
+    # All other branches are tagged with the escaped branch name (commit ref slug)
+  script:
+    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - | 
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; 
+        then tag="" echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'" 
+        else tag=":$CI_COMMIT_REF_SLUG" echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag" 
+      fi
+    - docker-compose build
+    - docker-compose push
+#  script:
+#    - echo "Building docker image"
+#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
+#    - docker-compose build
+#    - docker-compose push se-ewa/2022-2023-1/sum-1
+#    - echo "Images builded"
+  only:
+    - main
+
+
+##Deploy to Prod server
+deploy:prod:
+  needs:
+    - job: docker:build
+  environment: production
+  only:
+    - main
+  image: creatiwww/docker-compose:latest
+  services:
+    - docker:dind
+  stage: deploy
+
+  tags:
+    - hva
+  before_script:
+    - echo "Deploying!"
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
-    - pwd
-    - ssh root@$SERVER "cd sum-1; git pull origin main; cd Backend; mvn dependency:go-offline; mvn spring-boot:run"
+    - ssh admin@$SERVER "cd /home/docker/sumting/sum-1; git pull; docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY; docker-compose down --remove-orphans; docker-compose pull back; docker-compose pull front; docker-compose pull db; docker-compose up -d"
+    #- cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
+    - echo "Deployed!"

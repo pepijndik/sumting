@@ -17,8 +17,9 @@
           </svg>
         </div>
         <input
-            class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink  focus:border-0 focus:border-t-2 focus:border-l-2 focus:border-r-2 focus:border-b-1
-            items-center pl-10 text-sm border-gray-300 rounded-t-md border shadow font-inter"
+            class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80
+            h-10 flex focus:border-yInMnBlue focus:border items-center pl-10 text-sm border-gray-300
+            focus:rounded-none focus:rounded-t-md border shadow font-inter"
             :name="name"
             @focus="showOptions()"
             @blur="exit()"
@@ -32,15 +33,16 @@
     <div class="dropdown-one w-full sm:w-80 rounded-b-md outline-none bg-white relative mt-0 shadow-md">
       <!-- Dropdown content -->
       <div
-          class="rounded w-full px-3 py-2 absolute top-1 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32 border-candyPink  border-0 border-b-2 border-l-2 border-r-2"
+          class="w-full px-3 py-2 absolute rounded-b top-0 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32
+          border-yInMnBlue border-0 border-b border-l border-r"
           v-show="optionsShown">
         <div
-            class="flex items-center justify-between hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800 p-3
-            hover:font-bold hover:cursor-default z-10"
+            class="flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-3
+            hover:cursor-default z-10 border-gray-300 border-0 border-b"
             @mousedown="selectOption(option)"
             v-for="(option, index) in filteredOptions"
             :key="index">
-          <div class="inline-block">
+          <div class="flex gap-2">
             <slot class="">
               <FileIcon/>
             </slot>
