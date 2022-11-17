@@ -2,6 +2,8 @@ package app.rest;
 
 import app.exceptions.AuthorizationException;
 import app.exceptions.TwofactorSetup;
+import app.views.UserView;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import app.exceptions.UserNotFoundException;
 import app.models.User.User;
@@ -109,7 +111,7 @@ public class AuthController {
         }
 
         // refresh the token for the user
-        String tokenString = tokenGenerator.encode(Integer.toString(tokenInfo.getId()));
+        String tokenString = tokenGenerator.encode(tokenInfo.getId());
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
@@ -198,7 +200,7 @@ public class AuthController {
         }
 
         // Issue a token for the user valid for some time
-        String tokenString = tokenGenerator.encode(user.getEmail());
+        String tokenString = tokenGenerator.encode(user.getId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         Object body = new Object() {
             public final User me = user;

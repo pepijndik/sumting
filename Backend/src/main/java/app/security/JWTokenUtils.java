@@ -23,11 +23,11 @@ import java.util.Date;
 @Component
 public class JWTokenUtils {
 
+    // A claim indicating if the user is an administrator
+    public static final String JWT_USER_CLAIM = "user";
+
     @Autowired
     private JPAUserRepository userRepo;
-
-    // A claim indicating if the user is an administrator
-    public static final String JWT_ADMIN_CLAIM = "admin";
     @Value("${jwt.issuer:MyOrganisation}")
     private String issuer;
 
@@ -45,20 +45,17 @@ public class JWTokenUtils {
      * @param id user id (or subject)
      * @return the token representation
      */
-    public String encode(String id) {
+    public String encode(Integer id) {
 
         Key key = getKey(passphrase);
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .claim(Claims.SUBJECT,id) // registered claim
                 .setIssuer(issuer) // registered claim
-
                 .setIssuedAt(new Date()) // registered claim
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)) // registered claim
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-
-        return token;
     }
 
     /**
@@ -83,17 +80,18 @@ public class JWTokenUtils {
         try {
             // Validate the token
             Key key = getKey(passphrase);
+
             Jws<Claims> jws = Jwts.parserBuilder().
-                                    setSigningKey(passphrase.getBytes()).
-                                    build().
-                                    parseClaimsJws(encodedToken);
+                    setSigningKey(passphrase.getBytes()).
+                    build().
+                    parseClaimsJws(encodedToken);
 
             Claims claims = jws.getBody();
 
             return generateTokenInfo(claims);
 
         } catch (MalformedJwtException |
-                UnsupportedJwtException | IllegalArgumentException| SignatureException e) {
+                 UnsupportedJwtException | IllegalArgumentException| SignatureException e) {
             throw new AuthenticationException(e.getMessage());
         } catch(ExpiredJwtException e) {
             if(!expirationLenient) {
@@ -108,7 +106,7 @@ public class JWTokenUtils {
 
         JWTokenInfo tokenInfo = new JWTokenInfo();
 
-        tokenInfo.setId(Integer.parseInt(claims.get(Claims.SUBJECT).toString()));
+        tokenInfo.setId(Integer.parseInt(claims.getSubject()));
         tokenInfo.setUser(userRepo.findById(tokenInfo.getId()));
 
         tokenInfo.setIssuedAt(claims.getIssuedAt());
@@ -138,3 +136,4 @@ public class JWTokenUtils {
     }
 
 }
+

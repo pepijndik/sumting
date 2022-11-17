@@ -13,58 +13,22 @@ import java.util.Date;
 
 public class JWTokenInfo {
 
-    public static final String KEY = "tokenInfo";
+    public static final String KEY = "token";
 
-    private UserRole Role;
+    private Integer id;
+    private boolean admin;
+
     private User user;
-
-    private int id;
     private Date issuedAt;
     private Date expiration;
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setUser(User user) {
-        this.user = user;
-    }
 
-    public UserRole getRole() {
-        return this.Role;
+    public void setId(Integer id) {
+        this.id = id;
     }
-
-    public boolean isAdmin(){
-        return this.Role == UserRole.ADMIN;
-    }
-
-    public boolean twoFactorEnabled(){
-        return this.user.isTwoFactorEnabled();
-    }
-
-    public void setAdmin(boolean admin) {
-        if(admin){
-            this.setRole(UserRole.ADMIN);
-        }
-        else{
-            this.setRole(UserRole.USER);
-        }
-    }
-    public User getUser(){
-        return this.user;
-    }
-    public void setUserRole(boolean user) {
-        if(user){
-          this.setRole(UserRole.USER);
-        }
-
-    }
-    public void setRole(UserRole role){
-        this.Role = role;
-    }
-
     public Date getIssuedAt() {
         return issuedAt;
     }
@@ -81,14 +45,25 @@ public class JWTokenInfo {
         this.expiration = expiration;
     }
 
+
     @Override
     public String toString() {
         return "JWTokenInfo{" +
                 "id = " + this.getId() +
                 ", User = " + this.getUser() +
-                ", Role=" + this.getRole() +
                 ", issuedAt=" + issuedAt +
                 ", expiration=" + expiration +
                 '}';
+    }
+
+    public boolean twoFactorEnabled() {
+        return this.getUser().isTwoFactorEnabled();
+    }
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
