@@ -8,7 +8,7 @@
         :fields="['name', 'email']"
         :primary-key="'id'"
         :disabled="false"
-        :max-item="20">
+        :max-item="50">
     </SearchableDropdownUser>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
     <p class="font-inter text-yInMnBlue">Description</p>
@@ -31,7 +31,6 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OrderSubItem from "@/Components/Form/SubItems/OrderSubItem";
-import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import SearchableDropdownUser from "@/Components/Form/SearchableDropdownUser";
 export default {
   name: "OrderCreate",

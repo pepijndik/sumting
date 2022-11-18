@@ -40,10 +40,13 @@
             @mousedown="selectOption(option)"
             v-for="(option, index) in filteredOptions"
             :key="index">
-          <div class="inline-block">
+          <div class="flex">
             <slot class="">
-              <user-icon v-if="option.user_role = PERSON"/>
-
+<!--              <user-icon v-if="option.user_type = PERSON "/>-->
+<!--              <user-icon v-if="option.user_type = undefined"/>-->
+              <company-icon v-if="option.user_type = BUSINESS"/>
+<!--              <company-icon/>-->
+              <user-icon/>
             </slot>
             <p class="">{{ this.populatefields(option) }}</p>
           </div>
@@ -56,11 +59,12 @@
 
 <script>
 import userIcon from "@/Components/SvgIcons/userIcon";
+import CompanyIcon from "@/Components/SvgIcons/CompanyIcon";
 
 
 export default {
   name: 'SearchableDropDown',
-  components: {userIcon},
+  components: {userIcon, CompanyIcon},
   template: 'Dropdown',
 
   props: {
