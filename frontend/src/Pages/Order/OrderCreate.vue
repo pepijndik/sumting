@@ -8,7 +8,7 @@
       :fields="['name', 'email']"
       :primary-key="'id'"
       :disabled="false"
-      :max-item="10"
+      :max-item="20"
     >
     </SearchableDropdownUser>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>

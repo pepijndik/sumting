@@ -53,13 +53,9 @@
           :key="index"
         >
           <div class="flex">
-            <slot class="">
-              <!--              <user-icon v-if="option.user_type = PERSON "/>-->
-              <!--              <user-icon v-if="option.user_type = undefined"/>-->
-              <!-- <company-icon v-if="option.user_type = BUSINESS"/> -->
-              <company-icon />
-              <user-icon />
-            </slot>
+            <user-icon v-if="option.user_type === 'PERSON' "/>
+            <user-icon v-if="option.user_type === undefined"/>
+            <company-icon v-if="option.user_type === 'BUSINESS'"/>
             <p class="">{{ this.populatefields(option) }}</p>
           </div>
         </div>
@@ -73,7 +69,7 @@ import userIcon from "@/Components/SvgIcons/userIcon";
 import CompanyIcon from "@/Components/SvgIcons/CompanyIcon";
 
 export default {
-  name: "SearchableDropDown",
+  name: "SearchableDropDownUser",
   components: { userIcon, CompanyIcon },
   template: "Dropdown",
 
@@ -132,9 +128,6 @@ export default {
   created() {
     this.$emit("selected", this.selected);
   },
-  updated() {
-    console.log(this.options);
-  },
   computed: {
     filteredOptions() {
       const filtered = [];
@@ -156,7 +149,6 @@ export default {
       //     }
       //   });
       // }
-      console.log(filtered);
       return filtered;
     },
   },
