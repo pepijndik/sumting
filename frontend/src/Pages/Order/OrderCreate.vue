@@ -15,11 +15,6 @@
     <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
-<!--    <SearchableDropDown-->
-<!--        class="mt-1"-->
-<!--        placeholder="Select project(s)"-->
-<!--        :options="projects">-->
-<!--    </SearchableDropDown>-->
     <OrderSubItem name="Plant Trees in Africa" price_per="0,00" target_item="Tree" amount="0"/>
 
     <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
