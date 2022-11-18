@@ -1,10 +1,9 @@
 
-package app.repositories;
+package app.repositories.Project;
 
 import app.models.Project.Project;
 
-import app.models.Project.Project;
-import app.repositories.CrudRepository;
+import app.repositories.Interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

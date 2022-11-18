@@ -1,10 +1,9 @@
-package app.repositories;
+package app.repositories.Order;
 
 import app.models.Order.Order;
 
 
-import app.models.Order.Order;
-import app.repositories.CrudRepository;
+import app.repositories.Interfaces.CrudRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

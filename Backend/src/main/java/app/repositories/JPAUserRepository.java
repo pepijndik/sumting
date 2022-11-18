@@ -1,7 +1,7 @@
 package app.repositories;
 
 import app.models.User.User;
-import app.repositories.CrudRepository;
+import app.repositories.Interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

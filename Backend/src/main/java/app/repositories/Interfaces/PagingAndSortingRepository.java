@@ -1,6 +1,7 @@
-package app.repositories;
+package app.repositories.Interfaces;
 
 
+import app.repositories.Interfaces.CrudRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
