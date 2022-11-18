@@ -1,7 +1,7 @@
 package app.repositories;
 
 import app.models.Country;
-import app.repositories.interfaces.CrudRepository;
+import app.repositories.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;

@@ -1,13 +1,10 @@
-<<<<<<<< HEAD:Backend/src/main/java/app/repositories/ProjectRepository.java
+
 package app.repositories;
 
 import app.models.Project.Project;
-========
-package app.repositories.Project;
 
 import app.models.Project.Project;
-import app.repositories.interfaces.CrudRepository;
->>>>>>>> origin/main:Backend/src/main/java/app/repositories/Project/ProjectRepository.java
+import app.repositories.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

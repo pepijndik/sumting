@@ -1,8 +1,5 @@
-<<<<<<<< HEAD:Backend/src/main/java/app/repositories/CrudRepository.java
 package app.repositories;
-========
-package app.repositories.interfaces;
->>>>>>>> origin/main:Backend/src/main/java/app/repositories/interfaces/CrudRepository.java
+
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;

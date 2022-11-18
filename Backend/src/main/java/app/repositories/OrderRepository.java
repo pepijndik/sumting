@@ -1,13 +1,11 @@
-<<<<<<<< HEAD:Backend/src/main/java/app/repositories/OrderRepository.java
 package app.repositories;
 
 import app.models.Order.Order;
-========
-package app.repositories.Order;
+
 
 import app.models.Order.Order;
-import app.repositories.interfaces.CrudRepository;
->>>>>>>> origin/main:Backend/src/main/java/app/repositories/Order/OrderRepository.java
+import app.repositories.CrudRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
