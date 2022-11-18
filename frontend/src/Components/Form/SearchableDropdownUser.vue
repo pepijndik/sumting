@@ -43,6 +43,7 @@
           <div class="inline-block">
             <slot class="">
               <user-icon v-if="option.user_role = PERSON"/>
+
             </slot>
             <p class="">{{ this.populatefields(option) }}</p>
           </div>
