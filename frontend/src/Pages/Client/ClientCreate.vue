@@ -6,61 +6,100 @@
         <div class="mx-5">
           <p class="font-inter text-yInMnBlue">Name</p>
           <InputComponent
-            class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-10 text-sm border-gray-300 rounded-md border shadow font-inter"
-            :name="name"
-            placeholder="Name"
+            class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-5 text-sm border-gray-300 rounded-md border shadow font-inter"
+            :name="'name'"
+            placeholder="Enter name of client"
           />
         </div>
         <div>
           <p class="font-inter text-yInMnBlue">Email</p>
           <InputComponent
-            class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-10 text-sm border-gray-300 rounded-md border shadow font-inter"
-            :name="email"
-            placeholder="Email"
+            class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-5 text-sm border-gray-300 rounded-md border shadow font-inter"
+            :name="'email'"
+            placeholder="Enter email of client"
           />
         </div>
       </div>
       <!--Dropdown Type and Search Dropdown Location-->
       <div>
-        <p class="font-inter text-yInMnBlue">Client Information</p>
+        <p class="font-Alatsi text-xl text-yInMnBlue">Client Information</p>
 
-        <div class="flex flex-row">
+        <div class="flex flex-row mt-5">
           <div class="mx-5">
             <p class="font-inter text-yInMnBlue">Type</p>
-            <input
-              class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-10 flex focus:border-yInMnBlue focus:border items-center pl-4 text-sm border-gray-300 focus:rounded-md border shadow font-inter"
-              v-model="type"
-              :disabled="disabled"
-              :readonly="readonly"
-            />
-            <svg
-              viewBox="0 0 20 20"
-              width="20"
-              height="20"
-              xmlns="http://www.w3.org/2000/svg"
+            <div class="flex flex-col lg:mr-16">
+              <div class="relative">
+                <input
+                  class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-10 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter cursor-pointer"
+                  v-model="type"
+                  :readonly="readonly"
+                  :placeholder="'Type of Client'"
+                  @focus="showType()"
+                  @blur="showType()"
+                />
+              </div>
+            </div>
+            <div
+              class="dropdown-one w-full sm:w-40 rounded-b-md outline-none bg-white relative mt-0 shadow-md"
             >
-              <g><path d="M7 10l5 5 5-5" /></g>
-            </svg>
-
-            <!-- <select
-              class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-10 flex focus:border-yInMnBlue focus:border items-center pl-4 text-sm border-gray-300 focus:rounded-none focus:rounded-md border shadow font-inter"
-            >
-              <option value="Organisation">Organisation</option>
-              <option value="Fund">Fund</option>
-              <option value="Company">Company</option>
-            </select> -->
+              <!-- Dropdown content -->
+              <div
+                class="w-full px-3 py-2 absolute rounded-b top-0 right-0 bg-white shadow-lg z-10 max-h-50 border-yInMnBlue border-0 border-b border-l border-r"
+                v-show="optionsShown"
+              >
+                <div
+                  class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-1 hover:cursor-default z-10 border-gray-300 border-0 border-b"
+                  @mousedown="selectOption('Organization')"
+                >
+                  Organisation
+                </div>
+                <div
+                  class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-1 hover:cursor-default z-10 border-gray-300 border-0 border-b"
+                  @mousedown="selectOption('Fund')"
+                >
+                  Fund
+                </div>
+                <div
+                  class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 px-1 pt-1 hover:cursor-default z-10"
+                  @mousedown="selectOption('Company')"
+                >
+                  Company
+                </div>
+              </div>
+            </div>
           </div>
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
-            <SearchableDropDown />
+            <SearchableDropDown
+              @selected="selectedLocation = $event"
+              :options="locations"
+              :fields="['name']"
+              :primary-key="'id'"
+              :disabled="false"
+              autocomplete="off"
+              placeholder="Search for a location"
+            />
           </div>
         </div>
       </div>
       <!--IMG upload-->
+      <button @click="click()">
+        <div
+          class="ml-5 my-5 rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter"
+        >
+          <img
+            :src="require(`@/Assets/img/icons/upload.svg`)"
+            alt="Upload icon"
+            width="24"
+          />
+          <p class="pl-3">Upload Image</p>
+        </div>
+      </button>
+      <!--IMG preview-->
     </div>
 
     <button
-      class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+      class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-yInMnBlue rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
     >
       Create client
     </button>
@@ -81,17 +120,27 @@ export default {
       clicked: false,
       transformValue: "rotate(0deg)",
       readonly: true,
+      type: "",
+      optionsShown: false,
+      locations: [],
+      selectedLocation: null,
     };
   },
   methods: {
-    openTab() {
-      if (this.transformValue === "rotate(0deg)") {
-        this.transformValue = "rotate(180deg)";
-        this.dropdownOpen = true;
+    showType() {
+      if (this.optionsShown == false) {
+        this.optionsShown = true;
       } else {
-        this.transformValue = "rotate(0deg)";
-        this.dropdownOpen = false;
+        this.optionsShown = false;
       }
+    },
+    selectOption(option) {
+      this.type = option;
+      console.log("This type has been selected: " + this.type); //Set the search filter to the first field
+      this.$emit("selected", this.type);
+    },
+    click() {
+      console.log("clicked");
     },
   },
   async created() {},
