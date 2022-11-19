@@ -1,5 +1,5 @@
 <template class="">
-    <component :is="layout"/>
+  <component :is="layout" />
 </template>
 
 <script>
@@ -9,8 +9,9 @@ import OrderApiService from "@/Services/Order/OrderApiService";
 import ProjectApiService from "@/Services/Projects/ProjectApiService";
 import AuthenticationService from "@/Services/AuthenticationService";
 import UserApiService from "@/Services/User/UserApiService";
+import CountryApiService from "@/Services/Country/CountryApiService";
 export default {
-  name: 'App',
+  name: "App",
   components: {
     AuthLayout,
     AdminLayout,
@@ -21,7 +22,8 @@ export default {
       Auth: new AuthenticationService(),
       ProjectApi: new ProjectApiService(),
       UserApi: new UserApiService(),
-    }
+      CountryApi: new CountryApiService(),
+    };
   },
   data() {
     return {
@@ -32,14 +34,13 @@ export default {
     $route(to) {
       // set layout by route meta
       if (to.meta.layout !== undefined) {
-        this.layout = to.meta.layout
+        this.layout = to.meta.layout;
       } else {
-        this.layout = "AdminLayout" // this is default layout if route meta is not set
+        this.layout = "AdminLayout"; // this is default layout if route meta is not set
       }
     },
-  }
-}
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>

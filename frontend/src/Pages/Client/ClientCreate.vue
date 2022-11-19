@@ -5,17 +5,15 @@
       <div class="flex flex-row mb-10">
         <div class="mx-5">
           <p class="font-inter text-yInMnBlue">Name</p>
-          <InputComponent
+          <input
             class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-5 text-sm border-gray-300 rounded-md border shadow font-inter"
-            :name="'name'"
             placeholder="Enter name of client"
           />
         </div>
         <div>
           <p class="font-inter text-yInMnBlue">Email</p>
-          <InputComponent
+          <input
             class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-5 text-sm border-gray-300 rounded-md border shadow font-inter"
-            :name="'email'"
             placeholder="Enter email of client"
           />
         </div>
@@ -49,21 +47,15 @@
               >
                 <div
                   class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-1 hover:cursor-default z-10 border-gray-300 border-0 border-b"
-                  @mousedown="selectOption('Organization')"
+                  @mousedown="selectOption('Business')"
                 >
-                  Organisation
+                  Business
                 </div>
                 <div
                   class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-1 hover:cursor-default z-10 border-gray-300 border-0 border-b"
-                  @mousedown="selectOption('Fund')"
+                  @mousedown="selectOption('Person')"
                 >
-                  Fund
-                </div>
-                <div
-                  class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 px-1 pt-1 hover:cursor-default z-10"
-                  @mousedown="selectOption('Company')"
-                >
-                  Company
+                  Person
                 </div>
               </div>
             </div>
@@ -71,22 +63,23 @@
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
             <SearchableDropDown
-              @selected="selectedLocation = $event"
               :options="locations"
-              :fields="['name']"
               :primary-key="'id'"
+              :Fields="['name']"
               :disabled="false"
               autocomplete="off"
               placeholder="Search for a location"
+              :maxItem="locations.length"
+              :optionHasIcon="true"
             />
           </div>
         </div>
       </div>
       <!--IMG upload-->
-      <button @click="click()">
+      <button @click="openPreview()">
         <div
           v-show="!imagePreview"
-          class="ml-5 mt-5 rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter"
+          class="ml-5 mt-5 rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-00 focus:rounded-none focus:rounded-t-md border shadow font-inter"
         >
           <img
             :src="require(`@/Assets/img/icons/upload.svg`)"
@@ -119,7 +112,7 @@
       <div
         v-show="imagePreview"
         :style="{ 'background-image': `url(${imageData})` }"
-        class="w-40 h-40 bg-cover bg-center rounded-b mx-5 border border-gray-300 shadow"
+        class="w-40 h-40 bg-cover bg-center rounded-b mx-5 border border-x border-b border-gray-300 shadow"
       />
     </div>
 
@@ -132,13 +125,12 @@
 </template>
 
 <script>
-import InputComponent from "@/Components/Form/InputComponent.vue";
 import SearchableDropDown from "@/Components/Form/SearchableDropDown.vue";
 
 export default {
   name: "clientCreate",
-  components: { InputComponent, SearchableDropDown },
-  inject: ["UserApi"],
+  components: { SearchableDropDown },
+  inject: ["UserApi", "CountryApi"],
   data() {
     return {
       clicked: false,
@@ -162,10 +154,9 @@ export default {
     },
     selectOption(option) {
       this.type = option;
-      console.log("This type has been selected: " + this.type); //Set the search filter to the first field
-      this.$emit("selected", this.type);
+      console.log("This type has been selected: " + this.type);
     },
-    click() {
+    openPreview() {
       document.getElementById("fileUpload").click();
     },
     onSelectFile() {
@@ -182,15 +173,13 @@ export default {
       }
     },
     createClient() {
-      this.UserApi.createClient(
-        this.name,
-        this.type,
-        this.selectedLocation,
-        this.file
-      );
+      console.log("Creating client");
     },
   },
-  async created() {},
+  async created() {
+    this.locations = await this.CountryApi.findAll();
+    console.log(this.locations);
+  },
 };
 </script>
 
