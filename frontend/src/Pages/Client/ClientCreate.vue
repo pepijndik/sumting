@@ -8,6 +8,7 @@
           <input
             class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-5 text-sm border-gray-300 rounded-md border shadow font-inter"
             placeholder="Enter name of client"
+            v-model="client.name"
           />
         </div>
         <div>
@@ -15,6 +16,7 @@
           <input
             class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-5 text-sm border-gray-300 rounded-md border shadow font-inter"
             placeholder="Enter email of client"
+            v-model="client.email"
           />
         </div>
       </div>
@@ -29,7 +31,7 @@
               <div class="relative">
                 <input
                   class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-10 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter cursor-pointer"
-                  v-model="type"
+                  v-model="client.type"
                   :readonly="readonly"
                   :placeholder="'Type of Client'"
                   @focus="showType()"
@@ -63,6 +65,7 @@
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
             <SearchableDropDown
+              @selected="selectedLocation"
               :options="locations"
               :primary-key="'id'"
               :Fields="['name']"
@@ -76,48 +79,12 @@
         </div>
       </div>
       <!--IMG upload-->
-      <button @click="openPreview()">
-        <div
-          v-show="!imagePreview"
-          class="ml-5 mt-5 rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-00 focus:rounded-none focus:rounded-t-md border shadow font-inter"
-        >
-          <img
-            :src="require(`@/Assets/img/icons/upload.svg`)"
-            alt="Upload icon"
-            width="24"
-          />
-          <p class="pl-3">Upload Image</p>
-        </div>
-        <div
-          v-show="imagePreview"
-          class="ml-5 mt-5 rounded-t text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border-x border-t shadow font-inter"
-        >
-          <img
-            :src="require(`@/Assets/img/icons/upload.svg`)"
-            alt="Upload icon"
-            width="24"
-          />
-          <p class="pl-3">Upload Image</p>
-        </div>
-      </button>
-      <input
-        id="fileUpload"
-        type="file"
-        ref="file"
-        class="hidden"
-        @change="onSelectFile()"
-        accept="image/*"
-      />
-      <!--IMG preview-->
-      <div
-        v-show="imagePreview"
-        :style="{ 'background-image': `url(${imageData})` }"
-        class="w-40 h-40 bg-cover bg-center rounded-b mx-5 border border-x border-b border-gray-300 shadow"
-      />
+      <ImgUpload @selectedFile="selectedImg" />
     </div>
 
     <button
       class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-yInMnBlue rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+      @click="createClient()"
     >
       Create client
     </button>
@@ -125,23 +92,26 @@
 </template>
 
 <script>
+import ImgUpload from "@/Components/Form/imgUpload.vue";
 import SearchableDropDown from "@/Components/Form/SearchableDropDown.vue";
 
 export default {
   name: "clientCreate",
-  components: { SearchableDropDown },
+  components: { SearchableDropDown, ImgUpload },
   inject: ["UserApi", "CountryApi"],
   data() {
     return {
+      client: {
+        name: "",
+        email: "",
+        type: "",
+        location: "",
+        img: "",
+      },
       clicked: false,
       readonly: true,
-      type: "",
       optionsShown: false,
       locations: [],
-      selectedLocation: null,
-      imageData: null,
-      imagePreview: false,
-      file: null,
     };
   },
   methods: {
@@ -153,32 +123,22 @@ export default {
       }
     },
     selectOption(option) {
-      this.type = option;
-      console.log("This type has been selected: " + this.type);
-    },
-    openPreview() {
-      document.getElementById("fileUpload").click();
-    },
-    onSelectFile() {
-      const input = this.$refs.file;
-      const files = input.files;
-      if (files && files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.imageData = e.target.result;
-        };
-        reader.readAsDataURL(files[0]);
-        this.imagePreview = true;
-        this.file = files[0];
-      }
+      this.client.type = option;
+      console.log("This type has been selected: " + this.client.type);
     },
     createClient() {
-      console.log("Creating client");
+      //this.UserApi.createClient(this.client);
+      console.log("Creating client: " + JSON.stringify(this.client));
+    },
+    selectedLocation(location) {
+      this.client.location = location.id;
+    },
+    selectedImg(img) {
+      this.client.img = img.name;
     },
   },
   async created() {
     this.locations = await this.CountryApi.findAll();
-    console.log(this.locations);
   },
 };
 </script>
