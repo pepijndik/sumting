@@ -85,7 +85,19 @@
       <!--IMG upload-->
       <button @click="click()">
         <div
-          class="ml-5 my-5 rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter"
+          v-show="!imagePreview"
+          class="ml-5 mt-5 rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter"
+        >
+          <img
+            :src="require(`@/Assets/img/icons/upload.svg`)"
+            alt="Upload icon"
+            width="24"
+          />
+          <p class="pl-3">Upload Image</p>
+        </div>
+        <div
+          v-show="imagePreview"
+          class="ml-5 mt-5 rounded-t text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-9 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border-x border-t shadow font-inter"
         >
           <img
             :src="require(`@/Assets/img/icons/upload.svg`)"
@@ -107,10 +119,8 @@
       <div
         v-show="imagePreview"
         :style="{ 'background-image': `url(${imageData})` }"
-        class="w-40 h-40 bg-cover bg-center rounded-lg mx-5 my-5"
-      >
-        Hallo
-      </div>
+        class="w-40 h-40 bg-cover bg-center rounded-b mx-5 border border-gray-300 shadow"
+      />
     </div>
 
     <button
@@ -139,6 +149,7 @@ export default {
       selectedLocation: null,
       imageData: null,
       imagePreview: false,
+      file: null,
     };
   },
   methods: {
@@ -167,8 +178,16 @@ export default {
         };
         reader.readAsDataURL(files[0]);
         this.imagePreview = true;
-        //this.$emit("input", files[0]);
+        this.file = files[0];
       }
+    },
+    createClient() {
+      this.UserApi.createClient(
+        this.name,
+        this.type,
+        this.selectedLocation,
+        this.file
+      );
     },
   },
   async created() {},
