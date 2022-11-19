@@ -95,7 +95,22 @@
           <p class="pl-3">Upload Image</p>
         </div>
       </button>
+      <input
+        id="fileUpload"
+        type="file"
+        ref="file"
+        class="hidden"
+        @change="onSelectFile()"
+        accept="image/*"
+      />
       <!--IMG preview-->
+      <div
+        v-show="imagePreview"
+        :style="{ 'background-image': `url(${imageData})` }"
+        class="w-40 h-40 bg-cover bg-center rounded-lg mx-5 my-5"
+      >
+        Hallo
+      </div>
     </div>
 
     <button
@@ -116,14 +131,14 @@ export default {
   inject: ["UserApi"],
   data() {
     return {
-      dropdownOpen: false,
       clicked: false,
-      transformValue: "rotate(0deg)",
       readonly: true,
       type: "",
       optionsShown: false,
       locations: [],
       selectedLocation: null,
+      imageData: null,
+      imagePreview: false,
     };
   },
   methods: {
@@ -140,7 +155,20 @@ export default {
       this.$emit("selected", this.type);
     },
     click() {
-      console.log("clicked");
+      document.getElementById("fileUpload").click();
+    },
+    onSelectFile() {
+      const input = this.$refs.file;
+      const files = input.files;
+      if (files && files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageData = e.target.result;
+        };
+        reader.readAsDataURL(files[0]);
+        this.imagePreview = true;
+        //this.$emit("input", files[0]);
+      }
     },
   },
   async created() {},
