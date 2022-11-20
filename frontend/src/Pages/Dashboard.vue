@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import SearchableDropDown from "@/Components/Form/SearchableDropDown";
+import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import BarGraph from "@/Components/Chart/BarGraph";
 import LineGraph from "@/Components/Chart/LineGraph";
 
