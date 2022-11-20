@@ -16,7 +16,7 @@
       <SearchableDropdown
         @selected="selectedProject = $event"
         :options="projects"
-        :fields="['name']"
+        :fields="['description']"
         :primary-key="'id'"
         :disabled="false"
         autocomplete="off"
