@@ -1,6 +1,7 @@
 // router/axios.ts
 import Login from "@/Pages/Auth/Login";
 import ClientCreate from "@/Pages/Client/ClientCreate";
+import ClientView from "@/Pages/Client/ClientView";
 import Dashboard from "@/Pages/Dashboard";
 import OrderCreate from "@/Pages/Order/OrderCreate";
 import OrderView from "@/Pages/Order/OrderView";
@@ -88,7 +89,7 @@ const router = createRouter({
         title: "Clients",
         subtitle: "View",
       },
-      component: OrderView,
+      component: ClientView,
     },
     {
       path: "/clients/create",

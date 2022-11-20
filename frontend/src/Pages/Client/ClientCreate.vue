@@ -23,7 +23,6 @@
       <!--Dropdown Type and Search Dropdown Location-->
       <div>
         <p class="font-Alatsi text-xl text-yInMnBlue">Client Information</p>
-
         <div class="flex flex-row mt-5">
           <div class="mx-5">
             <p class="font-inter text-yInMnBlue">Type</p>
