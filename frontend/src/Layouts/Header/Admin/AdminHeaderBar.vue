@@ -93,10 +93,8 @@
                 </div>
               </div>
             </DropdownItem>
-            <DropdownItem to="/">
-              <div
-                class="flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center"
-              >
+            <DropdownItem to="/" @click="logout">
+              <div class="flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center">
                 <div class="flex items-center">
                   <svg
                     class="h-6 w-6 fill-shadow"
@@ -192,18 +190,16 @@ import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
 
 export default {
   name: "DashboardHeaderBar",
-  components: {
-    MobileNavigation,
-    NavigationItem,
-    NavigationDropdownItem,
-    SubDropdownItem,
-    DropdownItem,
-    Dropdown,
-  },
+  inject: ["Auth"],
+  components: {MobileNavigation, NavigationItem, NavigationDropdownItem, SubDropdownItem, DropdownItem, Dropdown},
   methods: {
     openMobile() {
       this.$refs.mNav.toggle();
     },
+    logout(){
+      this.Auth.logout();
+      this.$router.push({name: 'login'});
+    }
   },
 };
 </script>

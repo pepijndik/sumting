@@ -27,7 +27,7 @@
           </svg>
         </div>
         <input
-          class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-yInMnBlue focus:border items-center pl-10 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter"
+          class="text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-80 h-10 flex focus:border-candyPink focus:border-0 focus:border-t-2 focus:border-l-2 focus:border-r-2 focus:border-b-1 items-center pl-10 text-sm border-gray-300 rounded-t-md border shadow font-inter"
           :name="name"
           @focus="showOptions()"
           @blur="exit()"
@@ -43,25 +43,20 @@
     >
       <!-- Dropdown content -->
       <div
-        class="w-full px-3 py-2 absolute rounded-b top-0 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32 border-yInMnBlue border-0 border-b border-l border-r"
+        class="rounded w-full px-3 py-2 absolute top-1 right-0 bg-white shadow-lg z-10 overflow-y-scroll max-h-32 border-candyPink border-0 border-b-2 border-l-2 border-r-2"
         v-show="optionsShown"
       >
         <div
-          class="flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-3 hover:cursor-default z-10 border-gray-300 border-0 border-b"
+          class="flex items-center justify-between hover:bg-gray-100 rounded text-gray-600 hover:text-gray-800 p-3 hover:font-bold hover:cursor-default z-10"
           @mousedown="selectOption(option)"
           v-for="(option, index) in filteredOptions"
           :key="index"
         >
-          <div class="flex gap-2">
-            <slot class="">
-              <div
-                v-if="optionHasIcon"
-                :style="{ 'background-image': `url(${option.imgSmall})` }"
-                class="w-7 h-5 bg-cover bg-center mx-3"
-              ></div>
-              <FileIcon v-if="!optionHasIcon" />
-            </slot>
-            <p class="">{{ this.populateFields(option) }}</p>
+          <div class="flex">
+            <user-icon v-if="option.user_type === 'PERSON' "/>
+            <user-icon v-if="option.user_type === undefined"/>
+            <company-icon v-if="option.user_type === 'BUSINESS'"/>
+            <p class="">{{ this.populatefields(option) }}</p>
           </div>
         </div>
       </div>
@@ -70,11 +65,12 @@
 </template>
 
 <script>
-import FileIcon from "@/Components/SvgIcons/FileIcon";
+import userIcon from "@/Components/SvgIcons/userIcon";
+import CompanyIcon from "@/Components/SvgIcons/CompanyIcon";
 
 export default {
-  name: "SearchableDropDown",
-  components: { FileIcon },
+  name: "SearchableDropDownUser",
+  components: { userIcon, CompanyIcon },
   template: "Dropdown",
 
   props: {
@@ -90,12 +86,12 @@ export default {
       default: Array,
       note: "Options of dropdown. An array of options with id and name",
     },
-    Fields: {
+    fields: {
       type: Array,
       required: false,
       // eslint-disable-next-line vue/require-valid-default-prop
       default: ["description"],
-      note: "Possible fiels options",
+      note: "Possible fields options",
     },
     primaryKey: {
       type: String,
@@ -121,12 +117,6 @@ export default {
       default: 6,
       note: "Max items showing",
     },
-    optionHasIcon: {
-      type: Boolean,
-      required: false,
-      default: false,
-      note: "Option has icon",
-    },
   },
   data() {
     return {
@@ -142,25 +132,33 @@ export default {
     filteredOptions() {
       const filtered = [];
       const regOption = new RegExp(this.searchFilter, "ig");
-      for (const option of this.options) {
-        //Double For loop to find the option in the fields
-        this.Fields.forEach((field) => {
+
+      this.fields.forEach((field) => {
+        this.options.forEach((option) => {
           if (this.searchFilter.length < 1 || option[field].match(regOption)) {
             if (filtered.length < this.maxItem) filtered.push(option);
           }
         });
-      }
+      });
 
+      // for (const option of this.options) {
+      //   //Double For loop to find the option in the fields
+      //   this.fields.forEach((field) => {
+      //     if (this.searchFilter.length < 1 || option[field].match(regOption)) {
+      //       if (filtered.length < this.maxItem) filtered.push(option);
+      //     }
+      //   });
+      // }
       return filtered;
     },
   },
   methods: {
-    populateFields(option) {
+    populatefields(option) {
       var finalString = "";
-      this.Fields.forEach((field) => {
+      this.fields.forEach((field) => {
         finalString += this.extractFieldValue(option, field);
         //Check if not the last field then append space with separator
-        if (this.Fields.indexOf(field) !== this.Fields.length - 1) {
+        if (this.fields.indexOf(field) !== this.fields.length - 1) {
           finalString += " | ";
         }
       });
@@ -175,8 +173,8 @@ export default {
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-      console.log(this.selected[this.Fields[0]]);
-      this.searchFilter = this.selected[this.Fields[0]]; //Set the search filter to the first field
+      console.log(this.selected[this.fields[0]]);
+      this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
       this.$emit("selected", this.selected);
     },
     showOptions() {
@@ -190,7 +188,7 @@ export default {
         this.selected = {};
         this.searchFilter = "";
       } else {
-        this.searchFilter = this.selected[this.Fields[0]];
+        this.searchFilter = this.selected[this.fields[0]];
       }
       this.$emit("selected", this.selected);
       this.optionsShown = false;
