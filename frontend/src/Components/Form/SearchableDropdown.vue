@@ -60,7 +60,7 @@ import FileIcon from "@/Components/SvgIcons/FileIcon";
 
 
 export default {
-  name: 'SearchableDropDown',
+  name: 'SearchableDropdown',
   components: {FileIcon},
   template: 'Dropdown',
 
