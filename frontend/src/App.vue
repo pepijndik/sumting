@@ -9,7 +9,7 @@ import OrderApiService from "@/Services/Order/OrderApiService";
 import ProjectApiService from "@/Services/Projects/ProjectApiService";
 import AuthenticationService from "@/Services/AuthenticationService";
 import UserApiService from "@/Services/User/UserApiService";
-import CountryApiService from "@/Services/Country/CountryApiService";
+import ProductApiService from "@/Services/Products/ProductApiService";
 export default {
   name: "App",
   components: {
@@ -22,8 +22,8 @@ export default {
       Auth: new AuthenticationService(),
       ProjectApi: new ProjectApiService(),
       UserApi: new UserApiService(),
-      CountryApi: new CountryApiService(),
-    };
+      ProductApi: new ProductApiService()
+    }
   },
   data() {
     return {
