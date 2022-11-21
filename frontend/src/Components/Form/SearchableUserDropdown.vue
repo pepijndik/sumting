@@ -42,7 +42,7 @@
             :key="index">
           <div class="inline-block">
             <slot class="">
-
+              <FileIcon/>
             </slot>
             <p class="">{{ this.populateFields(option) }}</p>
           </div>
@@ -54,9 +54,12 @@
 </template>
 
 <script>
+import FileIcon from "@/Components/SvgIcons/FileIcon";
+
 
 export default {
-  name: 'SearchableUserDropdown',
+  name: 'SearchableDropDown',
+  components: {FileIcon},
   template: 'Dropdown',
 
   props: {
@@ -118,15 +121,15 @@ export default {
     filteredOptions() {
       const filtered = [];
       const regOption = new RegExp(this.searchFilter, 'ig');
-      for (const option of this.options) {
-        //Double For loop to find the option in the fields
-        this.Fields.forEach(field => {
-          if (this.searchFilter.length < 1 || option[field].match(regOption)) {
-            if (filtered.length < this.maxItem) filtered.push(option);
-          }
-        });
+        for (const option of this.options) {
+          //Double For loop to find the option in the fields
+          this.Fields.forEach(field => {
+            if (this.searchFilter.length < 1 || option[field].match(regOption)) {
+              if (filtered.length < this.maxItem) filtered.push(option);
+            }
+          });
 
-      }
+        }
 
       return filtered;
     },

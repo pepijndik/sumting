@@ -1,54 +1,89 @@
 <template>
-  <div class="text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2
-            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full h-10 flex
-            items-center pl-10 text-sm border-gray-300 rounded border shadow font-inter justify-between">
-    <p class="font-inter text-yInMnBlue font-bold pr-4">{{ name }}</p>
-    <div class="divider"/>
-    <div class="pl-10 pr-10 h-10 items-center justify-between flex">
-      <p class="font-inter text-candyPink font-bold">€ {{ price_per }}</p>
-      <p class="font-inter text-yInMrBlue font-bold">/</p>
-      <p class="font-inter text-yInMnBlue font-bold">{{ target_item }}</p>
-
+  <div class="focus:outline-none focus:ring-2 focus:ring-offset-2 md-flex-col flex-row
+            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full md-h-12 h-20 flex
+            sm-text-sm text-xs border-gray-300 rounded border shadow font-inter justify-between text-left">
+    <div class="w-1/3 flex items-center h-20 md-h-10 pl-4 overflow-hidden">
+      <p class="text-yInMnBlue font-bold pr-4 ">{{ product.project.description }}</p>
     </div>
-    <div class="divider"/>
-    <div class="float-right pl-4 h-10 items-center justify-between flex">
-      <label for="amountToOrder" class="font-inter text-yInMnBlue font-bold pr-4">Amount</label>
-      <InputComponent :inputData="amount" @update="amount = $event" id="amount" placeholder="Amount"
-                      required autocomplete="" name="amount" type="number"
-                      :class="'rounded-t-md border font-inter text-yInMnBlue font-bold w-64'" ref="amountToOrder"/>
-      <img :src="require(`@/Assets/img/icons/close.svg`)" alt="Close icon" width="32" class="ml-2 mr-2 bg-candyPink rounded-md">
+    <div class="items-center flex">
+      <div class="divider"/>
+    </div>
+    <div class="w-1/3 flex items-center justify-center md-flex-row flex-col">
+      <div class="flex-row flex items-center">
+        <p class="text-candyPink font-bold">€{{ product.price }}</p>
+        <p class="text-yInMrBlue font-bold p-1">/</p>
+      </div>
+      <p class="text-yInMnBlue font-bold">{{ product.type.product_type_name }}</p>
+    </div>
+    <div class="items-center flex">
+      <div class="divider"/>
+    </div>
+    <div class="w-1/3 flex items-center">
+      <div class="md-flex-row flex-col">
+        <label for="amountToOrder" class="font-inter text-yInMnBlue font-bold p-4 flex">Amount</label>
+        <InputComponentNumeric :inputData="amount" @update="amount = $event" id="amount" placeholder="Amount"
+                               required autocomplete="" name="amount" type="number" @keyup="emitUpdate"
+                               :class="'rounded-md border font-inter text-yInMnBlue font-bold md-w-1/2 w-full h-8 place-self-center'"
+                               ref="amountToOrder"/>
+      </div>
+      <img :src="require(`@/Assets/img/icons/close.svg`)" alt="Close icon" width="36"
+           class="ml-2 mr-2 bg-candyPink rounded-md" @click="this.$emit('deleteProduct', this.index)">
     </div>
   </div>
 </template>
 
 <script>
-import InputComponent from "@/Components/Form/InputComponent";
+import InputComponentNumeric from "@/Components/Form/InputComponentNumeric";
+
 export default {
   name: "OrderSubItem",
-  components: {InputComponent},
+  components: {InputComponentNumeric},
   props: {
-    name: String,
-    price_per: {
-      type: String,
-      default: "0,00"
+    product: {
+      type: Object,
+      default: () => ({
+        project: {
+          name: "Tree"
+        },
+        type: {
+          product_type_name: "Tree"
+        },
+        price: 0.00,
+      }),
+      required: true,
     },
-    target_item: {
-      type: String,
-      default: "Tree"
-    },
-    amount: {
-      type: String,
-      default: "0"
-    },
+    index: {
+      type: Number,
+      default: 0,
+      required: true,
+    }
   },
+  data() {
+    return {
+      amount: 0,
+    }
+  },
+  methods: {
+    emitUpdate() {
+      let total = Math.round(this.amount * this.product.price * 100) / 100;
+      this.$emit('update', {total: total, index: this.index});
+    }
+  },
+  watch: {
+    amount: function () {
+      if (!Number(this.amount)) {
+        this.amount = 0;
+      }
+    }
+  },
+  emits: ['update', 'deleteProduct'],
 }
 </script>
 
 <style scoped>
   .divider {
-    /*border-left: 2px solid rgb(55 65 81);*/
-    border-left: 1px solid rgb(209 213 219);
-    height: 26px;
-    margin: 0 10px;
+    width: 1px;
+    height: 60%;
+    background-color: #E2E8F0;
   }
 </style>
