@@ -89,6 +89,7 @@ let mobile;
 export default {
   name: "OrderRow",
   props: ["order"],
+  emits: ["deleteOrderEvent"],
   data() {
     return {
       modal: false,
