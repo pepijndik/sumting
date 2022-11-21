@@ -10,11 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class SumtingBackend {
 
-    public static final String DEFAULT_PAGE_NUMBER = "0";
-    public  static final String DEFAULT_PAGE_SIZE = "10";
-    public static final String DEFAULT_SORT_BY = "id";
-    public static final String DEFAULT_SORT_DIRECTION = "asc";
-
     public static void main(String[] args) {
             SpringApplication application = new SpringApplication(SumtingBackend.class);
             application.setBanner(new CustomBanner());
@@ -27,8 +22,7 @@ public class SumtingBackend {
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
                     .exposedHeaders("Authorization")
-                    .allowedHeaders("Authorization")
-                    .allowedOrigins("http://localhost","http://localhost:8083","http://127.0.0.1","https://sumting.pdik.nl","http://sumting.pdik.nl/api")
+                    .allowedOriginPatterns("http://localhost:*")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
         }
     }

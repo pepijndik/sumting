@@ -1,14 +1,15 @@
 package app.rest;
 
+import app.exceptions.AuthorizationException;
 import app.models.User.User;
 import app.exceptions.UserNotFoundException;
-import app.exceptions.AuthorizationException;
 import app.repositories.JPAUserRepository;
 import app.security.JWTokenInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -17,8 +18,8 @@ public class UserController {
     private JPAUserRepository userRepo;
 
     @GetMapping("/users")
-    public  ResponseEntity<Iterable<User>> getAllUsers() {
-        return new ResponseEntity<>(userRepo.findAll(), HttpStatus.OK);
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
 
     @GetMapping("/users/{email}")

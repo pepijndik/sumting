@@ -10,6 +10,7 @@ import ProjectApiService from "@/Services/Projects/ProjectApiService";
 import AuthenticationService from "@/Services/AuthenticationService";
 import UserApiService from "@/Services/User/UserApiService";
 import ProductApiService from "@/Services/Products/ProductApiService";
+import DashboardApiService from "@/Services/Dashboard/DashboardApiService"
 export default {
   name: 'App',
   components: {
@@ -22,7 +23,8 @@ export default {
       Auth: new AuthenticationService(),
       ProjectApi: new ProjectApiService(),
       UserApi: new UserApiService(),
-      ProductApi: new ProductApiService()
+      ProductApi: new ProductApiService(),
+      DashboardApi: new DashboardApiService(),
     }
   },
   data() {
