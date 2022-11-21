@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * A JPA implementation of a user repository
@@ -53,11 +51,8 @@ public class JPAUserRepository implements CrudRepository<User, Integer > {
     }
 
     @Override
-    public List<User> findAll() {
-
-        TypedQuery<User> query = em.createQuery("SELECT a FROM User a",User.class);
-
-        return query.getResultList();
+    public Iterable<User> findAll() {
+        return em.createQuery("SELECT a FROM User a", User.class).getResultList();
     }
 
     @Override

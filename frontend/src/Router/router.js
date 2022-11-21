@@ -1,6 +1,6 @@
 // router/axios.ts
 import {createRouter, createWebHistory} from "vue-router";
-import Dashboard from "@/Pages/Dashboard/Dashboard";
+import Dashboard from "@/Pages/Dashboard";
 import Login from "@/Pages/Auth/Login";
 import ListProjects from "@/Pages/Projects/ListProjects";
 import OrderCreate from "@/Pages/Order/OrderCreate";
