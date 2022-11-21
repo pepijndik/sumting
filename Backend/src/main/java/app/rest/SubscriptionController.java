@@ -1,10 +1,10 @@
 package app.rest;
 
+import app.exceptions.AuthorizationException;
+import app.security.JWTokenInfo;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
-import app.exceptions.AuthorizationException;
-import app.security.JWTokenInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 

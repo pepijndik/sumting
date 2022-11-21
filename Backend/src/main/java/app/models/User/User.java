@@ -1,12 +1,11 @@
 package app.models.User;
 
 import app.models.Country;
-import app.models.Identifiable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
-
 import app.exceptions.TwofactorGenerationException;
+import app.models.Identifiable;
 import app.services.TwoFactorService;
 
 import javax.persistence.*;
@@ -20,10 +19,10 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = User.TABLE_NAME)
+
 public class User implements Identifiable<Integer> {
 
     public static enum Type {
-        BUSINESS,
         PERSON,
         ADMIN
     }

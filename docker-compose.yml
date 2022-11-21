@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   db:
-    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/db
+    image: postgres
     build:
       context: ./Docker/postgres
       dockerfile: Dockerfile
@@ -12,6 +12,8 @@ services:
       POSTGRES_PASSWORD: sumting
       POSTGRES_USER: sumting
       POSTGRES_DB: sumting
+    ports:
+      - "5432:5432"
     volumes:
        - ./data/db:/var/lib/postgresql/data
        - ./Docker/postgres/database.sql:/docker-entrypoint-initdb.d/create_tables.sql
@@ -24,51 +26,36 @@ services:
       retries: 5
     networks:
       - sumtingDb
-      - nginxproxymanager_default
-    ports:
-      - "5432:5432"
-  back:
-    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-backend
-    build:
-      context: ./Backend
-      dockerfile: Dockerfile
-    container_name: sumting-admin-backend
-    depends_on:
-      - db
-
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/sumting
-      - SPRING_DATASOURCE_USERNAME=sumting
-      - SPRING_DATASOURCE_PASSWORD=sumting
-    restart: always
-    ports:
-      - "8083:8083"
-    networks:
-      - sumting
-      - sumtingDb
-      - nginxproxymanager_default
-
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
+    expose:
+      - 5433
+#  back:
+#    image: sumting-backend
+#    build:
+#      context: ./Backend
+#      dockerfile: Dockerfile
+#    container_name: sumting-admin-backend
+#    environment:
+#      WAIT_HOSTS: postgres:5433
+#        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+#        - SPRING_DATASOURCE_USERNAME=sumting
+#        - SPRING_DATASOURCE_PASSWORD=sumting
+#        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    ports:
+#      - 8083:8083
+#    depends_on:
+#      - db
+#    networks:
+#      - sumting
+#      - sumtingDb
   front:
-    image: gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1/sumting-frontend
-    container_name: frontend
+    container_name: sumting-admin-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    restart: always
-    environment:
-      - NGINX_HOST=sumting.pdik.nl
-      - VUE_APP_BACKEND_API_URL=https://sumting.pdik.nl/api
-      - VUE_APP_ENV=production
+    ports:
+      - 8080:8080
     networks:
       - sumting
-      - nginxproxymanager_default
-#    ports:
-#      - "80:80"
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-
 volumes:
   data:
 
@@ -77,5 +64,3 @@ networks:
     driver: bridge
   sumting:
     driver: bridge
-  nginxproxymanager_default:
-    external: true

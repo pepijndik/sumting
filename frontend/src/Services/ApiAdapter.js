@@ -20,6 +20,19 @@ export default class ApiAdapter{
      });
     }
 
+    async findByMonth(orderMonths){
+        return BaseApi.get(`/${this.resource}/${orderMonths}`).then(response => {
+            return response.data
+
+            //return response.data;
+        }).catch(error => {
+            // You can handle the error, like show a notificaiton to the user
+
+            // dont forget to re-throw the error, otherwise the promise will resolve successfully
+            throw error
+        });
+    }
+
     async findOne(id){
      return BaseApi.get(`/${this.resource}/${id}`);
     }
