@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sumting-admin-backend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sumting-admin-backend
+    spec:
+      containers:
+        - name: sumting-admin-backend
+          image: registry.gitlab.com/pdik/sumting
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: registry.gitlab.com

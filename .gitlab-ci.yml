@@ -1,68 +1,140 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
-
-# Build JAVA applications using Apache Maven (http://maven.apache.org)
-# For docker image tags see https://hub.docker.com/_/maven/
-#
-# For general lifecycle information see https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
-
-# This template will build and test your projects
-# * Caches downloaded dependencies and plugins between invocation.
-# * Verify but don't deploy merge requests.
-# * Deploy built artifacts from master branch only.
-
-variables:
-  # This will suppress any download for dependencies and plugins or upload messages which would clutter the console log.
-  # `showDateTime` will show the passed time in milliseconds. You need to specify `--batch-mode` to make this work.
-  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
-  # As of Maven 3.3.0 instead of this you may define these options in `.mvn/maven.config` so the same config is used
-  # when running from the command line.
-  # `installAtEnd` and `deployAtEnd` are only effective with recent version of the corresponding plugins.
-  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
-
-# This template uses jdk8 for verifying and deploying images
-image: maven:3.8.3-openjdk-17
-
 # Cache downloaded dependencies and plugins between builds.
 # To keep cache across branches add 'key: "$CI_JOB_NAME"'
+stages:
+  - build
+  - test
+  - deploy
+  - docker
+
 cache:
   paths:
-    - .m2/repository
+    - frontend/node_modules/
+    - Backend/target/
+variables:
+  DOCKER_DRIVER: overlay
+  JDK_IMAGE: maven:3-openjdk-18
 
-# For merge requests do not `deploy` but only run `verify`.
-# See https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
-.verify: &verify
+
+#Backend
+build:backend:
+  image: $JDK_IMAGE
+  stage: build
+  environment: production
+  tags:
+    - hva
+  script:
+    - echo "started building"
+    - cd Backend
+    - mvn clean package -Dmaven.test.skip=true
+    - echo "Finished building"
+    - ls -la
+  artifacts:
+    paths:
+      - Backend/target/*.jar
+  only:
+    - main
+
+test:backend:
+  image: $JDK_IMAGE
+  stage: test
+  tags:
+    - hva
+  needs:
+    - job: build:backend
+  script:
+      - cd Backend #first cd into the backend folder
+      - mvn $MAVEN_CLI_OPTS -Dspring.profiles.active=test clean test -P test
+      - mvn surefire-report:report
+  artifacts:
+    when: always
+    paths:
+      - Backend/target/surefire-reports/
+##Frontend
+build:frontend:
+  image: node:latest
+  tags:
+    - hva
+  stage: build
+  script:
+     - cd frontend
+     - npm install --progress=false
+     - npm run build
+  artifacts:
+     paths:
+       - dist
+
+test:frontend:
+  image: node:latest
   stage: test
   tags:
     - hva
   script:
-    - 'mvn $MAVEN_CLI_OPTS verify'
-  except:
-    variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - cd frontend
+    - npm install --progress=false
+  needs:
+    - job: build:frontend
 
-# Verify merge requests using JDK17
-verify:jdk17:
-  <<: *verify
-
-# To deploy packages from CI, create a ci_settings.xml file
-# For deploying packages to GitLab's Maven Repository: See https://docs.gitlab.com/ee/user/packages/maven_repository/index.html#create-maven-packages-with-gitlab-cicd for more details.
-# Please note: The GitLab Maven Repository is currently only available in GitLab Premium / Ultimate.
-# For `master` branch run `mvn deploy` automatically.
-deploy:jdk17:
+docker:build:
+  environment: production
+  image: creatiwww/docker-compose:latest
+  services:
+    - docker:dind
   stage: deploy
+  needs:
+    - job: build:backend
+    - job: build:frontend
+    - job: test:frontend
+    - job: test:backend
   tags:
     - hva
-  environment: production
+  before_script:
+    - echo "Logging into docker registry"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # Default branch leaves tag empty (= latest tag)
+    # All other branches are tagged with the escaped branch name (commit ref slug)
   script:
-    - mvn --version
-    - if [ ! -f ./Backend/ci_settings.xml ];
-      then echo "CI settings missing\! If deploying to GitLab Maven Repository, please see https://docs.gitlab.com/ee/user/packages/maven_repository/index.html#create-maven-packages-with-gitlab-cicd for instructions.";
+    #- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - | 
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; 
+        then tag="" echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'" 
+        else tag=":$CI_COMMIT_REF_SLUG" echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag" 
       fi
-    - 'mvn $MAVEN_CLI_OPTS deploy -s ci_settings.xml'
+    - docker-compose build
+    - docker-compose push
+#  script:
+#    - echo "Building docker image"
+#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD gitlab.fdmci.hva.nl:5050/se-ewa/2022-2023-1/sum-1
+#    - docker-compose build
+#    - docker-compose push se-ewa/2022-2023-1/sum-1
+#    - echo "Images builded"
   only:
-    variables:
-      - $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - main
+
+
+##Deploy to Prod server
+deploy:prod:
+  needs:
+    - job: docker:build
+  environment: production
+  only:
+    - main
+  image: creatiwww/docker-compose:latest
+  services:
+    - docker:dind
+  stage: deploy
+
+  tags:
+    - hva
+  before_script:
+    - echo "Deploying!"
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $SERVER >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh admin@$SERVER "cd /home/docker/sumting/sum-1; git pull; docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY; docker-compose down --remove-orphans; docker-compose pull back; docker-compose pull front; docker-compose pull db; docker-compose up -d"
+    #- cd /home/docker/sumting/sum-1 #Dive into the docker user folder, where sumting project is located with the docker-compose file
+    - echo "Deployed!"

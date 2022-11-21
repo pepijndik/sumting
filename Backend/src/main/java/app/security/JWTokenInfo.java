@@ -1,6 +1,6 @@
 package app.security;
 
-import app.Enums.UserRole;
+import app.enums.UserRole;
 
 import java.util.Date;
 
@@ -51,7 +51,7 @@ public class JWTokenInfo {
 
     }
     public void setRole(UserRole role){
-        this.Role = Role;
+        this.Role = role;
     }
 
     public Date getIssuedAt() {

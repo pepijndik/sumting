@@ -2,7 +2,7 @@ package app.rest;
 
 import app.exceptions.ModelNotFound;
 import app.models.Order.Order;
-import app.repositories.OrderRepository;
+import app.repositories.Order.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;

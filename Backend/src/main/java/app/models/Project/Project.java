@@ -38,6 +38,10 @@ public class Project implements Identifiable<Integer> {
     private String description_long;
 
     @Nullable
+    @Column(name = "name", columnDefinition = "varchar(255)")
+    private String name;
+
+    @Nullable
     @Column(name = "latitude", columnDefinition = "varchar(255)")
     private String latitude;
 
