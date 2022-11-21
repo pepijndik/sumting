@@ -31,8 +31,6 @@ build:backend:
   artifacts:
     paths:
       - Backend/target/*.jar
-  only:
-    - main
 
 test:backend:
   image: $JDK_IMAGE
