@@ -63,7 +63,7 @@
           </div>
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
-            <SearchableDropDown
+            <SearchableDropdown
               @selected="selectedLocation"
               :options="locations"
               :primary-key="'id'"
@@ -92,11 +92,11 @@
 
 <script>
 import ImgUpload from "@/Components/Form/imgUpload.vue";
-import SearchableDropDown from "@/Components/Form/SearchableDropDown.vue";
+import SearchableDropdown from "@/Components/Form/SearchableDropdown.vue";
 
 export default {
   name: "clientCreate",
-  components: { SearchableDropDown, ImgUpload },
+  components: { ImgUpload, SearchableDropdown },
   inject: ["UserApi", "CountryApi"],
   data() {
     return {
