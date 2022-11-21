@@ -1,4 +1,4 @@
-package app.repositories;
+package app.repositories.interfaces;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;

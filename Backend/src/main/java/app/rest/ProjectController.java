@@ -1,7 +1,7 @@
 package app.rest;
 
 import app.models.Project.Project;
-import app.repositories.ProjectRepository;
+import app.repositories.Project.ProjectRepository;
 import app.exceptions.ModelNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

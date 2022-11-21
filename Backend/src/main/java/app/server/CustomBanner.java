@@ -1,4 +1,4 @@
-package app.Server;
+package app.server;
 
 import org.springframework.boot.Banner;
 import org.springframework.core.env.Environment;
