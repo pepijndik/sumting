@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import SearchableDropdown from "@/Components/Form/SearchableDropdown";
+import SearchableDropdown from "@/Components/Form/SearchableDropdownT";
 import OrderRow from "@/Components/Order/OrderRow.vue";
 
 export default {

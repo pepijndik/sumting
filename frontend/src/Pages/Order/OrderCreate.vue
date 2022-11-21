@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import SearchableDropDown from "@/Components/Form/SearchableDropDown";
+import SearchableDropDown from "@/Components/Form/SearchableDropdownT";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
 
