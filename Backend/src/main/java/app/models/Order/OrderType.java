@@ -2,6 +2,7 @@ package app.models.Order;
 
 import com.sun.istack.Nullable;
 import app.models.Identifiable;
+
 import javax.persistence.*;
 
 @Entity
