@@ -41,6 +41,7 @@
 <script>
 export default {
   name: "imgUpload",
+  emits: ["selectedFile"],
   data() {
     return {
       imageData: null,
