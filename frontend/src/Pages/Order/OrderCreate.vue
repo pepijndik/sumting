@@ -89,7 +89,7 @@ export default {
             throw error;
           });
         }
-      }
+        }
 
       this.products = tempProducts;
 
