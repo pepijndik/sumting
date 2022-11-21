@@ -1,12 +1,11 @@
 package app.repositories;
 
 import app.models.Country;
-import app.repositories.interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 
-public class CountryRepository implements CrudRepository<Country, Integer> {
+public class CountryRepository implements CrudRepository<Country, Integer>{
 
     @Autowired
     private EntityManager em;

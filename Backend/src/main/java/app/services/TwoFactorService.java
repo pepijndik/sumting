@@ -1,5 +1,6 @@
 package app.services;
 
+import app.models.User.User;
 import dev.samstevens.totp.code.*;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
@@ -10,7 +11,6 @@ import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.time.SystemTimeProvider;
 import dev.samstevens.totp.time.TimeProvider;
-import app.models.User.User;
 import org.springframework.stereotype.Service;
 
 import static dev.samstevens.totp.util.Utils.getDataUriForImage;

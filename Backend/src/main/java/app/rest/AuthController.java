@@ -1,10 +1,10 @@
 package app.rest;
 
+import app.exceptions.AuthenticationException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import app.exceptions.UserNotFoundException;
 import app.models.User.User;
 import app.repositories.JPAUserRepository;
-import app.exceptions.AuthenticationException;
 import app.security.JWTokenInfo;
 import app.security.JWTokenUtils;
 import app.security.PasswordEncoder;
