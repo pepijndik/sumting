@@ -2,14 +2,12 @@ package app.models.User;
 
 import app.models.Country;
 import app.models.Identifiable;
-import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
 
 import app.exceptions.TwofactorGenerationException;
-import dev.samstevens.totp.secret.DefaultSecretGenerator;
+import app.services.TwoFactorService;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,7 +29,6 @@ public class User implements Identifiable<Integer> {
     }
     public static final String TABLE_NAME ="\"User\"";
     @Id
-    @JsonView(UserView.User.class)
     @Column(name = "user_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -39,16 +36,12 @@ public class User implements Identifiable<Integer> {
     @Column(name = "user_id_ext", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer user_key_ext;
-
-    @JsonView(UserView.User.class)
     @Column(name = "user_name",nullable = false)
     private String name;
 
-    @JsonView(UserView.User.class)
     @Column(name = "email",nullable = false)
     private String email;
 
-    @JsonView(UserView.User.class)
     @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
@@ -63,12 +56,8 @@ public class User implements Identifiable<Integer> {
     @Column(name = "user_secret_code",nullable = true)
     private String secretCode;
 
-    @JsonView(UserView.Login.class)
-    @Column(name = "user_twofactor_enabled",nullable = true, columnDefinition = "boolean default false")
+    @Column(name = "user_twofactor_enabled",nullable = true)
     private Boolean TwoFactorEnabled;
-
-
-    @JsonView(UserView.User.class)
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type",nullable = false,columnDefinition = "varchar(255) default 'PERSON'")
     private User.Type user_type;
@@ -76,15 +65,10 @@ public class User implements Identifiable<Integer> {
     @Column(name = "country_key",nullable = false)
     private Integer country_key;
 
-    @JsonView(UserView.User.class)
     @JoinColumn(name = "country_key", referencedColumnName = "country_key", insertable = false, updatable = false)
     @OneToOne(cascade = CascadeType.ALL)
     private Country country;
 
-    @JsonIgnore
-    public boolean isTwoFactorEnabled() {
-        return TwoFactorEnabled != null && TwoFactorEnabled;
-    }
     public String getEmail() {
         return email;
     }
@@ -144,10 +128,23 @@ public class User implements Identifiable<Integer> {
     public String getSecret() {
         return this.secretCode;
     }
-    public void setSecret(String secret) {
-        this.secretCode = secret;
+    public void generateSecretCode() {
+        this.secretCode = TwoFactorService.generateSecretKey();
     }
 
+    /**
+     * Generate a Qr to scan with a 2FA app
+     */
+    public void generateQrCode() throws TwofactorGenerationException
+    {
+        try{
+            QrData qrData = TwoFactorService.generateQRData(this.getSecret(),this);
+            TwoFactorService.generateQRUrl(qrData);
+        }
+        catch (QrGenerationException generationException){
+          throw new TwofactorGenerationException("Failed to generate QR code");
+        }
+    }
     @Override
     public int hashCode() {
         return Objects.hash(email);

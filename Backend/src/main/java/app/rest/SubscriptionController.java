@@ -26,9 +26,9 @@ public class SubscriptionController {
 
     @PostMapping("/subscription")
     public void CreateSubscription(String Customer, List<Object> items,@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) throws StripeException {
-//        if(!tokenInfo.getUser()) {
-//            throw new AuthorizationException("only administrators can remove members");
-//        }
+        if(!tokenInfo.isAdmin()) {
+            throw new AuthorizationException("only administrators can remove members");
+        }
 
 
         items = new ArrayList<>();

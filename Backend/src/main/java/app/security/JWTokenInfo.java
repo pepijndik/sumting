@@ -1,7 +1,6 @@
 package app.security;
 
 import app.enums.UserRole;
-import app.models.User.User;
 
 import java.util.Date;
 
@@ -13,22 +12,48 @@ import java.util.Date;
 
 public class JWTokenInfo {
 
-    public static final String KEY = "token";
+    public static final String KEY = "tokenInfo";
 
-    private Integer id;
-    private boolean admin;
-
-    private User user;
+    private String email;
+    private UserRole Role;
     private Date issuedAt;
     private Date expiration;
 
-    public Integer getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    public UserRole getRole() {
+        return this.Role;
+    }
+
+    public boolean isAdmin(){
+        return this.Role == UserRole.ADMIN;
+    }
+
+    public void setAdmin(boolean admin) {
+        if(admin){
+            this.setRole(UserRole.ADMIN);
+        }
+        else{
+            this.setRole(UserRole.USER);
+        }
+    }
+
+    public void setUser(boolean user) {
+        if(user){
+          this.setRole(UserRole.USER);
+        }
+
+    }
+    public void setRole(UserRole role){
+        this.Role = role;
+    }
+
     public Date getIssuedAt() {
         return issuedAt;
     }
@@ -45,25 +70,13 @@ public class JWTokenInfo {
         this.expiration = expiration;
     }
 
-
     @Override
     public String toString() {
         return "JWTokenInfo{" +
-                "id = " + this.getId() +
-                ", User = " + this.getUser() +
+                "email='" + email + '\'' +
+                ", Role=" + this.getRole() +
                 ", issuedAt=" + issuedAt +
                 ", expiration=" + expiration +
                 '}';
-    }
-
-    public boolean twoFactorEnabled() {
-        return this.getUser().isTwoFactorEnabled();
-    }
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

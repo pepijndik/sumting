@@ -2,21 +2,21 @@
   <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">
     <div>
       <p class="font-inter text-yInMnBlue">Client</p>
-      <SearchableDropdown
+      <SearchableDropDown
         class="mt-1"
         :options="users"
-        :fields="['name', 'email', 'user_role']"
+        :fields="['email', 'user_name']"
         :primary-key="'id'"
         placeholder="Choose a client"
       >
-      </SearchableDropdown>
+      </SearchableDropDown>
     </div>
     <div class="mt-3 sm:mt-0">
       <p class="font-inter text-yInMnBlue">Project(s)</p>
-      <SearchableDropdown
+      <SearchableDropDown
         @selected="selectedProject = $event"
         :options="projects"
-        :fields="['description']"
+        :fields="['name']"
         :primary-key="'id'"
         :disabled="false"
         autocomplete="off"
@@ -24,7 +24,7 @@
         class="mt-1"
         placeholder="Select project(s)"
       >
-      </SearchableDropdown>
+      </SearchableDropDown>
     </div>
   </div>
   <div
@@ -115,12 +115,12 @@
 </template>
 
 <script>
-import SearchableDropdown from "@/Components/Form/SearchableDropdown";
+import SearchableDropDown from "@/Components/Form/SearchableDropDown";
 import OrderRow from "@/Components/Order/OrderRow.vue";
 
 export default {
   name: "OrderView",
-  components: { SearchableDropdown, OrderRow },
+  components: { SearchableDropDown, OrderRow },
   inject: ["ProjectApi", "OrderApi", "UserApi"],
   data() {
     return {
@@ -136,10 +136,10 @@ export default {
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
-    this.users = await this.UserApi.GetAllUsers();
+    //this.users = await this.UserApi.findAll();
 
-    this.orders.sort((a,b) => {
-      return a.order_date.localeCompare(b.order_date)
+    this.orders.sort((a, b) => {
+      return a.order_date.localeCompare(b.order_date);
     });
   },
   computed: {
@@ -178,7 +178,7 @@ export default {
       this.searchOrder = !this.searchOrder;
     },
     deleteOrder(id) {
-      this.OrderApi.delete(id);
+      //this.OrderApi.delete(id);
       console.log("Deleted: " + id);
     },
   },
