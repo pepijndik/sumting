@@ -8,9 +8,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class OrderController {
@@ -38,5 +38,28 @@ public class OrderController {
         Order OrderToDelete = orderRepository.findById(orderId);
         orderRepository.delete(OrderToDelete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @PutMapping("/orders/editOrder/{id}")
+    public ResponseEntity<Order> editOrder(@PathVariable Integer id, @RequestParam Order order){
+        try {
+            Optional<Order> findOrder = Optional.ofNullable(orderRepository.findById(id));
+
+            if (findOrder.isPresent()){
+                Order orderFound = findOrder.get();
+                orderFound.setCurrency(order.getCurrency());
+//                order1.setDescription(order.getDescription());
+//                order1.setPaymentMethod(order.getPaymentMethod());
+//                order1.setTransactionFee(order.getTransactionFee());
+//                order1.setTransactionTotal(order.getTransactionTotal());
+//                order1.setTransactionVat(order.getTransactionVat());
+//                order1.setOrder_date(order.getOrder_date());
+
+                return new ResponseEntity<>(orderRepository.save(orderFound), HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
