@@ -130,6 +130,16 @@ public class AuthController {
         return "INCORRECT CODE";
     }
 
+
+    @GetMapping("/auth/me")
+    public ResponseEntity<User> getUser(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo){
+        if(tokenInfo.getUser() == null){
+            throw new AuthorizationException("User not found");
+        }
+        return ResponseEntity.ok(tokenInfo.getUser());
+    }
+
+
     @GetMapping("/auth/2fa/setup")
     public ResponseEntity<Object> setupDevice(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) throws QrGenerationException, TwofactorSetup {
         if(tokenInfo.twoFactorEnabled()) {
