@@ -3,6 +3,8 @@ package app.rest;
 import app.exceptions.ModelNotFound;
 import app.models.Order.Order;
 import app.repositories.Order.OrderRepository;
+import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.lang.reflect.Array;
 
 @Controller
 public class OrderController {
@@ -29,7 +34,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId) {
+    @JsonView(OrderView.Order.class)
+    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId)
+    {
         Order o = orderRepository.findById(orderId);
         return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", orderId),HttpStatus.NOT_FOUND);
     }

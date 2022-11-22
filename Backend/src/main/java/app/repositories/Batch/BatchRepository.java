@@ -1,6 +1,8 @@
-package app.repositories;
+package app.repositories.Batch;
 
+import app.models.Batch.Batch;
 import app.models.Country;
+import app.models.Product.Product;
 import app.repositories.interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,24 +12,24 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public class CountryRepository implements CrudRepository<Country, Integer> {
+public class BatchRepository implements CrudRepository<Batch, Integer> {
 
     @Autowired
     private EntityManager em;
 
     @Override
-    public Country save(Country entity) {
+    public Batch save(Batch entity) {
         return em.merge(entity);
     }
 
     @Override
-    public Country findById(Integer key) {
-        return em.find(Country.class,key);
+    public Batch findById(Integer primaryKey) {
+        return em.find(Batch.class,primaryKey);
     }
 
     @Override
-    public Iterable<Country> findAll() {
-        return em.createQuery("SELECT c FROM Country c", Country.class).getResultList();
+    public Iterable<Batch> findAll() {
+        return em.createQuery("SELECT b FROM Batch b", Batch.class).getResultList();
     }
 
     @Override
@@ -36,12 +38,13 @@ public class CountryRepository implements CrudRepository<Country, Integer> {
     }
 
     @Override
-    public void delete(Country entity) {
-
+    public void delete(Batch entity) {
+        Batch toRemove = em.merge(entity);
+        em.remove(toRemove);
     }
 
     @Override
     public boolean existsById(Integer primaryKey) {
-        return this.findById(primaryKey) != null;
+         return this.findById(primaryKey) != null;
     }
 }
