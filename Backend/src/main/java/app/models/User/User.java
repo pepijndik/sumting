@@ -2,14 +2,10 @@ package app.models.User;
 
 import app.models.Country;
 import app.models.Identifiable;
+import app.views.OrderView;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import dev.samstevens.totp.exceptions.QrGenerationException;
-import dev.samstevens.totp.qr.QrData;
-
-import app.exceptions.TwofactorGenerationException;
-import dev.samstevens.totp.secret.DefaultSecretGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,11 +36,11 @@ public class User implements Identifiable<Integer> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer user_key_ext;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, OrderView.Order.class})
     @Column(name = "user_name",nullable = false)
     private String name;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, OrderView.Order.class})
     @Column(name = "email",nullable = false)
     private String email;
 
@@ -68,7 +64,7 @@ public class User implements Identifiable<Integer> {
     private Boolean TwoFactorEnabled;
 
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, OrderView.Order.class})
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type",nullable = false,columnDefinition = "varchar(255) default 'PERSON'")
     private User.Type user_type;

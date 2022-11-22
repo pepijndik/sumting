@@ -1,5 +1,7 @@
 package app.models.Order;
 
+import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
 import app.models.Identifiable;
@@ -7,6 +9,7 @@ import app.models.User.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = Order.TABLE_NAME)
@@ -14,38 +17,23 @@ public class Order implements Identifiable<Integer> {
     public static final String TABLE_NAME = "\"order\"";
 
     @Id()
+    @JsonView(OrderView.Order.class)
     @Column(name = "order_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    public Order() {
-
-    }
-
-    public Order(Integer id, Integer orderIdExt, LocalDate createdAt, Character paymentMethod, LocalDate order_date, String description, Double transactionTotal, OrderType orderTypeKey, Double transactionFee, Double transactionVat, Character currency) {
-        this.id = id;
-        this.orderIdExt = orderIdExt;
-        this.createdAt = createdAt;
-        this.paymentMethod = paymentMethod;
-
-        this.order_date = order_date;
-        this.description = description;
-        this.transactionTotal = transactionTotal;
-        this.orderTypeKey = orderTypeKey;
-        this.transactionFee = transactionFee;
-        this.transactionVat = transactionVat;
-        this.currency = currency;
-    }
 
     @Nullable
     @Column(name = "order_id_ext", columnDefinition = "int")
     private Integer orderIdExt;
 
     @Timestamp
+    @JsonView(OrderView.Order.class)
     @Column(name = "created_at", columnDefinition = "timestamp")
     private LocalDate createdAt;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "payment_method", columnDefinition = "char")
     private Character paymentMethod;
 
@@ -54,39 +42,50 @@ public class Order implements Identifiable<Integer> {
     private User payer;
 
     @Timestamp
+    @JsonView(OrderView.Order.class)
     @Column(name = "order_date", columnDefinition = "timestamp")
     private LocalDate order_date;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "description", columnDefinition = "varchar(255)")
     private String description;
 
 
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "transaction_total", columnDefinition = "double")
     private Double transactionTotal;
 
     @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JsonView(OrderView.Order.class)
     @JoinColumn(name = "order_type_key",referencedColumnName = "order_type_key",updatable = false, insertable = false)
     private OrderType orderTypeKey;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "transaction_fee", columnDefinition = "double")
     private Double transactionFee;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "transaction_vat", columnDefinition = "double")
     private Double transactionVat;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "currency", columnDefinition = "char(5)")
     private Character currency;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @JoinColumn(name = "user_id_ext", columnDefinition = "int")
     @OneToOne(cascade = CascadeType.DETACH, optional = true)
     private User user;
+
+
+//    private List<OrderLine> orderLines;
 
     @Override
     public Integer getId() {

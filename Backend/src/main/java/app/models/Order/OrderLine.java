@@ -6,7 +6,9 @@ import app.models.Identifiable;
 import app.models.Product.Product;
 import app.models.User.User;
 import app.models.Wallet;
+import app.views.BatchView;
 import app.views.OrderLineView;
+import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -64,37 +66,41 @@ public class OrderLine implements Identifiable<Integer> {
     @Column(name = "proof_date", nullable = true)
     private LocalDateTime proofDate;
 
-    @Column(name="latitude", nullable = true)
-    private double latitude;
+    @JsonView(OrderLineView.OrderLine.class)
+    @Column(name="latitude", nullable = true, columnDefinition = "double default 0.0")
+    private Double latitude;
 
-    @Column(name="longitude", nullable = true)
-    private double longitude;
+    @JsonView(OrderLineView.OrderLine.class)
+    @Column(name="longitude", nullable = true, columnDefinition = "double default 0.0")
+    private Double longitude;
 
-    @Column(name="proof_small")
+    @Column(name="proof_small",nullable = true)
     private String proofSmall;
 
-    @Column(name="proof_medium")
+    @Column(name="proof_medium",nullable = true)
     private String proofMedium;
 
-    @Column(name="proof_large")
+    @Column(name="proof_large",nullable = true)
     private String proofLarge;
 
-    @Column(name="proof_uploaded_datetime")
+    @Column(name="proof_uploaded_datetime",nullable = true)
     private LocalDateTime proofUploadDate;
 
-    @Column(name="transaction_line_fee")
+    @Column(name="transaction_line_fee",nullable = true)
     private Double transactionLineFee;
 
-    @Column(name="transaction_line_vat")
+    @Column(name="transaction_line_vat",nullable = true)
     private Double transactionLineVat;
 
-    @Column(name="loaded_at")
+    @Column(name="loaded_at",nullable = true)
     private LocalDateTime loadedDate;
 
-    @Column(name="orderline_stripe_id")
+    @JsonView(OrderLineView.OrderLine.class)
+    @Column(name="orderline_stripe_id",nullable = true)
     private String StripeChargeId;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
     private Batch batch;
 

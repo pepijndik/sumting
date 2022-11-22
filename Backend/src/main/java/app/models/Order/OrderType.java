@@ -1,5 +1,7 @@
 package app.models.Order;
 
+import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 import app.models.Identifiable;
 
@@ -16,14 +18,17 @@ public class OrderType implements Identifiable<Integer> {
     private Integer id;
 
     @Nullable
+    @JsonView()
     @Column(name = "description",columnDefinition = "varchar")
     private String description;
 
     @Nullable
+    @JsonView(OrderView.Order.class)
     @Column(name = "order_type", columnDefinition = "varchar(255)")
     private String type;
 
     @Nullable
+    @JsonView()
     @Column(name = "is_ext", columnDefinition = "bit")
     private Integer isExt;
 
