@@ -40,19 +40,19 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @PutMapping("/orders/editOrder/{id}")
-    public ResponseEntity<Order> editOrder(@PathVariable Integer id, @RequestParam Order order){
+    public ResponseEntity<Order> editOrder(@PathVariable Integer id, @RequestBody Order order){
         try {
             Optional<Order> findOrder = Optional.ofNullable(orderRepository.findById(id));
 
             if (findOrder.isPresent()){
                 Order orderFound = findOrder.get();
                 orderFound.setCurrency(order.getCurrency());
-//                order1.setDescription(order.getDescription());
-//                order1.setPaymentMethod(order.getPaymentMethod());
-//                order1.setTransactionFee(order.getTransactionFee());
-//                order1.setTransactionTotal(order.getTransactionTotal());
-//                order1.setTransactionVat(order.getTransactionVat());
-//                order1.setOrder_date(order.getOrder_date());
+                orderFound.setDescription(order.getDescription());
+                orderFound.setPaymentMethod(order.getPaymentMethod());
+                orderFound.setTransactionFee(order.getTransactionFee());
+                orderFound.setTransactionTotal(order.getTransactionTotal());
+                orderFound.setTransactionVat(order.getTransactionVat());
+                orderFound.setOrder_date(order.getOrder_date());
 
                 return new ResponseEntity<>(orderRepository.save(orderFound), HttpStatus.OK);
             }else{
