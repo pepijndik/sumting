@@ -1,6 +1,5 @@
 <template>
-  <div
-      class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
+  <div class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
     scrollbar-thin scrollbar-thumb-yInMnBlue">
     <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
       <div class="relative sm:w-80">

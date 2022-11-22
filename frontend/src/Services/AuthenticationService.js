@@ -1,20 +1,21 @@
-
 import BaseApi from "@/Services/BaseApi";
 import User from "@/Models/User";
+import AuthHeader from "@/Services/AuthHeader";
 
-class AuthenticationService
-{
+class AuthenticationService {
     constructor() {
 
     }
+
     static isLoggedIn() {
-        if(process.env?.VUE_APP_ENV === 'development') {
+        if (process.env?.VUE_APP_ENV === 'development') {
             return true;
         }
         return localStorage.getItem('token') !== null;
     }
+
     async login(email, password, remember = false) {
-        if(!email || !password) return false;
+        if (!email || !password) return false;
 
         return await BaseApi.post("auth", {email, password}).then(
             response => {
@@ -26,20 +27,37 @@ class AuthenticationService
             }
         ).catch(error => {
             console.log(error);
-           return false;
+            return false;
         });
     }
+
     logout() {
         localStorage.removeItem('user');
     }
+
+    async getMe() {
+        BaseApi.defaults.headers = AuthHeader();
+        return await BaseApi.get("me")
+            .then(
+                response => {
+                    const data = response.data;
+                    return new User(data.id, data.name, data.email, data.avatar, data.user_type);
+                }
+            ).catch(error => {
+                console.log(error);
+                return false;
+            });
+    }
+
     register(user = {}) {
-        return BaseApi.post( 'users', {
+        return BaseApi.post('users', {
             username: user?.username ?? '',
             email: user?.email ?? '',
             password: user?.password ?? '',
-            role: user?.role?? 'user',
+            role: user?.role ?? 'user',
         });
     }
 
 }
+
 export default AuthenticationService;
