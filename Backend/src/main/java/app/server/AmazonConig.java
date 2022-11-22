@@ -14,11 +14,11 @@ import javax.validation.constraints.NotBlank;
 
 @Configuration
 public class AmazonConig {
-
     @NotBlank
     private String awsAcceskey;
     @NotBlank
     private String awsSecretKey;
+
     @NotBlank
     private String awsRegion;
 
