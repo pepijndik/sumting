@@ -81,6 +81,14 @@ public class User implements Identifiable<Integer> {
     @OneToOne(cascade = CascadeType.ALL)
     private Country country;
 
+    @JsonView(UserView.User.class)
+    @Column(name = "profile_image",nullable = true)
+    private String profileImage;
+
+    @JsonView(UserView.User.class)
+    @Column(name = "profile_text",nullable = true)
+    private String profileText;
+
     @JsonIgnore
     public boolean isTwoFactorEnabled() {
         return TwoFactorEnabled != null && TwoFactorEnabled;

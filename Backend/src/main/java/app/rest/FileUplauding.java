@@ -1,6 +1,8 @@
 package app.rest;
 
 
+import app.server.Amazon.AmazonConfig;
+import app.server.Amazon.BucketNames;
 import app.service.FileStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +48,7 @@ public class FileUplauding
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         //Save Image in S3 and then save the path in the database
-        String path = String.format("%s/%s", "sumting", UUID.randomUUID());
+        String path = String.format("%s/%s", BucketNames.BASE.getBucketName(), UUID.randomUUID());
         String fileName = String.format("%s", file.getOriginalFilename());
         try {
             fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());

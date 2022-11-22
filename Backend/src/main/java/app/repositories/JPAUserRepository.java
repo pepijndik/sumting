@@ -67,8 +67,13 @@ public class JPAUserRepository implements CrudRepository<User, Integer > {
                 .getSingleResult());
     }
 
-
-
+    public User uplaudProfilePictureForUser(String url, Integer  id) {
+        em.createQuery("UPDATE User u SET u.profileImage = :url WHERE u.id = :id")
+                .setParameter("url", url)
+                .setParameter("id", id)
+                .executeUpdate();
+        return this.findById(id);
+    }
 
     @Override
     public long count() {

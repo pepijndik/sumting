@@ -4,6 +4,7 @@ import app.server.CustomBanner;
 import dev.samstevens.totp.code.HashingAlgorithm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -24,6 +25,7 @@ public class SumtingBackend {
     }
 
     @Configuration
+    @EnableConfigurationProperties
     public static class APIConfig implements WebMvcConfigurer {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
