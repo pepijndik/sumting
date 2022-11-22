@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelpController {
-    @GetMapping("/help")
-    public String getAllOffers() {
+    @GetMapping("/")
+    public String HomeRoute() {
         return "Welcome to the Suming Rest api";
     }
 }
