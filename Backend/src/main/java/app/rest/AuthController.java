@@ -194,7 +194,7 @@ public class AuthController {
 
 
         // Authenticate the user using the credentials provided
-        User user = userRepo.findByEmail(userEmail);
+        User user = userRepo.findByEmail(userEmail).get(0);
 
         if (user == null) {
             throw new AuthenticationException("Invalid user and/or password");

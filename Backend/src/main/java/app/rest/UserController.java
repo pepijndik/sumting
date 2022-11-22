@@ -28,20 +28,28 @@ public class UserController {
     @Autowired
     private FileStore fileStore;
     @GetMapping("/users")
-    public  ResponseEntity<Iterable<User>> getAllUsers() {
+    public  ResponseEntity<Iterable<User>> getAllUsers(@RequestParam(value = "email",required = false) String email) {
+
+        if(email != null) {
+            System.out.println(email);
+            List<User> users = userRepo.findByEmail(email);
+            if (users.size() == 0) {
+                throw new UserNotFoundException("User with email " + email + " not found");
+            }
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        }
         return new ResponseEntity<>(userRepo.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{email}")
+
+
+    @GetMapping("/users/{id}")
     public User getUserByEmail(
-            @PathVariable String email) {
-
-        User userById = userRepo.findByEmail(email);
-
+            @PathVariable Integer id) {
+        User userById = userRepo.findById(id);
         if(userById == null) {
-            throw new UserNotFoundException("id = " + email );
+            throw new UserNotFoundException("id = " + id );
         }
-
         return userById;
     }
 
@@ -63,7 +71,7 @@ public class UserController {
     @PutMapping("/users")
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
 
-        User userById = userRepo.findByEmail(user.getEmail());
+        User userById = userRepo.findByEmail(user.getEmail()).get(0);
 
         if(userById == null) {
             throw new UserNotFoundException("id = " + user.getEmail());

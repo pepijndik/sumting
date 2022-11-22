@@ -27,7 +27,7 @@ public class User implements Identifiable<Integer> {
     }
     public static final String TABLE_NAME ="\"User\"";
     @Id
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, OrderView.Order.class})
     @Column(name = "user_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
