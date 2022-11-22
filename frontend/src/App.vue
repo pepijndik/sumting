@@ -11,7 +11,7 @@ import AuthenticationService from "@/Services/AuthenticationService";
 import UserApiService from "@/Services/User/UserApiService";
 import ProductApiService from "@/Services/Products/ProductApiService";
 import CountryApiService from "@/Services/Country/CountryApiService";
-
+import DashboardApiService from "./Services/Dashboard/DashboardApiService";
 export default {
   name: "App",
   components: {
@@ -25,7 +25,8 @@ export default {
       ProjectApi: new ProjectApiService(),
       UserApi: new UserApiService(),
       ProductApi: new ProductApiService(),
-      CountryApi: new CountryApiService(),
+	  CountryApi: new CountryApiService(),
+      DashboardApi: new DashboardApiService(),
     };
   },
   data() {

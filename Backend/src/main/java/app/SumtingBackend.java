@@ -1,8 +1,11 @@
 package app;
 
 import app.server.CustomBanner;
+import dev.samstevens.totp.code.HashingAlgorithm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -22,14 +25,19 @@ public class SumtingBackend {
     }
 
     @Configuration
+    @EnableConfigurationProperties
     public static class APIConfig implements WebMvcConfigurer {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
                     .exposedHeaders("Authorization")
-                    .allowedHeaders("Authorization")
+                    .allowedHeaders("*")
                     .allowedOrigins("http://localhost","http://localhost:8083","http://127.0.0.1","https://sumting.pdik.nl","http://sumting.pdik.nl/api")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
+        }
+        @Bean
+        public HashingAlgorithm hashingAlgorithm() {
+            return HashingAlgorithm.SHA256;
         }
     }
 }

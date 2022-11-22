@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  * A JPA implementation of a user repository
@@ -53,6 +54,25 @@ public class JPAUserRepository implements CrudRepository<User, Integer > {
     @Override
     public Iterable<User> findAll() {
         return em.createQuery("SELECT a FROM User a", User.class).getResultList();
+    }
+
+    /**
+     * A method to check if a user exists by username
+     * @param username
+     * @return Optional<User>
+     */
+    public Optional<User> findByUsername(String username) {
+        return Optional.ofNullable(em.createQuery("SELECT u FROM User u WHERE u.name = :username", User.class)
+                .setParameter("username", username)
+                .getSingleResult());
+    }
+
+    public User uplaudProfilePictureForUser(String url, Integer  id) {
+        em.createQuery("UPDATE User u SET u.profileImage = :url WHERE u.id = :id")
+                .setParameter("url", url)
+                .setParameter("id", id)
+                .executeUpdate();
+        return this.findById(id);
     }
 
     @Override
