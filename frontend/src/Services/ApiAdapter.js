@@ -46,4 +46,8 @@ export default class ApiAdapter {
   async save(data) {
     return BaseApi.post(`/${this.resource}`, data);
   }
+
+  async update(id, data) {
+    return BaseApi.post(`/${this.resource}/${id}/profile_picture`, data);
+  }
 }

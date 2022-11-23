@@ -25,7 +25,7 @@ export default {
       ProjectApi: new ProjectApiService(),
       UserApi: new UserApiService(),
       ProductApi: new ProductApiService(),
-	  CountryApi: new CountryApiService(),
+      CountryApi: new CountryApiService(),
       DashboardApi: new DashboardApiService(),
     };
   },

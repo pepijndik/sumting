@@ -2,7 +2,9 @@ package app.models.User;
 
 import app.models.Country;
 import app.models.Identifiable;
+import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
 

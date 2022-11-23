@@ -1,5 +1,6 @@
 package app.rest;
 
+import app.exceptions.AuthorizationException;
 import app.exceptions.FileIsNotRightExtension;
 import app.models.User.User;
 import app.exceptions.UserNotFoundException;
