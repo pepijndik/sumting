@@ -33,9 +33,6 @@ public class OrderLine implements Identifiable<Integer> {
     @Column(name = "order_key", nullable = true, columnDefinition = "int default 0")
     private Integer orderKey;
 
-    @JsonView(OrderLineView.OrderLine.class)
-    @Column(name = "quantity", nullable = true, columnDefinition = "int default 0")
-    private Integer quantity;
 
     @JsonView(OrderLineView.OrderLine.class)
     @Column(name = "notes", nullable = true)
@@ -103,8 +100,6 @@ public class OrderLine implements Identifiable<Integer> {
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
     private Batch batch;
-
-
 
     @Override
     public Integer getId() {

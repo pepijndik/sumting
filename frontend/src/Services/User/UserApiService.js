@@ -12,7 +12,5 @@ class UserApiService extends ApiAdapter {
         return await this.findAll();
     }
 
-
-
 }
 export default UserApiService;

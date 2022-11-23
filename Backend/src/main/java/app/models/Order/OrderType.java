@@ -14,11 +14,11 @@ public class OrderType implements Identifiable<Integer> {
     public static final String TABLE_NAME = "order_type";
 
     @Id
+    @JsonView(OrderView.Order.class)
     @Column(name = "order_type_key")
     private Integer id;
 
     @Nullable
-    @JsonView()
     @Column(name = "description",columnDefinition = "varchar")
     private String description;
 
@@ -28,7 +28,6 @@ public class OrderType implements Identifiable<Integer> {
     private String type;
 
     @Nullable
-    @JsonView()
     @Column(name = "is_ext", columnDefinition = "bit")
     private Integer isExt;
 

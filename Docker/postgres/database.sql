@@ -9,7 +9,6 @@ create table batch
     updated_at        timestamp with time zone,
     text_planned      varchar,
     text_completed    varchar,
-    status            varchar,
     batch_size        integer,
     project_key       integer,
     batch_invoice_key integer

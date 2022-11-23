@@ -8,6 +8,7 @@ import OrderView from "@/Pages/Order/OrderView";
 import AuthenticationService from "@/Services/AuthenticationService";
 import VerifyCode from "@/Components/Auth/Twofactor/VerifyCode";
 import Profile from "@/Pages/Account/Profile";
+import Settings from "@/Components/User/2fa/Settings";
 const IsAuthenticated = (to, from, next) => {
 
     if (to.name !== 'auth:login' && !AuthenticationService.isLoggedIn()) next({ name: 'auth:login' })
@@ -41,6 +42,15 @@ const router = createRouter({
             component: Profile,
             meta: {
                 title: 'Profile',
+            },
+        },
+        {
+            path: '/account/2fa/settings',
+            name: 'user:2fa',
+            component: Settings,
+            meta: {
+                pageTitle: 'Account | Twofactor',
+                title: 'Two factor settings',
             },
         },
         {

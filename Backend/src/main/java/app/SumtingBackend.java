@@ -32,7 +32,7 @@ public class SumtingBackend {
             registry.addMapping("/**")
                     .exposedHeaders("Authorization")
                     .allowedHeaders("*")
-                    .allowedOrigins("https://localhost:8080","http://localhost","http://localhost:8083","http://127.0.0.1","https://sumting.pdik.nl","http://sumting.pdik.nl/api")
+                    .allowedOrigins("http://localhost:8080","http://localhost","http://localhost:8083","http://127.0.0.1","https://sumting.pdik.nl","http://sumting.pdik.nl/api")
                     .allowedMethods("GET", "POST", "PUT", "DELETE");
         }
         @Bean

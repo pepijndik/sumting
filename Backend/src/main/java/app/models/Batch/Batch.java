@@ -37,9 +37,6 @@ public class Batch implements Identifiable<Integer> {
     @Column(name = "text_completed", nullable = true)
     private String textCompleted; // completed text
 
-    @JsonView(BatchView.Batch.class)
-    @Column(name = "status", nullable = true)
-    private String status; // status of batch
 
     @JsonView(BatchView.Batch.class)
     @Column(name = "batch_size", nullable = true, columnDefinition = "int default 0")

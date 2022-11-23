@@ -13,6 +13,7 @@ import ProductApiService from "@/Services/Products/ProductApiService";
 import DashboardApiService from "./Services/Dashboard/DashboardApiService";
 export default {
   name: "App",
+  inject: ['axios'],
   components: {
     AuthLayout,
     AdminLayout,
@@ -27,6 +28,7 @@ export default {
       DashboardApi: new DashboardApiService(),
     };
   },
+
   data() {
     return {
       layout: null,

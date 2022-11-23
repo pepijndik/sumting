@@ -1,2 +1,4 @@
-package app.models.Proof;public class ProofRow {
+package app.models.Proof;
+
+public class ProofRow {
 }
