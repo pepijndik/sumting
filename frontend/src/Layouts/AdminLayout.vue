@@ -60,6 +60,7 @@ import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
 import { SemipolarSpinner  } from 'epic-spinners'
+import router from "@/Router/router";
 export default {
   name: "DashboardLayout",
   inject: ['axios'],
@@ -80,7 +81,7 @@ export default {
         this.isLoading = true
         return config
       }, (error) => {
-        this.isLoading = false
+        this.isLoading = false;
         return Promise.reject(error)
       })
 
@@ -88,7 +89,12 @@ export default {
         this.isLoading = false
         return response
       }, function(error) {
-        this.isLoading = false
+        this.isLoading = false;
+        if(error.response.status === 401) {
+          console.log("User was not logged in, redirect to login")
+          this.$router.push({name: 'auth:login'});
+        }
+
         return Promise.reject(error)
       })
     },

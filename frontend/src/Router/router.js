@@ -47,6 +47,7 @@ const router = createRouter({
         {
             path: '/account/2fa/settings',
             name: 'user:2fa',
+            beforeEnter: IsAuthenticated,
             component: Settings,
             meta: {
                 pageTitle: 'Account | Twofactor',

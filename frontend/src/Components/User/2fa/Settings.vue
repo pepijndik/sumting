@@ -3,34 +3,33 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header"><strong>Two Factor Authentication</strong></div>
-        <div class="card-body">
+        <div class="card-body"  v-if="user.twofactor">
           <p>Tweefactorauthenticatie (2FA) versterkt de toegangsbeveiliging door twee methoden (ook wel factoren genoemd) te vereisen om uw identiteit te verifiëren. Tweefactorauthenticatie beschermt tegen phishing, social engineering en brute force-aanvallen met wachtwoorden en beveiligt uw aanmeldingen tegen aanvallers die misbruik maken van zwakke of gestolen inloggegevens.</p>
-          <div v-if="user.user_secret_code == null">
-            <div class="form-horizontal">
-              <div class="form-group">
-<!--                generate2faSecret-->
-                <button type="submit" class="btn btn-primary">
-                  Genereer geheime sleutel, Om twee staps verificatie te activeren
-                </button>
+          <div>
+            <div v-if="!user.twofactor.secret">
+              <Button v-on:click="enable2fa" v-if="!user.twofactor.secret && !user.twofactor.enabled">
+                Zet tweestaps verificatie aan
+              </Button>
+              <div v-if="user.twofactor.enabled">
+                1. Scan deze QR-code met uw Google Authenticator-app. Als alternatief kunt u de code gebruiken: <code v-text="user.twofactor.secret"></code><br/>
+                <img :src="user.twofactor.qr" alt="Qr code">
+                <br/><br/>
+                2. Voer de pincode van de Google Authenticator-app in:<br/><br/>
+                <div class="">
+                  <!--            enable2fa-->
+                  <div class="">
+                    <label for="secret" class="control-label">Authenticator Code</label>
+                    <DigitInput @update="$event = otp"/>
+                  </div>
+                  <Button v-on:click="verifyCode">
+                    Verifeer authenticator code
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
 
-          1. Scan deze QR-code met uw Google Authenticator-app. Als alternatief kunt u de code gebruiken: <code v-text="user.secret"></code><br/>
-          <img :src="two2fa.qr" alt="Qr code">
-          <br/><br/>
-          2. Voer de pincode van de Google Authenticator-app in:<br/><br/>
-          <div class="form-horizontal">
-<!--            enable2fa-->
-            <div class="form-group">
-              <label for="secret" class="control-label">Authenticator Code</label>
-              <input id="secret" type="password" class="form-control col-md-4" name="secret" required>
             </div>
-            <button type="submit" class="btn btn-primary">
-              Zet tweestaps verificatie aan
-            </button>
           </div>
-          <div v-if="user.twofactor_enabled">
+          <div v-if="user.twofactor.enabled && user.twofactor.secret">
             <div class="alert alert-success">
               tweestaps verificatie is momenteel <strong>enabled</strong> op je account
             </div>
@@ -52,18 +51,34 @@
 </template>
 
 <script>
+
+import User from "@/Models/User";
+import Button from "@/Components/Form/Button";
+import DigitInput from "@/Components/Auth/Twofactor/otp/DigitInput";
 export default {
   name: "Settings",
-  data() {
+  components: {Button, DigitInput},
+  inject: ["Auth"],
+  data(){
     return {
-      user: {
-        twofactor_enabled: false,
-        secret: null,
-      },
-      two2fa:{
-        qr: ""
-      }
-    };
+      user: User,
+      otp: ""
+    }
+  },
+  async created(){
+    this.user = await this.Auth.getMe();
+  },
+  methods: {
+    async verifyCode(){
+      await this.Auth.verify2Fa(this.otp);
+    },
+    async enable2fa() {
+      console.log("enable2fa");
+      await this.Auth.enable2FA(this.user);
+    },
+    async disable2fa() {
+      await this.Auth.disable2FA();
+    },
   },
 }
 </script>

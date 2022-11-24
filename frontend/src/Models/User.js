@@ -4,16 +4,19 @@
  * @since 12-09-2022
  * @constructor
  */
+import Twofactor from "@/Models/Twofactor";
 export default class User {
-    constructor(id, name, email, type) {
+    profileImage ="";
+    profileText = "";
+    constructor(id, name, email, created_at,TwoFactorEnabled, profileImage,profileText,type) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.createdAt = new Date(created_at);
+        this.twofactor = new Twofactor(TwoFactorEnabled == null ? false : TwoFactorEnabled);
+        this.profileImage = profileImage;
+        this.profileText= profileText;
         this.type = type;
-
-        this.TwoFactorEnabled = false;
-        this.profileImage = "";
-        this.profileText= "";
     }
 
     static copyEntity(entity) {

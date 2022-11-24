@@ -59,9 +59,9 @@ public class User implements Identifiable<Integer> {
     @Column(name = "user_secret_code",nullable = true)
     private String secretCode;
 
-    @JsonView(UserView.Login.class)
-    @Column(name = "user_twofactor_enabled",nullable = true, columnDefinition = "boolean default false")
-    private Boolean TwoFactorEnabled;
+    @JsonIgnore
+    @Column(name = "user_twofactor_enabled",nullable = true, columnDefinition = "boolean")
+    private Boolean twoFactorEnabled;
 
 
     @JsonView({UserView.User.class, OrderView.Order.class})
@@ -85,9 +85,9 @@ public class User implements Identifiable<Integer> {
     @Column(name = "profile_text",nullable = true)
     private String profileText;
 
-    @JsonIgnore
+    @JsonView(UserView.User.class)
     public boolean isTwoFactorEnabled() {
-        return TwoFactorEnabled != null && TwoFactorEnabled;
+        return twoFactorEnabled != null && twoFactorEnabled;
     }
     public String getEmail() {
         return email;
@@ -119,7 +119,9 @@ public class User implements Identifiable<Integer> {
         this.country_key = country;
     }
 
-
+    public void setTwoFactorEnabled(Boolean twoFactorEnabled) {
+        this.twoFactorEnabled = twoFactorEnabled;
+    }
     public void setEncodedPassword(String encodedPassword) {
         this.encodedPassword = encodedPassword;
     }
