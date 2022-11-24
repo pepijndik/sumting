@@ -1,13 +1,26 @@
 <template>
   <div id="otp" class="flex flex-row justify-center text-center px-2 mt-5">
-    <input v-for="(numer,index) in maxNumers" @keyup="$emit('update',otp);" class="m-2 border h-10 w-10 text-center form-control rounded focus:ring-yInMnBlue text-candyPink" type="text" maxlength="1" v-model="numer.value" v-bind:key="index"/>
+    <input v-for="(num,index) in maxNumers"
+           v-on:keyup="focusNext($event.target)"
+           ref="digitinput"
+           class="m-2 border h-10 w-10 text-center form-control rounded focus:ring-yInMnBlue text-candyPink"
+           type="text" maxlength="1"
+           v-model="otpData[num]"
+           v-bind:key="index"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: "DigitInput",
+  emits: ["update"],
   props: {
+    otpData: {
+      type: Array,
+      default: () => [],
+      required: false
+    },
     maxNumers: {
       type: Number,
       default: 6,
@@ -16,13 +29,24 @@ export default {
   },
   computed: {
     otp() {
-      return this.maxNumers.map((numer) => numer.value).join("");
+      return this.otpData.map((number) => number).join("");
     }
   },
   data() {
     return {
       numbers: [],
     };
+  },
+  methods: {
+    focusNext(el) {
+      if (el.value.length === 1) {
+        el.nextElementSibling?.focus();
+        if( el.nextElementSibling === null){
+          this.$emit('update',this.otp);
+        }
+
+      }
+    },
   },
 }
 </script>

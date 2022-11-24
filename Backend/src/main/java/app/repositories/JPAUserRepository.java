@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,10 +46,10 @@ public class JPAUserRepository implements CrudRepository<User, Integer > {
     }
 
 
-    public User findByEmail(String email) {
+    public List<User> findByEmail(String email) {
         return em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
                 .setParameter("email", email)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override

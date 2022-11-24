@@ -3,9 +3,13 @@ package app.repositories;
 import app.models.Country;
 import app.repositories.interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
+@Repository
+@Transactional
 public class CountryRepository implements CrudRepository<Country, Integer> {
 
     @Autowired
