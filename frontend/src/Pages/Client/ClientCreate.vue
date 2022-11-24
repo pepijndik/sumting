@@ -67,7 +67,7 @@
               @selected="selectedLocation"
               :options="locations"
               :primary-key="'id'"
-              :Fields="['name']"
+              :fields="['name']"
               :disabled="false"
               autocomplete="off"
               placeholder="Search for a location"
@@ -133,7 +133,7 @@ export default {
       this.client.location = location.id;
     },
     selectedImg(img) {
-      this.client.img = img.name;
+      this.client.img = img;
     },
   },
   async created() {

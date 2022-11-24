@@ -54,7 +54,12 @@
         >
           <div class="flex gap-2">
             <slot class="">
-              <FileIcon />
+              <div
+                v-if="optionHasIcon"
+                :style="{ 'background-image': `url(${option.imgSmall})` }"
+                class="w-7 h-5 bg-cover bg-center mx-3"
+              ></div>
+              <FileIcon v-if="!optionHasIcon" />
             </slot>
             <p class="">{{ this.populatefields(option) }}</p>
           </div>
