@@ -110,4 +110,164 @@ public class OrderLine implements Identifiable<Integer> {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public Integer getOrderKey() {
+        return orderKey;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public Double getTransactionLineTotal() {
+        return transactionLineTotal;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public String getProofName() {
+        return proofName;
+    }
+
+    public LocalDateTime getProofDate() {
+        return proofDate;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public String getProofSmall() {
+        return proofSmall;
+    }
+
+    public String getProofMedium() {
+        return proofMedium;
+    }
+
+    public String getProofLarge() {
+        return proofLarge;
+    }
+
+    public LocalDateTime getProofUploadDate() {
+        return proofUploadDate;
+    }
+
+    public Double getTransactionLineFee() {
+        return transactionLineFee;
+    }
+
+    public Double getTransactionLineVat() {
+        return transactionLineVat;
+    }
+
+    public LocalDateTime getLoadedDate() {
+        return loadedDate;
+    }
+
+    public String getStripeChargeId() {
+        return StripeChargeId;
+    }
+
+    public Batch getBatch() {
+        return batch;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setOrderKey(Integer orderKey) {
+        this.orderKey = orderKey;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public void setTransactionLineTotal(Double transactionLineTotal) {
+        this.transactionLineTotal = transactionLineTotal;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setProofName(String proofName) {
+        this.proofName = proofName;
+    }
+
+    public void setProofDate(LocalDateTime proofDate) {
+        this.proofDate = proofDate;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setProofSmall(String proofSmall) {
+        this.proofSmall = proofSmall;
+    }
+
+    public void setProofMedium(String proofMedium) {
+        this.proofMedium = proofMedium;
+    }
+
+    public void setProofLarge(String proofLarge) {
+        this.proofLarge = proofLarge;
+    }
+
+    public void setProofUploadDate(LocalDateTime proofUploadDate) {
+        this.proofUploadDate = proofUploadDate;
+    }
+
+    public void setTransactionLineFee(Double transactionLineFee) {
+        this.transactionLineFee = transactionLineFee;
+    }
+
+    public void setTransactionLineVat(Double transactionLineVat) {
+        this.transactionLineVat = transactionLineVat;
+    }
+
+    public void setLoadedDate(LocalDateTime loadedDate) {
+        this.loadedDate = loadedDate;
+    }
+
+    public void setStripeChargeId(String stripeChargeId) {
+        StripeChargeId = stripeChargeId;
+    }
+
+    public void setBatch(Batch batch) {
+        this.batch = batch;
+    }
 }

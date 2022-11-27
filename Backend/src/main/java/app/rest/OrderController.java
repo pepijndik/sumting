@@ -2,6 +2,7 @@ package app.rest;
 
 import app.exceptions.ModelNotFound;
 import app.models.Order.Order;
+import app.models.Order.OrderLine;
 import app.repositories.Order.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+//    private final OrderlineRepository orderlineRepository;
 
     @Autowired
     public OrderController(OrderRepository orderRepository) {
@@ -40,9 +42,10 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @PutMapping("/orders/editOrder/{id}")
-    public ResponseEntity<Order> editOrder(@PathVariable Integer id, @RequestBody Order order){
+    public ResponseEntity<Order> editOrder(@PathVariable Integer id, @RequestBody Order order, @RequestBody OrderLine orderline){
         try {
             Optional<Order> findOrder = Optional.ofNullable(orderRepository.findById(id));
+//            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
 
             if (findOrder.isPresent()){
                 Order orderFound = findOrder.get();
@@ -58,6 +61,28 @@ public class OrderController {
             }else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
+//            if (findOrderline.isPresent()){
+//                OrderLine orderlineFound = findOrderline.get();
+//                orderlineFound.setNotes(orderline.getNotes());
+//                orderlineFound.setTransactionLineTotal(orderline.getTransactionLineTotal());
+//                orderlineFound.setProofName(orderline.getProofName());
+////                orderlineFound.setProofDate(orderline.getProofDate());
+//                orderlineFound.setLatitude(orderline.getLatitude());
+//                orderlineFound.setLongitude(orderline.getLongitude());
+//                orderlineFound.setProofSmall(orderline.getProofSmall());
+//                orderlineFound.setProofMedium(orderline.getProofMedium());
+//                orderlineFound.setProofLarge(orderline.getProofLarge());
+////                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
+//                orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
+//                orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
+////                orderlineFound.setLoadedDate(orderline.getLoadedDate());
+//
+//                return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
+//            }else{
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
