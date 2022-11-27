@@ -6,6 +6,9 @@ import ListProjects from "@/Pages/Projects/ListProjects";
 import OrderCreate from "@/Pages/Order/OrderCreate";
 import OrderView from "@/Pages/Order/OrderView";
 import AuthenticationService from "@/Services/AuthenticationService";
+import VerifyCode from "@/Components/Auth/Twofactor/VerifyCode";
+import Profile from "@/Pages/Account/Profile";
+import Settings from "@/Components/User/2fa/Settings";
 const IsAuthenticated = (to, from, next) => {
 
     if (to.name !== 'auth:login' && !AuthenticationService.isLoggedIn()) next({ name: 'auth:login' })
@@ -22,6 +25,33 @@ const router = createRouter({
             meta: {
                 layout: 'AuthLayout', // we add new meta layout here to use it later,
                 title: 'Login',
+            },
+        },
+        {
+            path: '/auth/verify',
+            name: 'auth:verify',
+            component: VerifyCode,
+            meta: {
+                layout: 'AuthLayout', // we add new meta layout here to use it later,
+                title: 'Verify twofactor',
+            },
+        },
+        {
+            path: '/account/me',
+            name: 'user:me',
+            component: Profile,
+            meta: {
+                title: 'Profile',
+            },
+        },
+        {
+            path: '/account/2fa/settings',
+            name: 'user:2fa',
+            beforeEnter: IsAuthenticated,
+            component: Settings,
+            meta: {
+                pageTitle: 'Account | Twofactor',
+                title: 'Two factor settings',
             },
         },
         {

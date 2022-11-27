@@ -27,8 +27,9 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     private JWTokenUtils tokenGenerator;
 
     // path prefixes that will be protected by the authentication filter
-    private static final Set<String> SECURED_PATHS =
-            Set.of("/rest/posts");
+
+    private static final Set<String> SECURED_PATHS = Set.of("/auth/2fa","/auth/me");
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest req,
@@ -65,7 +66,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
             // Future chain members might use token info (see the example that tries to delete a user)
             req.setAttribute(tokenInfo.KEY,tokenInfo);
-            
+
             // proceed with the chain
             chain.doFilter(req, res);
         } catch(AuthenticationException e ) {

@@ -5,6 +5,8 @@ import Router from "@/Router/router";
 import '@/Assets/css/index.css';
 import CKEDITOR from '@ckeditor/ckeditor5-vue';
 const app = createApp(App);
+import BaseApi from "@/Services/BaseApi";
+app.provide('axios', BaseApi)
 app.use(CKEDITOR)
 app.use(VueClickAway);
 app.use(Router);

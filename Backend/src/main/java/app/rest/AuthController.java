@@ -1,5 +1,10 @@
 package app.rest;
 
+import app.exceptions.AuthorizationException;
+import app.exceptions.TwofactorSetup;
+import app.response.LoginResponse;
+import app.views.UserView;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import app.exceptions.UserNotFoundException;
 import app.models.User.User;
@@ -8,18 +13,25 @@ import app.exceptions.AuthenticationException;
 import app.security.JWTokenInfo;
 import app.security.JWTokenUtils;
 import app.security.PasswordEncoder;
+import dev.samstevens.totp.code.CodeVerifier;
+import dev.samstevens.totp.exceptions.QrGenerationException;
+import dev.samstevens.totp.qr.QrData;
+import dev.samstevens.totp.qr.QrDataFactory;
+import dev.samstevens.totp.qr.QrGenerator;
+import dev.samstevens.totp.secret.SecretGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
+
+import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
 /**
  * Set of endpoints used to sign-up and sign-in users
@@ -40,6 +52,18 @@ public class AuthController {
 
     @Autowired
     private JWTokenUtils tokenUtils;
+
+    @Autowired
+    private SecretGenerator secretGenerator;
+
+    @Autowired
+    private QrDataFactory qrDataFactory;
+
+    @Autowired
+    private QrGenerator qrGenerator;
+
+    @Autowired
+    private CodeVerifier verifier;
 
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
@@ -63,7 +87,7 @@ public class AuthController {
                     buildAndExpand(savedUser.getId()).toUri();
             return ResponseEntity.created(location).body(user);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user",e));
+            return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user", e));
         }
     }
 
@@ -88,13 +112,85 @@ public class AuthController {
         }
 
         // refresh the token for the user
-        String tokenString = tokenGenerator.encode(tokenInfo.getEmail());
+        String tokenString = tokenGenerator.encode(tokenInfo.getId());
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
 
+    @PostMapping("/auth/2fa/verify")
+    @ResponseBody
+    public ResponseEntity verify(@RequestBody ObjectNode provided, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
+        // secret is fetched from some storage
+        User user = tokenInfo.getUser();
+        String code = "";
+        try {
+            code = provided.get("code").asText();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new AuthorizationException("No code provided"));
+        }
+
+        String finalCode = code;
+        Object body = new Object() {
+            public final boolean success = verifier.isValidCode(user.getSecret(), finalCode);
+            public final String message = success ? "Code is valid" : "Code is invalid";
+            public final String code = finalCode;
+        };
+        // verify the code
+        if (verifier.isValidCode(user.getSecret(), code)) {
+            return ResponseEntity.accepted().body(body);
+        }
+        return ResponseEntity.accepted().body(body);
+    }
+
+
+    @GetMapping("/auth/me")
+    public ResponseEntity<User> getUser(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
+        if (tokenInfo.getUser() == null) {
+            throw new AuthorizationException("User not found");
+        }
+        return ResponseEntity.ok(tokenInfo.getUser());
+    }
+
+
+    @PostMapping("/auth/2fa/setup")
+    public ResponseEntity<Object> setupDevice(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) throws QrGenerationException, TwofactorSetup {
+        if (tokenInfo.twoFactorEnabled()) {
+            throw new TwofactorSetup("Twofactor already enabled");
+        }
+        User user = tokenInfo.getUser();
+
+        // Generate and store the secret
+        String secret = secretGenerator.generate();
+        user.setSecret(secret);
+        user.setTwoFactorEnabled(true);
+        userRepo.save(user);
+
+        QrData data = qrDataFactory.newBuilder()
+                .label(user.getEmail())
+                .secret(secret)
+                .issuer("Sumting")
+                .build();
+
+        // Generate the QR code image data as a base64 string which
+        // can be used in an <img> tag:
+        String qrCodeImage = getDataUriForImage(
+                qrGenerator.generate(data),
+                qrGenerator.getImageMimeType()
+        );
+
+        URI location = ServletUriComponentsBuilder.fromPath("/auth/2fa/verify").build().toUri();
+        Object body = new Object() {
+            public final int status = HttpStatus.OK.value();
+            public final int account = user.getId();
+            public final String qr_code = qrCodeImage;
+        };
+
+        return ResponseEntity.accepted().location(location).body(body);
+    }
+
+
     @PostMapping(path = "/auth", produces = "application/json")
-    public ResponseEntity<Object> authenticateUser(
+    public ResponseEntity<LoginResponse> authenticateUser(
             @RequestBody ObjectNode signOnInfo,
             HttpServletRequest request,
             HttpServletResponse response)
@@ -103,8 +199,9 @@ public class AuthController {
         String userEmail = signOnInfo.get("email").asText();
         String password = signOnInfo.get("password").asText();
 
+
         // Authenticate the user using the credentials provided
-        User user = userRepo.findByEmail(userEmail);
+        User user = userRepo.findByEmail(userEmail).get(0);
 
         if (user == null) {
             throw new AuthenticationException("Invalid user and/or password");
@@ -116,13 +213,21 @@ public class AuthController {
             throw new AuthenticationException("Invalid user and/or password");
         }
 
-        // Issue a token for the user valid for some time
-        String tokenString = tokenGenerator.encode(user.getEmail());
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-        Object body = new Object() {
-            public final User me = user;
-        };
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setMe(user);
+        String headerString = HttpHeaders.ACCEPT;
+        String auth = null;
+        URI location = null;
+        String tokenString = tokenGenerator.encode(user.getId());
+        if (user.isTwoFactorEnabled()) {
+            System.out.println("2FA enabled");
+            loginResponse.setNeedTwoFactor(true);
+            location = ServletUriComponentsBuilder.fromPath("/auth/2fa/verify").build().toUri();
+        } else {
+            location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        }
 
-        return ResponseEntity.accepted().location(location).header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).body(body);
+        return ResponseEntity.accepted().location(location).header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).body(loginResponse);
+
     }
 }
