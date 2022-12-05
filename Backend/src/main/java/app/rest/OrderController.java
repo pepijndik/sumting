@@ -4,6 +4,7 @@ import app.exceptions.ModelNotFound;
 import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.repositories.Order.OrderRepository;
+import app.repositories.Order.OrderlineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,12 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderRepository orderRepository;
-//    private final OrderlineRepository orderlineRepository;
+    private final OrderlineRepository orderlineRepository;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository) {
+    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository) {
         this.orderRepository = orderRepository;
+        this.orderlineRepository = orderlineRepository;
     }
 
 
@@ -41,47 +43,42 @@ public class OrderController {
         orderRepository.delete(OrderToDelete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PutMapping("/orders/editOrder/{id}")
-    public ResponseEntity<Order> editOrder(@PathVariable Integer id, @RequestBody Order order, @RequestBody OrderLine orderline){
+
+    @GetMapping("/orderlines")
+    public ResponseEntity<Iterable<OrderLine>> getAllOrderlines(){
+        return new ResponseEntity<>(orderlineRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/orderlines/{id}")
+    public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
+        OrderLine o = orderlineRepository.findById(orderlineId);
+        return orderlineRepository.findById(orderlineId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId),HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/orders/editOrderlines/{id}")
+    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<Order> findOrder = Optional.ofNullable(orderRepository.findById(id));
-//            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
+            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
 
-            if (findOrder.isPresent()){
-                Order orderFound = findOrder.get();
-                orderFound.setCurrency(order.getCurrency());
-                orderFound.setDescription(order.getDescription());
-                orderFound.setPaymentMethod(order.getPaymentMethod());
-                orderFound.setTransactionFee(order.getTransactionFee());
-                orderFound.setTransactionTotal(order.getTransactionTotal());
-                orderFound.setTransactionVat(order.getTransactionVat());
-                orderFound.setOrder_date(order.getOrder_date());
+            if (findOrderline.isPresent()){
+                OrderLine orderlineFound = findOrderline.get();
+                orderlineFound.setNotes(orderline.getNotes());
+                orderlineFound.setTransactionLineTotal(orderline.getTransactionLineTotal());
+                orderlineFound.setProofName(orderline.getProofName());
+                orderlineFound.setProofDate(orderline.getProofDate());
+                orderlineFound.setLatitude(orderline.getLatitude());
+                orderlineFound.setLongitude(orderline.getLongitude());
+                orderlineFound.setProofSmall(orderline.getProofSmall());
+                orderlineFound.setProofMedium(orderline.getProofMedium());
+                orderlineFound.setProofLarge(orderline.getProofLarge());
+                orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
+                orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
+                orderlineFound.setLoadedDate(orderline.getLoadedDate());
 
-                return new ResponseEntity<>(orderRepository.save(orderFound), HttpStatus.OK);
+                return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-
-//            if (findOrderline.isPresent()){
-//                OrderLine orderlineFound = findOrderline.get();
-//                orderlineFound.setNotes(orderline.getNotes());
-//                orderlineFound.setTransactionLineTotal(orderline.getTransactionLineTotal());
-//                orderlineFound.setProofName(orderline.getProofName());
-////                orderlineFound.setProofDate(orderline.getProofDate());
-//                orderlineFound.setLatitude(orderline.getLatitude());
-//                orderlineFound.setLongitude(orderline.getLongitude());
-//                orderlineFound.setProofSmall(orderline.getProofSmall());
-//                orderlineFound.setProofMedium(orderline.getProofMedium());
-//                orderlineFound.setProofLarge(orderline.getProofLarge());
-////                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
-//                orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
-//                orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
-////                orderlineFound.setLoadedDate(orderline.getLoadedDate());
-//
-//                return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
-//            }else{
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
 
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

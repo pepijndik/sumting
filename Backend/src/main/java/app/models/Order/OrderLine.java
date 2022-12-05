@@ -9,6 +9,7 @@ import app.models.Wallet;
 import app.views.BatchView;
 import app.views.OrderLineView;
 import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
