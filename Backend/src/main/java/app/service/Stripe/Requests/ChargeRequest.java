@@ -1,4 +1,4 @@
-package app.service.Stripe.Models;
+package app.service.Stripe.Requests;
 
 import lombok.Data;
 

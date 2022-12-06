@@ -1,15 +1,17 @@
 package app.service.Stripe;
 
-import app.service.Stripe.Models.ChargeRequest;
+import app.service.Stripe.Requests.ChargeRequest;
+import app.service.Stripe.Requests.CreateSubscriptionRequest;
 import com.stripe.Stripe;
 
 import app.server.Stripe.StripeConfig;
-import com.stripe.model.WebhookEndpoint;
+import com.stripe.model.*;
+import com.stripe.net.Webhook;
 import com.stripe.param.WebhookEndpointCreateParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
+
 import javax.annotation.PostConstruct;
 import java.util.*;
 
@@ -51,6 +53,9 @@ public class StripeService {
 
     }
 
+    public Event getEvent(String payload, String sigHeader) throws StripeException {
+        return Webhook.constructEvent(payload, sigHeader, stripeConfig.getWebhookSecret());
+    }
     /**
      * Enable webhooks for stipe
      *
@@ -76,6 +81,27 @@ public class StripeService {
                         .putAllExtraParam(ExtraParms)
                         .build();
        WebhookEndpoint.create(params);
+    }
+
+
+    public static class Subscription{
+        public static com.stripe.model.Subscription create(CreateSubscriptionRequest subscriptionRequest) throws StripeException {
+            Map<String, Object> params = new HashMap<>();
+            params.put("customer", subscriptionRequest.getCustomer());
+            params.put("items", subscriptionRequest.getProducts());
+            return com.stripe.model.Subscription.create(params);
+        }
+
+        public static com.stripe.model.Subscription cancel(String subscriptionId) throws StripeException {
+            return com.stripe.model.Subscription.retrieve(subscriptionId).cancel();
+        }
+
+        public static com.stripe.model.Subscription update(String subscriptionId, CreateSubscriptionRequest subscriptionRequest) throws StripeException {
+            Map<String, Object> params = new HashMap<>();
+            params.put("customer", subscriptionRequest.getCustomer());
+            params.put("items", subscriptionRequest.getProducts());
+            return com.stripe.model.Subscription.retrieve(subscriptionId).update(params);
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package app.service.Stripe.Controllers;
 
-import app.service.Stripe.Models.ChargeRequest;
+import app.service.Stripe.Requests.ChargeRequest;
 import app.service.Stripe.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -21,6 +21,7 @@ public class ChargeController {
         chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(ChargeRequest.Currency.EUR);
         Charge charge = paymentsService.charge(chargeRequest);
+
         model.addAttribute("id", charge.getId());
         model.addAttribute("status", charge.getStatus());
         model.addAttribute("chargeId", charge.getId());
