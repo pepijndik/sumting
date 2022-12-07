@@ -42,34 +42,7 @@ public class User implements Identifiable<Integer> {
         LocalDate sellDate = LocalDate.ofEpochDay(randomDay);
     }
 
-    public static User buildRandom(String uname) {
-        System.out.printf("Building random user with name %s", uname);
-        User user = buildRandom();
-        byte[] nameLenght = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(nameLenght);
-        user.setName(uname);
-        user.setEmail(uname + "@hva.nl");
-        return user;
-    }
 
-    public static User buildRandom() {
-        User user = new User();
-        byte[] nameLenght = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(nameLenght);
-        String name = "";
-        name = new String(nameLenght, java.nio.charset.StandardCharsets.UTF_8) + ThreadLocalRandom.current().nextInt(1, 1000);
-        user.setName(name);
-        user.setEmail(name.toLowerCase().replace(" ", ".") + "@hva.nl");
-        user.setType(Type.PERSON);
-        int c = new Random().nextInt(1, 3);
-        user.setCountry(c);
-        long minDay = LocalDate.of(2022, 8, 1).toEpochDay();
-        long maxDay = LocalDate.of(2022, 11, 29).toEpochDay();
-        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
-        LocalDate created_at = LocalDate.ofEpochDay(randomDay);
-        user.setCreatedAt(created_at.atStartOfDay());
-        return user;
-    }
 
     public static enum Type {
         BUSINESS,
@@ -242,5 +215,33 @@ public class User implements Identifiable<Integer> {
     @Override
     public String toString() {
         return String.format("{ email=%s, callName=%s, id=%d }", this.email, this.name, this.id);
+    }
+    public static User buildRandom(String uname) {
+        System.out.printf("Building random user with name %s", uname);
+        User user = buildRandom();
+        byte[] nameLenght = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(nameLenght);
+        user.setName(uname);
+        user.setEmail(uname + "@hva.nl");
+        return user;
+    }
+
+    public static User buildRandom() {
+        User user = new User();
+        byte[] nameLenght = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(nameLenght);
+        String name = "";
+        name = new String(nameLenght, java.nio.charset.StandardCharsets.UTF_8) + ThreadLocalRandom.current().nextInt(1, 1000);
+        user.setName(name);
+        user.setEmail(name.toLowerCase().replace(" ", ".") + "@hva.nl");
+        user.setType(Type.PERSON);
+        int c = new Random().nextInt(1, 3);
+        user.setCountry(c);
+        long minDay = LocalDate.of(2022, 8, 1).toEpochDay();
+        long maxDay = LocalDate.of(2022, 11, 29).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        LocalDate created_at = LocalDate.ofEpochDay(randomDay);
+        user.setCreatedAt(created_at.atStartOfDay());
+        return user;
     }
 }

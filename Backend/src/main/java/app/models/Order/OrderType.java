@@ -15,6 +15,7 @@ public class OrderType implements Identifiable<Integer> {
 
     @Id
     @JsonView(OrderView.Order.class)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_type_key")
     private Integer id;
 

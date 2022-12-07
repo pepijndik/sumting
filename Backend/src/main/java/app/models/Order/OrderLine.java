@@ -23,11 +23,12 @@ public class OrderLine implements Identifiable<Integer> {
     @Id
     @Column(name = "orderline_key", nullable = false)
     @JsonView(OrderLineView.OrderLine.class)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonView(OrderLineView.OrderLine.class)
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false)
     private Order order;
 

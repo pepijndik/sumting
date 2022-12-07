@@ -19,7 +19,7 @@ public class Batch implements Identifiable<Integer> {
     @Id
     @Column(name = "batch_key", nullable = false)
     @JsonView(BatchView.Batch.class)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonView(BatchView.Batch.class)
