@@ -33,18 +33,18 @@
         />
       </div>
       <div
-        class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory flex flex-col"
+        class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
         v-for="item in this.users"
         :key="item.id"
       >
-        <OrderRow :order="item" />
+        <OrderRow :client="item" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import OrderRow from "@/Components/Order/OrderRow.vue";
+import OrderRow from "@/Components/Client/ClientRow.vue";
 
 export default {
   name: "OrderView",
@@ -56,14 +56,20 @@ export default {
         {
           id: 1,
           name: "John Do",
+          email: "johnDo@email.com",
+          type: "Business",
         },
         {
           id: 2,
-          name: "John Does",
+          name: "John Doe",
+          email: "johnDoe@email.com",
+          type: "Business",
         },
         {
           id: 3,
-          name: "John Does Ballet",
+          name: "John Does",
+          email: "johnDoes@email.com",
+          type: "Person",
         },
       ],
       searchKeyWord: "",

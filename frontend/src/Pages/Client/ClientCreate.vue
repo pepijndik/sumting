@@ -127,7 +127,7 @@ export default {
     },
     createClient() {
       //this.UserApi.createClient(this.client);
-      console.log("Creating client: " + JSON.stringify(this.client));
+      console.log("Creating client: " + JSON.stringify(this.client.img));
     },
     selectedLocation(location) {
       this.client.location = location.id;
@@ -138,6 +138,11 @@ export default {
   },
   async created() {
     this.locations = await this.CountryApi.findAll();
+
+    console.log(localStorage.getItem("token"));
+
+    // let user = await this.UserApi.findMe();
+    // console.log(user);
   },
 };
 </script>

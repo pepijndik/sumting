@@ -2,7 +2,6 @@ import BaseApi from "@/Services/BaseApi";
 export default class ApiAdapter {
   constructor(resource) {
     this.resource = resource;
-
   }
   setHeader(Header = {}) {
     BaseApi.defaults.headers = Header;
@@ -50,5 +49,9 @@ export default class ApiAdapter {
 
   async update(id, data) {
     return BaseApi.post(`/${this.resource}/${id}/profile_picture`, data);
+  }
+
+  async findMe() {
+    return BaseApi.get(`/auth/me`);
   }
 }

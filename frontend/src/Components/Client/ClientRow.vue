@@ -34,11 +34,11 @@
         class="float-left items-left flex w-[80px] md:w-[100px] lg:w-[200px] items-center md:border-r-2 pr-1 mr-1"
       >
         <img
-          :src="require(`@/Assets/img/icons/file.svg`)"
+          :src="require(`@/Assets/img/icons/user.svg`)"
           alt="File icon"
           width="24"
         />
-        <p class="text-yInMnBlue">ID {{ order.id }}</p>
+        <p class="text-yInMnBlue">ID {{ client.id }}</p>
       </div>
 
       <div class="flex flex-row">
@@ -47,14 +47,14 @@
         >
           <p v-if="mobile" class="text-yInMnBlue">Total:&nbsp;</p>
           <p v-else class="text-yInMnBlue">Total amount:&nbsp;</p>
-          <p class="text-candyPink">€ {{ order.transactionTotal }}</p>
+          <p class="text-candyPink">€ {{ client.name }}</p>
         </div>
 
         <div
           class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[120px] w-[95px] font-Alatsi text-xs md:text-sm"
         >
           <p class="text-yInMnBlue">Date:&nbsp;</p>
-          <p class="text-candyPink">{{ orderDate }}</p>
+          <p class="text-candyPink">{{ client.email }}</p>
         </div>
       </div>
     </div>
@@ -84,11 +84,10 @@
 <script>
 import Index from "../Modal/index.vue";
 
-let orderDate;
 let mobile;
 export default {
-  name: "OrderRow",
-  props: ["order"],
+  name: "ClientRow",
+  props: ["client"],
   data() {
     return {
       modal: false,
@@ -100,39 +99,17 @@ export default {
     },
   },
   methods: {
-    delOrder() {
+    delClient() {
       this.$emit("deleteOrderEvent", this.order.id);
       //console.log("delete" + this.order.id);
-    },
-    test(ding) {
-      this.modal = ding;
     },
     confirmDelete() {
       this.modal = true;
       console.log(this.modal, this.order.id);
       console.log("deleted");
     },
-    dateFormat(inputDate) {
-      //parse the input date
-      const date = new Date(inputDate);
-      let format = "dd / MM / yy";
-      //extract the parts of the date
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      //replace the month
-      format = format.replace("MM", month.toString().padStart(2, "0"));
-      //replace the year
-      format = format.replace("yy", year.toString().substr(2, 2));
-      //replace the day
-      format = format.replace("dd", day.toString().padStart(2, "0"));
-      //replaces the leading 0's
-      format = format.replace(/(^|\/| )0+/g, "$1");
-      return format;
-    },
   },
   beforeMount() {
-    this.orderDate = this.dateFormat(this.order.order_date);
     this.mobile = window.innerWidth < 640 ? true : false;
   },
   components: { Index },
