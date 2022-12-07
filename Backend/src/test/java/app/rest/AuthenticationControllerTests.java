@@ -79,32 +79,32 @@ public class AuthenticationControllerTests {
     }
 
 
-    @Test
-    public void postLoginSucceeds() {
-
-        // post a new Login request
-        SignOnInfo signOnInfo = new SignOnInfo("admin@hva.nl", "Test123!");
-        ResponseEntity<LoginResponse> response = null;
-        try{
-        response =  this.restTemplate.postForEntity("/auth", signOnInfo, LoginResponse.class);
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        assert response != null;
-        // check status code, location header and response body of post request
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode(),"The response status code should be 202, but was " + response.getStatusCode());
-
-        LoginResponse responseBody = response.getBody();
-        User signInUser = responseBody.getMe();
-        assert signInUser != null;
-        assertThat(signInUser.getId(),not(nullValue()));
-        assertThat(signInUser.getId(), is(greaterThan(0)));
-        assertEquals("admin", signInUser.getName());
-        String token = response.getHeaders().get("Authorization").get(0);
-        System.out.println(token);
-        assertThat(token, startsWith("Bearer "));
-    }
+//    @Test
+//    public void postLoginSucceeds() {
+//
+//        // post a new Login request
+//        SignOnInfo signOnInfo = new SignOnInfo("admin@hva.nl", "Test123!");
+//        ResponseEntity<LoginResponse> response = null;
+//        try{
+//        response =  this.restTemplate.postForEntity("/auth", signOnInfo, LoginResponse.class);
+//        }
+//        catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        assert response != null;
+//        // check status code, location header and response body of post request
+//        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode(),"The response status code should be 202, but was " + response.getStatusCode());
+//
+//        LoginResponse responseBody = response.getBody();
+//        User signInUser = responseBody.getMe();
+//        assert signInUser != null;
+//        assertThat(signInUser.getId(),not(nullValue()));
+//        assertThat(signInUser.getId(), is(greaterThan(0)));
+//        assertEquals("admin", signInUser.getName());
+//        String token = response.getHeaders().get("Authorization").get(0);
+//        System.out.println(token);
+//        assertThat(token, startsWith("Bearer "));
+//    }
 
 
 }
