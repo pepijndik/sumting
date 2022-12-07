@@ -22,7 +22,8 @@ public class StripeConfig {
     @NotBlank
     private String mode;
 
-    private String webhookUrl = "https://localhost:8083/stripe/webhooks";
+    @NotBlank
+    private String webhook = "https://localhost:8083/stripe/webhooks";
     @NotBlank
     private String webhooksecret;
     public String getSecretKey() {
@@ -40,9 +41,11 @@ public class StripeConfig {
     }
 
     public String getWebhookUrl() {
-        return webhookUrl;
+        return webhook;
     }
-
+    public void setWebhookSecret(String webhook) {
+         webhooksecret =webhook;
+    }
     public String getWebhookSecret() {
         return webhooksecret;
     }

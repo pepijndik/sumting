@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class PasswordEncoder {
 
-    public String encode(String text) {
+    public static String encode(String text) {
         return Hashing.sha256().hashString(text, StandardCharsets.UTF_8).toString();
     }
 }

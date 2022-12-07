@@ -8,6 +8,18 @@ import javax.persistence.*;
 public class Country implements Identifiable<Integer> {
     public static final String TABLE_NAME = "country";
 
+
+    public Country() {
+    }
+
+    public Country(Integer id, String name, String alpa2, String alpha3, String small) {
+        this.id = id;
+        this.name = name;
+        this.imgSmall = alpa2;
+        this.alpha2 = small;
+        this.alpha3 = alpha3;
+    }
+
     @Id
     @Column(name = "country_key", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
