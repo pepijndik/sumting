@@ -15,8 +15,8 @@ beforeEach(async function() {
 });
 describe('Loads guest layout', () => {
     it('Login is shown', () => {
-        //const wrapper = shallowMount(Login)
-        expect(wrapper.find(Login).exists()).toBe(true);
+        const wrapper = shallowMount(Login)
+        expect(wrapper.exists()).toBe(true);
     })
 })
 
