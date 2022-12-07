@@ -1,6 +1,5 @@
 package app.rest;
 
-import app.exceptions.AuthorizationException;
 import app.exceptions.FileIsNotRightExtension;
 import app.models.User.User;
 import app.exceptions.UserNotFoundException;
@@ -55,15 +54,14 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/users/{email}")
-    public ResponseEntity<User> deleteUser(@PathVariable String email, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Integer id, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
 
-        if(!tokenInfo.isAdmin()) {
-            throw new AuthorizationException("only administrators can remove members");
-        }
+//        if(!tokenInfo.getUser()) {
+//            throw new AuthorizationException("only administrators can remove members");
+//        }
 
-        User user = getUserByEmail(email);
-
+        User user = userRepo.findById(id);
         userRepo.delete(user);
 
         return ResponseEntity.ok(user);

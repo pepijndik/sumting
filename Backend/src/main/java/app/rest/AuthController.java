@@ -13,18 +13,25 @@ import app.exceptions.AuthenticationException;
 import app.security.JWTokenInfo;
 import app.security.JWTokenUtils;
 import app.security.PasswordEncoder;
+import dev.samstevens.totp.code.CodeVerifier;
+import dev.samstevens.totp.exceptions.QrGenerationException;
+import dev.samstevens.totp.qr.QrData;
+import dev.samstevens.totp.qr.QrDataFactory;
+import dev.samstevens.totp.qr.QrGenerator;
+import dev.samstevens.totp.secret.SecretGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
+
+import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
 /**
  * Set of endpoints used to sign-up and sign-in users
@@ -45,6 +52,18 @@ public class AuthController {
 
     @Autowired
     private JWTokenUtils tokenUtils;
+
+    @Autowired
+    private SecretGenerator secretGenerator;
+
+    @Autowired
+    private QrDataFactory qrDataFactory;
+
+    @Autowired
+    private QrGenerator qrGenerator;
+
+    @Autowired
+    private CodeVerifier verifier;
 
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
@@ -68,7 +87,7 @@ public class AuthController {
                     buildAndExpand(savedUser.getId()).toUri();
             return ResponseEntity.created(location).body(user);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user",e));
+            return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user", e));
         }
     }
 
@@ -93,7 +112,7 @@ public class AuthController {
         }
 
         // refresh the token for the user
-        String tokenString = tokenGenerator.encode(tokenInfo.getEmail());
+        String tokenString = tokenGenerator.encode(tokenInfo.getId());
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
