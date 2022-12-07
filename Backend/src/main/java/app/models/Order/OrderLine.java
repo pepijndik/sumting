@@ -11,6 +11,7 @@ import app.views.OrderLineView;
 import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class OrderLine implements Identifiable<Integer> {
     @Column(name = "notes", nullable = true)
     private String notes;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @Column(name = "transaction_line_total", nullable = true, columnDefinition = "double default 0.0")
     private Double transactionLineTotal;
@@ -49,55 +51,70 @@ public class OrderLine implements Identifiable<Integer> {
     @JoinColumn(name = "product_key", referencedColumnName = "product_key", insertable = false, updatable = false)
     private Product product;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_user_key", referencedColumnName = "user_key", insertable = false, updatable = false)
     private User owner;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_key", referencedColumnName = "wallet_key", insertable = false, updatable = false)
     private Wallet wallet;
 
+    @Nullable
     @Column(name = "proof_name", nullable = true)
     private String proofName;
 
+    @Nullable
     @Column(name = "proof_date", nullable = true)
     private LocalDateTime proofDate;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @Column(name="latitude", nullable = true, columnDefinition = "double default 0.0")
     private Double latitude;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @Column(name="longitude", nullable = true, columnDefinition = "double default 0.0")
     private Double longitude;
 
+    @Nullable
     @Column(name="proof_small",nullable = true)
     private String proofSmall;
 
+    @Nullable
     @Column(name="proof_medium",nullable = true)
     private String proofMedium;
 
+    @Nullable
     @Column(name="proof_large",nullable = true)
     private String proofLarge;
 
+    @Nullable
     @Column(name="proof_uploaded_datetime",nullable = true)
     private LocalDateTime proofUploadDate;
 
+    @Nullable
     @Column(name="transaction_line_fee",nullable = true)
     private Double transactionLineFee;
 
+    @Nullable
     @Column(name="transaction_line_vat",nullable = true)
     private Double transactionLineVat;
 
+    @Nullable
     @Column(name="loaded_at",nullable = true)
     private LocalDateTime loadedDate;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @Column(name="orderline_stripe_id",nullable = true)
     private String StripeChargeId;
 
+    @Nullable
     @OneToOne(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
