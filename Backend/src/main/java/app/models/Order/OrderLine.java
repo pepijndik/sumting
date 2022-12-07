@@ -64,36 +64,36 @@ public class OrderLine implements Identifiable<Integer> {
     private LocalDateTime proofDate;
 
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name="latitude", nullable = true, columnDefinition = "double default 0.0")
+    @Column(name = "latitude", nullable = true, columnDefinition = "double default 0.0")
     private Double latitude;
 
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name="longitude", nullable = true, columnDefinition = "double default 0.0")
+    @Column(name = "longitude", nullable = true, columnDefinition = "double default 0.0")
     private Double longitude;
 
-    @Column(name="proof_small",nullable = true)
+    @Column(name = "proof_small", nullable = true)
     private String proofSmall;
 
-    @Column(name="proof_medium",nullable = true)
+    @Column(name = "proof_medium", nullable = true)
     private String proofMedium;
 
-    @Column(name="proof_large",nullable = true)
+    @Column(name = "proof_large", nullable = true)
     private String proofLarge;
 
-    @Column(name="proof_uploaded_datetime",nullable = true)
+    @Column(name = "proof_uploaded_datetime", nullable = true)
     private LocalDateTime proofUploadDate;
 
-    @Column(name="transaction_line_fee",nullable = true)
+    @Column(name = "transaction_line_fee", nullable = true)
     private Double transactionLineFee;
 
-    @Column(name="transaction_line_vat",nullable = true)
+    @Column(name = "transaction_line_vat", nullable = true)
     private Double transactionLineVat;
 
-    @Column(name="loaded_at",nullable = true)
+    @Column(name = "loaded_at", nullable = true)
     private LocalDateTime loadedDate;
 
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name="orderline_stripe_id",nullable = true)
+    @Column(name = "orderline_stripe_id", nullable = true)
     private String StripeChargeId;
 
     @OneToOne(cascade = CascadeType.ALL)

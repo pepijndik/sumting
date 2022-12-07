@@ -35,11 +35,11 @@ public class OrderController {
 
     @GetMapping("/orders/{id}")
     @JsonView(OrderView.Order.class)
-    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId)
-    {
+    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId) {
         Order o = orderRepository.findById(orderId);
-        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", orderId),HttpStatus.NOT_FOUND);
+        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", orderId), HttpStatus.NOT_FOUND);
     }
+
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable(value = "id") Integer orderId) {
         Order OrderToDelete = orderRepository.findById(orderId);
