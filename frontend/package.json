@@ -43,7 +43,8 @@
     "jest-expect-message": "^1.1.3",
     "postcss": "^8.4.16",
     "tailwind-scrollbar": "^2.0.1",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.1.8",
+    "identity-obj-proxy": "^3.0.0"
   },
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
@@ -55,7 +56,9 @@
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "/images/(.*)$": "<rootDir>/public/images/$1"
+      "/images/(.*)$": "<rootDir>/public/images/$1",
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "axios": "axios/dist/node/axios.cjs"
     },
     "transform": {
       "^.+\\.js$": "babel-jest",
@@ -66,8 +69,7 @@
       "node_modules/(?!@ckeditor)",
       "node_modules/(?!vue3-click-away)",
       "node_modules/(?!vue-chartjs)",
-      "node_modules/(?!chart.js)",
-      "node_modules/(?!epic-spinners)"
+      "node_modules/(?!chart.js)"
     ],
     "verbose": true
   },

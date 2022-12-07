@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import App from '@/App.vue';
 import Login from '@/Pages/Auth/Login.vue';
 import Router from "@/Router/router";
