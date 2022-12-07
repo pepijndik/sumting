@@ -29,6 +29,7 @@ export default {
       DashboardApi: new DashboardApiService(),
     };
   },
+
   data() {
     return {
       layout: null,

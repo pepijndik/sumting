@@ -63,6 +63,13 @@
               v-text="$route.meta.title"
             ></h1>
           </div>
+          <div v-if="isLoading" class="absolute z-40 ml-80 mt-24">
+            <semipolar-spinner
+                :animation-duration="2000"
+                :size="65"
+                color="#E56B6F"
+            />
+          </div>
           <router-view />
         </div>
       </div>
@@ -76,22 +83,51 @@ import DashboardHeaderBar from "@/Layouts/Header/Admin/AdminHeaderBar";
 import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
-
+import { SemipolarSpinner  } from 'epic-spinners'
+import router from "@/Router/router";
 export default {
   name: "DashboardLayout",
-  components: {
-    NavigationItem,
-    NavigationDropdownItem,
-    SubDropdownItem,
-    DashboardHeaderBar,
-    Navigation,
-  },
+  inject: ['axios'],
+  components: {NavigationItem, NavigationDropdownItem, SubDropdownItem, DashboardHeaderBar, Navigation,SemipolarSpinner},
   data() {
     return {
       mobileOpen: false,
+      isLoading: false,
+      axiosInterceptor: null,
     };
   },
-};
+  mounted() {
+    this.enableInterceptor()
+  },
+  methods: {
+    enableInterceptor() {
+      this.axiosInterceptor = this.axios.interceptors.request.use((config) => {
+        this.isLoading = true
+        return config
+      }, (error) => {
+        this.isLoading = false;
+        return Promise.reject(error)
+      })
+
+      this.axios.interceptors.response.use((response) => {
+        this.isLoading = false
+        return response
+      }, function(error) {
+        this.isLoading = false;
+        if(error.response.status === 401) {
+          console.log("User was not logged in, redirect to login")
+          this.$router.push({name: 'auth:login'});
+        }
+
+        return Promise.reject(error)
+      })
+    },
+
+    disableInterceptor() {
+      this.axios.interceptors.request.eject(this.axiosInterceptor)
+    },
+  },
+}
 </script>
 
 <style scoped></style>

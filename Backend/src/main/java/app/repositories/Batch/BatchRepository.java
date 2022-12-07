@@ -5,9 +5,13 @@ import app.models.Country;
 import app.models.Product.Product;
 import app.repositories.Interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
+@Repository
+@Transactional
 public class BatchRepository implements CrudRepository<Batch, Integer> {
 
     @Autowired

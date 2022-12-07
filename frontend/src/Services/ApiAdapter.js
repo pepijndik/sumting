@@ -2,6 +2,7 @@ import BaseApi from "@/Services/BaseApi";
 export default class ApiAdapter {
   constructor(resource) {
     this.resource = resource;
+
   }
   setHeader(Header = {}) {
     BaseApi.defaults.headers = Header;

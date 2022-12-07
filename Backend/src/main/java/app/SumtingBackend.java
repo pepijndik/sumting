@@ -2,6 +2,8 @@ package app;
 
 import app.server.CustomBanner;
 import dev.samstevens.totp.code.HashingAlgorithm;
+import dev.samstevens.totp.time.NtpTimeProvider;
+import dev.samstevens.totp.time.TimeProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.net.UnknownHostException;
 
 @SpringBootApplication
 public class SumtingBackend {
@@ -37,7 +41,7 @@ public class SumtingBackend {
         }
         @Bean
         public HashingAlgorithm hashingAlgorithm() {
-            return HashingAlgorithm.SHA256;
+            return HashingAlgorithm.SHA1;
         }
     }
 }
