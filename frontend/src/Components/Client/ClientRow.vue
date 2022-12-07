@@ -1,5 +1,5 @@
 <template>
-  <Index :open="modal" source="warning.svg" :callback="test">
+  <Index :open="modal" source="warning.svg">
     <template #body>
       <h1
         tabindex="0"
@@ -11,8 +11,8 @@
         tabindex="0"
         class="focus:outline-none mb-5 text-sm text-yInMnBlue dark:text-gray-400 text-center font-normal"
       >
-        You are about to delete order
-        <span class="text-candyPink"> {{ order.id }} </span>,<br />
+        You are about to delete client
+        <span class="text-candyPink"> {{ client.name }} </span>,<br />
         this action is not reversable.
       </p>
     </template>
@@ -27,40 +27,44 @@
     </template>
   </Index>
   <div
-    class="dark:border-gray-700 w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center"
+    class="dark:border-gray-700 w-full h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center my-10"
   >
     <div class="m-2 flex lg:flex-row flex-wrap border-r-2">
       <div
-        class="float-left items-left flex w-[80px] md:w-[100px] lg:w-[200px] items-center md:border-r-2 pr-1 mr-1"
+        class="float-left items-left flex w-[50px] items-center md:border-r-2 pr-1 mr-1"
       >
         <img
           :src="require(`@/Assets/img/icons/user.svg`)"
           alt="File icon"
           width="24"
         />
-        <p class="text-yInMnBlue">ID {{ client.id }}</p>
       </div>
 
       <div class="flex flex-row">
         <div
-          class="h-5 lg:h-10 items-center flex lg:w-[200px] md:w-[180px] w-[95px] text-xs md:text-sm border-r-2 mr-1"
+          class="h-20 items-center flex lg:w-[200px] md:w-[180px] w-[95px] text-xs md:text-sm border-r-2 mr-1"
         >
-          <p v-if="mobile" class="text-yInMnBlue">Total:&nbsp;</p>
-          <p v-else class="text-yInMnBlue">Total amount:&nbsp;</p>
-          <p class="text-candyPink">€ {{ client.name }}</p>
+          <p class="text-yInMnBlue">Name:&nbsp;</p>
+          <p class="text-candyPink">{{ client.name }}</p>
         </div>
 
         <div
-          class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[120px] w-[95px] font-Alatsi text-xs md:text-sm"
+          class="h-20 items-center flex lg:w-[300px] font-Alatsi text-xs md:text-sm border-r-2"
         >
-          <p class="text-yInMnBlue">Date:&nbsp;</p>
+          <p class="text-yInMnBlue">Email:&nbsp;</p>
           <p class="text-candyPink">{{ client.email }}</p>
+        </div>
+        <div
+          class="h-20 items-center flex lg:w-[100px] font-Alatsi text-xs md:text-sm mx-3"
+        >
+          <p class="text-yInMnBlue">Type:&nbsp;</p>
+          <p class="text-candyPink">{{ client.user_type }}</p>
         </div>
       </div>
     </div>
 
     <button
-      class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
+      class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[75px] md:w-[50px] w-[25px] justify-center h-[32px] mr-2 md:mr-4"
     >
       <img
         :src="require(`@/Assets/img/icons/edit.svg`)"
@@ -70,7 +74,7 @@
     </button>
     <button
       @click="confirmDelete"
-      class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
+      class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[75px] md:w-[50px] w-[25px] justify-center h-[32px]"
     >
       <img
         :src="require(`@/Assets/img/icons/delete.svg`)"
@@ -84,7 +88,6 @@
 <script>
 import Index from "../Modal/index.vue";
 
-let mobile;
 export default {
   name: "ClientRow",
   props: ["client"],
@@ -93,25 +96,18 @@ export default {
       modal: false,
     };
   },
-  watch: {
-    mobile(newMobile, oldMobile) {
-      this.mobile = newMobile;
-    },
-  },
   methods: {
     delClient() {
-      this.$emit("deleteOrderEvent", this.order.id);
+      this.$emit("deleteOrderEvent", this.client.id);
       //console.log("delete" + this.order.id);
     },
     confirmDelete() {
       this.modal = true;
-      console.log(this.modal, this.order.id);
+      console.log(this.modal, this.client.id);
       console.log("deleted");
     },
   },
-  beforeMount() {
-    this.mobile = window.innerWidth < 640 ? true : false;
-  },
+
   components: { Index },
 };
 </script>

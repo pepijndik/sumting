@@ -116,7 +116,7 @@ const router = createRouter({
       beforeEnter: IsAuthenticated,
       meta: {
         pageTitle: "Clients",
-        title: "Client",
+        title: "Client's",
         subtitle: "View",
       },
       component: ClientView,

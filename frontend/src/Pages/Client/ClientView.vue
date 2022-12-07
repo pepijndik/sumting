@@ -32,51 +32,32 @@
           placeholder="Search for client"
         />
       </div>
-      <div
-        class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
-        v-for="item in this.users"
-        :key="item.id"
-      >
-        <OrderRow :client="item" />
-      </div>
+    </div>
+    <div
+      class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
+      v-for="user in this.users"
+      :key="user.id"
+    >
+      <ClientRow :client="user" />
     </div>
   </div>
 </template>
 
 <script>
-import OrderRow from "@/Components/Client/ClientRow.vue";
+import ClientRow from "@/Components/Client/ClientRow.vue";
 
 export default {
-  name: "OrderView",
-  components: { OrderRow },
+  name: "ClientView",
+  components: { ClientRow },
   inject: ["UserApi"],
   data() {
     return {
-      users: [
-        {
-          id: 1,
-          name: "John Do",
-          email: "johnDo@email.com",
-          type: "Business",
-        },
-        {
-          id: 2,
-          name: "John Doe",
-          email: "johnDoe@email.com",
-          type: "Business",
-        },
-        {
-          id: 3,
-          name: "John Does",
-          email: "johnDoes@email.com",
-          type: "Person",
-        },
-      ],
+      users: [],
       searchKeyWord: "",
     };
   },
   async created() {
-    //this.users = await this.UserApi.findAll();
+    this.users = await this.UserApi.findAll();
   },
   computed: {},
   methods: {
