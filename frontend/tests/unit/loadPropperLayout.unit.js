@@ -13,23 +13,38 @@ beforeEach(async function() {
             plugins: [Router],
             provide: {
                 Auth: reactive(auth),
+            },
+            localStorage: {
+                state: {
+                    'token': ''
+                },
+                setItem (key, item) {
+                    this.state[key] = item
+                },
+                getItem (key) {
+                    return this.state[key]
+                }
             }
         }
     });
+    await wrapper.vm.$router.isReady();
 
-    await Router.isReady();
 });
-describe('Loads guest layout', () => {
-    it('Login is shown', () => {
-        const wrapper = shallowMount(Login,{
-            global: {
-                provide: {
-                    Auth: reactive(auth),
-                }
-            }
-        })
+
+afterEach( function(){
+    wrapper.unmount();
+    wrapper = null;
+})
+describe('Loads layout', () => {
+    it("User is not logged in", () => {
+        expect(AuthenticationService.isLoggedIn()).toBe(false);
+    });
+
+    it('Login is shown when not authenticated', () => {
+        expect(AuthenticationService.isLoggedIn()).toBe(false);
         const LoginComp = wrapper.findComponent({ name: 'login' })
+        console.log(wrapper.html())
         expect(LoginComp.exists()).toBe(true)
-    })
+    });
 })
 
