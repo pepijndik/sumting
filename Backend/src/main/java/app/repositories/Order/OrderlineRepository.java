@@ -2,7 +2,6 @@ package app.repositories.Order;
 
 import app.models.Order.OrderLine;
 import app.repositories.interfaces.CrudRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public class OrderlineRepostory implements CrudRepository<OrderLine, Integer> {
+public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
 
     @Autowired
     private EntityManager em;
@@ -53,11 +52,11 @@ public class OrderlineRepostory implements CrudRepository<OrderLine, Integer> {
     }
 
     /**
-     * Gets an orderline by order id and product id, using project id to search for a product id
+     * Gets orderlines by order id and product id, using project id to search for a product id
      *
-     * @param clientID
-     * @param projectID
-     * @return
+     * @param clientID the client id
+     * @param projectID the project id
+     * @return the orderlines found by client and project
      */
     public Iterable<OrderLine> findByClientAndProject(int clientID, int projectID) {
         int productID = em.createQuery("SELECT p.id FROM Project p WHERE p.id = :id", Integer.class).setParameter("id", projectID).getSingleResult();
@@ -69,10 +68,10 @@ public class OrderlineRepostory implements CrudRepository<OrderLine, Integer> {
     }
 
     /**
-     * Gets an orderline by product id, using project id to search for a product id
+     * Gets orderlines by product id, using project id to search for a product id
      *
-     * @param projectID
-     * @return
+     * @param projectID the project id
+     * @return the orderlines found by project
      */
     public Iterable<OrderLine> findByProject(int projectID) {
         int productID = em.createQuery("SELECT p.id FROM Project p WHERE p.id = :id", Integer.class).setParameter("id", projectID).getSingleResult();
@@ -83,10 +82,10 @@ public class OrderlineRepostory implements CrudRepository<OrderLine, Integer> {
     }
 
     /**
-     * Gets an orderline by client id
+     * Gets orderlines by client id
      *
-     * @param clientID
-     * @return
+     * @param clientID the client id
+     * @return the orderlines found by client
      */
     public Iterable<OrderLine> findByClient(int clientID) {
         return em.createQuery("SELECT o FROM OrderLine o WHERE o.owner.id = :clientID", OrderLine.class)
