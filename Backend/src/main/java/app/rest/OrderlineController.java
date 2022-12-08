@@ -9,9 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class OrderlineController {
@@ -39,5 +37,20 @@ public class OrderlineController {
         OrderLine OrderlineToDelete = orderlineRepostory.findById(orderlineid);
         orderlineRepostory.delete(OrderlineToDelete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/orderlines/combinedSearch")
+    public ResponseEntity<Iterable<OrderLine>> getOrderLinesByClientAndProject(
+            @RequestParam(value = "clientID") Integer clientID,
+            @RequestParam(value = "projectID") Integer projectId) {
+        if (clientID != null && projectId != null) {
+            return new ResponseEntity<>(orderlineRepostory.findByClientAndProject(clientID, projectId), HttpStatus.OK);
+        } else if (clientID != null) {
+            return new ResponseEntity<>(orderlineRepostory.findByClient(clientID), HttpStatus.OK);
+        } else if (projectId != null) {
+            return new ResponseEntity<>(orderlineRepostory.findByProject(projectId), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
