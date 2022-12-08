@@ -6,49 +6,74 @@ import app.views.OrderView;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import app.security.PasswordEncoder;
 
 /**
  * A representation of a user
- *
+ * <p>
  * Author: Pepijn dik
  */
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User implements Identifiable<Integer> {
 
+    public User() {
+
+    }
+
+    public User(Integer id, String name, String email) {
+        setId(id);
+        setName(name);
+        setEmail(email);
+        setType(Type.PERSON);
+        setCountry(25);
+        long minDay = LocalDate.of(2022, 8, 1).toEpochDay();
+        long maxDay = LocalDate.of(2022, 11, 29).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        LocalDate sellDate = LocalDate.ofEpochDay(randomDay);
+    }
+
+
+
     public static enum Type {
         BUSINESS,
         PERSON,
         ADMIN
     }
-    public static final String TABLE_NAME ="\"User\"";
+
+    public static final String TABLE_NAME = "\"User\"";
     @Id
     @JsonView({UserView.User.class, OrderView.Order.class})
     @Column(name = "user_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id_ext", nullable = false, unique = true)
+    @Column(name = "user_id_ext", nullable = true, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer user_key_ext;
 
     @JsonView({UserView.User.class, OrderView.Order.class})
-    @Column(name = "user_name",nullable = false)
+    @Column(name = "user_name", nullable = false)
     private String name;
 
     @JsonView({UserView.User.class, OrderView.Order.class})
-    @Column(name = "email",nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @JsonView(UserView.User.class)
-    @Column(name = "created_at",nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at",nullable = true)
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime udatedAt;
     @JsonIgnore
     @Column(name = "user_password", nullable = true, columnDefinition = "varchar(255)")
@@ -56,20 +81,20 @@ public class User implements Identifiable<Integer> {
 
 
     @JsonIgnore
-    @Column(name = "user_secret_code",nullable = true)
+    @Column(name = "user_secret_code", nullable = true)
     private String secretCode;
 
     @JsonIgnore
-    @Column(name = "user_twofactor_enabled",nullable = true, columnDefinition = "boolean")
+    @Column(name = "user_twofactor_enabled", nullable = true, columnDefinition = "boolean")
     private Boolean twoFactorEnabled;
 
 
     @JsonView({UserView.User.class, OrderView.Order.class})
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_type",nullable = false,columnDefinition = "varchar(255) default 'PERSON'")
+    @Column(name = "user_type", nullable = false, columnDefinition = "varchar(255) default 'PERSON'")
     private User.Type user_type;
 
-    @Column(name = "country_key",nullable = false)
+    @Column(name = "country_key", nullable = false)
     private Integer country_key;
 
     @JsonView(UserView.User.class)
@@ -78,17 +103,18 @@ public class User implements Identifiable<Integer> {
     private Country country;
 
     @JsonView(UserView.User.class)
-    @Column(name = "profile_image",nullable = true)
+    @Column(name = "profile_image", nullable = true)
     private String profileImage;
 
     @JsonView(UserView.User.class)
-    @Column(name = "profile_text",nullable = true)
+    @Column(name = "profile_text", nullable = true)
     private String profileText;
 
     @JsonView(UserView.User.class)
     public boolean isTwoFactorEnabled() {
         return twoFactorEnabled != null && twoFactorEnabled;
     }
+
     public String getEmail() {
         return email;
     }
@@ -104,9 +130,11 @@ public class User implements Identifiable<Integer> {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
     public void setType(User.Type user_type) {
         this.user_type = user_type;
     }
+
     public Type getUser_type() {
         return user_type;
     }
@@ -122,6 +150,7 @@ public class User implements Identifiable<Integer> {
     public void setTwoFactorEnabled(Boolean twoFactorEnabled) {
         this.twoFactorEnabled = twoFactorEnabled;
     }
+
     public void setEncodedPassword(String encodedPassword) {
         this.encodedPassword = encodedPassword;
     }
@@ -129,6 +158,24 @@ public class User implements Identifiable<Integer> {
     public boolean validateEncodedPassword(String given) {
         return encodedPassword.equals(given);
     }
+
+    public String hashPassword(String password) {
+        return PasswordEncoder.encode("id_" + this.id + password);
+    }
+
+    public boolean verifyPassword(String password) {
+        return password != null && this.hashPassword(password).equals(this.encodedPassword);
+    }
+
+    public void setPassword(String password) {
+        this.encodedPassword = this.hashPassword(password);
+    }
+
+    @JsonIgnore()
+    public String getHashedPassword() {
+        return encodedPassword;
+    }
+
     @Override
     public Integer getId() {
         return id;
@@ -136,7 +183,7 @@ public class User implements Identifiable<Integer> {
 
     @Override
     public void setId(Integer id) {
-        this.id =id;
+        this.id = id;
     }
 
     @Override
@@ -146,18 +193,55 @@ public class User implements Identifiable<Integer> {
         User user = (User) o;
         return Objects.equals(email, user.email);
     }
+
     @JsonIgnore
     public String getSecret() {
         return this.secretCode;
     }
+
     public void setSecret(String secret) {
         this.secretCode = secret;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(email);
+    public void setUser_key_ext(Integer user_key_ext) {
+        this.user_key_ext = user_key_ext;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
+    @Override
+    public String toString() {
+        return String.format("{ email=%s, callName=%s, id=%d }", this.email, this.name, this.id);
+    }
+    public static User buildRandom(String uname) {
+        System.out.printf("Building random user with name %s", uname);
+        User user = buildRandom();
+        byte[] nameLenght = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(nameLenght);
+        user.setName(uname);
+        user.setEmail(uname + "@hva.nl");
+        return user;
+    }
+
+    public static User buildRandom() {
+        User user = new User();
+        byte[] nameLenght = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(nameLenght);
+        String name = "";
+        name = new String(nameLenght, java.nio.charset.StandardCharsets.UTF_8) + ThreadLocalRandom.current().nextInt(1, 1000);
+        user.setName(name);
+        user.setEmail(name.toLowerCase().replace(" ", ".") + "@hva.nl");
+        user.setType(Type.PERSON);
+        int c = new Random().nextInt(1, 3);
+        user.setCountry(c);
+        long minDay = LocalDate.of(2022, 8, 1).toEpochDay();
+        long maxDay = LocalDate.of(2022, 11, 29).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        LocalDate created_at = LocalDate.ofEpochDay(randomDay);
+        user.setCreatedAt(created_at.atStartOfDay());
+        return user;
+    }
 }

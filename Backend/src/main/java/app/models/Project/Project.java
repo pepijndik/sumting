@@ -14,7 +14,7 @@ public class Project implements Identifiable<Integer> {
 
     @Id()
     @Column(name = "project_key", nullable = false, unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     public Project(){
