@@ -43,7 +43,7 @@
             v-for="(option, index) in filteredOptions"
             :key="index">
           <div class="flex gap-2">
-            <slot class="">
+            <slot class="" v-if="icon">
               <FileIcon/>
             </slot>
             <p class="">{{ this.populatefields(option) }}</p>
@@ -65,6 +65,10 @@ export default {
   template: 'Dropdown',
 
   props: {
+    icon: {
+      type: Boolean,
+      default: true,
+    },
     name: {
       type: String,
       required: false,
@@ -84,10 +88,10 @@ export default {
       default: ['description'],
       note: 'Possible fields options'
     },
-    primaryKey: {
+    primarykey: {
       type: String,
       required: false,
-      default: 'id',
+      default: null,
       note: 'Primary key of the object'
     },
     placeholder: {
@@ -121,47 +125,50 @@ export default {
   },
   computed: {
     filteredOptions() {
-      const filtered = [];
       const regOption = new RegExp(this.searchFilter, 'ig');
-        for (const option of this.options) {
-          //Double For loop to find the option in the fields
-          this.fields.forEach(field => {
-            if (this.searchFilter.length < 1 || option[field].match(regOption)) {
-              if (filtered.length < this.maxItem) filtered.push(option);
-            }
-          });
-
-        }
-
-      return filtered;
+      return this.options.filter(option => {
+        return this.fields.some(field => {
+          return regOption.test(option[field]);
+        });
+      });
     },
   },
   methods: {
     populatefields(option) {
       var finalString = "";
+      // this.fields.filter(field => {
+      //   finalString += this.extractFieldValue(option,field);
+      //   finalString +=  + " | ";
+      // });
       this.fields.forEach(field => {
-        finalString += this.extractFieldValue(option,field);
+        const extractField = this.extractFieldValue(option, field);
+        if (extractField) {
+          finalString += extractField;
+        }
         //Check if not the last field then append space with separator
-        if(this.fields.indexOf(field) !== this.fields.length -1)
-        {
+        if (this.fields.indexOf(field) !== this.fields.length - 1 && extractField != null) {
           finalString += " | "
         }
       });
       return finalString
     },
-    extractFieldValue(option,prop) {
+    extractFieldValue(option, prop) {
       // eslint-disable-next-line no-prototype-builtins
-      if(Object.hasOwn(option,prop))
-      {
+      if (Object.hasOwn(option, prop)) {
         return option[prop];
       }
     },
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-      console.log(this.selected[this.fields[0]]);
-      this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
-      this.$emit('selected', this.selected);
+
+      if (this.primarykey !=null) {
+        this.searchFilter = this.selected[this.primarykey];
+      } else {
+        this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
+      }
+      console.log(this.searchFilter);
+      this.$emit('selected', this.searchFilter);
     },
     showOptions() {
       if (!this.disabled) {
@@ -170,9 +177,8 @@ export default {
       }
     },
     exit() {
-      if (!this.selected[this.primaryKey]) {
-        this.selected = {};
-        this.searchFilter = '';
+      if (this.primarykey !=null) {
+        this.searchFilter = this.selected[this.primarykey];
       } else {
         this.searchFilter = this.selected[this.fields[0]];
       }

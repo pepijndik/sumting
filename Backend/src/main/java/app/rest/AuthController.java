@@ -2,6 +2,8 @@ package app.rest;
 
 import app.exceptions.AuthorizationException;
 import app.exceptions.TwofactorSetup;
+import app.models.Country;
+import app.repositories.CountryRepository;
 import app.response.LoginResponse;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -30,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
@@ -43,9 +46,6 @@ public class AuthController {
 
     @Autowired
     private JWTokenUtils tokenGenerator;
-
-    @Autowired
-    private PasswordEncoder encoder;
 
     @Autowired
     private JPAUserRepository userRepo;
@@ -65,6 +65,8 @@ public class AuthController {
     @Autowired
     private CodeVerifier verifier;
 
+    private CountryRepository countryRepo;
+
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
 
@@ -73,12 +75,17 @@ public class AuthController {
         String givenPassword = signupInfo.get("password") == null ? null : signupInfo.get("password").asText();
         Integer countryId = signupInfo.get("country") == null ? null : signupInfo.get("country").asInt();
 
+        //Get Country by ID
+        Country c = countryRepo.findById(countryId);
+        //Set Country
         User user = new User();
         user.setEmail(email);
         user.setName(name);
-        user.setEncodedPassword(encoder.encode(givenPassword));
+        user.setEncodedPassword(user.hashPassword(givenPassword));
         user.setType(User.Type.PERSON);
-        user.setCountry(countryId);
+        if(c != null) {
+            user.setCountry(c);
+        }
         user.setCreatedAt(LocalDateTime.now());
         try {
             User savedUser = userRepo.save(user);
@@ -201,22 +208,16 @@ public class AuthController {
 
 
         // Authenticate the user using the credentials provided
-        User user = userRepo.findByEmail(userEmail).get(0);
-
-        if (user == null) {
+        List<User> users = userRepo.findByEmail(userEmail);
+        User user = users.size() > 0 ? users.get(0) : null;
+        System.out.println(users);
+        if (user == null || !user.verifyPassword(password)) {
             throw new AuthenticationException("Invalid user and/or password");
         }
 
-        String encodedPassword = encoder.encode(password);
-
-        if (!user.validateEncodedPassword(encodedPassword)) {
-            throw new AuthenticationException("Invalid user and/or password");
-        }
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setMe(user);
-        String headerString = HttpHeaders.ACCEPT;
-        String auth = null;
         URI location = null;
         String tokenString = tokenGenerator.encode(user.getId());
         if (user.isTwoFactorEnabled()) {
@@ -226,8 +227,6 @@ public class AuthController {
         } else {
             location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         }
-
         return ResponseEntity.accepted().location(location).header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).body(loginResponse);
-
     }
 }

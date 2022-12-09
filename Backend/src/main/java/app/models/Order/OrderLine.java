@@ -9,7 +9,9 @@ import app.models.Wallet;
 import app.views.BatchView;
 import app.views.OrderLineView;
 import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,11 +24,12 @@ public class OrderLine implements Identifiable<Integer> {
     @Id
     @Column(name = "orderline_key", nullable = false)
     @JsonView(OrderLineView.OrderLine.class)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonView(OrderLineView.OrderLine.class)
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false)
     private Order order;
 
@@ -38,6 +41,7 @@ public class OrderLine implements Identifiable<Integer> {
     @Column(name = "notes", nullable = true)
     private String notes;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @Column(name = "transaction_line_total", nullable = true, columnDefinition = "double default 0.0")
     private Double transactionLineTotal;
@@ -47,55 +51,70 @@ public class OrderLine implements Identifiable<Integer> {
     @JoinColumn(name = "product_key", referencedColumnName = "product_key", insertable = false, updatable = false)
     private Product product;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_user_key", referencedColumnName = "user_key", insertable = false, updatable = false)
     private User owner;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_key", referencedColumnName = "wallet_key", insertable = false, updatable = false)
     private Wallet wallet;
 
+    @Nullable
     @Column(name = "proof_name", nullable = true)
     private String proofName;
 
+    @Nullable
     @Column(name = "proof_date", nullable = true)
     private LocalDateTime proofDate;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name = "latitude", nullable = true, columnDefinition = "double default 0.0")
+    @Column(name="latitude", nullable = true, columnDefinition = "double default 0.0")
     private Double latitude;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name = "longitude", nullable = true, columnDefinition = "double default 0.0")
+    @Column(name="longitude", nullable = true, columnDefinition = "double default 0.0")
     private Double longitude;
 
-    @Column(name = "proof_small", nullable = true)
+    @Nullable
+    @Column(name="proof_small",nullable = true)
     private String proofSmall;
 
-    @Column(name = "proof_medium", nullable = true)
+    @Nullable
+    @Column(name="proof_medium",nullable = true)
     private String proofMedium;
 
-    @Column(name = "proof_large", nullable = true)
+    @Nullable
+    @Column(name="proof_large",nullable = true)
     private String proofLarge;
 
-    @Column(name = "proof_uploaded_datetime", nullable = true)
+    @Nullable
+    @Column(name="proof_uploaded_datetime",nullable = true)
     private LocalDateTime proofUploadDate;
 
-    @Column(name = "transaction_line_fee", nullable = true)
+    @Nullable
+    @Column(name="transaction_line_fee",nullable = true)
     private Double transactionLineFee;
 
-    @Column(name = "transaction_line_vat", nullable = true)
+    @Nullable
+    @Column(name="transaction_line_vat",nullable = true)
     private Double transactionLineVat;
 
-    @Column(name = "loaded_at", nullable = true)
+    @Nullable
+    @Column(name="loaded_at",nullable = true)
     private LocalDateTime loadedDate;
 
+    @Nullable
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name = "orderline_stripe_id", nullable = true)
+    @Column(name="orderline_stripe_id",nullable = true)
     private String StripeChargeId;
 
+    @Nullable
     @OneToOne(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
@@ -109,5 +128,165 @@ public class OrderLine implements Identifiable<Integer> {
     @Override
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public Integer getOrderKey() {
+        return orderKey;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public Double getTransactionLineTotal() {
+        return transactionLineTotal;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public String getProofName() {
+        return proofName;
+    }
+
+    public LocalDateTime getProofDate() {
+        return proofDate;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public String getProofSmall() {
+        return proofSmall;
+    }
+
+    public String getProofMedium() {
+        return proofMedium;
+    }
+
+    public String getProofLarge() {
+        return proofLarge;
+    }
+
+    public LocalDateTime getProofUploadDate() {
+        return proofUploadDate;
+    }
+
+    public Double getTransactionLineFee() {
+        return transactionLineFee;
+    }
+
+    public Double getTransactionLineVat() {
+        return transactionLineVat;
+    }
+
+    public LocalDateTime getLoadedDate() {
+        return loadedDate;
+    }
+
+    public String getStripeChargeId() {
+        return StripeChargeId;
+    }
+
+    public Batch getBatch() {
+        return batch;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setOrderKey(Integer orderKey) {
+        this.orderKey = orderKey;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public void setTransactionLineTotal(Double transactionLineTotal) {
+        this.transactionLineTotal = transactionLineTotal;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setProofName(String proofName) {
+        this.proofName = proofName;
+    }
+
+    public void setProofDate(LocalDateTime proofDate) {
+        this.proofDate = proofDate;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setProofSmall(String proofSmall) {
+        this.proofSmall = proofSmall;
+    }
+
+    public void setProofMedium(String proofMedium) {
+        this.proofMedium = proofMedium;
+    }
+
+    public void setProofLarge(String proofLarge) {
+        this.proofLarge = proofLarge;
+    }
+
+    public void setProofUploadDate(LocalDateTime proofUploadDate) {
+        this.proofUploadDate = proofUploadDate;
+    }
+
+    public void setTransactionLineFee(Double transactionLineFee) {
+        this.transactionLineFee = transactionLineFee;
+    }
+
+    public void setTransactionLineVat(Double transactionLineVat) {
+        this.transactionLineVat = transactionLineVat;
+    }
+
+    public void setLoadedDate(LocalDateTime loadedDate) {
+        this.loadedDate = loadedDate;
+    }
+
+    public void setStripeChargeId(String stripeChargeId) {
+        StripeChargeId = stripeChargeId;
+    }
+
+    public void setBatch(Batch batch) {
+        this.batch = batch;
     }
 }

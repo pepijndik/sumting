@@ -14,7 +14,7 @@ public class Product implements Identifiable<Integer> {
 
     @Id
     @Column(name = "product_key", nullable = false, unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "product_name", nullable = false)

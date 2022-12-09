@@ -11,7 +11,7 @@ public class ProjectPrice implements Identifiable<Long> {
     public static final String TABLE_NAME = "project_price";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

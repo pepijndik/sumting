@@ -37,6 +37,7 @@ export default {
       this.costArrayForger(event);
       this.totalCost = 0;
       this.recursiveCostCalculator(0)
+      this.$emit('updatedTotalCost', this.totalCost);
     },
     costArrayForger(event) {
       if (this.costArray[event.index] === undefined) {
@@ -65,7 +66,7 @@ export default {
       totalCost: 0,
     }
   },
-  emits: ['removeSelected'],
+  emits: ['removeSelected','updatedTotalCost']
 }
 </script>
 
