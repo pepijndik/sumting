@@ -49,7 +49,22 @@ export default {
       editorConfig: {
 
         language: 'nl',
-      
+        toolbar: {
+          items: [
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            'blockQuote',
+            'insertTable',
+            'mediaEmbed',
+            'undo',
+            'redo'
+          ]
+        },
       },
       searchSelection: null,
       selectedProjects: [],
