@@ -1,13 +1,30 @@
 <template>
   <div>
-    <p class="font-inter text-yInMnBlue">Client</p>
-    <SearchableDropdown
-        class="mt-1"
-        placeholder="Choose a client"
-        :fields="['name', 'email']"
-        @selected="selectedClient = $event"
-        :options="clients">
-    </SearchableDropdown>
+    <div class="grid w-full grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-1 mt-7">
+      <div>
+        <p class="font-inter text-yInMnBlue">Client</p>
+        <SearchableDropdown
+            class="mt-1"
+            placeholder="Choose a client"
+            :fields="['name', 'email']"
+            @selected="selectedClient = $event"
+            :options="clients">
+        </SearchableDropdown>
+      </div>
+    <div>
+      <p class="font-inter text-yInMnBlue">Currency</p>
+      <SearchableDropdown
+          class="mt-1"
+          placeholder="Choose a client"
+          :fields="['symbol', 'name', 'code']"
+          :primary-key="'name'"
+          :icon="false"
+          @selected="selectedCurreny = $event"
+          :options="currencies">
+      </SearchableDropdown>
+    </div>
+    </div>
+
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
     <p class="font-inter text-yInMnBlue">Description</p>
 
@@ -21,8 +38,8 @@
         :options="projects"
         :max-items="20"
         @selected="searchSelection = $event"/>
-    <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected"/>
-    <button class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+    <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected" @updatedTotalCost="totalCost = $event"/>
+    <button v-on:click="createOrder" class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create order
     </button>
@@ -41,7 +58,7 @@ export default {
     OrderTotalCostSubItem, SearchableDropdown,
 
   },
-  inject: ['ProjectApi', "ProductApi", "UserApi"],
+  inject: ['ProjectApi', "ProductApi", "UserApi","Curreny"],
   data() {
     return {
       editor: ClassicEditor,
@@ -71,12 +88,16 @@ export default {
       selectedClient: null,
       projects: [],
       clients: [],
-      products: []
+      currencies:[],
+      selectedCurreny: null,
+      products: [],
+      totalCost: 0,
     }
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.clients = await this.UserApi.GetAllUsers();
+    this.currencies = this.Curreny.getCurrencyList();
   },
   watch: {
     async searchSelection(val) {
@@ -121,6 +142,14 @@ export default {
 
       this.products = tempProducts;
 
+    },
+    async createOrder(){
+      //@TODO: Prepare Json for order creation.
+      console.log("selected CLient: "+this.selectedClient);
+      console.log("selected Products: "+this.products);
+      console.log(this.products);
+      console.log(this.totalCost);
+      console.log("Description: "+this.description);
     }
   }
 }

@@ -43,7 +43,7 @@
             v-for="(option, index) in filteredOptions"
             :key="index">
           <div class="flex gap-2">
-            <slot class="">
+            <slot class="" v-if="icon">
               <FileIcon/>
             </slot>
             <p class="">{{ this.populatefields(option) }}</p>
@@ -65,6 +65,10 @@ export default {
   template: 'Dropdown',
 
   props: {
+    icon: {
+      type: Boolean,
+      default: true,
+    },
     name: {
       type: String,
       required: false,
@@ -87,7 +91,7 @@ export default {
     primaryKey: {
       type: String,
       required: false,
-      default: 'id',
+      default: null,
       note: 'Primary key of the object'
     },
     placeholder: {
@@ -142,7 +146,7 @@ export default {
           finalString += extractField;
         }
         //Check if not the last field then append space with separator
-        if (this.fields.indexOf(field) !== this.fields.length - 1 && extractField !=null) {
+        if (this.fields.indexOf(field) !== this.fields.length - 1 && extractField != null) {
           finalString += " | "
         }
       });
@@ -157,9 +161,14 @@ export default {
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-      console.log(this.selected[this.fields[0]]);
-      this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
-      this.$emit('selected', this.selected);
+
+      if (this.primaryKey !=null && this.primaryKey !== '') {
+        this.searchFilter = this.selected[this.primaryKey];
+      } else {
+        this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
+      }
+      console.log(this.searchFilter);
+      this.$emit('selected', this.searchFilter);
     },
     showOptions() {
       if (!this.disabled) {
@@ -168,7 +177,7 @@ export default {
       }
     },
     exit() {
-      if (!this.selected[this.primaryKey]) {
+      if (!this.primaryKey ==null) {
         this.selected = {};
         this.searchFilter = '';
       } else {

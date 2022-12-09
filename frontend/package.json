@@ -24,6 +24,7 @@
     "core-js": "^3.8.3",
     "epic-spinners": "^2.0.0",
     "moment": "^2.29.4",
+    "simple-web-worker": "^1.2.0",
     "vue": "^3.2.13",
     "vue-chartjs": "^4.1.2",
     "vue-meta": "^3.0.0-alpha.7",
