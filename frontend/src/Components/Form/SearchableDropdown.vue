@@ -88,7 +88,7 @@ export default {
       default: ['description'],
       note: 'Possible fields options'
     },
-    primaryKey: {
+    primarykey: {
       type: String,
       required: false,
       default: null,
@@ -162,8 +162,8 @@ export default {
       this.selected = option;
       this.optionsShown = false;
 
-      if (this.primaryKey !=null && this.primaryKey !== '') {
-        this.searchFilter = this.selected[this.primaryKey];
+      if (this.primarykey !=null) {
+        this.searchFilter = this.selected[this.primarykey];
       } else {
         this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
       }
@@ -177,9 +177,8 @@ export default {
       }
     },
     exit() {
-      if (!this.primaryKey ==null) {
-        this.selected = {};
-        this.searchFilter = '';
+      if (this.primarykey !=null) {
+        this.searchFilter = this.selected[this.primarykey];
       } else {
         this.searchFilter = this.selected[this.fields[0]];
       }

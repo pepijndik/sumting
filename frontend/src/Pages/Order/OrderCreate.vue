@@ -7,6 +7,7 @@
             class="mt-1"
             placeholder="Choose a client"
             :fields="['name', 'email']"
+            :primarykey="'id'"
             @selected="selectedClient = $event"
             :options="clients">
         </SearchableDropdown>
@@ -15,9 +16,9 @@
       <p class="font-inter text-yInMnBlue">Currency</p>
       <SearchableDropdown
           class="mt-1"
-          placeholder="Choose a client"
+          placeholder="Choose a currency"
           :fields="['symbol', 'name', 'code']"
-          :primary-key="'name'"
+          :primarykey="'name'"
           :icon="false"
           @selected="selectedCurreny = $event"
           :options="currencies">
@@ -146,6 +147,7 @@ export default {
     async createOrder(){
       //@TODO: Prepare Json for order creation.
       console.log("selected CLient: "+this.selectedClient);
+      console.log(this.selectedClient);
       console.log("selected Products: "+this.products);
       console.log(this.products);
       console.log(this.totalCost);
