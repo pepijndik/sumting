@@ -121,38 +121,36 @@ export default {
   },
   computed: {
     filteredOptions() {
-      const filtered = [];
       const regOption = new RegExp(this.searchFilter, 'ig');
-        for (const option of this.options) {
-          //Double For loop to find the option in the fields
-          this.fields.forEach(field => {
-            if (this.searchFilter.length < 1 || option[field].match(regOption)) {
-              if (filtered.length < this.maxItem) filtered.push(option);
-            }
-          });
-
-        }
-
-      return filtered;
+      return this.options.filter(option => {
+        return this.fields.some(field => {
+          return regOption.test(option[field]);
+        });
+      });
     },
   },
   methods: {
     populatefields(option) {
       var finalString = "";
+      // this.fields.filter(field => {
+      //   finalString += this.extractFieldValue(option,field);
+      //   finalString +=  + " | ";
+      // });
       this.fields.forEach(field => {
-        finalString += this.extractFieldValue(option,field);
+        const extractField = this.extractFieldValue(option, field);
+        if (extractField) {
+          finalString += extractField;
+        }
         //Check if not the last field then append space with separator
-        if(this.fields.indexOf(field) !== this.fields.length -1)
-        {
+        if (this.fields.indexOf(field) !== this.fields.length - 1 && extractField !=null) {
           finalString += " | "
         }
       });
       return finalString
     },
-    extractFieldValue(option,prop) {
+    extractFieldValue(option, prop) {
       // eslint-disable-next-line no-prototype-builtins
-      if(Object.hasOwn(option,prop))
-      {
+      if (Object.hasOwn(option, prop)) {
         return option[prop];
       }
     },

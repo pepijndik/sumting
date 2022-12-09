@@ -2,6 +2,8 @@ package app.rest;
 
 import app.exceptions.AuthorizationException;
 import app.exceptions.TwofactorSetup;
+import app.models.Country;
+import app.repositories.CountryRepository;
 import app.response.LoginResponse;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -63,6 +65,8 @@ public class AuthController {
     @Autowired
     private CodeVerifier verifier;
 
+    private CountryRepository countryRepo;
+
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
 
@@ -71,12 +75,17 @@ public class AuthController {
         String givenPassword = signupInfo.get("password") == null ? null : signupInfo.get("password").asText();
         Integer countryId = signupInfo.get("country") == null ? null : signupInfo.get("country").asInt();
 
+        //Get Country by ID
+        Country c = countryRepo.findById(countryId);
+        //Set Country
         User user = new User();
         user.setEmail(email);
         user.setName(name);
         user.setEncodedPassword(user.hashPassword(givenPassword));
         user.setType(User.Type.PERSON);
-        user.setCountry(countryId);
+        if(c != null) {
+            user.setCountry(c);
+        }
         user.setCreatedAt(LocalDateTime.now());
         try {
             User savedUser = userRepo.save(user);

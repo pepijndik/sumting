@@ -4,11 +4,15 @@
     <SearchableDropdown
         class="mt-1"
         placeholder="Choose a client"
-        :options="projects">
+        :fields="['name', 'email']"
+        @selected="selectedClient = $event"
+        :options="clients">
     </SearchableDropdown>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
     <p class="font-inter text-yInMnBlue">Description</p>
-    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+
+    <ckeditor class="block w-full mt-1 rounded-md lg:prose-xl"
+              :editor="editor" v-model="description" :config="editorConfig" tag-name="textarea"></ckeditor>
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
     <SearchableDropdown
@@ -29,26 +33,35 @@
 import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
-
+import '@ckeditor/ckeditor5-build-classic/build/translations/nl';
+import { ref } from '@vue/reactivity';
 export default {
   name: "OrderCreate",
-  components: {OrderTotalCostSubItem, SearchableDropdown},
-  inject: ['ProjectApi', "ProductApi"],
+  components: {
+    OrderTotalCostSubItem, SearchableDropdown,
+
+  },
+  inject: ['ProjectApi', "ProductApi", "UserApi"],
   data() {
     return {
       editor: ClassicEditor,
-      editorData: '<p>Sumting project description</p>',
+      description: ref('<h2>Sumting order description</h2>'),
       editorConfig: {
-        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
+
+        language: 'nl',
+      
       },
       searchSelection: null,
       selectedProjects: [],
+      selectedClient: null,
       projects: [],
+      clients: [],
       products: []
     }
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
+    this.clients = await this.UserApi.GetAllUsers();
   },
   watch: {
     async searchSelection(val) {
@@ -89,7 +102,7 @@ export default {
             throw error;
           });
         }
-        }
+      }
 
       this.products = tempProducts;
 
