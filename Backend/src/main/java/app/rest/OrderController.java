@@ -55,7 +55,7 @@ public class OrderController {
         return orderlineRepository.findById(orderlineId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId),HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/orders/editOrderlines/{id}")
+    @PutMapping("/orderlines/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
             Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
@@ -74,6 +74,7 @@ public class OrderController {
                 orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
                 orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
                 orderlineFound.setLoadedDate(orderline.getLoadedDate());
+                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
 
                 return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
             }else{
