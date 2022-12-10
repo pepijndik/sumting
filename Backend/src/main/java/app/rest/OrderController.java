@@ -58,7 +58,7 @@ public class OrderController {
     @PutMapping("/orderlines/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
+            Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
             if (findOrderline.isPresent()){
                 OrderLine orderlineFound = findOrderline.get();
