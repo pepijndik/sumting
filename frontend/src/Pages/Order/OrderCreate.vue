@@ -83,7 +83,6 @@ export default {
   components: {
     UserIcon,
     OrderTotalCostSubItem, SearchableDropdown,
-
   },
   inject: ['ProjectApi', "ProductApi", "UserApi","Curreny"
   ,"OrderApi"],

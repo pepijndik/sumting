@@ -20,11 +20,13 @@ export default {
   props: {
     products: {
       type: Array,
-      default: () => [{
-
-      }],
+      default: Array,
       required: true,
     },
+  },
+
+  mounted() {
+    this.productList = this.products;
   },
 
   computed: {

@@ -52,10 +52,11 @@ export default {
   },
   data() {
     return {
-      amount: 0,
-
-
+      amount: 1,
     }
+  },
+  mounted() {
+    this.emitUpdate();
   },
   methods: {
     emitUpdate() {
@@ -68,6 +69,7 @@ export default {
       if (!Number(this.amount)) {
         this.amount = 0;
       }
+      this.emitUpdate();
     }
   },
   emits: ['update', 'deleteProduct'],
