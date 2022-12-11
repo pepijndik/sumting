@@ -21,6 +21,7 @@ export default class OrderLine
     StripeChargeId;
     batch;
     stripeChargeId;
+    notes;
 
     constructor()
     {
@@ -34,6 +35,5 @@ export default class OrderLine
     getFormattedProofDate() {
         return moment(this.proofDate).fromNow();
     }
-
 
 }

@@ -23,7 +23,7 @@
         <label for="amountToOrder" class="font-inter text-yInMnBlue font-bold p-4 flex">Amount</label>
         <InputComponentNumeric :inputData="amount" @update="amount = $event" id="amount" placeholder="Amount"
                                required autocomplete="" name="amount" type="number" @keyup="emitUpdate"
-                               :class="'rounded-md border font-inter text-yInMnBlue font-bold md-w-1/2 w-full h-8 place-self-center'"
+                               :class="'rounded-full border font-inter text-yInMnBlue font-bold md-w-1/2 w-full h-8 place-self-center'"
                                ref="amountToOrder"/>
       </div>
       <img :src="require(`@/Assets/img/icons/close.svg`)" alt="Close icon" width="36"
@@ -34,22 +34,14 @@
 
 <script>
 import InputComponentNumeric from "@/Components/Form/InputComponentNumeric";
+import Product from "@/Models/Product";
 
 export default {
   name: "OrderSubItem",
   components: {InputComponentNumeric},
   props: {
     product: {
-      type: Object,
-      default: () => ({
-        project: {
-          name: "Tree"
-        },
-        type: {
-          product_type_name: "Tree"
-        },
-        price: 0.00,
-      }),
+      type: Product,
       required: true,
     },
     index: {
@@ -61,6 +53,8 @@ export default {
   data() {
     return {
       amount: 0,
+
+
     }
   },
   methods: {

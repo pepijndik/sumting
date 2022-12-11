@@ -161,12 +161,10 @@ export default {
       for (const project of projects) {
         //Searches for the product corresponding to the project id.
         if (project.id !== undefined) {
-          await this.ProductApi.findProductByProjectId(project.id).then((data) => {
-            data.forEach((product) => {
-              tempProducts.push(product);
-            });
-          }).catch((error) => {
-            throw error;
+          const data =await this.ProductApi.findProductByProjectId(project.id);
+          data.forEach((product) => {
+            console.log(product);
+            tempProducts.push(product);
           });
         }
       }
