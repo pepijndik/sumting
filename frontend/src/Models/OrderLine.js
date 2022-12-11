@@ -5,6 +5,7 @@ export default class OrderLine
     id; // number
     order; // Order
     product; // Product
+    product_key; // string
     owner;
     wallet;
     proofName;
@@ -17,14 +18,18 @@ export default class OrderLine
     proofUploadDate;
     transactionLineFee;
     transactionLineVat;
+    transaction_line_total;
     loadedDate;
     StripeChargeId;
     batch;
     stripeChargeId;
     notes;
 
-    constructor()
-    {
+    amount =1;
+    constructor(product,notes, total){
+        this.product = product;
+        this.notes = notes;
+        this.transactionLineFee =total;
     }
     static copyConstructor(line){
         if(line == null) return null;

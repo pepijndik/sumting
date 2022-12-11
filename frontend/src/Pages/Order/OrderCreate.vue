@@ -9,8 +9,9 @@
             :fields="['name', 'email']"
             :text="['name', 'email']"
             :primarykey="'id'"
+            :return="'primarykey'"
             :icon="true"
-            @selected="selectedClient = $event"
+            @selected="this.selectedClient = $event"
             :options="clients">
           <slot>
             <UserIcon class="w-5 h-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true"/>
@@ -25,8 +26,9 @@
           :fields="['symbol', 'name', 'code']"
           :text="['symbol','code']"
           :primarykey="'name'"
+          :return="'primarykey'"
           :icon="false"
-          @selected="selectedCurreny = $event"
+          @selected="this.selectedCurreny = $event"
           :options="currencies">
       </SearchableDropdown>
     </div>
@@ -34,22 +36,30 @@
         <p class="font-inter text-yInMnBlue">Order type</p>
         <SearchableDropdown
             class="mt-1"
-            placeholder="Choose a currency"
+            placeholder="Choose a type"
             :fields="['id', 'type']"
             :text="['description']"
             :primarykey="'id'"
             :icon="false"
+            :return="'primarykey'"
             @selected="orderType = $event"
             :options="orderTypes">
         </SearchableDropdown>
       </div>
     </div>
-
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
-    <p class="font-inter text-yInMnBlue">Description</p>
+    <div class="grid w-full grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+      <div class="col-span-2">
+        <p class="font-inter text-yInMnBlue">Description</p>
+        <ckeditor class="block w-full mt-1 rounded-md lg:prose-xl"
+                  :editor="editor" v-model="description" :config="editorConfig" tag-name="textarea"></ckeditor>
+      </div>
+      <div class="col-span-1">
 
-    <ckeditor class="block w-full mt-1 rounded-md lg:prose-xl"
-              :editor="editor" v-model="description" :config="editorConfig" tag-name="textarea"></ckeditor>
+        <NumberInputWithButtons id="tax_input" name="tax" :min="15" :max="100" :step="1" placeholder="Tax(%)" :value="tax" @update="tax= $event"/>
+      </div>
+    </div>
+
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
     <SearchableDropdown
@@ -63,7 +73,8 @@
         :cleanAfterSelect="true"
         :max-items="20"
         @selected="searchSelection = $event"/>
-    <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected" @updatedTotalCost="totalCost = $event"/>
+    <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected" @update="orderLines = $event"
+                           @updatedTotalCost="totalCost = $event"/>
     <button v-on:click="createOrder" class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create order
@@ -78,9 +89,11 @@ import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubI
 import '@ckeditor/ckeditor5-build-classic/build/translations/nl';
 import { ref } from '@vue/reactivity';
 import UserIcon from "@/Components/SvgIcons/userIcon.vue";
+import NumberInputWithButtons from "@/Components/Form/Input/NumberInputWithButtons.vue";
 export default {
   name: "OrderCreate",
   components: {
+    NumberInputWithButtons,
     UserIcon,
     OrderTotalCostSubItem, SearchableDropdown,
   },
@@ -110,6 +123,7 @@ export default {
           ]
         },
       },
+      tax: 21,
       orderTypes: [],
       searchSelection: null,
       selectedProjects: [],
@@ -117,8 +131,9 @@ export default {
       projects: [],
       clients: [],
       currencies:[],
-      selectedCurreny: null,
-      orderType: null,
+      orderLines: [],
+      selectedCurreny: "",
+      orderType: "",
       products: [],
       totalCost: 0,
     }
@@ -126,8 +141,8 @@ export default {
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.clients = await this.UserApi.GetAllUsers();
-    this.currencies = this.Curreny.getCurrencyList();
     this.orderTypes = await this.OrderApi.GetOrderTypes()
+    this.currencies = this.Curreny.getCurrencyList();
   },
   watch: {
     async searchSelection(val) {
@@ -140,7 +155,8 @@ export default {
   methods: {
     removeSelected(i) {
       this.searchSelection = null;
-      this.selectedProjects.splice(i, 1);
+      this.orderLines.splice(i, 1);
+      //this.selectedProjects.splice(i, 1);
     },
     async addProjectToSelected(project) {
       let found = false;
@@ -172,12 +188,34 @@ export default {
     },
     async createOrder(){
       //@TODO: Prepare Json for order creation.
-      console.log("selected CLient: "+this.selectedClient);
-      console.log(this.selectedClient);
-      console.log("selected Products: "+this.products);
-      console.log(this.products);
-      console.log(this.totalCost);
-      console.log("Description: "+this.description);
+      console.log("selected CLient: ",this.selectedClient);
+      console.log("Lines: ",this.orderLines);
+      console.log("Total",  this.totalCost);
+      console.log("Description: ",this.description);
+      console.log("Order type: ",this.orderType);
+      console.log("Currency: ",this.selectedCurreny);
+      console.log("Tax: ",this.tax);
+
+      const r=  await this.OrderApi.create(
+          this.description,
+          this.orderLines,
+          this.selectedCurreny,
+          this.selectedClient,
+          this.totalCost,
+          this.tax,
+          this.orderType,
+      ).then((response)=>{
+        this.$toast.open({
+          message: 'Order created!',
+          type: 'success',
+          position: 'top-right',
+          duration: 3000
+        });
+        this.$router.push({name:"admin:Order"});
+      }).catch((error)=>{
+        console.log("Error: ",error);
+      });
+
     }
   }
 }

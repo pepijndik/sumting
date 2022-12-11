@@ -120,7 +120,7 @@ export default {
     return: {
       type: String,
       required: false,
-      default: null,
+      default: 'object',
       note: 'Choose what to return, might be the primary key or the object itself'
     },
 
@@ -174,7 +174,6 @@ export default {
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-
       if (this.text.length >= 1) {
         var finalString = "";
         this.text.forEach((field) => {
@@ -191,6 +190,7 @@ export default {
           this.searchFilter = finalString;
         }
       }
+
       if (!this.cleanAfterSelect) {
         if (this.primarykey != null && this.text.length <= 0) {
           this.searchFilter = this.selected[this.primarykey];
@@ -213,6 +213,7 @@ export default {
           this.$emit('selected', this.selected[this.primarykey]);
           break;
       }
+      console.log(this.selected[this.primarykey]);
     },
     showOptions() {
       if (!this.disabled) {
@@ -221,7 +222,8 @@ export default {
       }
     },
     exit() {
-      //this.selectOption(this.selected);
+      this.optionsShown = false;
+      // this.selectOption(this.selected);
     },
     // Selecting when pressing Enter
     keyMonitor: function (event) {
@@ -235,8 +237,9 @@ export default {
         this.selected = {};
       } else {
         this.selected = this.filteredOptions[0];
+        this.emitSelect();
       }
-      this.emitSelect();
+
     }
   }
 };

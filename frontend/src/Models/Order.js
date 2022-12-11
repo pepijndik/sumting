@@ -3,6 +3,9 @@ export default class Order
 {
     id; // number
     orderDate; // Datetime
+    payerKey;
+    typeKey;
+    
     paymentMethod; // Offer.Status
     createdAt; // Date
     description; // String

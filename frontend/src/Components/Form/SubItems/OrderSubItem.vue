@@ -28,10 +28,12 @@
       <div class="w-1/3 flex items-center">
         <div class="md-flex-row flex-col">
           <label for="amountToOrder" class="font-inter text-yInMnBlue font-bold p-4 flex">Amount</label>
-          <InputComponentNumeric :inputData="amount" @update="amount = $event" id="amount" placeholder="Amount"
+          <InputComponentNumeric :inputData="this.OrderLine.amount" @update="this.OrderLine.amount = $event" id="amount" placeholder="Amount"
+                                 :min="1"
                                  required autocomplete="" name="amount" type="number" @keyup="emitUpdate"
                                  :class="'rounded-full border font-inter text-yInMnBlue font-bold md-w-1/2 w-full h-8 place-self-center'"
                                  ref="amountToOrder"/>
+
         </div>
         <CloseIcon
             class="ml-2 mr-2 bg-candyPink rounded-md w-6 hover:bg-yInMnBlue hover:fill-white"
@@ -41,10 +43,10 @@
 
     </div>
     <div v-if="customNote" class="focus:outline-none focus:ring-2 focus:ring-offset-2 md-flex-col flex-row
-            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full md-h-20 h-20 flex
+            focus:ring-candyPink dark:border-gray-700 bg-white font-normal w-full min-h-20 flex
             sm-text-sm text-xs border-gray-300 rounded border shadow font-inter justify-between text-left">
       <ckeditor class="w-full mt-1 rounded-md lg:prose-xl"
-                :editor="editor" v-model="description" :config="editorConfig" tag-name="textarea"></ckeditor>
+                :editor="editor" v-model="this.OrderLine.notes" :config="editorConfig" tag-name="textarea"></ckeditor>
     </div>
   </div>
 </template>
@@ -55,6 +57,8 @@ import Product from "@/Models/Product";
 import CloseIcon from "@/Components/SvgIcons/CloseIcon.vue";
 import Checkbox from "@/Components/Form/Input/ToggleCheckbox.vue";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import NumberInputWithButtons from "@/Components/Form/Input/NumberInputWithButtons.vue";
+import OrderLine from "@/Models/OrderLine";
 
 export default {
   name: "OrderSubItem",
@@ -70,12 +74,20 @@ export default {
       required: true,
     }
   },
+  created() {
+    this.OrderLine = new OrderLine();
+  },
+  computed:{
+    amount(){
+      return this.OrderLine.amount;
+    }
+  },
   data() {
     return {
-      amount: 1,
       lineTotal: 0,
       customNote: false,
       description: '',
+      OrderLine: OrderLine,
       editor: ClassicEditor,
       editorConfig: {
         toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
@@ -87,14 +99,27 @@ export default {
   },
   methods: {
     emitUpdate() {
-      this.lineTotal = Math.round(this.amount * this.product.price * 100) / 100;
-      this.$emit('update', {total: this.lineTotal, index: this.index});
+      this.lineTotal = Math.round(this.OrderLine.amount * this.product.price * 100) / 100;
+      this.OrderLine.transaction_line_total = this.lineTotal;
+      this.OrderLine.product_key = this.product.id;
+
+      this.$emit('update',
+          {
+            index: this.index,
+            OrderLine: this.OrderLine,
+          });
     }
   },
   watch: {
+    OrderLine: {
+      handler: function (val, oldVal) {
+        this.emitUpdate();
+      },
+      deep: true
+    },
     amount: function () {
-      if (!Number(this.amount)) {
-        this.amount = 0;
+      if (!Number(this.OrderLine.amount)) {
+        this.OrderLine.amount =0;
       }
       this.emitUpdate();
     }
