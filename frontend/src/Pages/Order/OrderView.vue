@@ -4,6 +4,7 @@
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropdown
         class="mt-1"
+        @selected="selectedClient = $event"
         :options="users"
         :fields="['name', 'email']"
         :primary-key="'id'"
@@ -92,11 +93,20 @@ export default {
       projects: [],
       orders: [],
       users: [],
+      selectedClient: null,
       selectedProject: null,
       searchKeyWord: '',
       searchOrder: true,
       limit: 10,
     };
+  },
+  watch: {
+    selectedProject: function (val) {
+      this.getOrdersCombinedSearch(val, this.selectedClient);
+    },
+    selectedClient: function (val) {
+      this.getOrdersCombinedSearch(this.selectedProject, val);
+    },
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
@@ -145,6 +155,17 @@ export default {
     deleteOrder(id) {
       this.OrderApi.delete(id);
       console.log("Deleted: " + id);
+    },
+    async getOrdersCombinedSearch(project, client) {
+      if (project === null && client === null) {
+        this.orders = await this.OrderApi.findAll();
+      } else if (project !== null && client === null) {
+        this.orders = await this.OrderApi.combinedSearch(null, project);
+      } else if (project === null && client !== null) {
+        this.orders = await this.OrderApi.combinedSearch(client, null);
+      } else if (project !== null && client !== null) {
+        this.orders = await this.OrderApi.combinedSearch(project, client);
+      }
     },
   }
 };

@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+//@Controller
 public class OrderlineController {
     private final OrderlineRepository orderlineRepository;
 
-    @Autowired
+//    @Autowired
     public OrderlineController(OrderlineRepository orderlineRepository) {
         this.orderlineRepository = orderlineRepository;
     }

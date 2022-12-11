@@ -118,4 +118,19 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/orderlines/combinedSearch")
+    public ResponseEntity<Iterable<OrderLine>> getOrderLinesByClientAndProject(
+            @RequestParam(value = "clientID") Integer clientID,
+            @RequestParam(value = "projectID") Integer projectId) {
+        if (clientID != null && projectId != null) {
+            return new ResponseEntity<>(orderlineRepository.findByClientAndProject(clientID, projectId), HttpStatus.OK);
+        } else if (clientID != null) {
+            return new ResponseEntity<>(orderlineRepository.findByClient(clientID), HttpStatus.OK);
+        } else if (projectId != null) {
+            return new ResponseEntity<>(orderlineRepository.findByProject(projectId), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
