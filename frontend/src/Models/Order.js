@@ -17,7 +17,7 @@ export default class Order
     }
     static copyConstructor(order){
         if(order == null) return null;
-        let c = Object.assign(new order(),order);
+        let c = Object.assign(new Order(),order);
         c.orderDate = moment(order.orderDate);
         c.createdAt = moment(order.createdAt);
         return c;

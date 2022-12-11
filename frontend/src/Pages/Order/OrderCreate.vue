@@ -1,15 +1,20 @@
 <template>
   <div>
-    <div class="grid w-full grid-cols-1 lg:grid-cols-2 md:grid-cols-1 gap-1 mt-7">
+    <div class="grid w-full grid-cols-1 lg:grid-cols-3 md:grid-cols-1 gap-1 mt-7">
       <div>
         <p class="font-inter text-yInMnBlue">Client</p>
         <SearchableDropdown
             class="mt-1"
             placeholder="Choose a client"
             :fields="['name', 'email']"
+            :text="['name', 'email']"
             :primarykey="'id'"
+            :icon="true"
             @selected="selectedClient = $event"
             :options="clients">
+          <slot>
+            <UserIcon class="w-5 h-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true"/>
+          </slot>
         </SearchableDropdown>
       </div>
     <div>
@@ -18,12 +23,26 @@
           class="mt-1"
           placeholder="Choose a currency"
           :fields="['symbol', 'name', 'code']"
+          :text="['symbol','code']"
           :primarykey="'name'"
           :icon="false"
           @selected="selectedCurreny = $event"
           :options="currencies">
       </SearchableDropdown>
     </div>
+      <div>
+        <p class="font-inter text-yInMnBlue">Order type</p>
+        <SearchableDropdown
+            class="mt-1"
+            placeholder="Choose a currency"
+            :fields="['id', 'type']"
+            :text="['description']"
+            :primarykey="'id'"
+            :icon="false"
+            @selected="orderType = $event"
+            :options="orderTypes">
+        </SearchableDropdown>
+      </div>
     </div>
 
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold">Order info</h3>
@@ -37,6 +56,11 @@
         class="mt-1 pb-4"
         placeholder="Select project(s)"
         :options="projects"
+        :fields="['id','description', 'type.description']"
+        :primarykey="'id'"
+        :text="['description', 'type.description']"
+        :return="'object'"
+        :cleanAfterSelect="true"
         :max-items="20"
         @selected="searchSelection = $event"/>
     <OrderTotalCostSubItem :products="products" @removeSelected="removeSelected" @updatedTotalCost="totalCost = $event"/>
@@ -53,13 +77,16 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
 import '@ckeditor/ckeditor5-build-classic/build/translations/nl';
 import { ref } from '@vue/reactivity';
+import UserIcon from "@/Components/SvgIcons/userIcon.vue";
 export default {
   name: "OrderCreate",
   components: {
+    UserIcon,
     OrderTotalCostSubItem, SearchableDropdown,
 
   },
-  inject: ['ProjectApi', "ProductApi", "UserApi","Curreny"],
+  inject: ['ProjectApi', "ProductApi", "UserApi","Curreny"
+  ,"OrderApi"],
   data() {
     return {
       editor: ClassicEditor,
@@ -84,6 +111,7 @@ export default {
           ]
         },
       },
+      orderTypes: [],
       searchSelection: null,
       selectedProjects: [],
       selectedClient: null,
@@ -91,6 +119,7 @@ export default {
       clients: [],
       currencies:[],
       selectedCurreny: null,
+      orderType: null,
       products: [],
       totalCost: 0,
     }
@@ -99,6 +128,7 @@ export default {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.clients = await this.UserApi.GetAllUsers();
     this.currencies = this.Curreny.getCurrencyList();
+    this.orderTypes = await this.OrderApi.GetOrderTypes()
   },
   watch: {
     async searchSelection(val) {

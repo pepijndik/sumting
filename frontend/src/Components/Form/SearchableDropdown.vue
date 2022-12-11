@@ -69,6 +69,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    text: {
+      type: Array,
+      default: Array,
+      note: 'Options to displayed text for selected',
+    },
     name: {
       type: String,
       required: false,
@@ -88,6 +93,12 @@ export default {
       default: ['description'],
       note: 'Possible fields options'
     },
+    cleanAfterSelect: {
+      type: Boolean,
+      required: false,
+      default: false,
+      note: 'Clean search after select an option'
+    },
     primarykey: {
       type: String,
       required: false,
@@ -106,6 +117,13 @@ export default {
       default: false,
       note: 'Disable the dropdown'
     },
+    return: {
+      type: String,
+      required: false,
+      default: null,
+      note: 'Choose what to return, might be the primary key or the object itself'
+    },
+
     maxItem: {
       type: Number,
       required: false,
@@ -141,7 +159,11 @@ export default {
       //   finalString +=  + " | ";
       // });
       this.fields.forEach(field => {
+
         const extractField = this.extractFieldValue(option, field);
+        if (field === "type.description") {
+          console.log(extractField)
+        }
         if (extractField) {
           finalString += extractField;
         }
@@ -153,22 +175,59 @@ export default {
       return finalString
     },
     extractFieldValue(option, prop) {
+
+      var arr = prop.split(".");
+      while (arr.length && (option = option[arr.shift()])) ;
+      return option;
+
       // eslint-disable-next-line no-prototype-builtins
-      if (Object.hasOwn(option, prop)) {
-        return option[prop];
-      }
+
+      // if (Object.hasOwn(option, prop)) {
+      //   return option[prop];
+      // }
     },
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
 
-      if (this.primarykey !=null) {
-        this.searchFilter = this.selected[this.primarykey];
-      } else {
-        this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
+      if (this.text.length >= 1) {
+        var finalString = "";
+        this.text.forEach((field) => {
+          const extractField = this.extractFieldValue(option, field);
+          if (extractField) {
+            finalString += extractField;
+          }
+          //Check if not the last field then append space with separator
+          if (this.fields.indexOf(field) <= this.text.length - 1 && extractField != null) {
+            finalString += " | "
+          }
+        });
+        if (!this.cleanAfterSelect) {
+          this.searchFilter = finalString;
+        }
       }
-      console.log(this.searchFilter);
-      this.$emit('selected', this.searchFilter);
+      if (!this.cleanAfterSelect) {
+        if (this.primarykey != null && this.text.length <= 0) {
+          this.searchFilter = this.selected[this.primarykey];
+        } else if (this.primarykey == null || this.text.length <= 0) {
+          this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
+        }
+      }
+      this.emitSelect();
+    },
+    emitSelect() {
+      //Choose what to return
+      switch (this.return) {
+        case 'primarykey':
+          this.$emit('selected', this.selected[this.primarykey]);
+          break;
+        case 'object':
+          this.$emit('selected', this.selected);
+          break;
+        default:
+          this.$emit('selected', this.selected[this.primarykey]);
+          break;
+      }
     },
     showOptions() {
       if (!this.disabled) {
@@ -177,13 +236,7 @@ export default {
       }
     },
     exit() {
-      if (this.primarykey !=null) {
-        this.searchFilter = this.selected[this.primarykey];
-      } else {
-        this.searchFilter = this.selected[this.fields[0]];
-      }
-      this.$emit('selected', this.selected);
-      this.optionsShown = false;
+      //this.selectOption(this.selected);
     },
     // Selecting when pressing Enter
     keyMonitor: function (event) {
@@ -198,7 +251,7 @@ export default {
       } else {
         this.selected = this.filteredOptions[0];
       }
-      this.$emit('filter', this.searchFilter);
+      this.emitSelect();
     }
   }
 };

@@ -1,5 +1,8 @@
 package app.models.Project;
 
+import app.views.ProjectView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
 import app.models.Identifiable;
@@ -13,6 +16,7 @@ public class Project implements Identifiable<Integer> {
     public static final String TABLE_NAME = "project";
 
     @Id()
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "project_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -30,27 +34,33 @@ public class Project implements Identifiable<Integer> {
     }
 
     @Nullable
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "description",columnDefinition = "varchar(255)")
     private String description;
 
     @Nullable
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "description_long", columnDefinition = "TEXT")
     private String description_long;
 
     @Nullable
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "name", columnDefinition = "varchar(255)")
     private String name;
 
     @Nullable
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "latitude", columnDefinition = "varchar(255)")
     private String latitude;
 
     @Nullable
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "longitude", columnDefinition = "varchar(255)")
     private String longitude;
 
 
     @Nullable
+    @JsonView(ProjectView.Overview.class)
     @Column(name = "project_image_medium", columnDefinition = "char(255)")
     private String image;
 
@@ -64,17 +74,18 @@ public class Project implements Identifiable<Integer> {
 
 
     @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JsonView(ProjectView.Overview.class)
     @JoinColumn(name = "project_type_key", referencedColumnName = "project_type_key", insertable = false, updatable = false)
     private ProjectType type;
 
     @Override
+    @JsonIgnore
     public Integer getId() {
         return this.id;
     }
 
     @Override
     public void setId(Integer id) {
-        System.out.println("Setted id" +id);
         this.id = id;
     }
 

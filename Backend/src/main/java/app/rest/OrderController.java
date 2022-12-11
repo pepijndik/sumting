@@ -89,6 +89,11 @@ public class OrderController {
         }
     }
 
+
+    @GetMapping("/orders/types")
+    public ResponseEntity<Iterable<OrderType>> getTypes(){
+        return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
+    }
     @PutMapping("/orders/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline) {
         try {
