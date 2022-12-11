@@ -154,16 +154,8 @@ export default {
   methods: {
     populatefields(option) {
       var finalString = "";
-      // this.fields.filter(field => {
-      //   finalString += this.extractFieldValue(option,field);
-      //   finalString +=  + " | ";
-      // });
       this.fields.forEach(field => {
-
         const extractField = this.extractFieldValue(option, field);
-        if (field === "type.description") {
-          console.log(extractField)
-        }
         if (extractField) {
           finalString += extractField;
         }
@@ -175,16 +167,9 @@ export default {
       return finalString
     },
     extractFieldValue(option, prop) {
-
       var arr = prop.split(".");
       while (arr.length && (option = option[arr.shift()])) ;
       return option;
-
-      // eslint-disable-next-line no-prototype-builtins
-
-      // if (Object.hasOwn(option, prop)) {
-      //   return option[prop];
-      // }
     },
     selectOption(option) {
       this.selected = option;

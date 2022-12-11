@@ -1,8 +1,8 @@
 import ApiAdapter from "@/Services/ApiAdapter";
 import AuthHeader from "@/Services/AuthHeader";
 import BaseApi from "@/Services/BaseApi";
-import Order from "@/Models/Order";
-import Products from "@/Models/Order";
+
+import Products from "@/Models/Product";
 class ProductApiService extends ApiAdapter {
     constructor() {
         super('products');

@@ -162,7 +162,6 @@ export default {
         if (project.id !== undefined) {
           const data =await this.ProductApi.findProductByProjectId(project.id);
           data.forEach((product) => {
-            console.log(product);
             tempProducts.push(product);
           });
         }

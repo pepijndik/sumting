@@ -26,7 +26,7 @@ export default {
   },
 
   mounted() {
-    this.productList = this.products;
+
   },
 
   computed: {
