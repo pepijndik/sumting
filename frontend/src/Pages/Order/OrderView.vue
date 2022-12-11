@@ -5,7 +5,7 @@
       <SearchableDropdown
         class="mt-1"
         :options="users"
-        :fields="['name', 'email', 'user_role']"
+        :fields="['name', 'email']"
         :primary-key="'id'"
         placeholder="Choose a client"
       >

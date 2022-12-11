@@ -1,6 +1,7 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-  plugins: [require("@tailwindcss/forms"), require("tailwind-scrollbar")],
+  plugins: [require("@tailwindcss/forms"), require("tailwind-scrollbar"),require('@tailwindcss/typography')],
   darkMode: "class", // or 'media' or 'class',
   theme: {
     extend: {
@@ -14,6 +15,7 @@ module.exports = {
       fontFamily: {
         Alatsi: ['"Alatsi"', "sans-serif"],
         inter: ['"inter"', "sans-serif"],
+        sans: ['Nunito', ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
         r: "-2px 2px 2px 0 rgb(0 0 0 / 0.15)",

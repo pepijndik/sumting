@@ -12,6 +12,7 @@ public class ProjectType implements Identifiable<Integer> {
 
     @Id
     @Column(name = "project_type_key")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Nullable
