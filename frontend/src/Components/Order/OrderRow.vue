@@ -1,5 +1,5 @@
 <template>
-  <Index :open="modal" source="warning.svg" :callback="test">
+  <Modal :open="modal" source="warning.svg" :callback="test">
     <template #body>
       <h1
         tabindex="0"
@@ -25,7 +25,7 @@
         Yes, delete it!
       </button>
     </template>
-  </Index>
+  </Modal>
   <div
     class="dark:border-gray-700 w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center"
   >
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import Index from "../Modal/index.vue";
+import Modal from "../Modal/index.vue";
 
 let orderDate;
 let mobile;
@@ -136,7 +136,7 @@ export default {
     this.orderDate = this.dateFormat(this.order.order_date);
     this.mobile = window.innerWidth < 640 ? true : false;
   },
-  components: { Index },
+  components: { Modal },
 };
 </script>
 

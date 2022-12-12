@@ -1,6 +1,7 @@
 package app.models;
 
 import app.models.User.User;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = Wallet.TABLE_NAME)
 public class Wallet implements Identifiable<Integer>{
-    public static final String TABLE_NAME = "wallet";
+    public static final String TABLE_NAME = "\"wallet\"";
 
     public Wallet() {
     }
@@ -31,7 +32,8 @@ public class Wallet implements Identifiable<Integer>{
     @OneToOne(cascade = CascadeType.DETACH)
     private User payer;
 
-    @Column(name = "total_orderlines", nullable = false, columnDefinition = "default 0")
+    @ColumnDefault("'0'")
+    @Column(name = "total_orderlines", nullable = false)
     private int totalOrderlines;
 
     @OneToOne(cascade = CascadeType.DETACH)

@@ -13,6 +13,7 @@ public class ProductType implements Identifiable<Integer> {
 
     @Id
     @Column(name = "product_type_key")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Nullable

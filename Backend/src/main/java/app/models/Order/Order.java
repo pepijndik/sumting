@@ -1,14 +1,19 @@
 package app.models.Order;
 
 import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
 import app.models.Identifiable;
 import app.models.User.User;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +24,7 @@ public class Order implements Identifiable<Integer> {
     @Id()
     @JsonView(OrderView.Order.class)
     @Column(name = "order_key", nullable = false, unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
 
@@ -37,6 +42,7 @@ public class Order implements Identifiable<Integer> {
     @Column(name = "payment_method", columnDefinition = "char")
     private Character paymentMethod;
 
+    @JsonView(OrderView.Order.class)
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "payer_user_key", columnDefinition = "int")
     private User payer;
@@ -52,16 +58,22 @@ public class Order implements Identifiable<Integer> {
     private String description;
 
 
-
     @Nullable
     @JsonView(OrderView.Order.class)
     @Column(name = "transaction_total", columnDefinition = "double")
     private Double transactionTotal;
 
+    @Nullable
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JsonView(OrderView.Order.class)
-    @JoinColumn(name = "order_type_key",referencedColumnName = "order_type_key",updatable = false, insertable = false)
-    private OrderType orderTypeKey;
+    @JoinColumn(name = "order_type_key", referencedColumnName = "order_type_key", updatable = true, insertable = true)
+    private OrderType orderType;
+
+    @Transient
+    public Integer typeKey;
+    @Transient
+    public Integer payerKey;
+
 
     @Nullable
     @JsonView(OrderView.Order.class)
@@ -76,7 +88,7 @@ public class Order implements Identifiable<Integer> {
     @Nullable
     @JsonView(OrderView.Order.class)
     @Column(name = "currency", columnDefinition = "char(5)")
-    private Character currency;
+    private String currency;
 
     @Nullable
     @JsonView(OrderView.Order.class)
@@ -85,7 +97,13 @@ public class Order implements Identifiable<Integer> {
     private User user;
 
 
-//    private List<OrderLine> orderLines;
+    @Nullable
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true)
+    @RestResource(path = "orderlines", rel = "orderlines")
+    private List<OrderLine> orderLines = new ArrayList<>();
+
 
     @Override
     public Integer getId() {
@@ -139,7 +157,6 @@ public class Order implements Identifiable<Integer> {
     }
 
 
-
     public Double getTransactionTotal() {
         return transactionTotal;
     }
@@ -164,21 +181,24 @@ public class Order implements Identifiable<Integer> {
         this.transactionVat = transactionVat;
     }
 
-    public Character getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Character currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
 
-
-    public OrderType getOrderTypeKey() {
-        return orderTypeKey;
+    public OrderType getOrderType() {
+        return orderType;
     }
 
-    public void setOrderTypeKey(OrderType orderTypeKey) {
-        this.orderTypeKey = orderTypeKey;
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+
+    public void setPayer(User payer) {
+        this.payer = payer;
     }
 }

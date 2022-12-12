@@ -1,3 +1,5 @@
+@import "@/Assets/css/editor.css";
+
 /**
 Base css for the site
  */
@@ -7,14 +9,11 @@ Base css for the site
 
 @font-face {
     font-family: "Alatsi";
-    src: local('Alatsi-Regular'), url(../fonts/Alatsi/Alatsi-Regular.ttf) format('ttf');
+    src: local('Alatsi-Regular'), url(@/Assets/fonts/Alatsi/Alatsi-Regular.ttf) format('ttf');
 }
 @font-face {
     font-family: "inter";
-    src: local('Inter-Regular'), url(../fonts/inter/Inter-Regular.ttf) format('ttf');
+    src: local('Inter-Regular'), url(@/Assets/fonts/inter/Inter-Regular.ttf) format('ttf');
 }
 @tailwind utilities;
 
-.ck-content {
-    height: 200px;
-}

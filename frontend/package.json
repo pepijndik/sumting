@@ -5,21 +5,31 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "audit": "npm audit fix",
+    "test": "vue-cli-service test:unit",
+    "test:clear-cache": "node_modules/.bin/jest --clearCache"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.2.1",
+    "@ckeditor/ckeditor5-essentials": "^35.3.2",
+    "@ckeditor/ckeditor5-heading": "^35.3.2",
+    "@ckeditor/ckeditor5-upload": "^35.3.2",
     "@ckeditor/ckeditor5-vue": "^4.0.1",
     "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/typography": "^0.5.8",
+    "@vue/test-utils": "^2.2.6",
     "axios": "^1.1.3",
     "chart.js": "^3.9.1",
     "core-js": "^3.8.3",
     "epic-spinners": "^2.0.0",
     "moment": "^2.29.4",
+    "simple-web-worker": "^1.2.0",
     "vue": "^3.2.13",
     "vue-chartjs": "^4.1.2",
     "vue-meta": "^3.0.0-alpha.7",
     "vue-router": "^4.1.5",
+    "vue-toast-notification": "^2.0.0",
     "vue3-click-away": "^1.2.4"
   },
   "devDependencies": {
@@ -27,31 +37,88 @@
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-unit-jest": "^5.0.8",
     "@vue/cli-service": "~5.0.0",
+    "@vue/vue3-jest": "^27.0.0",
     "autoprefixer": "^10.4.12",
+    "babel-jest": "^27.5.1",
     "eslint": "^7.32.0",
+    "eslint-plugin-jest": "^27.1.6",
     "eslint-plugin-vue": "^8.0.3",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
+    "jest-expect-message": "^1.1.3",
+    "jest-transform-stub": "^2.0.0",
     "postcss": "^8.4.16",
     "tailwind-scrollbar": "^2.0.1",
     "tailwindcss": "^3.1.8"
   },
+  "jest": {
+    "preset": "@vue/cli-plugin-unit-jest",
+    "setupFilesAfterEnv": [
+      "jest-expect-message"
+    ],
+    "testMatch": [
+      "**/tests/**/*.unit.js"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "/images/(.*)$": "<rootDir>/public/images/$1",
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "axios": "axios/dist/node/axios.cjs"
+    },
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.vue$": "@vue/vue3-jest",
+      "^.+\\.(jpg|jpeg|png|gif|svg|mp3|mp4|mpeg)$": "<rootDir>/jest-media-transformer.js",
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
+    },
+    "transformIgnorePatterns": [],
+    "verbose": true
+  },
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "jest": true
     },
     "extends": [
       "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
+    "plugins": [
+      "jest"
+    ],
     "parserOptions": {
+      "ecmaVersion": 2021,
       "parser": "@babel/eslint-parser"
     },
     "rules": {
       "no-unused-vars": "off",
       "vue/no-mutating-props": "off",
-      "vue/multi-word-component-names": "off"
-    }
+      "vue/multi-word-component-names": "off",
+      "vue/no-reserved-component-names": "off",
+      "no-unreachable": "off",
+      "jest/valid-expect": [
+        "error",
+        {
+          "maxArgs": 2
+        }
+      ]
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/tests/**/*.unit.js"
+        ],
+        "plugins": [
+          "jest"
+        ],
+        "extends": [
+          "plugin:jest/recommended"
+        ]
+      }
+    ]
   },
   "browserslist": [
     "> 1%",

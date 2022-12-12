@@ -17,7 +17,7 @@ public class BatchInvoice  implements Identifiable<Integer> {
     @Id
     @JsonView(BatchView.Batch.class)
     @Column(name = "batch_invoice_key", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "completed_at", nullable = false)
