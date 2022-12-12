@@ -94,10 +94,10 @@ public class OrderController {
     public ResponseEntity<Iterable<OrderType>> getTypes(){
         return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
     }
-    @PutMapping("/orders/editOrderlines/{id}")
-    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline) {
+    @PutMapping("/orderlines/editOrderlines/{id}")
+    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
+            Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
             if (findOrderline.isPresent()) {
                 OrderLine orderlineFound = findOrderline.get();
@@ -113,6 +113,7 @@ public class OrderController {
                 orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
                 orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
                 orderlineFound.setLoadedDate(orderline.getLoadedDate());
+                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
 
                 return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
             } else {
