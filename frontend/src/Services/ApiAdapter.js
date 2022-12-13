@@ -47,8 +47,8 @@ export default class ApiAdapter {
     return BaseApi.post(`/${this.resource}`, data);
   }
 
-  async update(id, data) {
-    return BaseApi.post(`/${this.resource}/${id}/profile_picture`, data);
+  async update(id) {
+    return BaseApi.post(`/${this.resource}/${id}`);
   }
 
   async findMe() {

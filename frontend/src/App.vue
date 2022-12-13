@@ -12,6 +12,7 @@ import UserApiService from "@/Services/User/UserApiService";
 import ProductApiService from "@/Services/Products/ProductApiService";
 import CountryApiService from "@/Services/Country/CountryApiService";
 import DashboardApiService from "./Services/Dashboard/DashboardApiService";
+import FileUploadApiService from "@/Services/FileUploadService";
 export default {
   name: "App",
   components: {
@@ -27,6 +28,7 @@ export default {
       ProductApi: new ProductApiService(),
       CountryApi: new CountryApiService(),
       DashboardApi: new DashboardApiService(),
+      FileUploadApi: new FileUploadApiService(),
     };
   },
 

@@ -97,7 +97,7 @@ import SearchableDropdown from "@/Components/Form/SearchableDropdown.vue";
 export default {
   name: "clientCreate",
   components: { ImgUpload, SearchableDropdown },
-  inject: ["UserApi", "CountryApi"],
+  inject: ["UserApi", "CountryApi", "FileUploadApi"],
   data() {
     return {
       client: {
@@ -105,12 +105,12 @@ export default {
         email: "",
         type: "",
         location: "",
-        img: "",
       },
       clicked: false,
       readonly: true,
       optionsShown: false,
       locations: [],
+      imgFile: null,
     };
   },
   methods: {
@@ -125,24 +125,23 @@ export default {
       this.client.type = option;
       console.log("This type has been selected: " + this.client.type);
     },
-    createClient() {
+    async createClient() {
+      let user = await this.UserApi.findMe();
+      await this.FileUploadApi.uploadIMG(user.data.id, this.imgFile);
+      console.log("Creating client: " + JSON.stringify(this.client));
+
       //this.UserApi.createClient(this.client);
-      console.log("Creating client: " + JSON.stringify(this.client.img));
     },
     selectedLocation(location) {
       this.client.location = location.id;
     },
     selectedImg(img) {
-      this.client.img = img;
+      this.imgFile = img;
+      console.log(this.imgFile);
     },
   },
   async created() {
     this.locations = await this.CountryApi.findAll();
-
-    console.log(localStorage.getItem("token"));
-
-    // let user = await this.UserApi.findMe();
-    // console.log(user);
   },
 };
 </script>

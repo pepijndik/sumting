@@ -55,6 +55,12 @@
           <p class="text-candyPink">{{ client.email }}</p>
         </div>
         <div
+          class="h-20 items-center flex lg:w-[300px] font-Alatsi text-xs md:text-sm border-r-2"
+        >
+          <p class="text-yInMnBlue">Client since:&nbsp;</p>
+          <p class="text-candyPink">{{ dateFormat(client.createdAt) }}</p>
+        </div>
+        <div
           class="h-20 items-center flex lg:w-[100px] font-Alatsi text-xs md:text-sm mx-3"
         >
           <p class="text-yInMnBlue">Type:&nbsp;</p>
@@ -105,6 +111,24 @@ export default {
       this.modal = true;
       console.log(this.modal, this.client.id);
       console.log("deleted");
+    },
+    dateFormat(inputDate) {
+      //parse the input date
+      const date = new Date(inputDate);
+      let format = "dd / MM / yy";
+      //extract the parts of the date
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      //replace the month
+      format = format.replace("MM", month.toString().padStart(2, "0"));
+      //replace the year
+      format = format.replace("yy", year.toString().substr(2, 2));
+      //replace the day
+      format = format.replace("dd", day.toString().padStart(2, "0"));
+      //replaces the leading 0's
+      format = format.replace(/(^|\/| )0+/g, "$1");
+      return format;
     },
   },
 
