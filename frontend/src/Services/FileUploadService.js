@@ -19,13 +19,8 @@ export default class FileUploadService {
     return BaseApi.post(`users/${id}/profile-picture`, formData)
       .then((response) => {
         return response.data;
-
-        //return response.data;
       })
       .catch((error) => {
-        // You can handle the error, like show a notificaiton to the user
-
-        // dont forget to re-throw the error, otherwise the promise will resolve successfully
         throw error;
       });
   }

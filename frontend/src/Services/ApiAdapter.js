@@ -50,8 +50,4 @@ export default class ApiAdapter {
   async update(id) {
     return BaseApi.post(`/${this.resource}/${id}`);
   }
-
-  async findMe() {
-    return BaseApi.get(`/auth/me`);
-  }
 }

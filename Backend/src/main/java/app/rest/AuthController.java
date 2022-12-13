@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
@@ -69,21 +70,28 @@ public class AuthController {
         String email = signupInfo.get("email") == null ? null : signupInfo.get("email").asText();
         String name = signupInfo.get("name") == null ? null : signupInfo.get("name").asText();
         String givenPassword = signupInfo.get("password") == null ? null : signupInfo.get("password").asText();
+        String type = signupInfo.get("type") == null ? null : signupInfo.get("type").asText();
         Integer countryId = signupInfo.get("country") == null ? null : signupInfo.get("country").asInt();
 
         User user = new User();
         user.setEmail(email);
         user.setName(name);
         user.setEncodedPassword(user.hashPassword(givenPassword));
-        user.setType(User.Type.PERSON);
+        if (Objects.equals(type, "Business")) {
+            user.setType(User.Type.BUSINESS);
+        } else {
+            user.setType(User.Type.PERSON);
+        }
         user.setCountry(countryId);
         user.setCreatedAt(LocalDateTime.now());
+        LoginResponse loginResponse = new LoginResponse();
         try {
             User savedUser = userRepo.save(user);
+            loginResponse.setMe(savedUser);
             URI location = ServletUriComponentsBuilder.
                     fromCurrentRequest().path("/{id}").
                     buildAndExpand(savedUser.getId()).toUri();
-            return ResponseEntity.created(location).body(user);
+            return ResponseEntity.created(location).body(loginResponse);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user", e));
         }

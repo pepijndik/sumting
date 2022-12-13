@@ -123,21 +123,23 @@ export default {
     },
     selectOption(option) {
       this.client.type = option;
-      console.log("This type has been selected: " + this.client.type);
     },
     async createClient() {
-      let user = await this.UserApi.findMe();
-      await this.FileUploadApi.uploadIMG(user.data.id, this.imgFile);
       console.log("Creating client: " + JSON.stringify(this.client));
-
-      //this.UserApi.createClient(this.client);
+      const user = await this.UserApi.createUser(
+        this.client.name,
+        this.client.email,
+        this.client.location,
+        this.client.type
+      );
+      console.log(user.me.id);
+      await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
     },
     selectedLocation(location) {
       this.client.location = location.id;
     },
     selectedImg(img) {
       this.imgFile = img;
-      console.log(this.imgFile);
     },
   },
   async created() {
