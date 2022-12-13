@@ -5,6 +5,7 @@ import Login from "@/Pages/Auth/Login";
 import ListProjects from "@/Pages/Projects/ListProjects";
 import OrderCreate from "@/Pages/Order/OrderCreate";
 import OrderView from "@/Pages/Order/OrderView";
+import BatchCreate from "@/Pages/Batch/BatchCreate"
 import AuthenticationService from "@/Services/AuthenticationService";
 import VerifyCode from "@/Components/Auth/Twofactor/VerifyCode";
 import Profile from "@/Pages/Account/Profile";
@@ -106,6 +107,17 @@ const router = createRouter({
                 subtitle: 'View'
             },
             component: ListProjects
+        },
+        {
+            path: '/batch/create',
+            name: 'admin:BatchCreate',
+            beforeEnter: IsAuthenticated,
+            meta: {
+                pageTitle: 'Create batch',
+                title: 'New batch',
+                subtitle: 'Create'
+            },
+            component: BatchCreate
         }
     ]
 })
