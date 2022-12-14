@@ -141,14 +141,19 @@ export default {
       type: Number,
       required: false,
       default: 6,
-      note: "Max items showing",
+      note: 'Max items showing'
     },
-    optionHasIcon: {
+    selectedItem: {
+      type: Object,
+      required: false,
+      default: null,
+      note: 'Selected option'
+    },
+	optionHasIcon: {
       type: Boolean,
       required: false,
       default: false,
       note: "Option has icon",
-    },
   },
   data() {
     return {
@@ -227,16 +232,18 @@ export default {
           break;
         case 'object':
           this.$emit('selected', this.selected);
+          console.log(this.selected);
           break;
         default:
           this.$emit('selected', this.selected[this.primarykey]);
+          console.log(this.selected[this.primarykey]);
           break;
       }
-      console.log(this.selected[this.primarykey]);
+
     },
     showOptions() {
       if (!this.disabled) {
-        this.searchFilter = "";
+        //this.searchFilter = '';
         this.optionsShown = true;
       }
     },
@@ -258,8 +265,8 @@ export default {
         this.selected = this.filteredOptions[0];
         this.emitSelect();
       }
+    },
 
-    }
   }
 };
 </script>

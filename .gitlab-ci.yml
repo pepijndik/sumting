@@ -19,7 +19,6 @@ variables:
 build:backend:
   image: $JDK_IMAGE
   stage: build
-  environment: production
   tags:
     - hva
   script:
