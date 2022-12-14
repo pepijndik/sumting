@@ -82,8 +82,8 @@
         <SubDropdownItem to="/orders" name="View order" source="shopping_cart.svg"/>
         <SubDropdownItem to="/orders/create" name="Create order" source="create.svg"/>
       </NavigationDropdownItem>
-      <NavigationDropdownItem to="/" name="Batch" source="file.svg">
-        <SubDropdownItem to="/" name="Create batch" source="create.svg"/>
+      <NavigationDropdownItem name="Batch" source="file.svg">
+        <SubDropdownItem to="/batch/create" name="Create batch" source="create.svg"/>
 <!--        <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
 <!--        <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
       </NavigationDropdownItem>
