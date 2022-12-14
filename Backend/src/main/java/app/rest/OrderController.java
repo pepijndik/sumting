@@ -85,8 +85,8 @@ public class OrderController {
     }
 
     @GetMapping(value = {
-            "/orderlines",
-            "/orderlines/{id}" })
+            "/orders/orderlines",
+            "/orders/orderlines/{id}" })
     public ResponseEntity<Iterable<OrderLine>> getAllOrderlinesBy(
             @PathVariable(value = "id",required = false) Optional<String> orderlineId,
             @RequestParam(name="productId",required=false) Integer product_id,
@@ -106,11 +106,7 @@ public class OrderController {
         }
         return new ResponseEntity<>(lines, HttpStatus.OK);
     }
-//    @GetMapping("/order/orderlines/{id}")
-//    public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
-//        OrderLine o = orderlineRepository.findById(orderlineId);
-//        return orderlineRepository.findById(orderlineId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
-//    }
+
     @PutMapping("/orderlines/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
