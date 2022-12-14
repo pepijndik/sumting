@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -121,15 +122,14 @@ public class OrderController {
 
     @GetMapping("/orderlines/combinedSearch")
     public ResponseEntity<Iterable<OrderLine>> getOrderLinesByClientAndProject(
-            @RequestParam(value = "clientID", required = false) Integer clientID,
-            @RequestParam(value = "projectID", required = false) Integer projectId) {
-        System.out.printf("%s, %s", clientID, projectId);
-        if (clientID != null && projectId != null) {
-            return new ResponseEntity<>(orderlineRepository.findByClientAndProject(clientID, projectId), HttpStatus.OK);
-        } else if (clientID != null) {
-            return new ResponseEntity<>(orderlineRepository.findByClient(clientID), HttpStatus.OK);
-        } else if (projectId != null) {
-            return new ResponseEntity<>(orderlineRepository.findByProject(projectId), HttpStatus.OK);
+        @RequestParam(value = "clientID", required = false) String clientId,
+        @RequestParam(value = "projectID", required = false) String projectId) {
+        if (!clientId.equals("null") && !projectId.equals("null")) {
+            return new ResponseEntity<>(orderlineRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
+        } else if (!clientId.equals("null")) {
+            return new ResponseEntity<>(orderlineRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
+        } else if (!projectId.equals("null")) {
+            return new ResponseEntity<>(orderlineRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
