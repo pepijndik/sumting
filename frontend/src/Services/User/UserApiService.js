@@ -1,6 +1,6 @@
-import User from "@/Models/User";
 import ApiAdapter from "@/Services/ApiAdapter";
 import BaseApi from "@/Services/BaseApi";
+import { useToast } from "vue-toast-notification";
 
 class UserApiService extends ApiAdapter {
   constructor() {
@@ -20,7 +20,12 @@ class UserApiService extends ApiAdapter {
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        const $toast = useToast();
+        $toast.error({
+          message: "Cant create client " + error.response.data.message,
+          duration: 5000,
+          dismissible: true,
+        });
         return false;
       });
   }

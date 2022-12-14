@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-yInMnBlue"
+    class="h-[50rem] mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-yInMnBlue"
   >
     <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
       <div class="relative sm:w-80">
@@ -35,10 +35,10 @@
     </div>
     <div
       class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
-      v-for="user in this.users"
+      v-for="user in computedObj"
       :key="user.id"
     >
-      <ClientRow :client="user" />
+      <ClientRow :client="user" @deleteOrderEvent="deleteUser" />
     </div>
   </div>
 </template>
@@ -54,16 +54,48 @@ export default {
     return {
       users: [],
       searchKeyWord: "",
+      limit: 100,
     };
   },
   async created() {
     this.users = await this.UserApi.findAll();
   },
-  computed: {},
+  computed: {
+    computedObj() {
+      const results = [];
+      const regKeyWord = new RegExp(this.searchKeyWord, "ig");
+
+      if (this.searchKeyWord === "") {
+        return this.limit ? this.users.slice(0, this.limit) : this.orders;
+      }
+
+      for (const user of this.users) {
+        if (user.name === null) continue;
+        if (user.name.match(regKeyWord)) {
+          results.push(user);
+        }
+      }
+      return this.limit ? results.slice(0, this.limit) : results;
+    },
+  },
   methods: {
-    deleteOrder(id) {
-      //this.OrderApi.delete(id);
-      console.log("Deleted: " + id);
+    deleteUser(client) {
+      try {
+        //this.UserApi.delete(id);
+        console.log("Deleted: " + client.id);
+        this.$toast.open({
+          type: "success",
+          message: client.name + " deleted",
+          duration: 5000,
+          dissmisable: true,
+        });
+      } catch (error) {
+        this.$toast.error({
+          message: "Can't delete client",
+          duration: 5000,
+          dissmisable: true,
+        });
+      }
     },
   },
 };

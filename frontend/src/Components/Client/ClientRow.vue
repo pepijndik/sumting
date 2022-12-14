@@ -1,5 +1,5 @@
 <template>
-  <Index :open="modal" source="warning.svg">
+  <Index :open="modal" source="warning.svg" :callback="closeModal">
     <template #body>
       <h1
         tabindex="0"
@@ -19,7 +19,7 @@
 
     <template #footer>
       <button
-        @click="delOrder"
+        @click="delClient"
         class="transition duration-150 ease-in-out hover:bg-candyPink/50 bg-candyPink rounded text-white px-4 sm:px-8 py-2 text-xs sm:text-sm"
       >
         Yes, delete it!
@@ -97,6 +97,7 @@ import Index from "../Modal/index.vue";
 export default {
   name: "ClientRow",
   props: ["client"],
+  emits: ["deleteOrderEvent"],
   data() {
     return {
       modal: false,
@@ -104,13 +105,14 @@ export default {
   },
   methods: {
     delClient() {
-      this.$emit("deleteOrderEvent", this.client.id);
-      //console.log("delete" + this.order.id);
+      this.$emit("deleteOrderEvent", this.client);
+      this.modal = false;
     },
     confirmDelete() {
       this.modal = true;
-      console.log(this.modal, this.client.id);
-      console.log("deleted");
+    },
+    closeModal() {
+      this.modal = false;
     },
     dateFormat(inputDate) {
       //parse the input date

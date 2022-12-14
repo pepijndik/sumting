@@ -93,7 +93,6 @@
 <script>
 import ImgUpload from "@/Components/Form/imgUpload.vue";
 import SearchableDropdown from "@/Components/Form/SearchableDropdown.vue";
-import BaseNotification from "@/Components/Notifications/BaseNotification.vue";
 
 export default {
   name: "clientCreate",
@@ -126,13 +125,40 @@ export default {
       this.client.type = option;
     },
     async createClient() {
-      const user = await this.UserApi.createUser(
-        this.client.name,
-        this.client.email,
-        this.client.location,
-        this.client.type
-      );
-      await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+      let user;
+      if (
+        this.client.name == "" &&
+        this.client.email == "" &&
+        this.client.type == "" &&
+        this.client.location == ""
+      ) {
+        user = await this.UserApi.createUser(
+          this.client.name,
+          this.client.email,
+          this.client.location,
+          this.client.type
+        );
+      } else {
+        this.$toast.open({
+          type: "error",
+          message: "Please fill in all fields",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      }
+
+      if (this.imgFile != null) {
+        await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+      } else {
+        this.$toast.open({
+          type: "error",
+          message: "Img upload failed",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      }
     },
     selectedLocation(location) {
       this.client.location = location.id;
