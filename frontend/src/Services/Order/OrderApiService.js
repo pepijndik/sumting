@@ -5,6 +5,7 @@ import Order from "@/Models/Order";
 import BaseApi from "@/Services/BaseApi";
 import {useToast} from 'vue-toast-notification';
 import moment from "moment";
+import OrderLine from "@/Models/OrderLine";
 
 class OrderApiService extends ApiAdapter {
     constructor() {
@@ -80,6 +81,19 @@ class OrderApiService extends ApiAdapter {
             });
 
         return Types.map(type => OrderTypes.copyConstructor(type));
+    }
+
+    async getAllOrderlinesByProductId(productId) {
+        const orderlines = await BaseApi.get(this.resource + "/orderlines?productId=" + productId)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                // You can handle the error, like show a notification to the user
+                // don't forget to re-throw the error, otherwise the promise will resolve successfully
+                throw error;
+            })
+        return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
     }
 
     // Add custom methods here

@@ -16,7 +16,13 @@
   </div>
 
   <div>
-    <p v-text="selectedProject"></p>
+    <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
+         v-for="orderline in orderLines"
+         :key="orderline.id"
+    >
+      <p v-text="orderline.notes"></p>
+    </div>
+    <p v-if="isEmpty(selectedProject)" v-text="defaultListText"></p>
   </div>
 </template>
 
@@ -27,16 +33,19 @@ export default {
   components: {
     SearchableDropdown
   },
-  inject: ["ProjectApi", "ProductApi"],
+  inject: ["ProjectApi", "ProductApi", "OrderApi"],
   data() {
     return {
       projects: [],
       orderLines: [],
-      selectedProject: null
+      selectedProject: null,
+      selectedProjectsProduct: null,
+      defaultListText: "No project selected"
     }
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
+    console.log(this.isEmpty(this.selectedProject));
   },
   watch: {
     async selectedProject(project) {
@@ -45,6 +54,9 @@ export default {
         await this.findProductOfProject(project);
       }
     },
+    async selectedProjectsProduct() {
+      await this.findOrderlinesByProduct();
+    }
   },
   methods: {
     async findProductOfProject(project) {
@@ -54,6 +66,24 @@ export default {
           this.selectedProjectsProduct = product;
         });
       }
+    },
+    async findOrderlinesByProduct() {
+      let currentOrderlines = [];
+      const data = await this.OrderApi.getAllOrderlinesByProductId(this.selectedProjectsProduct.id);
+      data.forEach((orderline) => {
+        currentOrderlines.push(orderline);
+      });
+
+      this.orderLines = currentOrderlines;
+    },
+    isEmpty(obj) {
+      for(var prop in obj) {
+        if(Object.prototype.hasOwnProperty.call(obj, prop)) {
+          return false;
+        }
+      }
+
+      return JSON.stringify(obj) === JSON.stringify({});
     }
   }
 }
