@@ -15,8 +15,8 @@ public class Country implements Identifiable<Integer> {
     public Country(Integer id, String name, String alpa2, String alpha3, String small) {
         this.id = id;
         this.name = name;
-        this.imgSmall = alpa2;
-        this.alpha2 = small;
+        this.imgSmall = small;
+        this.alpha2 = alpa2;
         this.alpha3 = alpha3;
     }
 
@@ -40,6 +40,12 @@ public class Country implements Identifiable<Integer> {
     @Override
     public Integer getId() {
         return id;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("{ name=%s, alpa=%s, id=%d}", this.name, this.alpha2, this.id);
     }
 
     @Override
