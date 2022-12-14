@@ -77,12 +77,12 @@ public class Order implements Identifiable<Integer> {
 
     @JsonView(OrderView.Order.class)
     @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @Column(name="project",insertable = false, updatable = false, nullable = true)
+    @JoinColumn(name = "project", referencedColumnName = "project_key", updatable = true, insertable = true)
     private Project project;
 
     @JsonView(OrderView.Order.class)
     @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @Column(name="order_user",insertable = false, updatable = false, nullable = true)
+    @JoinColumn(name = "order_user", referencedColumnName = "user_key", updatable = true, insertable = true)
     private User orderUser;
 
     @Nullable
