@@ -93,6 +93,7 @@
 <script>
 import ImgUpload from "@/Components/Form/imgUpload.vue";
 import SearchableDropdown from "@/Components/Form/SearchableDropdown.vue";
+import BaseNotification from "@/Components/Notifications/BaseNotification.vue";
 
 export default {
   name: "clientCreate",
@@ -125,14 +126,12 @@ export default {
       this.client.type = option;
     },
     async createClient() {
-      console.log("Creating client: " + JSON.stringify(this.client));
       const user = await this.UserApi.createUser(
         this.client.name,
         this.client.email,
         this.client.location,
         this.client.type
       );
-      console.log(user.me.id);
       await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
     },
     selectedLocation(location) {
