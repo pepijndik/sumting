@@ -5,11 +5,12 @@
         <p class="font-inter text-yInMnBlue">Client</p>
         <SearchableDropdown
             class="mt-1"
-            placeholder="Choose a client"
-            :fields="['name', 'email']"
-            :primarykey="'id'"
             @selected="selectedClient = $event"
-            :options="clients">
+            :options="clients"
+            :fields="['name', 'email']"
+            :primary-key="'id'"
+            placeholder="Choose a client"
+        >
         </SearchableDropdown>
       </div>
     <div>

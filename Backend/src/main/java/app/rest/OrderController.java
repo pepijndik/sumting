@@ -119,10 +119,10 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/orderlines/combinedSearch")
+    @GetMapping("/orderlines/combinedSearch")
     public ResponseEntity<Iterable<OrderLine>> getOrderLinesByClientAndProject(
-            @RequestParam(value = "clientID") Integer clientID,
-            @RequestParam(value = "projectID") Integer projectId) {
+            @RequestParam(value = "clientID", required = false) Integer clientID,
+            @RequestParam(value = "projectID", required = false) Integer projectId) {
         if (clientID != null && projectId != null) {
             return new ResponseEntity<>(orderlineRepository.findByClientAndProject(clientID, projectId), HttpStatus.OK);
         } else if (clientID != null) {
