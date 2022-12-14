@@ -182,7 +182,9 @@ export default {
             finalString += extractField;
           }
           //Check if not the last field then append space with separator
-          if (this.fields.indexOf(field) <= this.text.length - 1 && extractField != null) {
+          if (this.fields.indexOf(field) <= this.text.length - 1
+              && extractField != null
+              && this.fields.indexOf(field) !== 0) {
             finalString += " | "
           }
         });
