@@ -123,6 +123,7 @@ public class OrderController {
     public ResponseEntity<Iterable<OrderLine>> getOrderLinesByClientAndProject(
             @RequestParam(value = "clientID", required = false) Integer clientID,
             @RequestParam(value = "projectID", required = false) Integer projectId) {
+        System.out.printf("%s, %s", clientID, projectId);
         if (clientID != null && projectId != null) {
             return new ResponseEntity<>(orderlineRepository.findByClientAndProject(clientID, projectId), HttpStatus.OK);
         } else if (clientID != null) {

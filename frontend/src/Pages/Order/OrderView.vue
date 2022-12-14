@@ -101,11 +101,25 @@ export default {
     };
   },
   watch: {
-    selectedProject: function (val) {
-      this.getOrdersCombinedSearch(val, this.selectedClient);
+    selectedProject: function (val, old_val) {
+      if (val === old_val) return;
+      console.log("selected project changed")
+      console.log(val.id)
+      if (this.selectedClient.id !== undefined) {
+        this.getOrdersCombinedSearch(val.id, this.selectedClient.id);
+      } else {
+        this.getOrdersCombinedSearch(val.id, undefined);
+      }
     },
-    selectedClient: function (val) {
-      this.getOrdersCombinedSearch(this.selectedProject, val);
+    selectedClient: function (val, old_val) {
+      if (val === old_val) return;
+      console.log(val.id)
+      console.log("selected client changed")
+      if (this.selectedProject.id !== undefined) {
+        this.getOrdersCombinedSearch(this.selectedProject.id, val.id);
+      } else {
+        this.getOrdersCombinedSearch(undefined, val.id)
+      }
     },
   },
   async created() {
@@ -157,13 +171,13 @@ export default {
       console.log("Deleted: " + id);
     },
     async getOrdersCombinedSearch(project, client) {
-      if (project === null && client === null) {
+      if (project === undefined && client === undefined) {
         this.orders = await this.OrderApi.findAll();
-      } else if (project !== null && client === null) {
+      } else if (project !== undefined && client === undefined) {
         this.orders = await this.OrderApi.combinedSearch(null, project);
-      } else if (project === null && client !== null) {
+      } else if (project === undefined && client !== undefined) {
         this.orders = await this.OrderApi.combinedSearch(client, null);
-      } else if (project !== null && client !== null) {
+      } else if (project !== undefined && client !== undefined) {
         this.orders = await this.OrderApi.combinedSearch(project, client);
       }
     },
