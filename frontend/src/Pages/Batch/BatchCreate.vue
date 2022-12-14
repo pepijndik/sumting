@@ -161,7 +161,6 @@ export default {
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    console.log(this.isEmpty(this.selectedProject));
   },
   watch: {
     async selectedProject(project) {

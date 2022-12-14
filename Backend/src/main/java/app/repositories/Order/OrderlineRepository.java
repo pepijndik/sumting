@@ -41,7 +41,8 @@ public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
         try {
              if (product_id != null && order_id == null) {
                  TypedQuery<OrderLine> query =
-                         em.createQuery("SELECT o FROM OrderLine o WHERE o.product.id = :pId", OrderLine.class);
+                         em.createQuery("SELECT o FROM OrderLine o " +
+                                 "WHERE o.batch IS NULL AND o.product.id = :pId", OrderLine.class);
                  query.setParameter("pId", product_id);
                  return query.getResultList();
              } else if (order_id != null && product_id == null) {
