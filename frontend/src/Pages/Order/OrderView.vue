@@ -4,8 +4,11 @@
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropdown
         class="mt-1"
+        @selected="selectedUser = $event"
+        :selectedItem="selectedUser"
         :options="users"
         :fields="['name', 'email']"
+        :text="['name', 'email']"
         :primary-key="'id'"
         placeholder="Choose a client"
       >
@@ -16,7 +19,9 @@
       <SearchableDropdown
         @selected="selectedProject = $event"
         :options="projects"
+        :selectedItem="selectedProject"
         :fields="['description']"
+        :text="['description']"
         :primary-key="'id'"
         :disabled="false"
         autocomplete="off"
@@ -93,6 +98,7 @@ export default {
       orders: [],
       users: [],
       selectedProject: null,
+      selectedUser: null,
       searchKeyWord: '',
       searchOrder: true,
       limit: 10,

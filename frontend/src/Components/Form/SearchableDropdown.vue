@@ -129,7 +129,13 @@ export default {
       required: false,
       default: 6,
       note: 'Max items showing'
-    }
+    },
+    selectedItem: {
+      type: Object,
+      required: false,
+      default: null,
+      note: 'Selected option'
+    },
   },
   data() {
     return {
@@ -217,7 +223,7 @@ export default {
     },
     showOptions() {
       if (!this.disabled) {
-        this.searchFilter = '';
+        //this.searchFilter = '';
         this.optionsShown = true;
       }
     },
@@ -239,7 +245,9 @@ export default {
         this.selected = this.filteredOptions[0];
         this.emitSelect();
       }
-
+    },
+    selectedItem() {
+      this.emitSelect(this.selectedItem);
     }
   }
 };
