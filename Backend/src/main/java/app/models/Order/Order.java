@@ -1,5 +1,6 @@
 package app.models.Order;
 
+import app.models.Project.Project;
 import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -74,6 +75,15 @@ public class Order implements Identifiable<Integer> {
     @Transient
     public Integer payerKey;
 
+    @JsonView(OrderView.Order.class)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @Column(name="project",insertable = false, updatable = false, nullable = true)
+    private Project project;
+
+    @JsonView(OrderView.Order.class)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @Column(name="order_user",insertable = false, updatable = false, nullable = true)
+    private User orderUser;
 
     @Nullable
     @JsonView(OrderView.Order.class)
