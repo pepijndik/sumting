@@ -86,7 +86,7 @@
         <div class="w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center">
           <div class="m-2 flex lg:flex-row flex-wrap">
             <div class="h-5 lg:h-10 items-center flex w-[26px] text-xs md:text-sm border-r-2 mr-1">
-              <input type="checkbox" name="{{ orderline.id }}" id="{{ orderline.id }}">
+              <input type="checkbox" :name="orderline.id" :value="orderline" v-model="checkedOrderlines">
             </div>
             <div class="float-left items-left flex w-[80px] md:w-[100px] lg:w-[200px] items-center border-r-2 pr-1 mr-1">
               <img
@@ -150,6 +150,7 @@ export default {
       },
       projects: [],
       orderlines: [],
+      checkedOrderlines: [],
       selectedProject: null,
       selectedProjectsProduct: null,
       defaultListText: "No project selected",
@@ -238,7 +239,7 @@ export default {
       }
 
       this.searchOrderline = !this.searchOrderline;
-    },
+    }
   }
 }
 </script>
