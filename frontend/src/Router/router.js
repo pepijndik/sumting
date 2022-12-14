@@ -11,6 +11,7 @@ import AuthenticationService from "@/Services/AuthenticationService";
 import { createRouter, createWebHistory } from "vue-router";
 
 import ClientCreate from "@/Pages/Client/ClientCreate";
+import ClientEdit from "@/Pages/Client/ClientEdit";
 import ClientView from "@/Pages/Client/ClientView";
 const IsAuthenticated = (to, from, next) => {
   if (to.name !== "auth:login" && !AuthenticationService.isLoggedIn())
@@ -131,6 +132,17 @@ const router = createRouter({
         subtitle: "Create",
       },
       component: ClientCreate,
+    },
+    {
+      path: "/clients/edit/:id",
+      name: "admin:clientEdit",
+      beforeEnter: IsAuthenticated,
+      meta: {
+        pageTitle: "Clients",
+        title: "Client",
+        subtitle: "Edit",
+      },
+      component: ClientEdit,
     },
   ],
 });

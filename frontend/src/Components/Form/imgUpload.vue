@@ -42,6 +42,19 @@
 export default {
   name: "imgUpload",
   emits: ["selectedFile"],
+  props: {
+    previewImg: {
+      type: String,
+      default: "",
+      required: false,
+    },
+  },
+  watch: {
+    previewImg(newVal, oldVal) {
+      this.imageData = newVal;
+      this.imagePreview = true;
+    },
+  },
   data() {
     return {
       imageData: null,
@@ -53,8 +66,10 @@ export default {
       document.getElementById("fileUpload").click();
     },
     onSelectFile() {
+      this.imagePreview = false;
       const input = this.$refs.file;
       const files = input.files;
+
       if (files && files[0]) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -65,6 +80,12 @@ export default {
         this.$emit("selectedFile", files[0]);
       }
     },
+  },
+  mounted() {
+    if (this.previewImg != "" && this.previewImg != null && !this.previewImg) {
+      this.imageData = this.previewImg;
+      this.imagePreview = true;
+    }
   },
 };
 </script>

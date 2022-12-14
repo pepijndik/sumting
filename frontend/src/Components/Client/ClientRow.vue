@@ -70,6 +70,7 @@
     </div>
 
     <button
+      @click="editClient"
       class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[75px] md:w-[50px] w-[25px] justify-center h-[32px] mr-2 md:mr-4"
     >
       <img
@@ -107,6 +108,9 @@ export default {
     delClient() {
       this.$emit("deleteOrderEvent", this.client);
       this.modal = false;
+    },
+    editClient() {
+      this.$router.push("clients/edit/" + this.client.id);
     },
     confirmDelete() {
       this.modal = true;
