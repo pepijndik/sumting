@@ -2,15 +2,19 @@ package app.models.User;
 
 import app.models.Country;
 import app.models.Identifiable;
+import app.models.Order.Order;
+import app.models.Order.OrderLine;
 import app.views.OrderView;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -110,6 +114,13 @@ public class User implements Identifiable<Integer> {
     @JsonView(UserView.User.class)
     @Column(name = "profile_text", nullable = true)
     private String profileText;
+
+
+    @Nullable
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_key", referencedColumnName = "order_user", insertable = false, updatable = false)
+    private List<Order> orders;
 
     @JsonView(UserView.User.class)
     public boolean isTwoFactorEnabled() {
