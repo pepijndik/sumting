@@ -16,7 +16,7 @@
   </div>
 
   <div>
-    <p v-if="selectedProject !== null" v-text="selectedProject.description_long"></p>
+    <p v-text="selectedProject"></p>
   </div>
 </template>
 
@@ -27,15 +27,34 @@ export default {
   components: {
     SearchableDropdown
   },
-  inject: ['ProjectApi'],
+  inject: ["ProjectApi", "ProductApi"],
   data() {
     return {
       projects: [],
+      orderLines: [],
       selectedProject: null
     }
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
+  },
+  watch: {
+    async selectedProject(project) {
+      //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
+      if (project !== null) {
+        await this.findProductOfProject(project);
+      }
+    },
+  },
+  methods: {
+    async findProductOfProject(project) {
+      if (project.id !== undefined) {
+        const data = await this.ProductApi.findProductByProjectId(project.id);
+        data.forEach((product) => {
+          this.selectedProjectsProduct = product;
+        });
+      }
+    }
   }
 }
 </script>
