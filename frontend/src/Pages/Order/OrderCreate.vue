@@ -19,7 +19,7 @@
           class="mt-1"
           placeholder="Choose a currency"
           :fields="['symbol', 'name', 'code']"
-          :primarykey="'name'"
+          :primary-key="'name'"
           :icon="false"
           @selected="selectedCurreny = $event"
           :options="currencies">
