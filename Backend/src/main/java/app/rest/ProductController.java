@@ -2,6 +2,8 @@ package app.rest;
 
 import app.models.Product.Product;
 import app.repositories.ProductRepository;
+import app.views.ProductView;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ public class ProductController {
     }
 
     @GetMapping("/products")
+    @JsonView(ProductView.Overview.class)
     public ResponseEntity<Iterable<Product>> getAllProducts() {
         return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
     }

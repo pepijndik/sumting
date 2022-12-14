@@ -78,6 +78,15 @@ export default {
   template: "Dropdown",
 
   props: {
+    icon: {
+      type: Boolean,
+      default: true,
+    },
+    text: {
+      type: Array,
+      default: Array,
+      note: 'Options to displayed text for selected',
+    },
     name: {
       type: String,
       required: false,
@@ -97,11 +106,17 @@ export default {
       default: ["description"],
       note: "Possible fields options",
     },
-    primaryKey: {
+    cleanAfterSelect: {
+      type: Boolean,
+      required: false,
+      default: false,
+      note: 'Clean search after select an option'
+    },
+    primarykey: {
       type: String,
       required: false,
-      default: "id",
-      note: "Primary key of the object",
+      default: null,
+      note: 'Primary key of the object'
     },
     placeholder: {
       type: String,
@@ -115,6 +130,13 @@ export default {
       default: false,
       note: "Disable the dropdown",
     },
+    return: {
+      type: String,
+      required: false,
+      default: 'object',
+      note: 'Choose what to return, might be the primary key or the object itself'
+    },
+
     maxItem: {
       type: Number,
       required: false,
@@ -140,44 +162,77 @@ export default {
   },
   computed: {
     filteredOptions() {
-      const filtered = [];
-      const regOption = new RegExp(this.searchFilter, "ig");
-      for (const option of this.options) {
-        //Double For loop to find the option in the fields
-        this.fields.forEach((field) => {
-          if (this.searchFilter.length < 1 || option[field].match(regOption)) {
-            if (filtered.length < this.maxItem) filtered.push(option);
-          }
+      const regOption = new RegExp(this.searchFilter, 'ig');
+      return this.options.filter(option => {
+        return this.fields.some(field => {
+          return regOption.test(option[field]);
         });
-      }
-
-      return filtered;
+      });
     },
   },
   methods: {
     populatefields(option) {
       var finalString = "";
-      this.fields.forEach((field) => {
-        finalString += this.extractFieldValue(option, field);
+      this.fields.forEach(field => {
+        const extractField = this.extractFieldValue(option, field);
+        if (extractField) {
+          finalString += extractField;
+        }
         //Check if not the last field then append space with separator
-        if (this.fields.indexOf(field) !== this.fields.length - 1) {
-          finalString += " | ";
+        if (this.fields.indexOf(field) !== this.fields.length - 1 && extractField != null) {
+          finalString += " | "
         }
       });
       return finalString;
     },
     extractFieldValue(option, prop) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (Object.hasOwn(option, prop)) {
-        return option[prop];
-      }
+      var arr = prop.split(".");
+      while (arr.length && (option = option[arr.shift()])) ;
+      return option;
     },
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
-      console.log(this.selected[this.fields[0]]);
-      this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
-      this.$emit("selected", this.selected);
+      if (this.text.length >= 1) {
+        var finalString = "";
+        this.text.forEach((field) => {
+          const extractField = this.extractFieldValue(option, field);
+          if (extractField) {
+            finalString += extractField;
+          }
+          //Check if not the last field then append space with separator
+          if (this.fields.indexOf(field) <= this.text.length - 1 && extractField != null) {
+            finalString += " | "
+          }
+        });
+        if (!this.cleanAfterSelect) {
+          this.searchFilter = finalString;
+        }
+      }
+
+      if (!this.cleanAfterSelect) {
+        if (this.primarykey != null && this.text.length <= 0) {
+          this.searchFilter = this.selected[this.primarykey];
+        } else if (this.primarykey == null || this.text.length <= 0) {
+          this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
+        }
+      }
+      this.emitSelect();
+    },
+    emitSelect() {
+      //Choose what to return
+      switch (this.return) {
+        case 'primarykey':
+          this.$emit('selected', this.selected[this.primarykey]);
+          break;
+        case 'object':
+          this.$emit('selected', this.selected);
+          break;
+        default:
+          this.$emit('selected', this.selected[this.primarykey]);
+          break;
+      }
+      console.log(this.selected[this.primarykey]);
     },
     showOptions() {
       if (!this.disabled) {
@@ -186,14 +241,8 @@ export default {
       }
     },
     exit() {
-      if (!this.selected[this.primaryKey]) {
-        this.selected = {};
-        this.searchFilter = "";
-      } else {
-        this.searchFilter = this.selected[this.fields[0]];
-      }
-      this.$emit("selected", this.selected);
       this.optionsShown = false;
+      // this.selectOption(this.selected);
     },
     // Selecting when pressing Enter
     keyMonitor: function (event) {
@@ -207,10 +256,11 @@ export default {
         this.selected = {};
       } else {
         this.selected = this.filteredOptions[0];
+        this.emitSelect();
       }
-      this.$emit("filter", this.searchFilter);
-    },
-  },
+
+    }
+  }
 };
 </script>
 

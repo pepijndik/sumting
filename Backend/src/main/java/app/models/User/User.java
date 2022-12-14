@@ -35,7 +35,7 @@ public class User implements Identifiable<Integer> {
         setName(name);
         setEmail(email);
         setType(Type.PERSON);
-        setCountry(25);
+        setCountryKey(25);
         long minDay = LocalDate.of(2022, 8, 1).toEpochDay();
         long maxDay = LocalDate.of(2022, 11, 29).toEpochDay();
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
@@ -95,6 +95,7 @@ public class User implements Identifiable<Integer> {
     private User.Type user_type;
 
     @Column(name = "country_key", nullable = false)
+    @JsonIgnore
     private Integer country_key;
 
     @JsonView(UserView.User.class)
@@ -143,8 +144,12 @@ public class User implements Identifiable<Integer> {
         this.name = name;
     }
 
-    public void setCountry(Integer country) {
+    public void setCountryKey(Integer country) {
         this.country_key = country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public void setTwoFactorEnabled(Boolean twoFactorEnabled) {
@@ -214,7 +219,7 @@ public class User implements Identifiable<Integer> {
 
     @Override
     public String toString() {
-        return String.format("{ email=%s, callName=%s, id=%d }", this.email, this.name, this.id);
+        return String.format("{ email=%s, callName=%s, id=%d, country=%s}", this.email, this.name, this.id, this.country);
     }
     public static User buildRandom(String uname) {
         System.out.printf("Building random user with name %s", uname);
@@ -236,12 +241,13 @@ public class User implements Identifiable<Integer> {
         user.setEmail(name.toLowerCase().replace(" ", ".") + "@hva.nl");
         user.setType(Type.PERSON);
         int c = new Random().nextInt(1, 3);
-        user.setCountry(c);
+        user.setCountryKey(c);
         long minDay = LocalDate.of(2022, 8, 1).toEpochDay();
         long maxDay = LocalDate.of(2022, 11, 29).toEpochDay();
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         LocalDate created_at = LocalDate.ofEpochDay(randomDay);
         user.setCreatedAt(created_at.atStartOfDay());
+        System.out.printf("User: %s",user);
         return user;
     }
 }
