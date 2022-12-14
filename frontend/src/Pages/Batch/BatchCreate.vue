@@ -107,6 +107,10 @@
         </div>
       </form>
     </div>
+    <button class="mt-6 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+    text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+      Create batch
+    </button>
   </div>
 </template>
 
