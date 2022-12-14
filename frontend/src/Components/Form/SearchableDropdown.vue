@@ -214,12 +214,14 @@ export default {
           break;
         case 'object':
           this.$emit('selected', this.selected);
+          console.log(this.selected);
           break;
         default:
           this.$emit('selected', this.selected[this.primarykey]);
+          console.log(this.selected[this.primarykey]);
           break;
       }
-      console.log(this.selected[this.primarykey]);
+
     },
     showOptions() {
       if (!this.disabled) {
@@ -246,9 +248,7 @@ export default {
         this.emitSelect();
       }
     },
-    selectedItem() {
-      this.emitSelect(this.selectedItem);
-    }
+
   }
 };
 </script>
