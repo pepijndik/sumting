@@ -1,5 +1,5 @@
 <template>
-  <div class="grid w-full grid-cols-1 lg:grid-cols-3 md:grid-cols-1 gap-1 mt-7">
+  <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">
     <div>
       <p class="font-inter text-yInMnBlue">Project</p>
       <SearchableDropdown
@@ -9,20 +9,33 @@
           :text="['description']"
           :primarykey="'id'"
           :return="'object'"
+          :options="projects"
           @selected="selectedProject = $event"
-          :options="projects">
+      >
       </SearchableDropdown>
+    </div>
+    <div class="mt-3 sm:mt-0">
+      <p class="font-inter text-yInMnBlue">Amount of contributions</p>
+      <div class="flex">
+        <input type="number"
+               class="w-9/12 sm:w-80 h-10 text-sm text-yInMnBlue font-normal font-inter bg-white
+             focus:outline-none rounded focus:border-yInMnBlue focus:border border-gray-300 shadow"
+               :disabled="isEmpty(selectedProject)"
+               v-bind:class="{'bg-gray-200': isEmpty(selectedProject)}"
+               :value="isEmpty(selectedProject) ? '' : defaultContributionAmount">
+        <p class="w-3/12 ml-3 my-auto">of <span v-text="isEmpty(selectedProject) ? '0' : orderLines.length" /></p>
+      </div>
     </div>
   </div>
 
   <div>
-    <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
+    <p v-if="isEmpty(selectedProject)" v-text="defaultListText"></p>
+    <div v-else class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
          v-for="orderline in orderLines"
          :key="orderline.id"
     >
       <p v-text="orderline.notes"></p>
     </div>
-    <p v-if="isEmpty(selectedProject)" v-text="defaultListText"></p>
   </div>
 </template>
 
@@ -40,7 +53,8 @@ export default {
       orderLines: [],
       selectedProject: null,
       selectedProjectsProduct: null,
-      defaultListText: "No project selected"
+      defaultListText: "No project selected",
+      defaultContributionAmount: 5
     }
   },
   async created() {
