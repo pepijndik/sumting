@@ -62,6 +62,14 @@ public class OrderController {
         return new ResponseEntity<>(orderlineRepository.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/orders/orderlines")
+    public ResponseEntity<Iterable<OrderLine>> getAllOrderlinesBy(
+            @RequestParam(name="productId",required=false) Integer product_id,
+            @RequestParam(name="orderId",required=false) Integer order_id
+    ) {
+        return new ResponseEntity<>(orderlineRepository.findAllBy(product_id, order_id), HttpStatus.OK);
+    }
+
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
         OrderLine o = orderlineRepository.findById(orderlineId);
