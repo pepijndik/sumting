@@ -28,6 +28,12 @@
     </div>
   </div>
 
+  <div class="mt-3">
+    <p class="font-inter text-yInMnBlue">Description</p>
+    <ckeditor class="block w-full mt-1 rounded-md lg:prose-xl"
+              :editor="editor" v-model="description" :config="editorConfig" tag-name="textarea"></ckeditor>
+  </div>
+
   <div>
     <p v-if="isEmpty(selectedProject)" v-text="defaultListText"></p>
     <div v-else class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
@@ -41,6 +47,8 @@
 
 <script>
 import SearchableDropdown from "@/Components/Form/SearchableDropdown";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {ref} from "@vue/reactivity";
 export default {
   name: "BatchCreate",
   components: {
@@ -49,6 +57,28 @@ export default {
   inject: ["ProjectApi", "ProductApi", "OrderApi"],
   data() {
     return {
+      editor: ClassicEditor,
+      description: ref('<h2>Batch description</h2>'),
+      editorConfig: {
+
+        language: 'nl',
+        toolbar: {
+          items: [
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            'blockQuote',
+            'insertTable',
+            'mediaEmbed',
+            'undo',
+            'redo'
+          ]
+        },
+      },
       projects: [],
       orderLines: [],
       selectedProject: null,
