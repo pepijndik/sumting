@@ -87,7 +87,7 @@ public class OrderController {
     @GetMapping(value = {
             "/orders/orderlines",
             "/orders/orderlines/{id}" })
-    public ResponseEntity<Iterable<OrderLine>> getAllOrderlinesBy(
+    public ResponseEntity getAllOrderlinesBy(
             @PathVariable(value = "id",required = false) Optional<String> orderlineId,
             @RequestParam(name="productId",required=false) Integer product_id,
             @RequestParam(name="orderId",required=false) Integer order_id
@@ -95,8 +95,7 @@ public class OrderController {
         Iterable<OrderLine> lines = null;
         if(orderlineId.isPresent()){
             OrderLine o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
-            lines = new ArrayList<>();
-            ((ArrayList<OrderLine>) lines).add(o);
+            return o != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId.get()), HttpStatus.NOT_FOUND);
         }
         if(product_id != null || order_id != null){
             lines = orderlineRepository.findAllBy(product_id, order_id);
