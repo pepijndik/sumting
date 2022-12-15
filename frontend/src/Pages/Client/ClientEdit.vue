@@ -147,6 +147,14 @@ export default {
           this.client.location,
           this.client.type
         );
+
+        this.$toast.open({
+          type: "success",
+          message: "Client Updated",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
       } else {
         this.$toast.open({
           type: "error",

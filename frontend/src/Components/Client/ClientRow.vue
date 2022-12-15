@@ -94,6 +94,7 @@
 
 <script>
 import Index from "../Modal/index.vue";
+import moment from "moment";
 
 export default {
   name: "ClientRow",
@@ -120,21 +121,7 @@ export default {
     },
     dateFormat(inputDate) {
       //parse the input date
-      const date = new Date(inputDate);
-      let format = "dd / MM / yy";
-      //extract the parts of the date
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      //replace the month
-      format = format.replace("MM", month.toString().padStart(2, "0"));
-      //replace the year
-      format = format.replace("yy", year.toString().substr(2, 2));
-      //replace the day
-      format = format.replace("dd", day.toString().padStart(2, "0"));
-      //replaces the leading 0's
-      format = format.replace(/(^|\/| )0+/g, "$1");
-      return format;
+      return moment(inputDate).format("DD/MM/YY");
     },
   },
 
