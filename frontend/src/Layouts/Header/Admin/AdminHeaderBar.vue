@@ -26,7 +26,7 @@
                 <img src="@/Assets/img/icons/arrow-down.svg" alt="down" />
               </button>
             </template>
-            <DropdownItem to="/">
+            <DropdownItem to="/account/me">
               <div
                 class="flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center"
               >
