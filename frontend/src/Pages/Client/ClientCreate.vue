@@ -138,7 +138,6 @@ export default {
         this.client.type != "" &&
         this.client.location != ""
       ) {
-        console.log(this.client);
         try {
           user = await this.UserApi.createUser(
             this.client.name,
@@ -201,9 +200,6 @@ export default {
   },
   async created() {
     this.locations = await this.CountryApi.findAll();
-  },
-  updated() {
-    console.log(this.client);
   },
 };
 </script>

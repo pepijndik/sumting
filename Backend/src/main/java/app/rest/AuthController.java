@@ -93,6 +93,7 @@ public class AuthController {
         if(c != null) {
             user.setCountry(c);
         }
+        user.setCountryKey(countryId);
         user.setCreatedAt(LocalDateTime.now());
         LoginResponse loginResponse = new LoginResponse();
         try {
