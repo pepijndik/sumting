@@ -1,13 +1,12 @@
-import BaseApi from "@/Services/BaseApi";
 import AuthHeader from "@/Services/AuthHeader";
+import BaseApi from "@/Services/BaseApi";
 export default class FileUploadService {
   constructor(resource) {
     this.resource = resource;
   }
   setHeader(Header = {}) {
     BaseApi.defaults.headers = {
-      ...AuthHeader() +
-      Header
+      ...(AuthHeader() + Header),
     };
   }
 
@@ -24,7 +23,7 @@ export default class FileUploadService {
         return response.data;
       })
       .catch((error) => {
-        throw error;
+        console.log(error);
       });
   }
 }

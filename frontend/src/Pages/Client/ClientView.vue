@@ -81,7 +81,7 @@ export default {
   methods: {
     deleteUser(client) {
       try {
-        //this.UserApi.delete(id);
+        this.UserApi.delete(client.id);
         console.log("Deleted: " + client.id);
         this.$toast.open({
           type: "success",

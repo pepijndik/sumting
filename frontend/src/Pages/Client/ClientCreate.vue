@@ -146,6 +146,28 @@ export default {
             this.client.type
           );
 
+          if (this.imgFile != null && user != null) {
+            try {
+              await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+
+              this.$toast.open({
+                type: "success",
+                message: "Img uploaded",
+                duration: 5000,
+                dismissible: true,
+                position: "top-right",
+              });
+            } catch {
+              this.$toast.open({
+                type: "error",
+                message: "Img upload failed",
+                duration: 5000,
+                dismissible: true,
+                position: "top-right",
+              });
+            }
+          }
+
           this.$toast.open({
             type: "success",
             message: "Client created",
@@ -170,28 +192,6 @@ export default {
           dismissible: true,
           position: "top-right",
         });
-      }
-
-      if (this.imgFile != null) {
-        try {
-          await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
-
-          this.$toast.open({
-            type: "success",
-            message: "Img uploaded",
-            duration: 5000,
-            dismissible: true,
-            position: "top-right",
-          });
-        } catch {
-          this.$toast.open({
-            type: "error",
-            message: "Img upload failed",
-            duration: 5000,
-            dismissible: true,
-            position: "top-right",
-          });
-        }
       }
     },
     selectedImg(img) {
