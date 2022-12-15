@@ -25,7 +25,7 @@ export default class User {
     this.email = email;
     this.country_key = country;
     this.user_type = type;
-    this.createdAt = moment(created_at).format("YYYY-MM-DD HH:mm:ss");
+    this.createdAt = new Date(created_at);
     this.twofactor = new Twofactor(
       TwoFactorEnabled == null ? false : TwoFactorEnabled
     );
