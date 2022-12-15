@@ -34,7 +34,6 @@ export default class User {
   }
 
   static copyEntity(entity) {
-    console.log(entity);
     const user  = new User(entity.id, entity.name, entity.email,null, entity.type);
     user.profileImage = entity.profileImage;
     return user;

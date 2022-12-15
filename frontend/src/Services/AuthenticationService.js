@@ -30,7 +30,10 @@ class AuthenticationService {
                     return {success: true, need_twofactor: true};
                 }
 
-                const user =new User(data.id, data.name, data.email, data.avatar, data.user_type)
+                const user =new User(data.id, data.name, data.email, data.country, data.user_type)
+                user.profileImage = data.profileImage;
+                user.profileText = data.profileText;
+                user.twofactor = new Twofactor(data.twoFactorEnabled);
                 localStorage.setItem('user', JSON.stringify(user));
                 return user;
             }

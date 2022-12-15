@@ -102,11 +102,11 @@ public class User implements Identifiable<Integer> {
     @OneToOne(cascade = CascadeType.DETACH)
     private Country country;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, UserView.Update.class, UserView.Login.class})
     @Column(name = "profile_image", nullable = true)
     private String profileImage;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, UserView.Update.class, UserView.Login.class})
     @Column(name = "profile_text", nullable = true)
     private String profileText;
 
