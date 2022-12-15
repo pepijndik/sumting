@@ -14,7 +14,7 @@
               <div class="relative">
                 <img
                   class="rounded-full h-10 w-10 object-cover"
-                  src="https://tuk-cdn.s3.amazonaws.com/assets/components/sidebar_layout/sl_1.png"
+                  :src="user.profileImage"
                   alt="display avatar"
                   role="img"
                 />
