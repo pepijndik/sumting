@@ -64,16 +64,17 @@
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
             <SearchableDropdown
-              @selected="selectedLocation"
+              @selected="this.client.location = $event"
               :options="locations"
               :primary-key="'id'"
               :fields="['name']"
+              :text="['name', 'alpha2']"
+              return="primarykey"
               :disabled="false"
               autocomplete="off"
               placeholder="Search for a location"
-              :maxItem="locations.length"
-              :optionHasIcon="true"
-            />
+              :icon="false"
+            ></SearchableDropdown>
           </div>
         </div>
       </div>
@@ -132,12 +133,13 @@ export default {
         this.client.type == "" &&
         this.client.location == ""
       ) {
-        user = await this.UserApi.createUser(
-          this.client.name,
-          this.client.email,
-          this.client.location,
-          this.client.type
-        );
+        console.log(this.client);
+        // user = await this.UserApi.createUser(
+        //   this.client.name,
+        //   this.client.email,
+        //   this.client.location,
+        //   this.client.type
+        // );
       } else {
         this.$toast.open({
           type: "error",
@@ -160,15 +162,15 @@ export default {
         });
       }
     },
-    selectedLocation(location) {
-      this.client.location = location.id;
-    },
     selectedImg(img) {
       this.imgFile = img;
     },
   },
   async created() {
     this.locations = await this.CountryApi.findAll();
+  },
+  updated() {
+    console.log(this.client);
   },
 };
 </script>

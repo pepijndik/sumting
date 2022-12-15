@@ -69,12 +69,17 @@ public class UserController {
     }
 
     @PutMapping("/users")
+    @JsonView(UserView.Update.class)
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
 
-        User userById = userRepo.findByEmail(user.getEmail()).get(0);
+        System.out.println(user);
+
+        User userById = userRepo.findById(user.getId());
+
+        userById.setCountryKey(user.getCountryKey());
 
         if(userById == null) {
-            throw new UserNotFoundException("id = " + user.getEmail());
+            throw new UserNotFoundException("id = " + user.getId());
         }
 
         userRepo.save(user);

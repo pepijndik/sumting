@@ -73,8 +73,10 @@
               :text="['name', 'alpha2']"
               :selectedItem="userCountry"
               :max-items="249"
-              return="object"
-              @selected="selectedLocation = $event"
+              return="primarykey"
+              @selected="selectLocation"
+              :icon="true"
+              :imgField="'imgSmall'"
             />
           </div>
         </div>
@@ -133,10 +135,10 @@ export default {
       let user;
       console.log(this.client);
       if (
-        this.client.name == "" &&
-        this.client.email == "" &&
-        this.client.type == "" &&
-        this.client.location == ""
+        this.client.name != "" &&
+        this.client.email != "" &&
+        this.client.type != "" &&
+        this.client.location != ""
       ) {
         user = await this.UserApi.updateUser(
           this.client.id,
@@ -156,20 +158,22 @@ export default {
       }
 
       if (this.imgFile != null) {
-        await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
-      } else {
-        this.$toast.open({
-          type: "error",
-          message: "Img upload failed",
-          duration: 5000,
-          dismissible: true,
-          position: "top-right",
-        });
+        try {
+          await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+        } catch (e) {
+          this.$toast.open({
+            type: "error",
+            message: "Img upload failed",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        }
       }
     },
-    selectedLocation(location) {
+    selectLocation(location) {
       console.log(location);
-      this.client.location = location.id;
+      this.client.location = location;
     },
     selectedImg(img) {
       this.imgFile = img;
@@ -190,8 +194,6 @@ export default {
       this.client.img = this.user.data.profileImage;
     }
     this.selectedLocation = this.client.location;
-
-    console.log(this.client);
   },
 };
 </script>

@@ -53,13 +53,13 @@
           :key="index"
         >
           <div class="flex gap-2">
-            <slot class="">
-              <div
-                v-if="optionHasIcon"
-                :style="{ 'background-image': `url(${option.imgSmall})` }"
-                class="w-7 h-5 bg-cover bg-center mx-3"
-              ></div>
-              <FileIcon v-if="!optionHasIcon" />
+            <div
+              v-if="optionHasIcon && icon && option[imgField] != null"
+              :style="{ 'background-image': `url(${option[imgField]})` }"
+              class="w-7 h-5 bg-cover bg-center mx-3"
+            ></div>
+            <slot class="" v-if="icon && !optionHasIcon">
+              <FileIcon />
             </slot>
             <p class="">{{ this.populatefields(option) }}</p>
           </div>
@@ -71,11 +71,13 @@
 
 <script>
 import FileIcon from "@/Components/SvgIcons/FileIcon";
+import { DIM_COLOR } from "jest-matcher-utils";
 
 export default {
   name: "SearchableDropdown",
   components: { FileIcon },
   template: "Dropdown",
+  emits: ["selected"],
 
   props: {
     icon: {
@@ -85,7 +87,7 @@ export default {
     text: {
       type: Array,
       default: Array,
-      note: 'Options to displayed text for selected',
+      note: "Options to displayed text for selected",
     },
     name: {
       type: String,
@@ -110,13 +112,13 @@ export default {
       type: Boolean,
       required: false,
       default: false,
-      note: 'Clean search after select an option'
+      note: "Clean search after select an option",
     },
     primarykey: {
       type: String,
       required: false,
       default: null,
-      note: 'Primary key of the object'
+      note: "Primary key of the object",
     },
     placeholder: {
       type: String,
@@ -133,27 +135,34 @@ export default {
     return: {
       type: String,
       required: false,
-      default: 'object',
-      note: 'Choose what to return, might be the primary key or the object itself'
+      default: "object",
+      note: "Choose what to return, might be the primary key or the object itself",
     },
 
     maxItem: {
       type: Number,
       required: false,
       default: 6,
-      note: 'Max items showing'
+      note: "Max items showing",
     },
     selectedItem: {
       type: Object,
       required: false,
       default: null,
-      note: 'Selected option'
+      note: "Selected option",
     },
-	optionHasIcon: {
+    optionHasIcon: {
       type: Boolean,
       required: false,
       default: false,
       note: "Option has icon",
+    },
+    imgField: {
+      type: String,
+      required: false,
+      default: null,
+      note: "Field of the image",
+    },
   },
   data() {
     return {
@@ -167,9 +176,9 @@ export default {
   },
   computed: {
     filteredOptions() {
-      const regOption = new RegExp(this.searchFilter, 'ig');
-      return this.options.filter(option => {
-        return this.fields.some(field => {
+      const regOption = new RegExp(this.searchFilter, "ig");
+      return this.options.filter((option) => {
+        return this.fields.some((field) => {
           return regOption.test(option[field]);
         });
       });
@@ -178,24 +187,47 @@ export default {
   methods: {
     populatefields(option) {
       var finalString = "";
-      this.fields.forEach(field => {
+      this.fields.forEach((field) => {
         const extractField = this.extractFieldValue(option, field);
         if (extractField) {
           finalString += extractField;
         }
         //Check if not the last field then append space with separator
-        if (this.fields.indexOf(field) !== this.fields.length - 1 && extractField != null) {
-          finalString += " | "
+        if (
+          this.fields.indexOf(field) !== this.fields.length - 1 &&
+          extractField != null
+        ) {
+          finalString += " | ";
         }
       });
       return finalString;
     },
     extractFieldValue(option, prop) {
       var arr = prop.split(".");
-      while (arr.length && (option = option[arr.shift()])) ;
+      while (arr.length && (option = option[arr.shift()]));
       return option;
     },
     selectOption(option) {
+      this.justSelect(option);
+      this.emitSelect();
+    },
+    emitSelect() {
+      //Choose what to return
+      switch (this.return) {
+        case "primarykey":
+          this.$emit("selected", this.selected[this.primarykey]);
+          break;
+        case "object":
+          this.$emit("selected", this.selected);
+          console.log(this.selected);
+          break;
+        default:
+          this.$emit("selected", this.selected[this.primarykey]);
+          console.log(this.selected[this.primarykey]);
+          break;
+      }
+    },
+    justSelect(option) {
       this.selected = option;
       this.optionsShown = false;
       if (this.text.length >= 1) {
@@ -206,8 +238,11 @@ export default {
             finalString += extractField;
           }
           //Check if not the last field then append space with separator
-          if (this.fields.indexOf(field) <= this.text.length - 1 && extractField != null) {
-            finalString += " | "
+          if (
+            this.fields.indexOf(field) <= this.text.length - 1 &&
+            extractField != null
+          ) {
+            finalString += " | ";
           }
         });
         if (!this.cleanAfterSelect) {
@@ -222,24 +257,6 @@ export default {
           this.searchFilter = this.selected[this.fields[0]]; //Set the search filter to the first field
         }
       }
-      this.emitSelect();
-    },
-    emitSelect() {
-      //Choose what to return
-      switch (this.return) {
-        case 'primarykey':
-          this.$emit('selected', this.selected[this.primarykey]);
-          break;
-        case 'object':
-          this.$emit('selected', this.selected);
-          console.log(this.selected);
-          break;
-        default:
-          this.$emit('selected', this.selected[this.primarykey]);
-          console.log(this.selected[this.primarykey]);
-          break;
-      }
-
     },
     showOptions() {
       if (!this.disabled) {
@@ -263,11 +280,12 @@ export default {
         this.selected = {};
       } else {
         this.selected = this.filteredOptions[0];
-        this.emitSelect();
       }
     },
-
-  }
+    selectedItem() {
+      this.justSelect(this.selectedItem);
+    },
+  },
 };
 </script>
 
