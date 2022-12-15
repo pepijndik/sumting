@@ -66,6 +66,7 @@ public class AuthController {
     @Autowired
     private CodeVerifier verifier;
 
+    @Autowired
     private CountryRepository countryRepo;
 
     @PostMapping("/auth/users")
@@ -84,7 +85,7 @@ public class AuthController {
         user.setEmail(email);
         user.setName(name);
         user.setEncodedPassword(user.hashPassword(givenPassword));
-        if (Objects.equals(type, "Business")) {
+        if (Objects.equals(type, "BUSINESS")) {
             user.setType(User.Type.BUSINESS);
         } else {
             user.setType(User.Type.PERSON);

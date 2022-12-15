@@ -48,15 +48,15 @@
               >
                 <div
                   class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-1 hover:cursor-default z-10 border-gray-300 border-0 border-b"
-                  @mousedown="selectOption('Business')"
+                  @mousedown="selectOption('BUSINESS')"
                 >
-                  Business
+                  BUSINESS
                 </div>
                 <div
                   class="text-sm flex items-center justify-between text-gray-600 hover:bg-champagnePink hover:text-gray-800 p-1 hover:cursor-default z-10 border-gray-300 border-0 border-b"
-                  @mousedown="selectOption('Person')"
+                  @mousedown="selectOption('PERSON')"
                 >
-                  Person
+                  PERSON
                 </div>
               </div>
             </div>
@@ -64,17 +64,19 @@
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
             <SearchableDropdown
-              @selected="this.client.location = $event"
+              :primarykey="'id'"
               :options="locations"
-              :primary-key="'id'"
               :fields="['name']"
-              :text="['name', 'alpha2']"
-              return="primarykey"
-              :disabled="false"
               autocomplete="off"
               placeholder="Search for a location"
-              :icon="false"
-            ></SearchableDropdown>
+              :optionHasIcon="true"
+              :text="['name', 'alpha2']"
+              :max-items="249"
+              return="primarykey"
+              @selected="selectLocation"
+              :icon="true"
+              :imgField="'imgSmall'"
+            />
           </div>
         </div>
       </div>
@@ -125,21 +127,42 @@ export default {
     selectOption(option) {
       this.client.type = option;
     },
+    selectLocation(location) {
+      this.client.location = location;
+    },
     async createClient() {
       let user;
       if (
-        this.client.name == "" &&
-        this.client.email == "" &&
-        this.client.type == "" &&
-        this.client.location == ""
+        this.client.name != "" &&
+        this.client.email != "" &&
+        this.client.type != "" &&
+        this.client.location != ""
       ) {
         console.log(this.client);
-        // user = await this.UserApi.createUser(
-        //   this.client.name,
-        //   this.client.email,
-        //   this.client.location,
-        //   this.client.type
-        // );
+        try {
+          user = await this.UserApi.createUser(
+            this.client.name,
+            this.client.email,
+            this.client.location,
+            this.client.type
+          );
+
+          this.$toast.open({
+            type: "success",
+            message: "Client created",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        } catch {
+          this.$toast.open({
+            type: "error",
+            message: "Something went wrong",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        }
       } else {
         this.$toast.open({
           type: "error",
@@ -151,15 +174,25 @@ export default {
       }
 
       if (this.imgFile != null) {
-        await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
-      } else {
-        this.$toast.open({
-          type: "error",
-          message: "Img upload failed",
-          duration: 5000,
-          dismissible: true,
-          position: "top-right",
-        });
+        try {
+          await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+
+          this.$toast.open({
+            type: "success",
+            message: "Img uploaded",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        } catch {
+          this.$toast.open({
+            type: "error",
+            message: "Img upload failed",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        }
       }
     },
     selectedImg(img) {
