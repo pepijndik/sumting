@@ -87,7 +87,7 @@ import { SemipolarSpinner  } from 'epic-spinners'
 import router from "@/Router/router";
 export default {
   name: "DashboardLayout",
-  inject: ['axios'],
+  inject: ['axios',"Auth"],
   components: {NavigationItem, NavigationDropdownItem, SubDropdownItem, DashboardHeaderBar, Navigation,SemipolarSpinner},
   data() {
     return {
@@ -116,6 +116,7 @@ export default {
         this.isLoading = false;
         if(error.response.status === 401) {
           console.log("User was not logged in, redirect to login")
+          this.Auth.logout();
           this.$router.push({name: 'auth:login'});
         }
 

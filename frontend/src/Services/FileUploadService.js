@@ -1,15 +1,10 @@
 import AuthHeader from "@/Services/AuthHeader";
 import BaseApi from "@/Services/BaseApi";
-export default class FileUploadService {
+import ApiAdapter from "@/Services/ApiAdapter";
+export default class FileUploadService  extends ApiAdapter{
   constructor(resource) {
-    this.resource = resource;
+    super(resource);
   }
-  setHeader(Header = {}) {
-    BaseApi.defaults.headers = {
-      ...(AuthHeader() + Header),
-    };
-  }
-
   async uploadIMG(id, img) {
     this.setHeader({
       "Content-Type": "multipart/form-data",
