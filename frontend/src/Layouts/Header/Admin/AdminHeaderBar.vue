@@ -19,17 +19,15 @@
                   role="img"
                 />
               </div>
-              <p class="text-yInMnBlue font-bold text-sm ml-3 hidden md:block">
-                David Grey. H
+              <p class="text-yInMnBlue font-bold text-sm ml-3 hidden md:block" v-text="user.name">
+
               </p>
               <button role="button" class="cursor-pointer text-gray-600 ml-2">
                 <img src="@/Assets/img/icons/arrow-down.svg" alt="down" />
               </button>
             </template>
             <DropdownItem to="/account/me">
-              <div
-                class="flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center"
-              >
+              <div class="flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center">
                 <div class="flex items-center">
                   <svg
                     class="h-4 w-4 fill-shadow"
@@ -93,7 +91,7 @@
                 </div>
               </div>
             </DropdownItem>
-            <DropdownItem to="/">
+            <DropdownItem to="/" v-on:click="logout">
               <div
                 class="flex w-full justify-between text-gray-600 hover:text-indigo-700 cursor-pointer items-center"
               >
@@ -189,6 +187,7 @@ import MobileNavigation from "@/Layouts/Navigation/Admin/MobileNavigation";
 import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
+import User from "@/Models/User";
 
 export default {
   name: "DashboardHeaderBar",
@@ -200,9 +199,20 @@ export default {
     DropdownItem,
     Dropdown,
   },
+  inject: ["Auth"],
+  computed: {
+    user() {
+      const  p =  JSON.parse(localStorage.getItem("user"))
+      return User.copyEntity(p);
+    },
+  },
   methods: {
     openMobile() {
       this.$refs.mNav.toggle();
+    },
+
+    logout() {
+      this.Auth.logout();
     },
   },
 };

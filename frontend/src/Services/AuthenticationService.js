@@ -30,7 +30,9 @@ class AuthenticationService {
                     return {success: true, need_twofactor: true};
                 }
 
-                return new User(data.id, data.name, data.email, data.avatar, data.user_type);
+                const user =new User(data.id, data.name, data.email, data.avatar, data.user_type)
+                localStorage.setItem('user', JSON.stringify(user));
+                return user;
             }
         ).catch(error => {
             console.log(error);
@@ -40,7 +42,8 @@ class AuthenticationService {
 
     logout() {
         localStorage.removeItem('token');
-
+        localStorage.removeItem('user');
+        router.push({name: 'auth:login'});
     }
 
     /**
