@@ -192,7 +192,7 @@ export default {
   async created() {
     this.locations = await this.CountryApi.findAll();
     this.user = await this.UserApi.findOne(this.$route.params.id);
-
+    console.log(this.user);
     this.client.id = this.user.data.id;
     this.client.name = this.user.data.name;
     this.client.email = this.user.data.email;

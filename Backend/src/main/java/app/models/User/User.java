@@ -94,11 +94,10 @@ public class User implements Identifiable<Integer> {
     @Column(name = "user_type", nullable = false, columnDefinition = "varchar(255) default 'PERSON'")
     private User.Type user_type;
 
-    @Column(name = "country_key", nullable = false)
-    @JsonView({UserView.Update.class})
+    @Transient
     private Integer country_key;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
     @JoinColumn(name = "country_key", referencedColumnName = "country_key", insertable = false, updatable = false)
     @OneToOne(cascade = CascadeType.DETACH)
     private Country country;
