@@ -98,7 +98,7 @@ public class User implements Identifiable<Integer> {
     private Integer country_key;
 
     @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
-    @JoinColumn(name = "country_key", referencedColumnName = "country_key", insertable = false, updatable = false)
+    @JoinColumn(name = "country_key", referencedColumnName = "country_key", insertable = true, updatable = true)
     @OneToOne(cascade = CascadeType.DETACH)
     private Country country;
 
