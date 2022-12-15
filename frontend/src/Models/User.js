@@ -15,9 +15,9 @@ export default class User {
     email,
     country,
     type,
+    profileImage = null,
     created_at = null,
     TwoFactorEnabled = null,
-    profileImage = null,
     profileText = null
   ) {
     this.id = id;
@@ -25,11 +25,11 @@ export default class User {
     this.email = email;
     this.country_key = country;
     this.user_type = type;
+    this.profileImage = profileImage;
     this.createdAt = new Date(created_at);
     this.twofactor = new Twofactor(
       TwoFactorEnabled == null ? false : TwoFactorEnabled
     );
-    this.profileImage = profileImage;
     this.profileText = profileText;
   }
 

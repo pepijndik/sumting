@@ -110,6 +110,7 @@ export default {
         email: "",
         type: "",
         location: "",
+        img: "",
       },
       clicked: false,
       readonly: true,
@@ -145,7 +146,8 @@ export default {
           this.client.name,
           this.client.email,
           this.client.location,
-          this.client.type
+          this.client.type,
+          this.client.img
         );
 
         this.$toast.open({

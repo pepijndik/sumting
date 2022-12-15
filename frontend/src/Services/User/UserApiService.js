@@ -31,10 +31,10 @@ class UserApiService extends ApiAdapter {
         return false;
       });
   }
-  async updateUser(id, name, email, country, type) {
+  async updateUser(id, name, email, country, type, img) {
     if (!id || !name || !email || !country || !type) return false;
 
-    let user = new User(id, name, email, country, type);
+    let user = new User(id, name, email, country, type, img);
 
     return await BaseApi.put(`${this.resource}`, user)
       .then((response) => {
