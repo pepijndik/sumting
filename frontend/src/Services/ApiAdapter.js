@@ -1,11 +1,18 @@
 import BaseApi from "@/Services/BaseApi";
+import AuthHeader from "@/Services/AuthHeader";
 export default class ApiAdapter {
   constructor(resource) {
     this.resource = resource;
-
+    this.setHeader();
+    console.log(BaseApi.defaults.headers);
   }
   setHeader(Header = {}) {
-    BaseApi.defaults.headers = Header;
+    BaseApi.defaults.headers =
+        {
+        ...AuthHeader(),
+        ...Header,
+    };
+
   }
   async findAll() {
     return BaseApi.get(`/${this.resource}`)
@@ -46,5 +53,9 @@ export default class ApiAdapter {
 
   async save(data) {
     return BaseApi.post(`/${this.resource}`, data);
+  }
+
+  async update(id) {
+    return BaseApi.post(`/${this.resource}/${id}`);
   }
 }

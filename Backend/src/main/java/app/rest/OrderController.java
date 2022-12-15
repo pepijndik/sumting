@@ -64,8 +64,8 @@ public class OrderController {
 
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
-        OrderLine o = orderlineRepository.findById(orderlineId);
-        return orderlineRepository.findById(orderlineId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
+        Optional<OrderLine> o = orderlineRepository.findById(orderlineId);
+        return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/orders")
@@ -97,7 +97,7 @@ public class OrderController {
     @PutMapping("/orderlines/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
+            Optional<OrderLine> findOrderline = orderlineRepository.findById(id);
 
             if (findOrderline.isPresent()) {
                 OrderLine orderlineFound = findOrderline.get();
