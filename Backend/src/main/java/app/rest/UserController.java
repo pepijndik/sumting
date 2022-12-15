@@ -101,7 +101,7 @@ public class UserController {
         String relpath= "";
         try{
             //Path format /{bucket-name}/{id}/{file-name}
-            relpath= fileStore.upload(path, fileName, Optional.of(fileStore.prepareUplaud(file)), file.getInputStream());
+            relpath= fileStore.upload(path, fileName, Optional.of(fileStore.prepareUplaud(file)), file.getInputStream(),true);
         } catch (IOException e) {
             throw new FileUploadException("Failed to upload file", e);
         }
