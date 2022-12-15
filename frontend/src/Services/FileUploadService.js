@@ -2,7 +2,7 @@ import AuthHeader from "@/Services/AuthHeader";
 import BaseApi from "@/Services/BaseApi";
 import ApiAdapter from "@/Services/ApiAdapter";
 export default class FileUploadService  extends ApiAdapter{
-  constructor(resource) {
+  constructor(resource ="") {
     super(resource);
   }
   async uploadIMG(id, img) {

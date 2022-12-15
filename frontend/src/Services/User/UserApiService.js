@@ -6,6 +6,7 @@ import { useToast } from "vue-toast-notification";
 class UserApiService extends ApiAdapter {
   constructor() {
     super("users");
+    this.setHeader();
   }
 
   async createUser(name, email, country, type) {
