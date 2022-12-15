@@ -1,3 +1,4 @@
+import User from "@/Models/User";
 import ApiAdapter from "@/Services/ApiAdapter";
 import BaseApi from "@/Services/BaseApi";
 import { useToast } from "vue-toast-notification";
@@ -23,6 +24,25 @@ class UserApiService extends ApiAdapter {
         const $toast = useToast();
         $toast.error({
           message: "Cant create client " + error.response.data.message,
+          duration: 5000,
+          dismissible: true,
+        });
+        return false;
+      });
+  }
+  async updateUser(id, name, email, country, type) {
+    if (!id || !name || !email || !country || !type) return false;
+
+    let user = new User(id, name, email, country, type);
+
+    return await BaseApi.put(`${this.resource}`, user)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        const $toast = useToast();
+        $toast.error({
+          message: "Cant update client " + error.response.data.message,
           duration: 5000,
           dismissible: true,
         });

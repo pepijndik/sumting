@@ -64,15 +64,17 @@
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
             <SearchableDropdown
-              @selected="selectedLocation"
+              :primarykey="'id'"
               :options="locations"
-              :primary-key="'id'"
               :fields="['name']"
-              :disabled="false"
               autocomplete="off"
               placeholder="Search for a location"
-              :maxItem="locations.length"
               :optionHasIcon="true"
+              :text="['name', 'alpha2']"
+              :selectedItem="userCountry"
+              :max-items="249"
+              return="object"
+              @selected="selectedLocation = $event"
             />
           </div>
         </div>
@@ -83,7 +85,7 @@
 
     <button
       class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-yInMnBlue rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-      @click="createClient()"
+      @click="updateClient()"
     >
       Update client
     </button>
@@ -101,11 +103,11 @@ export default {
   data() {
     return {
       client: {
+        id: "",
         name: "",
         email: "",
         type: "",
         location: "",
-        img: "",
       },
       clicked: false,
       readonly: true,
@@ -113,6 +115,7 @@ export default {
       locations: [],
       imgFile: null,
       user: null,
+      userCountry: null,
     };
   },
   methods: {
@@ -126,15 +129,17 @@ export default {
     selectOption(option) {
       this.client.type = option;
     },
-    async createClient() {
+    async updateClient() {
       let user;
+      console.log(this.client);
       if (
         this.client.name == "" &&
         this.client.email == "" &&
         this.client.type == "" &&
         this.client.location == ""
       ) {
-        user = await this.UserApi.createUser(
+        user = await this.UserApi.updateUser(
+          this.client.id,
           this.client.name,
           this.client.email,
           this.client.location,
@@ -163,6 +168,7 @@ export default {
       }
     },
     selectedLocation(location) {
+      console.log(location);
       this.client.location = location.id;
     },
     selectedImg(img) {
@@ -173,14 +179,19 @@ export default {
     this.locations = await this.CountryApi.findAll();
     this.user = await this.UserApi.findOne(this.$route.params.id);
 
+    this.client.id = this.user.data.id;
     this.client.name = this.user.data.name;
     this.client.email = this.user.data.email;
     this.client.type = this.user.data.user_type;
-    this.client.location = this.user.data.country.name;
+    this.client.location = this.user.data.country.id;
+
+    this.userCountry = this.user.data.country;
     if (this.user.data.profileImage != null) {
       this.client.img = this.user.data.profileImage;
     }
     this.selectedLocation = this.client.location;
+
+    console.log(this.client);
   },
 };
 </script>
