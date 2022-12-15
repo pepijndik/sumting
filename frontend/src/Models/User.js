@@ -34,7 +34,9 @@ export default class User {
   }
 
   static copyEntity(entity) {
-    return new User(entity.id, entity.name, entity.email, entity.type);
+    const user  = new User(entity.id, entity.name, entity.email,null, entity.type);
+    user.profileImage = entity.profileImage;
+    return user;
   }
 
   static equal(otherA, otherB) {

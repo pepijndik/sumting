@@ -3,16 +3,18 @@ import AuthHeader from "@/Services/AuthHeader";
 export default class ApiAdapter {
   constructor(resource) {
     this.resource = resource;
-    this.setHeader();
-    console.log(BaseApi.defaults.headers);
+    this.header = {};
   }
   setHeader(Header = {}) {
-    BaseApi.defaults.headers =
-        {
-        ...AuthHeader(),
-        ...Header,
+    BaseApi.defaults.headers =   {
+      ...AuthHeader(),
+      ...Header,
     };
-
+  }
+  getHeader() {
+    return {
+      ...AuthHeader(),
+    }
   }
   async findAll() {
     return BaseApi.get(`/${this.resource}`)
