@@ -105,8 +105,8 @@ export default {
     enableInterceptor() {
       this.axiosInterceptor = this.axios.interceptors.request.use((config) => {
         //Intercept request and add token
-        BaseApi.defaults.headers['Authorization'] = `${AuthHeader()}`
         this.isLoading = true
+        config.headers['Authorization'] = `${AuthHeader().Authorization}`
         return config
       }, (error) => {
         this.isLoading = false;
@@ -114,6 +114,7 @@ export default {
       })
 
       this.axios.interceptors.response.use((response) => {
+
         this.isLoading = false
         return response
       }, function(error) {
