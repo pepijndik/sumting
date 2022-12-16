@@ -21,12 +21,12 @@ class OrderApiService extends ApiAdapter {
   }
   // Add custom methods here
   async combinedSearch(clientID, projectID) {
-    return await BaseApi.get(`orderlines/combinedSearch?clientID=${clientID}&projectID=${projectID}`).then(response => {
+    return await BaseApi.get(`orders/combinedSearch?clientID=${clientID}&projectID=${projectID}`).then(response => {
       console.log(response.data)
       return response.data;
     }).catch(error => {
       throw error;
-    })
+    });
   }
 }
 export default OrderApiService;
