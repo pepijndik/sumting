@@ -102,23 +102,29 @@ export default {
   },
   watch: {
     selectedProject: function (val, old_val) {
-      if (val === old_val) return;
-      console.log("selected project changed")
-      console.log(val.id)
-      if (this.selectedClient.id !== undefined) {
-        this.getOrdersCombinedSearch(val.id, this.selectedClient.id);
-      } else {
-        this.getOrdersCombinedSearch(val.id, undefined);
+      console.log("Project watcher triggered");
+      if (val !== old_val && val !== null) {
+        console.log("Value changed");
+        if (val.id !== null && val.id !== undefined) {
+          if (this.selectedClient.id !== undefined) {
+            this.getOrdersCombinedSearch(val.id, this.selectedClient.id);
+          } else {
+            this.getOrdersCombinedSearch(val.id, undefined);
+          }
+        }
       }
     },
     selectedClient: function (val, old_val) {
-      if (val === old_val) return;
-      console.log(val.id)
-      console.log("selected client changed")
-      if (this.selectedProject.id !== undefined) {
-        this.getOrdersCombinedSearch(this.selectedProject.id, val.id);
-      } else {
-        this.getOrdersCombinedSearch(undefined, val.id)
+      console.log("Client watcher triggered");
+      if (val !== old_val && val !== null) {
+        console.log("Value changed");
+        if (val.id !== null && val.id !== undefined) {
+          if (this.selectedProject.id !== undefined) {
+            this.getOrdersCombinedSearch(this.selectedProject.id, val.id);
+          } else {
+            this.getOrdersCombinedSearch(undefined, val.id);
+          }
+        }
       }
     },
   },
