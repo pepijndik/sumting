@@ -94,8 +94,12 @@ public class OrderController {
     ) {
         Iterable<OrderLine> lines = null;
         if(orderlineId.isPresent()){
-            OrderLine o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
-            return o != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId.get()), HttpStatus.NOT_FOUND);
+            Optional<OrderLine> o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
+            return o.isPresent() ?
+                    new ResponseEntity<>(o, HttpStatus.OK) :
+                    new ResponseEntity<ModelNotFound>(
+                            new ModelNotFound("Orderline", "id", orderlineId.get()),
+                            HttpStatus.NOT_FOUND);
         }
         if(product_id != null || order_id != null){
             lines = orderlineRepository.findAllBy(product_id, order_id);

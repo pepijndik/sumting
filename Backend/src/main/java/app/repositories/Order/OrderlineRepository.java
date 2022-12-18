@@ -1,6 +1,5 @@
 package app.repositories.Order;
 
-import app.models.Order.Order;
 import app.models.Order.OrderLine;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,11 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Repository
 @Transactional
-public interface OrderlineRepository extends CrudRepository<OrderLine, Integer> {
+public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
 
     @Autowired
     private EntityManager em;
@@ -24,8 +24,13 @@ public interface OrderlineRepository extends CrudRepository<OrderLine, Integer> 
     }
 
     @Override
-    public OrderLine findById(Integer id) {
-        return em.find(OrderLine.class,id);
+    public <S extends OrderLine> Iterable<S> saveAll(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public Optional<OrderLine> findById(Integer id) {
+        return Optional.ofNullable(em.find(OrderLine.class,id));
     }
 
     @Override
@@ -35,6 +40,11 @@ public interface OrderlineRepository extends CrudRepository<OrderLine, Integer> 
         }catch (Exception e){
             System.out.println(e);
         }
+        return null;
+    }
+
+    @Override
+    public Iterable<OrderLine> findAllById(Iterable<Integer> integers) {
         return null;
     }
 
@@ -64,7 +74,27 @@ public interface OrderlineRepository extends CrudRepository<OrderLine, Integer> 
     }
 
     @Override
+    public void deleteById(Integer integer) {
+
+    }
+
+    @Override
     public void delete(OrderLine entity) {
+
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends Integer> integers) {
+
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends OrderLine> entities) {
+
+    }
+
+    @Override
+    public void deleteAll() {
 
     }
 
