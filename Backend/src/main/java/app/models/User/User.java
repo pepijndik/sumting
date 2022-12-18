@@ -56,7 +56,7 @@ public class User implements Identifiable<Integer> {
 
     public static final String TABLE_NAME = "\"User\"";
     @Id
-    @JsonView({UserView.User.class, OrderView.Order.class})
+    @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
     @Column(name = "user_key", nullable = false, unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -65,11 +65,11 @@ public class User implements Identifiable<Integer> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer user_key_ext;
 
-    @JsonView({UserView.User.class, OrderView.Order.class})
+    @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
     @Column(name = "user_name", nullable = false)
     private String name;
 
-    @JsonView({UserView.User.class, OrderView.Order.class})
+    @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -93,25 +93,24 @@ public class User implements Identifiable<Integer> {
     private Boolean twoFactorEnabled;
 
 
-    @JsonView({UserView.User.class, OrderView.Order.class})
+    @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type", nullable = false, columnDefinition = "varchar(255) default 'PERSON'")
     private User.Type user_type;
 
-    @Column(name = "country_key", nullable = false)
-    @JsonIgnore
+    @Transient
     private Integer country_key;
 
-    @JsonView(UserView.User.class)
-    @JoinColumn(name = "country_key", referencedColumnName = "country_key", insertable = false, updatable = false)
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonView({UserView.User.class, OrderView.Order.class, UserView.Update.class})
+    @JoinColumn(name = "country_key", referencedColumnName = "country_key", insertable = true, updatable = true)
+    @OneToOne(cascade = CascadeType.DETACH)
     private Country country;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, UserView.Update.class, UserView.Login.class})
     @Column(name = "profile_image", nullable = true)
     private String profileImage;
 
-    @JsonView(UserView.User.class)
+    @JsonView({UserView.User.class, UserView.Update.class, UserView.Login.class})
     @Column(name = "profile_text", nullable = true)
     private String profileText;
 
@@ -157,6 +156,10 @@ public class User implements Identifiable<Integer> {
 
     public void setCountryKey(Integer country) {
         this.country_key = country;
+    }
+
+    public Integer getCountryKey() {
+        return country_key;
     }
 
     public void setCountry(Country country) {
