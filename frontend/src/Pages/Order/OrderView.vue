@@ -3,38 +3,36 @@
     <div>
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropdown
-        class="mt-1"
-        @selected="selectedUser = $event"
-        :selected-item="selectedUser"
-        :options="users"
-        :fields="['name', 'email']"
-        :text="['name', 'email']"
-        :primary-key="'id'"
-        placeholder="Choose a client"
+          class="mt-1"
+          @selected="selectedUser = $event"
+          :selected-item="selectedUser"
+          :options="users"
+          :fields="['name', 'email']"
+          :text="['name', 'email']"
+          :primarykey="'id'"
+          placeholder="Choose a client"
       >
       </SearchableDropdown>
     </div>
     <div class="mt-3 sm:mt-0">
       <p class="font-inter text-yInMnBlue">Project(s)</p>
       <SearchableDropdown
-        @selected="selectedProject = $event"
-        :options="projects"
-        :selected-item="selectedProject"
-        :fields="['description']"
-        :text="['description']"
-        :primary-key="'id'"
-        return="primarykey"
-        :disabled="false"
-        autocomplete="off"
-        :maxItem="10"
-        class="mt-1"
-        placeholder="Select project(s)"
+          @selected="selectedProject = $event"
+          :options="projects"
+          :selected-item="selectedProject"
+          :fields="['description']"
+          :text="['description']"
+          :primarykey="'id'"
+          :disabled="false"
+          autocomplete="off"
+          :maxItem="10"
+          class="mt-1"
+          placeholder="Select project(s)"
       >
       </SearchableDropdown>
     </div>
   </div>
-  <div
-    class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
+  <div class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
     scrollbar-thin scrollbar-thumb-yInMnBlue">
     <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
       <div class="relative sm:w-80">
@@ -101,10 +99,9 @@
       </div>
     </div>
     <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
-      v-for="item in computedObj"
-      :key="item.id"
-    >
-      <OrderRow :order="item" @deleteOrderEvent="deleteOrder" />
+         v-for="item in computedObj"
+         :key="item.id">
+      <OrderRow :order="item" @deleteOrderEvent="deleteOrder"/>
     </div>
   </div>
 </template>
@@ -115,7 +112,7 @@ import OrderRow from "@/Components/Order/OrderRow.vue";
 
 export default {
   name: "OrderView",
-  components: { SearchableDropdown, OrderRow },
+  components: {SearchableDropdown, OrderRow},
   inject: ["ProjectApi", "OrderApi", "UserApi"],
   data() {
     return {
@@ -172,7 +169,7 @@ export default {
       }
 
       for (const order of this.orders) {
-       const string = order.id.toString();
+        const string = order.id.toString();
         if (string.match(regKeyWord)) {
           results.push(order);
         }
@@ -190,7 +187,7 @@ export default {
         });
       } else if (this.searchOrder) {
         // From New -> Old
-        this.orders.sort((a,b) => {
+        this.orders.sort((a, b) => {
           return b.order_date.localeCompare(a.order_date)
         });
       }
