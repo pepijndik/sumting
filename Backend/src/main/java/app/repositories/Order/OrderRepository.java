@@ -59,7 +59,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     }
 
     public Iterable<Order> findByClient(Integer id){
-        return em.createQuery("SELECT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.owner.id = :id", Order.class)
+        return em.createQuery("SELECT DISTINCT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.owner.id = :id", Order.class)
             .setParameter("id", id)
             .getResultList();
     }
