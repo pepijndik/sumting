@@ -102,9 +102,7 @@ export default {
   },
   watch: {
     selectedProject: function (val, old_val) {
-      console.log("Project watcher triggered");
-      if (val !== old_val && val !== null) {
-        console.log("Value changed");
+      if (val !== old_val && val !== null && val !== undefined) {
         if (val.id !== null && val.id !== undefined) {
           if (this.selectedClient.id !== undefined) {
             this.getOrdersCombinedSearch(val.id, this.selectedClient.id);
@@ -115,9 +113,7 @@ export default {
       }
     },
     selectedClient: function (val, old_val) {
-      console.log("Client watcher triggered");
-      if (val !== old_val && val !== null) {
-        console.log("Value changed");
+      if (val !== old_val && val !== null && val !== undefined) {
         if (val.id !== null && val.id !== undefined) {
           if (this.selectedProject.id !== undefined) {
             this.getOrdersCombinedSearch(this.selectedProject.id, val.id);

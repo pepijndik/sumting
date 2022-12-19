@@ -32,15 +32,15 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     public Iterable<Order> findAll() {
         try {
             return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
-        }catch (Exception e){
-            System.out.println(e);
+        } catch (Exception e){
+            e.printStackTrace();
         }
     return null;
     }
 
     @Override
     public long count() {
-        return 0;
+        return em.createQuery("SELECT COUNT(o) FROM Order o", Long.class).getSingleResult();
     }
 
     @Override
@@ -51,11 +51,17 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
 
     @Override
     public boolean existsById(Integer primaryKey) {
-        return false;
+
+        return em.createQuery("SELECT o FROM Order o WHERE o.id = :id", Order.class)
+                .setParameter("id", primaryKey)
+                .getResultList()
+                .size() > 0;
     }
 
-    public Iterable<Order> findByClient(int id){
-        return em.createQuery("SELECT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.owner.id = :id", Order.class).setParameter("id", id).getResultList();
+    public Iterable<Order> findByClient(Integer id){
+        return em.createQuery("SELECT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.owner.id = :id", Order.class)
+            .setParameter("id", id)
+            .getResultList();
     }
 
     /**
@@ -64,10 +70,10 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
      * @param projectID the project id
      * @return the orderlines found by project
      */
-    public Iterable<Order> findByProject(int projectID) {
+    public Iterable<Order> findByProject(Integer projectID) {
         int productID = em.createQuery("SELECT p.id FROM Product p WHERE p.project.id = :id", Integer.class).setParameter("id", projectID).getSingleResult();
 
-        return em.createQuery("SELECT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.product.id = :productID", Order.class)
+        return em.createQuery("SELECT DISTINCT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.product.id = :productID", Order.class)
             .setParameter("productID", productID)
             .getResultList();
     }
@@ -79,10 +85,10 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
      * @param projectID the project id
      * @return the orderlines found by client and project
      */
-    public Iterable<Order> findByClientAndProject(int clientID, int projectID) {
+    public Iterable<Order> findByClientAndProject(Integer clientID, Integer projectID) {
         int productID = em.createQuery("SELECT p.id FROM Product p WHERE p.project.id = :id", Integer.class).setParameter("id", projectID).getSingleResult();
 
-        return em.createQuery("SELECT o FROM Order o INNER JOIN OrderLine ol on ol.orderKey = o.id WHERE ol.owner.id = :clientID AND ol.product.id = :productID", Order.class)
+        return em.createQuery("SELECT DISTINCT o FROM Order o INNER JOIN OrderLine ol on ol.orderKey = o.id WHERE ol.owner.id = :clientID AND ol.product.id = :productID", Order.class)
             .setParameter("clientID", clientID)
             .setParameter("productID", productID)
             .getResultList();
