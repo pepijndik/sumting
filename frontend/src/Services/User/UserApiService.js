@@ -1,16 +1,54 @@
-import ApiAdapter from "@/Services/ApiAdapter";
 import User from "@/Models/User";
-import AuthHeader from "@/Services/AuthHeader";
+import ApiAdapter from "@/Services/ApiAdapter";
+import BaseApi from "@/Services/BaseApi";
+import { useToast } from "vue-toast-notification";
 
 class UserApiService extends ApiAdapter {
-    constructor() {
-        super('users');
-        this.setHeader(AuthHeader());
-    }
+  constructor() {
+    super("users");
+    this.setHeader();
+  }
 
-    async GetAllUsers(){
-        return await this.findAll();
-    }
+  async createUser(name, email, country, type) {
+    if (!name || !email || !country || !type) return false;
 
+    return await BaseApi.post(`auth/${this.resource}`, {
+      name,
+      email,
+      country,
+      type,
+    })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        const $toast = useToast();
+        $toast.error({
+          message: "Cant create client " + error.response.data.message,
+          duration: 5000,
+          dismissible: true,
+        });
+        return false;
+      });
+  }
+  async updateUser(id, name, email, country, type, img) {
+    if (!id || !name || !email || !country || !type) return false;
+
+    let user = new User(id, name, email, country, type, img);
+
+    return await BaseApi.put(`${this.resource}`, user)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        const $toast = useToast();
+        $toast.error({
+          message: "Cant update client " + error.response.data.message,
+          duration: 5000,
+          dismissible: true,
+        });
+        return false;
+      });
+  }
 }
 export default UserApiService;

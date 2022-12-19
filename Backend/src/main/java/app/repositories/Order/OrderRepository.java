@@ -3,7 +3,6 @@ package app.repositories.Order;
 import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.repositories.interfaces.CrudRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,17 +24,17 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
 
     @Override
     public Order findById(Integer id) {
-        return em.find(Order.class,id);
+        return em.find(Order.class, id);
     }
 
     @Override
     public Iterable<Order> findAll() {
         try {
             return em.createQuery("SELECT o FROM Order o", Order.class).getResultList();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    return null;
+        return null;
     }
 
     @Override
@@ -53,12 +52,12 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     public boolean existsById(Integer primaryKey) {
 
         return em.createQuery("SELECT o FROM Order o WHERE o.id = :id", Order.class)
-                .setParameter("id", primaryKey)
-                .getResultList()
-                .size() > 0;
+            .setParameter("id", primaryKey)
+            .getResultList()
+            .size() > 0;
     }
 
-    public Iterable<Order> findByClient(Integer id){
+    public Iterable<Order> findByClient(Integer id) {
         return em.createQuery("SELECT DISTINCT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.owner.id = :id", Order.class)
             .setParameter("id", id)
             .getResultList();
@@ -81,7 +80,7 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     /**
      * Gets orders by client id and product id, using project id to search for a product id
      *
-     * @param clientID the client id
+     * @param clientID  the client id
      * @param projectID the project id
      * @return the orderlines found by client and project
      */

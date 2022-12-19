@@ -1,5 +1,5 @@
 <template>
-  <Index :open="modal" source="warning.svg" :callback="test">
+  <Modal :open="modal" source="warning.svg" :callback="test">
     <template #body>
       <h1
         tabindex="0"
@@ -25,7 +25,7 @@
         Yes, delete it!
       </button>
     </template>
-  </Index>
+  </Modal>
   <div
     class="dark:border-gray-700 w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center"
   >
@@ -82,7 +82,8 @@
 </template>
 
 <script>
-import Index from "../Modal/index.vue";
+import moment from "moment";
+import Modal from "../Modal/index.vue";
 
 let orderDate;
 let mobile;
@@ -114,29 +115,14 @@ export default {
       console.log("deleted");
     },
     dateFormat(inputDate) {
-      //parse the input date
-      const date = new Date(inputDate);
-      let format = "dd / MM / yy";
-      //extract the parts of the date
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      //replace the month
-      format = format.replace("MM", month.toString().padStart(2, "0"));
-      //replace the year
-      format = format.replace("yy", year.toString().substr(2, 2));
-      //replace the day
-      format = format.replace("dd", day.toString().padStart(2, "0"));
-      //replaces the leading 0's
-      format = format.replace(/(^|\/| )0+/g, "$1");
-      return format;
+      return moment(inputDate).format("DD/MM/YY");
     },
   },
   beforeMount() {
     this.orderDate = this.dateFormat(this.order.order_date);
     this.mobile = window.innerWidth < 640 ? true : false;
   },
-  components: { Index },
+  components: { Modal },
 };
 </script>
 

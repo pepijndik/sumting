@@ -1,6 +1,6 @@
 package app.repositories;
 
-import app.repositories.interfaces.CrudRepository;
+import app.repositories.Interfaces.CrudRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import app.models.Dashboard.Graph;
 import org.springframework.beans.factory.annotation.Autowired;

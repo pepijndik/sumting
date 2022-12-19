@@ -3,7 +3,7 @@ package app.repositories.Batch;
 import app.models.Batch.Batch;
 import app.models.Country;
 import app.models.Product.Product;
-import app.repositories.interfaces.CrudRepository;
+import app.repositories.Interfaces.CrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

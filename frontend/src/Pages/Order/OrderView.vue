@@ -4,9 +4,11 @@
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropdown
         class="mt-1"
-        @selected="selectedClient = $event"
+        @selected="selectedUser = $event"
+        :selected-item="selectedUser"
         :options="users"
         :fields="['name', 'email']"
+        :text="['name', 'email']"
         :primary-key="'id'"
         placeholder="Choose a client"
       >
@@ -17,8 +19,11 @@
       <SearchableDropdown
         @selected="selectedProject = $event"
         :options="projects"
+        :selected-item="selectedProject"
         :fields="['description']"
+        :text="['description']"
         :primary-key="'id'"
+        return="primarykey"
         :disabled="false"
         autocomplete="off"
         :maxItem="10"
@@ -57,15 +62,39 @@
       cursor-pointer">
         <p v-if="searchOrder" class="flex m-auto">
           <span>Old</span>
-          <svg class="fill-yInMnBlue rotate-90 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <path d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z" class="clr-i-outline clr-i-outline-path-1"></path>
+          <svg
+              class="fill-yInMnBlue rotate-90 m-auto"
+              width="17"
+              height="17"
+              viewBox="0 0 36 36"
+              version="1.1"
+              preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+                d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z"
+                class="clr-i-outline clr-i-outline-path-1"
+            ></path>
           </svg>
           <span>New</span>
         </p>
         <p v-if="!searchOrder" class="flex m-auto">
           <span>Old</span>
-          <svg class="fill-yInMnBlue rotate-270 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <path d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z" class="clr-i-outline clr-i-outline-path-1"></path>
+          <svg
+              class="fill-yInMnBlue rotate-270 m-auto"
+              width="17"
+              height="17"
+              viewBox="0 0 36 36"
+              version="1.1"
+              preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+                d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z"
+                class="clr-i-outline clr-i-outline-path-1"
+            ></path>
           </svg>
           <span>New</span>
         </p>
@@ -93,7 +122,7 @@ export default {
       projects: [],
       orders: [],
       users: [],
-      selectedClient: null,
+      selectedUser: null,
       selectedProject: null,
       searchKeyWord: '',
       searchOrder: true,
@@ -104,15 +133,15 @@ export default {
     selectedProject: function (val, old_val) {
       if (val !== old_val && val !== null && val !== undefined) {
         if (val.id !== null && val.id !== undefined) {
-          if (this.selectedClient.id !== undefined) {
-            this.getOrdersCombinedSearch(val.id, this.selectedClient.id);
+          if (this.selectedUser.id !== undefined) {
+            this.getOrdersCombinedSearch(val.id, this.selectedUser.id);
           } else {
             this.getOrdersCombinedSearch(val.id, undefined);
           }
         }
       }
     },
-    selectedClient: function (val, old_val) {
+    selectedUser: function (val, old_val) {
       if (val !== old_val && val !== null && val !== undefined) {
         if (val.id !== null && val.id !== undefined) {
           if (this.selectedProject.id !== undefined) {
@@ -127,9 +156,9 @@ export default {
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
-    this.users = await this.UserApi.GetAllUsers();
+    this.users = await this.UserApi.findAll();
 
-    this.orders.sort((a,b) => {
+    this.orders.sort((a, b) => {
       return a.order_date.localeCompare(b.order_date)
     });
   },
@@ -138,7 +167,7 @@ export default {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
 
-      if (this.searchKeyWord === '') {
+      if (this.searchKeyWord === "") {
         return this.limit ? this.orders.slice(0, this.limit) : this.orders;
       }
 
@@ -156,7 +185,7 @@ export default {
     changeListOrder() {
       if (!this.searchOrder) {
         // From Old -> New
-        this.orders.sort((a,b) => {
+        this.orders.sort((a, b) => {
           return a.order_date.localeCompare(b.order_date)
         });
       } else if (this.searchOrder) {
@@ -169,7 +198,7 @@ export default {
       this.searchOrder = !this.searchOrder;
     },
     deleteOrder(id) {
-      this.OrderApi.delete(id);
+      // this.OrderApi.delete(id);
       console.log("Deleted: " + id);
     },
     async getOrdersCombinedSearch(project, client) {
@@ -183,7 +212,7 @@ export default {
         this.orders = await this.OrderApi.combinedSearch(project, client);
       }
     },
-  }
+  },
 };
 </script>
 

@@ -23,4 +23,9 @@ public class UserView {
     {
 
     }
+
+    public static class Update
+    {
+
+    }
 }

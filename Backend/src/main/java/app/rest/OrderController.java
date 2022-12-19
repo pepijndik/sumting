@@ -65,8 +65,8 @@ public class OrderController {
 
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
-        OrderLine o = orderlineRepository.findById(orderlineId);
-        return orderlineRepository.findById(orderlineId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
+        Optional<OrderLine> o = orderlineRepository.findById(orderlineId);
+        return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/orders")
@@ -90,10 +90,15 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/orders/editOrderlines/{id}")
-    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline) {
+
+    @GetMapping("/orders/types")
+    public ResponseEntity<Iterable<OrderType>> getTypes(){
+        return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
+    }
+    @PutMapping("/orderlines/editOrderlines/{id}")
+    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
+            Optional<OrderLine> findOrderline = orderlineRepository.findById(id);
 
             if (findOrderline.isPresent()) {
                 OrderLine orderlineFound = findOrderline.get();
@@ -109,6 +114,7 @@ public class OrderController {
                 orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
                 orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
                 orderlineFound.setLoadedDate(orderline.getLoadedDate());
+                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
 
                 return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
             } else {
