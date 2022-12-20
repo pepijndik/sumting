@@ -101,4 +101,12 @@ public class Batch implements Identifiable<Integer> {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
 }
