@@ -14,6 +14,7 @@ import CountryApiService from "@/Services/Country/CountryApiService";
 import DashboardApiService from "./Services/Dashboard/DashboardApiService";
 import Currency from "@/Services/Currency";
 import FileUploadApiService from "@/Services/FileUploadService";
+import BatchApiService from "@/Services/Batch/BatchApiService";
 export default {
   name: "App",
   components: {
@@ -31,6 +32,7 @@ export default {
       CountryApi: new CountryApiService(),
       DashboardApi: new DashboardApiService(),
       FileUploadApi: new FileUploadApiService(),
+      BatchApi: new BatchApiService()
     };
   },
 
