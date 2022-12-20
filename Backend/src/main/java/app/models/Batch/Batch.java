@@ -8,7 +8,7 @@ import app.views.BatchView;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,23 +23,23 @@ public class Batch implements Identifiable<Integer> {
     private Integer id;
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
+    private LocalDate createdAt;
 
-    @Column(name = "updated_at", nullable = true)
-    private LocalDateTime updatedAt;
+    @Column(name = "updated_at", nullable = true, columnDefinition = "timestamp")
+    private LocalDate updatedAt;
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "text_planned", nullable = true)
+    @Column(name = "text_planned", nullable = true, columnDefinition = "varchar(255)")
     private String textPlanned; // planned text
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "text_completed", nullable = true)
+    @Column(name = "text_completed", nullable = true, columnDefinition = "varchar(255)")
     private String textCompleted; // completed text
 
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "batch_size", nullable = true, columnDefinition = "int default 0")
+    @Column(name = "batch_size", nullable = false, columnDefinition = "int")
     private Integer batchSize; // size of batch
 
     @Column(name = "project_key", nullable = true, columnDefinition = "int default 0")
@@ -73,5 +73,13 @@ public class Batch implements Identifiable<Integer> {
     @Override
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 }
