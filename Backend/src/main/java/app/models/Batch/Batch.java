@@ -6,6 +6,7 @@ import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.views.BatchView;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -57,6 +58,7 @@ public class Batch implements Identifiable<Integer> {
     /**
      * The batched invoices
      */
+    @Nullable
     @OneToOne
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_invoice_key", referencedColumnName = "batch_invoice_key", insertable = false, updatable = false)
@@ -82,5 +84,21 @@ public class Batch implements Identifiable<Integer> {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Integer getProjectKey() {
+        return projectKey;
+    }
+
+    public void setProjectKey(Integer projectKey) {
+        this.projectKey = projectKey;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

@@ -1,7 +1,9 @@
 package app.rest;
 
 import app.models.Batch.Batch;
+import app.models.Project.Project;
 import app.repositories.Batch.BatchRepository;
+import app.repositories.Project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ public class BatchController {
 
     @Autowired
     private BatchRepository batchRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @GetMapping("/batch")
     public ResponseEntity<Iterable<Batch>> getAllBatches() {
@@ -29,7 +33,11 @@ public class BatchController {
     @PostMapping("/batch")
     public ResponseEntity<Batch> createBatch(@RequestBody Batch batch) {
         try {
+            Project batchProject = this.projectRepository.findById(batch.getProjectKey());
+            System.out.println("project: " + batchProject);
+
             batch.setCreatedAt(LocalDateTime.now());
+            batch.setProject(batchProject);
             Batch newBatch = this.batchRepository.save(batch);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
