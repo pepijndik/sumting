@@ -14,13 +14,13 @@ class BatchApiService extends ApiAdapter {
     async create(
         textPlanned,
         batchSize,
-        project,
+        projectKey,
         orderLines
     ) {
         const batch = new Batch();
         batch.textPlanned = textPlanned;
         batch.batchSize = batchSize;
-        batch.projectKey = project;
+        batch.projectKey = projectKey;
         batch.orderlines = orderLines;
 
         await this.save(batch).then((response) => {

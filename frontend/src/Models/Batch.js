@@ -1,4 +1,3 @@
-import moment from "moment";
 export default class Batch
 {
     id; // Number
@@ -16,11 +15,6 @@ export default class Batch
 
     static copyConstructor(batch) {
         if (batch == null) return null;
-
-        let b = Object.assign(new Batch(), batch);
-        b.createdAt = moment(batch.createdAt);
-        // b.projectKey = b.project.id;
-
-        return b;
+        return Object.assign(new Batch(), batch);
     }
 }

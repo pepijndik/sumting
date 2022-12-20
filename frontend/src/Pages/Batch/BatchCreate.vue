@@ -97,7 +97,7 @@
               <p class="text-yInMnBlue">ID {{ orderline.id }}</p>
             </div>
             <div class="h-5 lg:h-10 items-center flex lg:w-[200px] md:w-[180px] w-[95px] text-xs md:text-sm border-r-2 mr-1">
-              <p class="text-candyPink">{{ orderline.product.name }}</p>
+              <p class="text-candyPink">{{ orderline.notes }}</p>
             </div>
             <div class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[120px] w-[95px] font-Alatsi text-xs md:text-sm">
               <p class="text-yInMnBlue">Date:&nbsp;</p>
