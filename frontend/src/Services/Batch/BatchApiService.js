@@ -20,7 +20,7 @@ class BatchApiService extends ApiAdapter {
         const batch = new Batch();
         batch.textPlanned = textPlanned;
         batch.batchSize = batchSize;
-        batch.project = project;
+        batch.projectKey = project;
         batch.orderlines = orderLines;
 
         await this.save(batch).then((response) => {

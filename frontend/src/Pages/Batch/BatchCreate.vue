@@ -125,7 +125,7 @@ export default {
   components: {
     SearchableDropdown
   },
-  inject: ["ProjectApi", "ProductApi", "OrderApi"],
+  inject: ["ProjectApi", "ProductApi", "OrderApi", "BatchApi"],
   data() {
     return {
       editor: ClassicEditor,
@@ -178,6 +178,9 @@ export default {
       this.orderlines.sort((a,b) => {
         return a.loadedDate.localeCompare(b.loadedDate)
       });
+    },
+    checkedOrderlines() {
+      console.log(this.checkedOrderlines);
     }
   },
   computed: {
@@ -242,14 +245,38 @@ export default {
       this.searchOrderline = !this.searchOrderline;
     },
     async createBatch() {
+      let batch
       if (
           this.description !== "" &&
           !this.isEmpty(this.selectedProject) &&
           this.checkedOrderlines.length > 0) {
-        console.log("textPlanned: ", this.description);
-        console.log("batch_size: ", this.checkedOrderlines.length);
-        console.log("projectKey: ", this.selectedProject);
-        console.log("orderLines: ", this.checkedOrderlines);
+
+        try {
+          batch = await this.BatchApi.create(
+              this.description,
+              this.checkedOrderlines.length,
+              this.selectedProject.id,
+              this.checkedOrderlines
+          );
+
+          this.$toast.open({
+            type: "success",
+            message: "Batch created",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+          this.$router.push({ name: "dashboard" });
+        } catch {
+          this.$toast.open({
+            type: "error",
+            message: "Something went wrong",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        }
+
       } else {
         this.$toast.open({
           type: "error",

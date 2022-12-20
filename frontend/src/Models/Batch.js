@@ -19,7 +19,7 @@ export default class Batch
 
         let b = Object.assign(new Batch(), batch);
         b.createdAt = moment(batch.createdAt);
-        b.projectKey = b.project.id;
+        // b.projectKey = b.project.id;
 
         return b;
     }
