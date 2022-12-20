@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -24,10 +25,10 @@ public class Batch implements Identifiable<Integer> {
 
     @JsonView(BatchView.Batch.class)
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = true, columnDefinition = "timestamp")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @JsonView(BatchView.Batch.class)
     @Column(name = "text_planned", nullable = true, columnDefinition = "varchar(255)")
@@ -75,11 +76,11 @@ public class Batch implements Identifiable<Integer> {
         this.id = id;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }

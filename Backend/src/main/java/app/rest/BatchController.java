@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Controller
 public class BatchController {
@@ -28,7 +29,7 @@ public class BatchController {
     @PostMapping("/batch")
     public ResponseEntity<Batch> createBatch(@RequestBody Batch batch) {
         try {
-            batch.setCreatedAt(LocalDate.now());
+            batch.setCreatedAt(LocalDateTime.now());
             Batch newBatch = this.batchRepository.save(batch);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
