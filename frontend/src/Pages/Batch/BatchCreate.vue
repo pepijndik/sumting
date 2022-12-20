@@ -107,7 +107,9 @@
         </div>
       </form>
     </div>
-    <button class="mt-6 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+    <button
+        v-on:click="createBatch"
+        class="mt-6 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
       Create batch
     </button>
@@ -127,7 +129,7 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
-      description: ref('<h2>Batch description</h2>'),
+      description: ref(''),
       editorConfig: {
 
         language: 'nl',
@@ -238,6 +240,25 @@ export default {
       }
 
       this.searchOrderline = !this.searchOrderline;
+    },
+    async createBatch() {
+      if (
+          this.description !== "" &&
+          !this.isEmpty(this.selectedProject) &&
+          this.checkedOrderlines.length > 0) {
+        console.log("textPlanned: ", this.description);
+        console.log("batch_size: ", this.checkedOrderlines.length);
+        console.log("projectKey: ", this.selectedProject);
+        console.log("orderLines: ", this.checkedOrderlines);
+      } else {
+        this.$toast.open({
+          type: "error",
+          message: "Please fill in all fields",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      }
     }
   }
 }
