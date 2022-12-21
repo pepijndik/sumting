@@ -11,7 +11,7 @@
           tabindex="0"
           class="focus:outline-none mb-5 text-sm text-yInMnBlue dark:text-gray-400 text-center font-normal"
       >
-        You are about to delete order
+        You are about to delete Project
         <span class="text-candyPink"> {{ project.id }} </span>,<br />
         this action is not reversable.
       </p>
@@ -73,52 +73,6 @@
 
     </td>
   </tr>
-<!--  <div class="dark:border-gray-700 w-full lg:h-12 md:h-24 flex text-sm border-gray-300 border-b font-Alatsi items-center" >-->
-<!--    <div class="m-2 flex lg:flex-row flex-wrap border-r-2">-->
-<!--      <div class="float-left items-left flex items-center md:border-r-2 pr-1 mr-1 ">-->
-<!--        <img-->
-<!--            :src="require(`@/Assets/img/icons/file.svg`)"-->
-<!--            alt="File icon"-->
-<!--            width="24"-->
-<!--        />-->
-<!--        <p class="text-yInMnBlue">ID {{ project.id }}</p>-->
-<!--      </div>-->
-
-<!--      <div class="flex flex-row">-->
-<!--        <div-->
-<!--            class="h-5 lg:h-10 items-center flex  text-xs md:text-sm border-r-2 mr-1">-->
-<!--          <p v-if="mobile" class="text-yInMnBlue">Name:&nbsp;</p>-->
-<!--          <p v-else class="text-yInMnBlue">Name:&nbsp;</p>-->
-<!--          <p class="text-candyPink">{{ project.description }}</p>-->
-<!--        </div>-->
-
-<!--        <div class="h-5 lg:h-10 items-center flex font-Alatsi text-xs md:text-sm">-->
-<!--          <p class="text-yInMnBlue">Created at:&nbsp;</p>-->
-<!--          <p class="text-candyPink">{{ projectDate }}</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <button-->
-<!--        class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md  justify-center h-[32px] mr-2 md:mr-4 w-1/6"-->
-<!--    >-->
-<!--      <img-->
-<!--          :src="require(`@/Assets/img/icons/edit.svg`)"-->
-<!--          alt="Edit icon"-->
-<!--          width="24"-->
-<!--      />-->
-<!--    </button>-->
-<!--    <button-->
-<!--        @click="confirmDelete"-->
-<!--        class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md  justify-center h-[32px]  w-1/6"-->
-<!--    >-->
-<!--      <img-->
-<!--          :src="require(`@/Assets/img/icons/delete.svg`)"-->
-<!--          alt="Delete icon"-->
-<!--          width="24"-->
-<!--      />-->
-<!--    </button>-->
-<!--  </div>-->
 </template>
 
 <script>
@@ -138,6 +92,7 @@ export default {
   data() {
     return {
       modal: false,
+      projectDate:""
     };
   },
   watch: {
