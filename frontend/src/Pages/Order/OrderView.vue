@@ -195,7 +195,7 @@ export default {
       this.searchOrder = !this.searchOrder;
     },
     deleteOrder(id) {
-      // this.OrderApi.delete(id);
+      this.OrderApi.delete(id);
       console.log("Deleted: " + id);
     },
     async getOrdersCombinedSearch(project, client) {

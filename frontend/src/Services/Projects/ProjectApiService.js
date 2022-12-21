@@ -1,12 +1,15 @@
 import ApiAdapter from "@/Services/ApiAdapter";
 
-import AuthHeader from "@/Services/AuthHeader";
+import Project from "@/Models/Project";
 class ProjectApiService extends ApiAdapter {
     constructor() {
         super('projects');
-        this.setHeader(AuthHeader());
     }
 
+    async findAll() {
+        const projects = await super.findAll();
+        return projects.map(project => Project.copyConstructor(project));
+    }
     async SearchableDropDown() {
         return await this.findAll();
     }

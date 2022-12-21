@@ -1,6 +1,5 @@
 <template>
-  <div class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
-    scrollbar-thin scrollbar-thumb-yInMnBlue">
+  <div class="h-10/12 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-yInMnBlue">
     <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
       <div class="relative sm:w-80">
         <div class="absolute text-gray-300 flex items-center pl-4 h-full cursor-pointer">
@@ -20,7 +19,7 @@
             h-10 flex focus:border-yInMnBlue focus:border items-center pl-10 text-sm border-gray-300
             border font-inter"
             v-model="searchKeyWord"
-            placeholder="Search for your order"
+            placeholder="Search for your project"
         />
       </div>
       <div @click="changeListOrder()" class="flex px-2 font-inter text-yInMnBlue border border-gray-300 rounded
@@ -41,21 +40,81 @@
         </p>
       </div>
     </div>
-    <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
-         v-for="item in computedObj"
-         :key="item.id"
-    >
-      <ProjectRow :project="item" @deleteProjectEvent="deleteOrder" />
+    <div class="mt-7 overflow-x-auto">
+      <table class="w-full whitespace-nowrap">
+        <tbody
+            v-for="project in filter"
+            :key="project.id">
+        <ProjectRow :project="project" @deleteProjectEvent="deleteProject" />
+        </tbody>
+      </table>
     </div>
+<!--    <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"-->
+<!--         v-for="project in filter"-->
+<!--         :key="project.id">-->
+<!--    -->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
-
+import ProjectRow from "@/Components/Project/ProjectRow.vue";
 export default {
   name: "ListProjects",
-  components: {
+  inject: ["ProjectApi"],
+  computed: {
+    filter() {
+      const results = [];
+      const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
 
+      if (this.searchKeyWord === "") {
+        return this.limit ? this.projects.slice(0, this.limit) : this.this.projects;
+      }
+
+      for (const project of this.projects) {
+        const string = project.id.toString();
+        if (string.match(regKeyWord)) {
+          results.push(project);
+        }
+      }
+
+      return this.limit ? results.slice(0, this.limit) : results;
+    },
+  },
+  async created() {
+    this.projects = await this.ProjectApi.findAll();
+  },
+  data() {
+    return {
+      limit: 10,
+      projects: [],
+      searchKeyWord: "",
+      searchOrder: true,
+    };
+  },
+  components: {
+    ProjectRow
+  },
+  methods:{
+    changeListOrder() {
+      if (!this.searchOrder) {
+        // From Old -> New
+        this.projects.sort((a, b) => {
+          return a.createdAt.diff(b.createdAt);
+        });
+      } else if (this.searchOrder) {
+        // From New -> Old
+        this.projects.sort((a, b) => {
+          return b.createdAt.diff(a.createdAt)
+        });
+      }
+
+      this.searchOrder = !this.searchOrder;
+    },
+    deleteProject(id) {
+       this.ProjectApi.delete(id);
+      console.log("Deleted: " + id);
+    },
   }
 }
 </script>
