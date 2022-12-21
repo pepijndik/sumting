@@ -1,5 +1,6 @@
 package app.service.Stripe;
 
+import app.models.User.User;
 import app.service.Stripe.Requests.ChargeRequest;
 import app.service.Stripe.Requests.CreateSubscriptionRequest;
 import com.stripe.Stripe;
@@ -30,6 +31,7 @@ public class StripeService {
 
     @PostConstruct
     public void init() {
+        Stripe.setAppInfo("Sumting Admin panel", "1.0", "https://sumting.pdik.nl");
         Stripe.apiKey = stripeConfig.getSecretKey();
     }
 
@@ -49,8 +51,11 @@ public class StripeService {
         return Charge.create(chargeParams);
     }
 
-    public void Subscripe() {
-
+    public Customer createCustomer(User user) throws StripeException {
+        Map<String, Object> customerParams = new HashMap<>();
+        customerParams.put("email", user.getEmail());
+        customerParams.put("name", user.getName());
+        return Customer.create(customerParams);
     }
 
     public Event getEvent(String payload, String sigHeader) throws StripeException {

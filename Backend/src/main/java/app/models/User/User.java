@@ -43,7 +43,6 @@ public class User implements Identifiable<Integer> {
     }
 
 
-
     public static enum Type {
         BUSINESS,
         PERSON,
@@ -109,6 +108,11 @@ public class User implements Identifiable<Integer> {
     @JsonView({UserView.User.class, UserView.Update.class, UserView.Login.class})
     @Column(name = "profile_text", nullable = true)
     private String profileText;
+
+    @JsonView({UserView.User.class})
+    @Column(name = "user_stripe_id", nullable = true)
+    private String stripeId;
+
 
     @JsonView(UserView.User.class)
     public boolean isTwoFactorEnabled() {
@@ -224,6 +228,7 @@ public class User implements Identifiable<Integer> {
     public String toString() {
         return String.format("{ email=%s, callName=%s, id=%d, country=%s}", this.email, this.name, this.id, this.country);
     }
+
     public static User buildRandom(String uname) {
         System.out.printf("Building random user with name %s", uname);
         User user = buildRandom();
@@ -250,7 +255,15 @@ public class User implements Identifiable<Integer> {
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         LocalDate created_at = LocalDate.ofEpochDay(randomDay);
         user.setCreatedAt(created_at.atStartOfDay());
-        System.out.printf("User: %s",user);
+        System.out.printf("User: %s", user);
         return user;
+    }
+
+    public String getStripeId() {
+        return stripeId;
+    }
+
+    public void setStripeId(String stripeId) {
+        this.stripeId = stripeId;
     }
 }
