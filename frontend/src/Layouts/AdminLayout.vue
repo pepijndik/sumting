@@ -63,13 +63,6 @@
               v-text="$route.meta.title"
             ></h1>
           </div>
-          <div v-if="isLoading" class="absolute z-40 ml-80 mt-24">
-            <semipolar-spinner
-                :animation-duration="2000"
-                :size="65"
-                color="#E56B6F"
-            />
-          </div>
           <router-view />
         </div>
       </div>
@@ -84,55 +77,17 @@ import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
 import { SemipolarSpinner  } from 'epic-spinners'
-import router from "@/Router/router";
-import BaseApi from "@/Services/BaseApi";
-import AuthHeader from "@/Services/AuthHeader";
+
 export default {
   name: "DashboardLayout",
-  inject: ['axios',"Auth"],
-  components: {NavigationItem, NavigationDropdownItem, SubDropdownItem, DashboardHeaderBar, Navigation,SemipolarSpinner},
+  inject: ["Auth"],
+  components: {NavigationItem, NavigationDropdownItem, SubDropdownItem, DashboardHeaderBar, Navigation},
   data() {
     return {
       mobileOpen: false,
-      isLoading: false,
-      axiosInterceptor: null,
     };
   },
-  mounted() {
-    this.enableInterceptor()
-  },
-  methods: {
-    enableInterceptor() {
-      this.axiosInterceptor = this.axios.interceptors.request.use((config) => {
-        //Intercept request and add token
-        this.isLoading = true
-        config.headers['Authorization'] = `${AuthHeader().Authorization}`
-        return config
-      }, (error) => {
-        this.isLoading = false;
-        return Promise.reject(error)
-      })
 
-      this.axios.interceptors.response.use((response) => {
-
-        this.isLoading = false
-        return response
-      }, function(error) {
-        this.isLoading = false;
-        if(error.response.status === 401) {
-          console.log("User was not logged in, redirect to login")
-          this.Auth.logout();
-          this.$router.push({name: 'auth:login'});
-        }
-
-        return Promise.reject(error)
-      })
-    },
-
-    disableInterceptor() {
-      this.axios.interceptors.request.eject(this.axiosInterceptor)
-    },
-  },
 }
 </script>
 

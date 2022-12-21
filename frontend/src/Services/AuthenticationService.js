@@ -13,7 +13,7 @@ class AuthenticationService {
         if (process.env?.VUE_APP_ENV === 'development') {
             return true;
         }
-        return localStorage.getItem('token') !== null;
+        return localStorage.getItem('token') !== null && localStorage.getItem('user') !== null;
     }
 
     async login(email, password, remember = false) {
@@ -26,11 +26,11 @@ class AuthenticationService {
                 localStorage.setItem('token', BearToken);
                 BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
 
-                if(response.data.need_twofactor) {
+                if (response.data.need_twofactor) {
                     return {success: true, need_twofactor: true};
                 }
 
-                const user =new User(data.id, data.name, data.email, data.country, data.user_type)
+                const user = new User(data.id, data.name, data.email, data.country, data.user_type)
                 user.profileImage = data.profileImage;
                 user.profileText = data.profileText;
                 user.twofactor = new Twofactor(data.twoFactorEnabled);
@@ -55,15 +55,15 @@ class AuthenticationService {
      * @param user
      * @returns {Promise<AxiosResponse<any>|boolean>}
      */
-    async verify2Fa(code,user) {
+    async verify2Fa(code, user) {
         return await BaseApi.post("auth/2fa/verify", {
             code: code,
         }, {headers: AuthHeader()}).then(
             response => {
-                if(response.data.success) {
+                if (response.data.success) {
                     user.twofactor.setEnabled(true);
                     user.twofactor.setVerified(true);
-                }else{
+                } else {
                     user.twofactor.setVerified(false);
                 }
 
