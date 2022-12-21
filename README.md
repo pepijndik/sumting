@@ -107,10 +107,40 @@ Read the <a href="#installation">Installation</a> section to get a local copy up
 
 * Docker (https://docs.docker.com/get-docker/)
 * Docker-compose (https://docs.docker.com/compose/install/)
+### Production Installation
 
+1. Download the latest release from the [releases page]() This will only be a Dockercompose file. With preconfigured settings to deploy our application.
+   Run the following command to build the latest version of the application.
+   ```sh
+   docker-compose build
+   ```
+2.
+   When the installation is done you can start the project with the following command
+   ```sh
+   docker-compose up -d
+   ```
+   This will launch the Dockercontainers and start the project on port 8080 You can now access the project frontend on :8080,
+   the backend is available on :8083.
+
+5. To stop the project use the following command
+   ```sh
+   docker-compose down
+   ```
+6. The final step is to Link these containers to a propertied domain. 
+This can be done by using a reverse proxy like Nginx. You can find a tutorial on how to do this here: https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04
+
+7. When they are linked you can access the project on your domain.
+Test backend: ```http GET *:/8083/help```
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
 ### Dev Installation
 
-1. Clone our repository with the tag @latest , and go into the directory
+1. Clone our repository with the tag @latest, and go into the directory
    
  ```sh
    git clone https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1.git
@@ -137,6 +167,7 @@ Test backend: localhost:8083/help
 
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 
