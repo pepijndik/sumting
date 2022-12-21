@@ -182,8 +182,11 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 - [x] Mockup designs
 - [x] Create Empty frameworks frontend and backend
-- [ ] Build Layout
-- [ ] Connect Database
+- [X] Build Layout
+- [X] Connect Database
+- [X] Crud Orders
+- [ ] Crud Clients
+- [X] View Projects
 
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
