@@ -196,8 +196,15 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 
 <!-- LICENSE -->
 ## License
+This application is licensed under the closed licenses. 
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+A closed license is a type of license that restricts the use, modification, and distribution of software. It is often used to protect the intellectual property rights of the software creator and ensure that the software is only used in the manner intended by the creator.
+In the case of the Sumting Admin Panel application, a closed license would likely be used to prevent unauthorized use or distribution of the software. This means that users of the Sumting Admin Panel would be required to purchase a license in order to use the software and would not be able to modify or distribute the software without permission from us.
+A closed license is often accompanied by terms and conditions that outline the specific ways in which the software can be used, as well as any penalties for misuse. These terms and conditions may include provisions for updates and maintenance, as well as limitations on the number of users or devices on which the software can be installed.
+Overall, a closed license serves to protect the rights of the software creator and ensure that the software is used responsibly. 
+
+It is important for users of the Sumting Admin Panel to carefully read and understand the terms of the closed license in order to avoid any potential legal issues. See the full license at:
+[License](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/blob/main/LICENSE)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
