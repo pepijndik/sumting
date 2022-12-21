@@ -5,6 +5,7 @@ import app.exceptions.TwofactorSetup;
 import app.models.Country;
 import app.repositories.CountryRepository;
 import app.response.LoginResponse;
+import app.service.Stripe.StripeService;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -15,6 +16,7 @@ import app.exceptions.AuthenticationException;
 import app.security.JWTokenInfo;
 import app.security.JWTokenUtils;
 import app.security.PasswordEncoder;
+import com.stripe.exception.StripeException;
 import dev.samstevens.totp.code.CodeVerifier;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
@@ -69,6 +71,9 @@ public class AuthController {
     @Autowired
     private CountryRepository countryRepo;
 
+    @Autowired
+    private StripeService stripeService;
+
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
 
@@ -84,6 +89,12 @@ public class AuthController {
         User user = new User();
         user.setEmail(email);
         user.setName(name);
+        try{
+            user.setStripeId(stripeService.createCustomer(user).getId());
+        }catch (StripeException  e){
+            System.out.printf("Error creating stripe customer: %s", e.getMessage());
+        }
+
         user.setEncodedPassword(user.hashPassword(givenPassword));
         if (Objects.equals(type, "BUSINESS")) {
             user.setType(User.Type.BUSINESS);
