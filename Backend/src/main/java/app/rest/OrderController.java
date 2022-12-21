@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -64,8 +65,8 @@ public class OrderController {
 
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
-        OrderLine o = orderlineRepository.findById(orderlineId);
-        return orderlineRepository.findById(orderlineId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
+        Optional<OrderLine> o = orderlineRepository.findById(orderlineId);
+        return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/orders")
@@ -94,10 +95,10 @@ public class OrderController {
     public ResponseEntity<Iterable<OrderType>> getTypes(){
         return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
     }
-    @PutMapping("/orders/editOrderlines/{id}")
-    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline) {
+    @PutMapping("/orderlines/editOrderlines/{id}")
+    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = Optional.of(orderlineRepository.findById(id));
+            Optional<OrderLine> findOrderline = orderlineRepository.findById(id);
 
             if (findOrderline.isPresent()) {
                 OrderLine orderlineFound = findOrderline.get();
@@ -113,6 +114,7 @@ public class OrderController {
                 orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
                 orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
                 orderlineFound.setLoadedDate(orderline.getLoadedDate());
+                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
 
                 return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
             } else {
@@ -121,6 +123,21 @@ public class OrderController {
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/orders/combinedSearch")
+    public ResponseEntity<Iterable<Order>> getOrdersByClientAndProject(
+        @RequestParam(value = "clientID", required = false) String clientId,
+        @RequestParam(value = "projectID", required = false) String projectId) {
+        if (!clientId.equals("null") && !projectId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
+        } else if (!clientId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
+        } else if (!projectId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -11,11 +11,9 @@ export default {
   name: "Dashboard",
   components: {
     BarGraph,
-    LineGraph
-  }
-}
+    LineGraph,
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

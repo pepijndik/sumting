@@ -28,7 +28,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
     // path prefixes that will be protected by the authentication filter
 
-    private static final Set<String> SECURED_PATHS = Set.of("/auth/2fa","/auth/me");
+    private static final Set<String> SECURED_PATHS = Set.of("/auth/2fa","/auth/me", "/users");
 
 
     @Override

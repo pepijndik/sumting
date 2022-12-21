@@ -3,32 +3,36 @@
     <div>
       <p class="font-inter text-yInMnBlue">Client</p>
       <SearchableDropdown
-        class="mt-1"
-        :options="users"
-        :fields="['name', 'email']"
-        :primary-key="'id'"
-        placeholder="Choose a client"
+          class="mt-1"
+          @selected="selectedUser = $event"
+          :selected-item="selectedUser"
+          :options="users"
+          :fields="['name', 'email']"
+          :text="['name', 'email']"
+          :primarykey="'id'"
+          placeholder="Choose a client"
       >
       </SearchableDropdown>
     </div>
     <div class="mt-3 sm:mt-0">
       <p class="font-inter text-yInMnBlue">Project(s)</p>
       <SearchableDropdown
-        @selected="selectedProject = $event"
-        :options="projects"
-        :fields="['description']"
-        :primary-key="'id'"
-        :disabled="false"
-        autocomplete="off"
-        :maxItem="10"
-        class="mt-1"
-        placeholder="Select project(s)"
+          @selected="selectedProject = $event"
+          :options="projects"
+          :selected-item="selectedProject"
+          :fields="['description']"
+          :text="['description']"
+          :primarykey="'id'"
+          :disabled="false"
+          autocomplete="off"
+          :maxItem="10"
+          class="mt-1"
+          placeholder="Select project(s)"
       >
       </SearchableDropdown>
     </div>
   </div>
-  <div
-    class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
+  <div class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
     scrollbar-thin scrollbar-thumb-yInMnBlue">
     <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
       <div class="relative sm:w-80">
@@ -56,25 +60,48 @@
       cursor-pointer">
         <p v-if="searchOrder" class="flex m-auto">
           <span>Old</span>
-          <svg class="fill-yInMnBlue rotate-90 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <path d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z" class="clr-i-outline clr-i-outline-path-1"></path>
+          <svg
+              class="fill-yInMnBlue rotate-90 m-auto"
+              width="17"
+              height="17"
+              viewBox="0 0 36 36"
+              version="1.1"
+              preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+                d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z"
+                class="clr-i-outline clr-i-outline-path-1"
+            ></path>
           </svg>
           <span>New</span>
         </p>
         <p v-if="!searchOrder" class="flex m-auto">
           <span>Old</span>
-          <svg class="fill-yInMnBlue rotate-270 m-auto" width="17" height="17" viewBox="0 0 36 36" version="1.1"  preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <path d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z" class="clr-i-outline clr-i-outline-path-1"></path>
+          <svg
+              class="fill-yInMnBlue rotate-270 m-auto"
+              width="17"
+              height="17"
+              viewBox="0 0 36 36"
+              version="1.1"
+              preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <path
+                d="M27.66,15.61,18,6,8.34,15.61A1,1,0,1,0,9.75,17L17,9.81V28.94a1,1,0,1,0,2,0V9.81L26.25,17a1,1,0,0,0,1.41-1.42Z"
+                class="clr-i-outline clr-i-outline-path-1"
+            ></path>
           </svg>
           <span>New</span>
         </p>
       </div>
     </div>
     <div class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
-      v-for="item in computedObj"
-      :key="item.id"
-    >
-      <OrderRow :order="item" @deleteOrderEvent="deleteOrder" />
+         v-for="item in computedObj"
+         :key="item.id">
+      <OrderRow :order="item" @deleteOrderEvent="deleteOrder"/>
     </div>
   </div>
 </template>
@@ -85,25 +112,50 @@ import OrderRow from "@/Components/Order/OrderRow.vue";
 
 export default {
   name: "OrderView",
-  components: { SearchableDropdown, OrderRow },
+  components: {SearchableDropdown, OrderRow},
   inject: ["ProjectApi", "OrderApi", "UserApi"],
   data() {
     return {
       projects: [],
       orders: [],
       users: [],
+      selectedUser: null,
       selectedProject: null,
       searchKeyWord: '',
       searchOrder: true,
       limit: 10,
     };
   },
+  watch: {
+    selectedProject: function (val, old_val) {
+      if (val !== old_val && val !== null && val !== undefined) {
+        if (val.id !== null && val.id !== undefined) {
+          if (this.selectedUser.id !== undefined) {
+            this.getOrdersCombinedSearch(val.id, this.selectedUser.id);
+          } else {
+            this.getOrdersCombinedSearch(val.id, undefined);
+          }
+        }
+      }
+    },
+    selectedUser: function (val, old_val) {
+      if (val !== old_val && val !== null && val !== undefined) {
+        if (val.id !== null && val.id !== undefined) {
+          if (this.selectedProject.id !== undefined) {
+            this.getOrdersCombinedSearch(this.selectedProject.id, val.id);
+          } else {
+            this.getOrdersCombinedSearch(undefined, val.id);
+          }
+        }
+      }
+    },
+  },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
-    this.users = await this.UserApi.GetAllUsers();
+    this.users = await this.UserApi.findAll();
 
-    this.orders.sort((a,b) => {
+    this.orders.sort((a, b) => {
       return a.order_date.localeCompare(b.order_date)
     });
   },
@@ -112,12 +164,12 @@ export default {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
 
-      if (this.searchKeyWord === '') {
+      if (this.searchKeyWord === "") {
         return this.limit ? this.orders.slice(0, this.limit) : this.orders;
       }
 
       for (const order of this.orders) {
-       const string = order.id.toString();
+        const string = order.id.toString();
         if (string.match(regKeyWord)) {
           results.push(order);
         }
@@ -130,12 +182,12 @@ export default {
     changeListOrder() {
       if (!this.searchOrder) {
         // From Old -> New
-        this.orders.sort((a,b) => {
+        this.orders.sort((a, b) => {
           return a.order_date.localeCompare(b.order_date)
         });
       } else if (this.searchOrder) {
         // From New -> Old
-        this.orders.sort((a,b) => {
+        this.orders.sort((a, b) => {
           return b.order_date.localeCompare(a.order_date)
         });
       }
@@ -143,10 +195,21 @@ export default {
       this.searchOrder = !this.searchOrder;
     },
     deleteOrder(id) {
-      this.OrderApi.delete(id);
+      // this.OrderApi.delete(id);
       console.log("Deleted: " + id);
     },
-  }
+    async getOrdersCombinedSearch(project, client) {
+      if (project === undefined && client === undefined) {
+        this.orders = await this.OrderApi.findAll();
+      } else if (project !== undefined && client === undefined) {
+        this.orders = await this.OrderApi.combinedSearch(null, project);
+      } else if (project === undefined && client !== undefined) {
+        this.orders = await this.OrderApi.combinedSearch(client, null);
+      } else if (project !== undefined && client !== undefined) {
+        this.orders = await this.OrderApi.combinedSearch(project, client);
+      }
+    },
+  },
 };
 </script>
 

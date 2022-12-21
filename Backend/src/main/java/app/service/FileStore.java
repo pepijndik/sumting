@@ -60,7 +60,27 @@ public class FileStore {
             throw new IllegalStateException("Failed to upload the file", e);
         }
     }
-
+    public String upload(String path,
+                         String fileName,
+                         Optional<Map<String, String>> optionalMetaData,
+                         InputStream inputStream,
+                         Boolean isPublic) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        optionalMetaData.ifPresent(map -> {
+            if (!map.isEmpty()) {
+                map.forEach(objectMetadata::addUserMetadata);
+            }
+        });
+        try {
+            amazonS3.putObject(path, fileName, inputStream, objectMetadata);
+            if(isPublic){
+                amazonS3.setObjectAcl(path, fileName, com.amazonaws.services.s3.model.CannedAccessControlList.PublicRead);
+            }
+            return amazonS3.getUrl(path, fileName).toString(); // return url
+        } catch (AmazonServiceException e) {
+            throw new IllegalStateException("Failed to upload the file", e);
+        }
+    }
 
 
 
