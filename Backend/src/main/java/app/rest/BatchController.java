@@ -1,8 +1,10 @@
 package app.rest;
 
 import app.models.Batch.Batch;
+import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.repositories.Batch.BatchRepository;
+import app.repositories.Order.OrderlineRepository;
 import app.repositories.Project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 public class BatchController {
@@ -24,6 +27,8 @@ public class BatchController {
     private BatchRepository batchRepository;
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private OrderlineRepository orderlineRepository;
 
     @GetMapping("/batch")
     public ResponseEntity<Iterable<Batch>> getAllBatches() {
@@ -33,12 +38,20 @@ public class BatchController {
     @PostMapping("/batch")
     public ResponseEntity<Batch> createBatch(@RequestBody Batch batch) {
         try {
+            System.out.println(batch.toString());
+
             Project batchProject = this.projectRepository.findById(batch.getProjectKey());
-            System.out.println("project: " + batchProject);
 
             batch.setCreatedAt(LocalDateTime.now());
             batch.setProject(batchProject);
+
             Batch newBatch = this.batchRepository.save(batch);
+
+//            for (int i = 0; i < newBatch.getOrderLines().size(); i++) {
+//                OrderLine batchOrderline = newBatch.getOrderLines().get(i);
+//                System.out.println(batchOrderline.getId());
+////                batchOrderline.setBatch(newBatch);
+//            }
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(newBatch.getId()).toUri();
