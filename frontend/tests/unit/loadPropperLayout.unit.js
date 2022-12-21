@@ -3,6 +3,7 @@ import App from '@/App.vue';
 import Login from '@/Pages/Auth/Login.vue';
 import Router from "@/Router/router";
 import AuthenticationService from "@/Services/AuthenticationService";
+import BaseApi from "@/Services/BaseApi";
 import {reactive} from "vue";
 let wrapper;
 let auth = new AuthenticationService();
@@ -13,6 +14,7 @@ beforeEach(async function() {
             plugins: [Router],
             provide: {
                 Auth: reactive(auth),
+                axios: BaseApi
             },
             localStorage: {
                 state: {
