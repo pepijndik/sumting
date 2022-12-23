@@ -49,14 +49,14 @@ public class BatchController {
             Project batchProject = this.projectRepository.findById(batch.get("projectKey").asInt());
             newBatch.setProject(batchProject);
 
-            newBatch = this.batchRepository.save(newBatch);
-
-            for (int i = 0; i < batch.get("orderlines").size(); i++) {
+            for (int i = 0; i < batch.get("batchSize").asInt(); i++) {
                 Optional<OrderLine> batchOrderline =
                         this.orderlineRepository.findById(batch.get("orderlines").get(i).get("id").asInt());
 
                 batchOrderline.get().setBatch(newBatch);
             }
+
+            newBatch = this.batchRepository.save(newBatch);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(newBatch.getId()).toUri();
