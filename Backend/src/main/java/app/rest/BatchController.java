@@ -6,6 +6,7 @@ import app.models.Project.Project;
 import app.repositories.Batch.BatchRepository;
 import app.repositories.Order.OrderlineRepository;
 import app.repositories.Project.ProjectRepository;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,29 +37,34 @@ public class BatchController {
     }
 
     @PostMapping("/batch")
-    public ResponseEntity<Batch> createBatch(@RequestBody Batch batch) {
+    public ResponseEntity<Batch> createBatch(@RequestBody ObjectNode batch) {
         try {
-            System.out.println(batch.toString());
 
-            Project batchProject = this.projectRepository.findById(batch.getProjectKey());
+            Batch newBatch = new Batch();
+            newBatch.setCreatedAt(LocalDateTime.now());
+            newBatch.setTextPlanned(batch.get("textPlanned").asText());
+            newBatch.setBatchSize(batch.get("batchSize").asInt());
+            newBatch.setProjectKey(batch.get("projectKey").asInt());
 
-            batch.setCreatedAt(LocalDateTime.now());
-            batch.setProject(batchProject);
+            Project batchProject = this.projectRepository.findById(batch.get("projectKey").asInt());
+            newBatch.setProject(batchProject);
 
-            Batch newBatch = this.batchRepository.save(batch);
+            newBatch = this.batchRepository.save(newBatch);
 
-//            for (int i = 0; i < newBatch.getOrderLines().size(); i++) {
-//                OrderLine batchOrderline = newBatch.getOrderLines().get(i);
-//                System.out.println(batchOrderline.getId());
-////                batchOrderline.setBatch(newBatch);
-//            }
+            for (int i = 0; i < batch.get("orderlines").size(); i++) {
+                Optional<OrderLine> batchOrderline =
+                        this.orderlineRepository.findById(batch.get("orderlines").get(i).get("id").asInt());
+
+                batchOrderline.get().setBatch(newBatch);
+            }
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(newBatch.getId()).toUri();
             return ResponseEntity.created(location).body(newBatch);
         } catch (Exception e) {
+            Batch errBatch = new Batch();
             System.out.printf(e.getMessage());
-            return ResponseEntity.internalServerError().body(batch); //The provided data
+            return ResponseEntity.internalServerError().body(errBatch);
         }
     }
 

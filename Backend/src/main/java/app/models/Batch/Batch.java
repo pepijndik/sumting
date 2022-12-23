@@ -39,7 +39,6 @@ public class Batch implements Identifiable<Integer> {
     @Column(name = "text_completed", nullable = true, columnDefinition = "varchar(255)")
     private String textCompleted; // completed text
 
-
     @JsonView(BatchView.Batch.class)
     @Column(name = "batch_size", nullable = false, columnDefinition = "int")
     private Integer batchSize; // size of batch
@@ -84,6 +83,22 @@ public class Batch implements Identifiable<Integer> {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getTextPlanned() {
+        return textPlanned;
+    }
+
+    public void setTextPlanned(String textPlanned) {
+        this.textPlanned = textPlanned;
+    }
+
+    public Integer getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(Integer batchSize) {
+        this.batchSize = batchSize;
     }
 
     public Integer getProjectKey() {
