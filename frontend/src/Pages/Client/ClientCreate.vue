@@ -91,28 +91,15 @@
       Create client
     </button>
   </div>
-  <div class="flex flex-col">
-    <div class="separator-line"></div>
-    <h3 class="font-inter text-2xl text-yInMnBlue font-bold pt-3">Import Clients</h3>
-    <FileUpload @selectedFile="selectFile()" text="Upload CSV"
-                @fileTypeError="throwFileTypeError()"
-                :allowed-types="allowedFileTypes"/>
-    <button v-on:click="uploadFile()"
-            class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
-            text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-      Import
-    </button>
-  </div>
 </template>
 
 <script>
 import ImgUpload from "@/Components/Form/imgUpload.vue";
 import SearchableDropdown from "@/Components/Form/SearchableDropdown.vue";
-import FileUpload from "@/Components/Form/fileUpload.vue";
 
 export default {
   name: "clientCreate",
-  components: { ImgUpload, SearchableDropdown, FileUpload },
+  components: { ImgUpload, SearchableDropdown },
   inject: ["UserApi", "CountryApi", "FileUploadApi"],
   data() {
     return {
@@ -127,8 +114,6 @@ export default {
       optionsShown: false,
       locations: [],
       imgFile: null,
-      selectedFile: null,
-      allowedFileTypes: ["text/csv", "text/plain", ""],
     };
   },
   methods: {
@@ -208,19 +193,6 @@ export default {
     selectedImg(img) {
       this.imgFile = img;
     },
-    selectFile(file) {
-      if (this.selectedFile === file && file !== null) {
-        this.selectedFile = file;
-      }
-    },
-    throwFileTypeError() {
-      this.$toast.open({
-        message: "File type not supported!",
-        type: "error",
-        position: "top-right",
-        duration: 3000,
-      });
-    },
   },
   async created() {
     this.locations = await this.CountryApi.findAll();
@@ -228,9 +200,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.separator-line {
-  border-top: 1px solid #e2e8f0;
-  margin: 1rem;
-}
-</style>
+<style scoped></style>

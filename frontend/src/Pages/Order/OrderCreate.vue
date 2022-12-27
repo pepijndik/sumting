@@ -1,56 +1,56 @@
 <template>
   <div>
     <div
-      class="grid w-full grid-cols-1 lg:grid-cols-3 md:grid-cols-1 gap-1 mt-7"
+        class="grid w-full grid-cols-1 lg:grid-cols-3 md:grid-cols-1 gap-1 mt-7"
     >
       <div>
         <p class="font-inter text-yInMnBlue">Client</p>
         <SearchableDropdown
-          class="mt-1"
-          placeholder="Choose a client"
-          :fields="['name', 'email']"
-          :text="['name', 'email']"
-          :primarykey="'id'"
-          :return="'primarykey'"
-          :icon="true"
-          @selected="this.selectedClient = $event"
-          :options="clients"
+            class="mt-1"
+            placeholder="Choose a client"
+            :fields="['name', 'email']"
+            :text="['name', 'email']"
+            :primarykey="'id'"
+            :return="'primarykey'"
+            :icon="true"
+            @selected="this.selectedClient = $event"
+            :options="clients"
         >
           <slot>
-            <UserIcon
-              class="w-5 h-5 text-gray-400 group-hover:text-gray-500"
-              aria-hidden="true"
-            />
+            <!--            <UserIcon-->
+            <!--              class="w-5 h-5 text-gray-400 group-hover:text-gray-500"-->
+            <!--              aria-hidden="true"-->
+            <!--            />-->
           </slot>
         </SearchableDropdown>
       </div>
       <div>
         <p class="font-inter text-yInMnBlue">Currency</p>
         <SearchableDropdown
-          class="mt-1"
-          placeholder="Choose a currency"
-          :fields="['symbol', 'name', 'code']"
-          :text="['symbol', 'code']"
-          :primarykey="'name'"
-          :return="'primarykey'"
-          :icon="false"
-          @selected="this.selectedCurreny = $event"
-          :options="currencies"
+            class="mt-1"
+            placeholder="Choose a currency"
+            :fields="['symbol', 'name', 'code']"
+            :text="['symbol', 'code']"
+            :primarykey="'name'"
+            :return="'primarykey'"
+            :icon="false"
+            @selected="this.selectedCurreny = $event"
+            :options="currencies"
         >
         </SearchableDropdown>
       </div>
       <div>
         <p class="font-inter text-yInMnBlue">Order type</p>
         <SearchableDropdown
-          class="mt-1"
-          placeholder="Choose a type"
-          :fields="['id', 'type']"
-          :text="['description']"
-          :primarykey="'id'"
-          :icon="false"
-          :return="'primarykey'"
-          @selected="orderType = $event"
-          :options="orderTypes"
+            class="mt-1"
+            placeholder="Choose a type"
+            :fields="['id', 'type']"
+            :text="['description']"
+            :primarykey="'id'"
+            :icon="false"
+            :return="'primarykey'"
+            @selected="orderType = $event"
+            :options="orderTypes"
         >
         </SearchableDropdown>
       </div>
@@ -60,51 +60,63 @@
       <div class="col-span-2">
         <p class="font-inter text-yInMnBlue">Description</p>
         <ckeditor
-          class="block w-full mt-1 rounded-md lg:prose-xl"
-          :editor="editor"
-          v-model="description"
-          :config="editorConfig"
-          tag-name="textarea"
+            class="block w-full mt-1 rounded-md lg:prose-xl"
+            :editor="editor"
+            v-model="description"
+            :config="editorConfig"
+            tag-name="textarea"
         ></ckeditor>
       </div>
       <div class="col-span-1">
         <NumberInputWithButtons
-          id="tax_input"
-          name="tax"
-          :min="15"
-          :max="100"
-          :step="1"
-          placeholder="Tax(%)"
-          :value="tax"
-          @update="tax = $event"
+            id="tax_input"
+            name="tax"
+            :min="15"
+            :max="100"
+            :step="1"
+            placeholder="Tax(%)"
+            :value="tax"
+            @update="tax = $event"
         />
       </div>
     </div>
 
     <p class="font-inter text-yInMnBlue mt-2">Project(s)</p>
     <SearchableDropdown
-      class="mt-1 pb-4"
-      placeholder="Select project(s)"
-      :options="projects"
-      :fields="['id', 'description', 'type.description']"
-      :primarykey="'id'"
-      :text="['description', 'type.description']"
-      :return="'object'"
-      :cleanAfterSelect="true"
-      :max-items="20"
-      @selected="searchSelection = $event"
+        class="mt-1 pb-4"
+        placeholder="Select project(s)"
+        :options="projects"
+        :fields="['id', 'description', 'type.description']"
+        :primarykey="'id'"
+        :text="['description', 'type.description']"
+        :return="'object'"
+        :cleanAfterSelect="true"
+        :max-items="20"
+        @selected="searchSelection = $event"
     />
     <OrderTotalCostSubItem
-      :products="products"
-      @removeSelected="removeSelected"
-      @update="orderLines = $event"
-      @updatedTotalCost="totalCost = $event"
+        :products="products"
+        @removeSelected="removeSelected"
+        @update="orderLines = $event"
+        @updatedTotalCost="totalCost = $event"
     />
     <button
-      v-on:click="createOrder"
-      class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+        v-on:click="createOrder"
+        class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
     >
       Create order
+    </button>
+  </div>
+  <div class="flex flex-col">
+    <div class="separator-line"></div>
+    <h3 class="font-inter text-2xl text-yInMnBlue font-bold pt-3">Import Orders</h3>
+    <FileUpload @selectedFile="selectFile" text="Upload CSV"
+                @fileTypeError="throwError"
+                :allowed-types="allowedFileTypes"/>
+    <button @click="uploadFile()"
+            class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+            text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+      Import
     </button>
   </div>
 </template>
@@ -114,9 +126,11 @@ import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
 import "@ckeditor/ckeditor5-build-classic/build/translations/nl";
-import { ref } from "@vue/reactivity";
+import {ref} from "@vue/reactivity";
 //import UserIcon from "@/Components/SvgIcons/userIcon.vue";
 import NumberInputWithButtons from "@/Components/Form/Input/NumberInputWithButtons.vue";
+import FileUpload from "@/Components/Form/fileUpload.vue";
+
 export default {
   name: "OrderCreate",
   components: {
@@ -124,6 +138,7 @@ export default {
     //UserIcon,
     OrderTotalCostSubItem,
     SearchableDropdown,
+    FileUpload,
   },
   inject: ["ProjectApi", "ProductApi", "UserApi", "Curreny", "OrderApi"],
   data() {
@@ -162,11 +177,13 @@ export default {
       orderType: "",
       products: [],
       totalCost: 0,
+      selectedFile: null,
+      allowedFileTypes: ["text/csv", "text/plain", ""],
     };
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    this.clients = await this.UserApi.GetAllUsers();
+    // this.clients = await this.UserApi.GetAllUsers();
     this.orderTypes = await this.OrderApi.GetOrderTypes();
     this.currencies = this.Curreny.getCurrencyList();
   },
@@ -222,27 +239,72 @@ export default {
       console.log("Tax: ", this.tax);
 
       const r = await this.OrderApi.create(
-        this.description,
-        this.orderLines,
-        this.selectedCurreny,
-        this.selectedClient,
-        this.totalCost,
-        this.tax,
-        this.orderType
+          this.description,
+          this.orderLines,
+          this.selectedCurreny,
+          this.selectedClient,
+          this.totalCost,
+          this.tax,
+          this.orderType
       )
-        .then((response) => {
+          .then((response) => {
+            this.$toast.open({
+              message: "Order created!",
+              type: "success",
+              position: "top-right",
+              duration: 3000,
+            });
+            this.$router.push({name: "admin:Order"});
+          })
+          .catch((error) => {
+            console.log("Error: ", error);
+          });
+    },
+    selectFile(file) {
+      if (this.selectedFile !== file && file !== null && file !== undefined) {
+        console.log("File selected: ", file);
+        this.selectedFile = file;
+      }
+    },
+    throwError(error) {
+      this.$toast.open({
+        message: error,
+        type: "error",
+        position: "top-right",
+        duration: 3000,
+      });
+    },
+    async uploadFile() {
+      if (this.selectedFile !== null) {
+        console.log("File Uploading")
+        await this.OrderApi.ImportCSV(this.selectedFile).then((response) => {
+          console.log("Response: ", response);
           this.$toast.open({
-            message: "Order created!",
+            message: "File uploaded!",
             type: "success",
             position: "top-right",
             duration: 3000,
           });
-          this.$router.push({ name: "admin:Order" });
-        })
-        .catch((error) => {
-          console.log("Error: ", error);
         });
-    },
+
+        // const text = await new Blob([this.selectedFile], {type: this.selectedFile.type}).text();
+        // console.log("Text: ", text);
+        //
+        // if (text !== null) {
+        //   const rows = text.split("\n"), headers = rows[0].split(",");
+        //
+        //   for (let i = 1; i < rows.length; i++) {
+        //     const row = rows[i].split(","), obj = {};
+        //     // for every header, add a property to the object
+        //     for (let j = 0; j < row.length; j++) {
+        //       obj[headers[j]] = row[j];
+        //     }
+        //     console.log(obj)
+        //     // this.clients.push(obj);
+        //   }
+
+      }
+    }
   },
 };
 </script>

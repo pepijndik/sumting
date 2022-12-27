@@ -1,4 +1,4 @@
-package app.service;
+package app.service.FileUtils;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -25,18 +25,15 @@ public class FileStore {
     private final AmazonS3 amazonS3;
 
 
-    public boolean isImage(MultipartFile file){
+    public boolean isImage(MultipartFile file) {
         if (file.isEmpty()) {
             return false;
         }
         //Check if the file is an image
-        if (!Arrays.asList(IMAGE_PNG.getMimeType(), IMAGE_BMP.getMimeType(), IMAGE_GIF.getMimeType(), IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
-                return false;
-        }
-        return true;
+        return Arrays.asList(IMAGE_PNG.getMimeType(), IMAGE_BMP.getMimeType(), IMAGE_GIF.getMimeType(), IMAGE_JPEG.getMimeType()).contains(file.getContentType());
     }
 
-    public Map<String,String> prepareUplaud(MultipartFile file){
+    public Map<String, String> prepareUplaud(MultipartFile file) {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
@@ -44,9 +41,9 @@ public class FileStore {
     }
 
     public String upload(String path,
-                       String fileName,
-                       Optional<Map<String, String>> optionalMetaData,
-                       InputStream inputStream) {
+                         String fileName,
+                         Optional<Map<String, String>> optionalMetaData,
+                         InputStream inputStream) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         optionalMetaData.ifPresent(map -> {
             if (!map.isEmpty()) {
@@ -55,11 +52,12 @@ public class FileStore {
         });
         try {
             amazonS3.putObject(path, fileName, inputStream, objectMetadata);
-           return amazonS3.getUrl(path, fileName).toString(); // return url
+            return amazonS3.getUrl(path, fileName).toString(); // return url
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to upload the file", e);
         }
     }
+
     public String upload(String path,
                          String fileName,
                          Optional<Map<String, String>> optionalMetaData,
@@ -73,7 +71,7 @@ public class FileStore {
         });
         try {
             amazonS3.putObject(path, fileName, inputStream, objectMetadata);
-            if(isPublic){
+            if (isPublic) {
                 amazonS3.setObjectAcl(path, fileName, com.amazonaws.services.s3.model.CannedAccessControlList.PublicRead);
             }
             return amazonS3.getUrl(path, fileName).toString(); // return url
@@ -81,8 +79,6 @@ public class FileStore {
             throw new IllegalStateException("Failed to upload the file", e);
         }
     }
-
-
 
 
     public byte[] download(String path, String key) {

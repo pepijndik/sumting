@@ -9,17 +9,19 @@ import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
+import app.service.FileUtils.CSVHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.annotation.Nullable;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -48,7 +50,7 @@ public class OrderController {
     @GetMapping("/orders/{id}")
     public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId) {
         Order o = orderRepository.findById(orderId);
-        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", orderId), HttpStatus.NOT_FOUND);
+        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Project", "id", orderId), HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/orders/{id}")
@@ -66,7 +68,7 @@ public class OrderController {
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
         Optional<OrderLine> o = orderlineRepository.findById(orderlineId);
-        return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
+        return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/orders")
@@ -75,8 +77,8 @@ public class OrderController {
             System.out.printf("order.typeKey: %s\n",order.typeKey);
             order.setCreatedAt(LocalDate.now());
 
-            OrderType type = (OrderType)this.orderTypeRepository.findById(order.typeKey).get();
-            User u = (User)this.userRepository.findById(order.payerKey);
+            OrderType type = this.orderTypeRepository.findById(order.typeKey).get();
+            User u = this.userRepository.findById(order.payerKey);
             order.setPayer(u);
             order.setOrderType(type);
             System.out.printf("order.type: %s\n",order.getOrderType());
@@ -139,5 +141,12 @@ public class OrderController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/orders/importCSV")
+    public ResponseEntity<Order> importCSV(@RequestParam("file") MultipartFile file) {
+        List<Order> orders = CSVHelper.CSVToOrders(file);
+        orderRepository.saveAll(orders);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

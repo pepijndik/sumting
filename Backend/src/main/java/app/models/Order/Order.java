@@ -8,8 +8,6 @@ import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
 import app.models.Identifiable;
 import app.models.User.User;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
@@ -210,5 +208,37 @@ public class Order implements Identifiable<Integer> {
 
     public void setPayer(User payer) {
         this.payer = payer;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
+    public User getOrderUser() {
+        return orderUser;
+    }
+
+    public void setOrderUser(User orderUser) {
+        this.orderUser = orderUser;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

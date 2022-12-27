@@ -10,6 +10,9 @@
       <p class="pl-3">{{ text }}</p>
     </div>
   </button>
+  <div class="text-sm py-1 text-yInMnBlue px-2 font-normal">
+    <p v-show="fileName !== null">{{ fileName }}</p>
+  </div>
   <input
       id="fileUpload"
       type="file"
@@ -33,11 +36,12 @@ export default {
       type: String,
       default: "Upload File",
       required: false,
-    }
+    },
   },
   data() {
     return {
       fileData: null,
+      fileName: null,
     };
   },
   methods: {
@@ -50,8 +54,8 @@ export default {
 
       if (files && files[0]) {
         this.fileData = files[0];
-        console.log(this.fileData.type);
         if (this.allowedTypes.includes(this.fileData.type)) {
+          this.fileName = this.fileData.name;
           this.$emit("selectedFile", this.fileData);
         } else {
           this.$emit("fileTypeError", "File type not allowed");

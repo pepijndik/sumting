@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -18,6 +19,18 @@ public class OrderRepository implements CrudRepository<Order, Integer> {
     @Override
     public Order save(Order entity) {
         return em.merge(entity);
+    }
+
+    public boolean saveAll(List<Order> orders) {
+        if (orders == null) return false;
+        try {
+            for (Order order : orders) {
+                em.merge(order);
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override

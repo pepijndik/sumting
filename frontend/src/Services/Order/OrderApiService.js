@@ -91,6 +91,18 @@ class OrderApiService extends ApiAdapter {
       throw error;
     });
   }
+
+  async ImportCSV(file) {
+    let formData = new FormData();
+    formData.append("file", file);
+
+    return await BaseApi.post(`orders/importCSV`, formData).then(response => {
+      console.log(response.data)
+      return response.data;
+    }).catch(error => {
+      throw error;
+    });
+  }
 }
 
 export default OrderApiService;

@@ -1,9 +1,8 @@
 package app.rest;
 
 
-import app.server.Amazon.AmazonConfig;
 import app.server.Amazon.BucketNames;
-import app.service.FileStore;
+import app.service.FileUtils.FileStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
