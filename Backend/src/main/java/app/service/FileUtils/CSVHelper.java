@@ -8,6 +8,9 @@ import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
 import app.repositories.Project.ProjectRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@AllArgsConstructor
+@Service
 public class CSVHelper {
 
     private static final String TYPE = "text/csv";
@@ -32,9 +37,9 @@ public class CSVHelper {
         createdAtIndex = 0, paymentMethodIndex = 0, descriptionIndex = 0, orderStripePaymentIdIndex = 0,
         transactionFeeIndex = 0, transactionVATIndex = 0, userIdExtIndex = 0, projectIndex = 0, orderUserIndex = 0;
     private static OrderTypeRepository orderTypeRepository;
-    private static JPAUserRepository userRepository;
+    private static JPAUserRepository userRepository = new JPAUserRepository();
     private static OrderlineRepository orderlineRepository;
-    private static ProjectRepository projectRepository;
+    private static ProjectRepository projectRepository = new ProjectRepository();
 
     public static List<Order> CSVToOrders(MultipartFile file) {
         if (!hasCSVFormat(file)) throw new RuntimeException("You must upload a CSV file!");
