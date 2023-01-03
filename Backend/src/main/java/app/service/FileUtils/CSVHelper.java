@@ -8,7 +8,6 @@ import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
 import app.repositories.Project.ProjectRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
 public class CSVHelper {
 
@@ -30,18 +28,27 @@ public class CSVHelper {
         {"Created At", "Payment Method", "Description", "Order Stripe Payment Id",
             "Transaction Fee", "Transaction VAT", "User Id Ext", "Project", "Order User"};
 
-    private static int
-        orderKeyIndex = 0, orderIdExtIndex = 0, orderDateIndex = 0, payerUserKeyIndex = 0,
-        orderTypeKeyIndex = 0, transactionTotalIndex = 0, currencyIndex = 0, orderLinesIndex = 0,
-        //Optional
-        createdAtIndex = 0, paymentMethodIndex = 0, descriptionIndex = 0, orderStripePaymentIdIndex = 0,
-        transactionFeeIndex = 0, transactionVATIndex = 0, userIdExtIndex = 0, projectIndex = 0, orderUserIndex = 0;
-    private static OrderTypeRepository orderTypeRepository;
-    private static JPAUserRepository userRepository = new JPAUserRepository();
-    private static OrderlineRepository orderlineRepository;
-    private static ProjectRepository projectRepository = new ProjectRepository();
+    private static int orderKeyIndex = 0, orderIdExtIndex = 0, orderDateIndex = 0, payerUserKeyIndex = 0,
+                orderTypeKeyIndex = 0, transactionTotalIndex = 0, currencyIndex = 0, orderLinesIndex = 0,
+                //Optional
+                createdAtIndex = 0, paymentMethodIndex = 0, descriptionIndex = 0, orderStripePaymentIdIndex = 0,
+                transactionFeeIndex = 0, transactionVATIndex = 0, userIdExtIndex = 0, projectIndex = 0, orderUserIndex = 0;
 
-    public static List<Order> CSVToOrders(MultipartFile file) {
+    private final OrderTypeRepository orderTypeRepository;
+    private final JPAUserRepository userRepository;
+    private final OrderlineRepository orderlineRepository;
+    private final ProjectRepository projectRepository;
+
+    @Autowired
+    public CSVHelper(OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository, OrderlineRepository orderlineRepository, ProjectRepository projectRepository) {
+        this.orderTypeRepository = orderTypeRepository;
+        this.userRepository = userRepository;
+        this.orderlineRepository = orderlineRepository;
+        this.projectRepository = projectRepository;
+    }
+
+
+    public List<Order> CSVToOrders(MultipartFile file) {
         if (!hasCSVFormat(file)) throw new RuntimeException("You must upload a CSV file!");
 
         try {
@@ -51,10 +58,10 @@ public class CSVHelper {
 
             switch (validation) {
                 case 0 -> {
-                    return prepareOrdersList(headers, br, 1);
+                    return this.prepareOrdersList(headers, br, 1);
                 }
                 case 1 -> {
-                    return prepareOrdersList(headers, br, 0);
+                    return this.prepareOrdersList(headers, br, 0);
                 }
                 default -> {
                     System.out.println("Invalid CSV file");
@@ -66,7 +73,7 @@ public class CSVHelper {
         }
     }
 
-    private static List<Order> prepareOrdersList(String[] headers, BufferedReader br, int typeOfRequest) throws IOException {
+    private List<Order> prepareOrdersList(String[] headers, BufferedReader br, int typeOfRequest) throws IOException {
         List<Order> orders = new ArrayList<>();
 
         assignIndexes(headers, 0);
@@ -77,18 +84,18 @@ public class CSVHelper {
             order.setId(Integer.parseInt(values[orderKeyIndex]));
             order.setOrderIdExt(Integer.valueOf(values[orderIdExtIndex]));
             order.setOrder_date(LocalDate.parse(values[orderDateIndex]));
-            if (userRepository.existsById(Integer.parseInt(values[payerUserKeyIndex]))) {
-                order.setPayer(userRepository.findById(Integer.parseInt(values[payerUserKeyIndex])));
+            if (this.userRepository.existsById(Integer.parseInt(values[payerUserKeyIndex]))) {
+                order.setPayer(this.userRepository.findById(Integer.parseInt(values[payerUserKeyIndex])));
             } else {
                 User user = new User();
                 user.setId(Integer.parseInt(values[payerUserKeyIndex]));
                 userRepository.save(user);
             }
 
-            order.setPayer(userRepository.findById(Integer.valueOf(values[payerUserKeyIndex])));
+            order.setPayer(this.userRepository.findById(Integer.valueOf(values[payerUserKeyIndex])));
 
-            if (orderTypeRepository.existsById(Integer.valueOf(values[orderTypeKeyIndex]))) {
-                order.setOrderType(orderTypeRepository.findById(Integer.valueOf(values[orderTypeKeyIndex])).get());
+            if (this.orderTypeRepository.existsById(Integer.valueOf(values[orderTypeKeyIndex]))) {
+                order.setOrderType(this.orderTypeRepository.findById(Integer.valueOf(values[orderTypeKeyIndex])).get());
             } else {
                 OrderType orderType = new OrderType();
                 orderType.setId(Integer.valueOf(values[orderTypeKeyIndex]));
@@ -97,7 +104,7 @@ public class CSVHelper {
             order.setTransactionTotal(Double.parseDouble(values[transactionTotalIndex]));
             order.setCurrency(values[currencyIndex]);
 
-            order.setOrderLines(getOrderlines(values[orderLinesIndex]));
+            order.setOrderLines(this.getOrderlines(values[orderLinesIndex]));
             //If 1 add optional fields
             if (typeOfRequest == 1) {
                 assignIndexes(headers, 1);
@@ -118,13 +125,13 @@ public class CSVHelper {
                     order.setTransactionVat(Double.parseDouble(values[transactionVATIndex]));
                 }
                 if (optionalValues.contains("User Id Ext")) {
-                    order.setUser(userRepository.findById(Integer.parseInt(values[userIdExtIndex])));
+                    order.setUser(this.userRepository.findById(Integer.parseInt(values[userIdExtIndex])));
                 }
                 if (optionalValues.contains("Project")) {
-                    order.setProject(projectRepository.findById(Integer.valueOf(values[projectIndex])));
+                    order.setProject(this.projectRepository.findById(Integer.valueOf(values[projectIndex])));
                 }
                 if (optionalValues.contains("Order User")) {
-                    order.setOrderUser(userRepository.findById(Integer.valueOf(values[orderUserIndex])));
+                    order.setOrderUser(this.userRepository.findById(Integer.valueOf(values[orderUserIndex])));
                 }
             }
             orders.add(order);
@@ -133,16 +140,15 @@ public class CSVHelper {
         return orders;
     }
 
-    private static List<OrderLine> getOrderlines(String value) {
+    private List<OrderLine> getOrderlines(String values) {
         List<OrderLine> ols = new ArrayList<>();
-        Iterable<OrderLine> allOrderLines = orderlineRepository.findAll();
-        for (OrderLine ol : allOrderLines) {
-            for (String orderLineId : value.split(" ")) {
-                if (ol.getId() == Integer.parseInt(orderLineId)) {
-                    ols.add(ol);
-                }
-            }
-        }
+        System.out.println(values);
+        this.orderlineRepository.findAll().forEach(orderLine -> {
+            Arrays.stream(values.split(" "))
+                  .filter(s -> orderLine.getId() == Integer.parseInt(s))
+                  .map(s -> orderLine)
+                  .forEach(ols::add);
+        });
         return ols;
     }
 

@@ -32,13 +32,15 @@ public class OrderController {
 
     private final OrderTypeRepository orderTypeRepository;
     private final JPAUserRepository userRepository;
+    private final CSVHelper csvHelper;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository) {
+    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository, CSVHelper csvHelper) {
         this.orderRepository = orderRepository;
         this.orderlineRepository = orderlineRepository;
         this.orderTypeRepository = orderTypeRepository;
         this.userRepository = userRepository;
+        this.csvHelper = csvHelper;
     }
 
 
@@ -145,7 +147,7 @@ public class OrderController {
 
     @PostMapping("/orders/importCSV")
     public ResponseEntity<Order> importCSV(@RequestParam("file") MultipartFile file) {
-        List<Order> orders = CSVHelper.CSVToOrders(file);
+        List<Order> orders = csvHelper.CSVToOrders(file);
         orderRepository.saveAll(orders);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
