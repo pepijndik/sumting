@@ -5,6 +5,7 @@ import app.models.Identifiable;
 import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.views.BatchView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -50,6 +51,7 @@ public class Batch implements Identifiable<Integer> {
 
     @JsonView(BatchView.Batch.class)
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "project_key", referencedColumnName = "project_key", insertable = false, updatable = false)
     private Project project;
 
