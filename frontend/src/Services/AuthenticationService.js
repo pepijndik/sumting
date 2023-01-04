@@ -66,8 +66,6 @@ class AuthenticationService {
                 } else {
                     user.twofactor.setVerified(false);
                 }
-
-
                 return user;
             }
         ).catch(error => {
