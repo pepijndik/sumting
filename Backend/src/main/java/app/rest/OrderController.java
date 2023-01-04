@@ -10,6 +10,8 @@ import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
 import app.service.FileUtils.CSVHelper;
+import app.service.FileUtils.ImportTypes.Orders.OrderImport;
+import app.service.FileUtils.ImportTypes.Orders.OrderlineImport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -32,15 +34,19 @@ public class OrderController {
 
     private final OrderTypeRepository orderTypeRepository;
     private final JPAUserRepository userRepository;
-    private final CSVHelper csvHelper;
+    private final OrderImport orderImport;
+    private final OrderlineImport orderlineImport;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository, CSVHelper csvHelper) {
+    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository,
+                           OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository,
+                           OrderImport orderImport, OrderlineImport orderlineImport) {
         this.orderRepository = orderRepository;
         this.orderlineRepository = orderlineRepository;
         this.orderTypeRepository = orderTypeRepository;
         this.userRepository = userRepository;
-        this.csvHelper = csvHelper;
+        this.orderImport = orderImport;
+        this.orderlineImport = orderlineImport;
     }
 
 
@@ -146,8 +152,10 @@ public class OrderController {
     }
 
     @PostMapping("/orders/importCSV")
-    public ResponseEntity<Order> importCSV(@RequestParam("file") MultipartFile file) {
-        List<Order> orders = csvHelper.CSVToOrders(file);
+    public ResponseEntity<Order> importCSV(@RequestParam("orderFile") MultipartFile orderFile, @RequestParam("orderlineFile") MultipartFile orderlineFile) {
+        List<OrderLine> orderlines = orderlineImport.CSVToOrderlines(orderlineFile);
+        orderlineRepository.saveAll(orderlines);
+        List<Order> orders = orderImport.CSVToOrders(orderFile, orderlines);
         orderRepository.saveAll(orders);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }

@@ -241,4 +241,5 @@ public class Order implements Identifiable<Integer> {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

@@ -35,11 +35,11 @@ public class OrderlineImport extends CSVHelper {
     private final BatchRepository batchRepository;
 
     private static int orderlineKeyIndex = 0, orderKeyIndex = 0, transactionLineTotalIndex = 0, productKeyIndex = 0,
-    ownerUserKeyIndex = 0,
+        ownerUserKeyIndex = 0,
     //Optional
     notesIndex = 0, proofNameIndex = 0, proofDateIndex = 0, latitudeIndex = 0, longitudeIndex = 0, proofSmallIndex = 0,
-    proofMediumIndex = 0, proofLargeIndex = 0, batchKeyIndex = 0, proofUploadedDatetimeIndex = 0,
-    transactionLineFeeIndex = 0, transactionLineVATIndex = 0, orderlineStripeIdIndex = 0;
+        proofMediumIndex = 0, proofLargeIndex = 0, batchKeyIndex = 0, proofUploadedDatetimeIndex = 0,
+        transactionLineFeeIndex = 0, transactionLineVATIndex = 0, orderlineStripeIdIndex = 0;
 
 
     @Autowired
@@ -59,26 +59,31 @@ public class OrderlineImport extends CSVHelper {
         while (br.readLine() != null) {
             String[] values = br.readLine().split(",");
             OrderLine orderline = new OrderLine();
+            if (orderlineRepository.existsById(Integer.parseInt(values[orderlineKeyIndex]))) return null;
             orderline.setId(Integer.valueOf(values[orderlineKeyIndex]));
             orderline.setOrderKey(Integer.valueOf(values[orderKeyIndex]));
             orderline.setTransactionLineTotal(Double.valueOf(values[transactionLineTotalIndex]));
-            orderline.setProduct(this.productRepository.findById(Integer.valueOf(values[productKeyIndex])));
-            orderline.setOwner(this.userRepository.findById(Integer.valueOf(values[ownerUserKeyIndex])));
+            if (this.productRepository.existsById(Integer.valueOf(values[productKeyIndex])))
+                orderline.setProduct(this.productRepository.findById(Integer.valueOf(values[productKeyIndex])));
+            if (this.userRepository.existsById(Integer.valueOf(values[ownerUserKeyIndex])))
+                orderline.setOwner(this.userRepository.findById(Integer.valueOf(values[ownerUserKeyIndex])));
+
             if (typeOfRequest == 1) {
                 assignIndexes(headers, 1);
-                orderline.setNotes(values[notesIndex]);
-                orderline.setProofName(values[proofNameIndex]);
-                orderline.setProofDate(LocalDateTime.parse(values[proofDateIndex]));
-                orderline.setLatitude(Double.valueOf(values[latitudeIndex]));
-                orderline.setLongitude(Double.valueOf(values[longitudeIndex]));
-                orderline.setProofSmall(values[proofSmallIndex]);
-                orderline.setProofMedium(values[proofMediumIndex]);
-                orderline.setProofLarge(values[proofLargeIndex]);
-                orderline.setBatch(batchRepository.findById(Integer.valueOf(values[batchKeyIndex])));
-                orderline.setProofUploadDate(LocalDateTime.parse(values[proofUploadedDatetimeIndex]));
-                orderline.setTransactionLineFee(Double.valueOf(values[transactionLineFeeIndex]));
-                orderline.setTransactionLineVat(Double.valueOf(values[transactionLineVATIndex]));
-                orderline.setStripeChargeId(values[orderlineStripeIdIndex]);
+                List<String> optionalValues = Arrays.asList(headers).subList(REQ_ORDER_HEADERS.length, headers.length);
+                if (optionalValues.contains("Notes")) orderline.setNotes(values[notesIndex]);
+                if (optionalValues.contains("Proof Name")) orderline.setProofName(values[proofNameIndex]);
+                if (optionalValues.contains("Proof Date")) orderline.setProofDate(LocalDateTime.parse(values[proofDateIndex]));
+                if (optionalValues.contains("Latitude")) orderline.setLatitude(Double.valueOf(values[latitudeIndex]));
+                if (optionalValues.contains("Longitude")) orderline.setLongitude(Double.valueOf(values[longitudeIndex]));
+                if (optionalValues.contains("Proof Small")) orderline.setProofSmall(values[proofSmallIndex]);
+                if (optionalValues.contains("Proof Medium")) orderline.setProofMedium(values[proofMediumIndex]);
+                if (optionalValues.contains("Proof Large")) orderline.setProofLarge(values[proofLargeIndex]);
+                if (this.batchRepository.existsById(Integer.valueOf(values[batchKeyIndex]))) orderline.setBatch(this.batchRepository.findById(Integer.valueOf(values[batchKeyIndex])));
+                if (optionalValues.contains("Proof Uploaded Datetime")) orderline.setProofDate(LocalDateTime.parse(values[proofUploadedDatetimeIndex]));
+                if (optionalValues.contains("Transaction Line Fee")) orderline.setTransactionLineFee(Double.valueOf(values[transactionLineFeeIndex]));
+                if (optionalValues.contains("Transaction Line VAT")) orderline.setTransactionLineVat(Double.valueOf(values[transactionLineVATIndex]));
+                if (optionalValues.contains("Orderline Stripe Id")) orderline.setStripeChargeId(values[orderlineStripeIdIndex]);
             }
             orderlines.add(orderline);
         }
@@ -140,15 +145,5 @@ public class OrderlineImport extends CSVHelper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private List<OrderLine> getOrderlines(String values) {
-        List<OrderLine> ols = new ArrayList<>();
-        System.out.println(values);
-        this.orderlineRepository.findAll().forEach(orderLine -> Arrays.stream(values.split(" "))
-            .filter(s -> orderLine.getId() == Integer.parseInt(s))
-            .map(s -> orderLine)
-            .forEach(ols::add));
-        return ols;
     }
 }

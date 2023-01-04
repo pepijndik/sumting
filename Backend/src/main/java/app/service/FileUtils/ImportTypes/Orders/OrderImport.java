@@ -6,7 +6,6 @@ import app.models.Order.OrderType;
 import app.models.User.User;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
-import app.repositories.Order.OrderlineRepository;
 import app.repositories.Project.ProjectRepository;
 import app.service.FileUtils.CSVHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,24 +26,25 @@ public class OrderImport extends CSVHelper {
         "Order Key", "Order Id Ext", "Order Date", "Payer User Key", "Order Type Key", "Transaction Total", "Currency",
         "Orderline Keys"
     };
-    private static final String[] OPTIONAL_HEADERS =
-        {"Created At", "Payment Method", "Description", "Order Stripe Payment Id",
-            "Transaction Fee", "Transaction VAT", "User Id Ext", "Project", "Order User"};
+    private static final String[] OPTIONAL_HEADERS = {
+        "Created At", "Payment Method", "Description", "Transaction Fee", "Transaction VAT", "User Id Ext", "Project",
+        "Order User"
+    };
 
     private static int orderKeyIndex = 0, orderIdExtIndex = 0, orderDateIndex = 0, payerUserKeyIndex = 0,
         orderTypeKeyIndex = 0, transactionTotalIndex = 0, currencyIndex = 0, orderLinesIndex = 0,
-    //Optional
-    createdAtIndex = 0, paymentMethodIndex = 0, descriptionIndex = 0, orderStripePaymentIdIndex = 0,
+        //Optional
+        createdAtIndex = 0, paymentMethodIndex = 0, descriptionIndex = 0,
         transactionFeeIndex = 0, transactionVATIndex = 0, userIdExtIndex = 0, projectIndex = 0, orderUserIndex = 0;
 
-    private final OrderlineRepository orderlineRepository;
+    private List<OrderLine> orderLines;
     private final JPAUserRepository userRepository;
     private final OrderTypeRepository orderTypeRepository;
     private final ProjectRepository projectRepository;
 
     @Autowired
-    public OrderImport(OrderlineRepository orderlineRepository, JPAUserRepository userRepository, OrderTypeRepository orderTypeRepository, ProjectRepository projectRepository) {
-        this.orderlineRepository = orderlineRepository;
+    public OrderImport(JPAUserRepository userRepository, OrderTypeRepository orderTypeRepository,
+                       ProjectRepository projectRepository) {
         this.userRepository = userRepository;
         this.orderTypeRepository = orderTypeRepository;
         this.projectRepository = projectRepository;
@@ -81,7 +81,15 @@ public class OrderImport extends CSVHelper {
             order.setTransactionTotal(Double.parseDouble(values[transactionTotalIndex]));
             order.setCurrency(values[currencyIndex]);
 
-            order.setOrderLines(this.getOrderlines(values[orderLinesIndex]));
+            List<OrderLine> currentOls = this.orderLines.stream().map(orderLine -> {
+                if (values[orderLinesIndex].contains(String.valueOf(orderLine.getId()))) {
+                    return orderLine;
+                }
+                return null;
+            }).toList();
+            if (currentOls.size() > 0) {
+                order.setOrderLines(currentOls);
+            }
             //If 1 add optional fields
             if (typeOfRequest == 1) {
                 assignIndexes(headers, 1);
@@ -131,13 +139,12 @@ public class OrderImport extends CSVHelper {
                 default -> { // Optional fields
                     if (assignmentType == 1) {
                         switch (headers[i]) {
-                            case "Created At" -> orderKeyIndex = i;
-                            case "Payment Method" -> orderIdExtIndex = i;
-                            case "Description" -> orderDateIndex = i;
-                            case "Order Stripe Payment Id" -> payerUserKeyIndex = i;
-                            case "Transaction Fee" -> orderTypeKeyIndex = i;
-                            case "Transaction VAT" -> transactionTotalIndex = i;
-                            case "User Id Ext" -> currencyIndex = i;
+                            case "Created At" -> createdAtIndex = i;
+                            case "Payment Method" -> paymentMethodIndex = i;
+                            case "Description" -> descriptionIndex = i;
+                            case "Transaction Fee" -> transactionFeeIndex = i;
+                            case "Transaction VAT" -> transactionVATIndex = i;
+                            case "User Id Ext" -> userIdExtIndex = i;
                             case "Project" -> projectIndex = i;
                             case "Order User" -> orderUserIndex = i;
                         }
@@ -147,19 +154,20 @@ public class OrderImport extends CSVHelper {
         }
     }
 
-    public List<Order> CSVToOrders(MultipartFile file) {
+    public List<Order> CSVToOrders(MultipartFile file, List<OrderLine> importedOrderlines) {
         if (!hasCSVFormat(file)) throw new RuntimeException("You must upload a CSV file!");
-
+        if (importedOrderlines.isEmpty()) throw new RuntimeException("You must upload a CSV file with orderlines!");
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String[] headers = br.readLine().split(",");
-            int validation = headersValidation(headers, REQ_ORDER_HEADERS, OPTIONAL_HEADERS);
 
-            switch (validation) {
+            switch (headersValidation(headers, REQ_ORDER_HEADERS, OPTIONAL_HEADERS)) {
                 case 0 -> {
+                    this.orderLines = importedOrderlines;
                     return this.prepareOrdersList(headers, br, 1);
                 }
                 case 1 -> {
+                    this.orderLines = importedOrderlines;
                     return this.prepareOrdersList(headers, br, 0);
                 }
                 default -> {
@@ -170,15 +178,5 @@ public class OrderImport extends CSVHelper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private List<OrderLine> getOrderlines(String values) {
-        List<OrderLine> ols = new ArrayList<>();
-        System.out.println(values);
-        this.orderlineRepository.findAll().forEach(orderLine -> Arrays.stream(values.split(" "))
-            .filter(s -> orderLine.getId() == Integer.parseInt(s))
-            .map(s -> orderLine)
-            .forEach(ols::add));
-        return ols;
     }
 }
