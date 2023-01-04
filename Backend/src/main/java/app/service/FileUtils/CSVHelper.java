@@ -22,8 +22,10 @@ import java.util.List;
 public class CSVHelper {
 
     private static final String TYPE = "text/csv";
-    private static final String[] REQ_ORDER_HEADERS =
-        {"Order Key", "Order Id Ext", "Order Date", "Payer User Key", "Order Type Key", "Transaction Total", "Currency", "Orderline Keys"};
+    private static final String[] REQ_ORDER_HEADERS = {
+        "Order Key", "Order Id Ext", "Order Date", "Payer User Key", "Order Type Key", "Transaction Total", "Currency",
+        "Orderline Keys"
+    };
     private static final String[] OPTIONAL_HEADERS =
         {"Created At", "Payment Method", "Description", "Order Stripe Payment Id",
             "Transaction Fee", "Transaction VAT", "User Id Ext", "Project", "Order User"};
