@@ -7,6 +7,7 @@ import BaseApi from "@/Services/BaseApi";
 import {reactive} from "vue";
 let wrapper;
 let auth = new AuthenticationService();
+import LoginResponse from "../mockingData/Login/LoginResponse.json";
 beforeEach(async function() {
     // eslint-disable-next-line no-undef
     wrapper = mount(App, {
@@ -14,19 +15,11 @@ beforeEach(async function() {
             plugins: [Router],
             provide: {
                 Auth: reactive(auth),
-                axios: BaseApi
+                axios: BaseApi,
             },
-            localStorage: {
-                state: {
-                    'token': ''
-                },
-                setItem (key, item) {
-                    this.state[key] = item
-                },
-                getItem (key) {
-                    return this.state[key]
-                }
-            }
+        },
+        mocks: {
+
         }
     });
     await wrapper.vm.$router.isReady();
@@ -37,16 +30,23 @@ afterEach( function(){
     wrapper.unmount();
     wrapper = null;
 })
+
+
+jest.spyOn(BaseApi, 'post',).mockResolvedValue(LoginResponse);
 describe('Loads layout', () => {
+
     it("User is not logged in", () => {
         expect(AuthenticationService.isLoggedIn()).toBe(false);
     });
-
-    it('Login is shown when not authenticated', () => {
+    it('AuthLayout layout is shown when not authenticated', () => {
         expect(AuthenticationService.isLoggedIn()).toBe(false);
-        const LoginComp = wrapper.findComponent({ name: 'login' })
-        console.log(wrapper.html())
-        expect(LoginComp.exists()).toBe(true)
+        expect(wrapper.findComponent({ name: 'AuthLayout' }).exists()).toBe(true)
+    });
+
+    it('Admin layout is shown when authenticated', () => {
+        this.Auth.login("test", "test", false);
+        expect(AuthenticationService.isLoggedIn()).toBe(true);
+        expect(wrapper.findComponent({ name: 'DashboardLayout' }).exists()).toBe(true)
     });
 })
 

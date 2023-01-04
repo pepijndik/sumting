@@ -13,7 +13,7 @@ class AuthenticationService {
         if (process.env?.VUE_APP_ENV === 'development') {
             return true;
         }
-        return localStorage.getItem('token') !== null && localStorage.getItem('user') !== null;
+        return localStorage.getItem('token') !== null && localStorage.getItem('user') !== null && localStorage.getItem('token') !== undefined && localStorage.getItem('user') !== undefined;
     }
 
     async login(email, password, remember = false) {
