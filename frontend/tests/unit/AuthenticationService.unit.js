@@ -4,6 +4,7 @@ import LoginResponse from "../mockingData/Login/LoginResponse.json";
 import LoginNeedTwoFactorResponse from "../mockingData/Login/LoginNeedTwoFactorResponse.json";
 import LoginTwoFactorVerifyResponse from "../mockingData/Login/LoginTwoFactorVerifyResponse.json";
 import GetMeResponse from "../mockingData/User/GetMeResponse.json";
+import LoginFailedResponse from "../mockingData/Login/LoginFailedResponse.json";
 let auth = new AuthenticationService();
 
 
@@ -30,5 +31,15 @@ describe('AuthenticationService', () => {
         await auth.verify2Fa("123456",user);
         expect(user.twofactor.verified).toBe(true);
         expect(user.twofactor.enabled).toBe(true);
+    });
+    it("Can Logout a user", () => {
+        auth.logout();
+        expect(localStorage.getItem('token')).toBe(undefined);
+        expect(localStorage.getItem('user')).toBe(undefined);
+    });
+    it("a failed login, returns false", async () => {
+        jest.spyOn(BaseApi, 'post',).mockResolvedValue(LoginFailedResponse);
+        let user = await auth.login("admin@hva.nl", "test", false);
+        expect(user).toBe(false);
     });
 });
