@@ -1,7 +1,7 @@
 package app.repositories.Order;
 
 import app.models.Order.Order;
-import app.repositories.Interfaces.CrudRepository;
+import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public class OrderRepository implements CrudRepository<Order, Integer> {
+public class OrderRepository implements CustomCrudRepository<Order, Integer> {
 
     @Autowired
     private EntityManager em;

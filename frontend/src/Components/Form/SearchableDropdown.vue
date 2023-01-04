@@ -176,6 +176,7 @@ export default {
   },
   computed: {
     filteredOptions() {
+      console.log(this.options);
       const regOption = new RegExp(this.searchFilter, "ig");
       return this.options.filter((option) => {
         return this.fields.some((field) => {
