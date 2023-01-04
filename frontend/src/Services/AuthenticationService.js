@@ -21,21 +21,24 @@ class AuthenticationService {
 
         return await BaseApi.post("auth", {email, password}).then(
             response => {
-                const BearToken = response.headers.authorization.slice(7);
-                const data = response.data.me;
-                localStorage.setItem('token', BearToken);
-                BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
-
+                if(response.data?.authorization) {
+                    const BearToken = response.headers.authorization.slice(7);
+                    localStorage.setItem('token', BearToken);
+                    BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
+                }
                 if (response.data.need_twofactor) {
                     return {success: true, need_twofactor: true};
                 }
-
-                const user = new User(data.id, data.name, data.email, data.country, data.user_type)
-                user.profileImage = data.profileImage;
-                user.profileText = data.profileText;
-                user.twofactor = new Twofactor(data.twoFactorEnabled);
-                localStorage.setItem('user', JSON.stringify(user));
-                return user;
+                if(response.data?.me !== undefined) {
+                    const data = response.data.me;
+                    const user = new User(data.id, data.name, data.email, data.country, data.user_type)
+                    user.profileImage = data.profileImage;
+                    user.profileText = data.profileText;
+                    user.twofactor = new Twofactor(data.twoFactorEnabled);
+                    localStorage.setItem('user', JSON.stringify(user));
+                    return user;
+                }
+                return false;
             }
         ).catch(error => {
             console.log(error);
