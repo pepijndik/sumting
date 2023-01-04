@@ -87,22 +87,24 @@ export default {
     },
   },
   async created() {
-    this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth);
-    for (let i = 0; i < this.projects[0].length; i++) {
-      this.currentMonth[0]++;
-    }
+    // this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth);
+    // for (let i = 0; i < this.projects[0].length; i++) {
+    //   this.currentMonth[0]++;
+    // }
+    //
+    // this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth);
+    // for (let i = 0; i < this.projects[1].length; i++) {
+    //   this.currentMonth[1]++;
+    // }
+    //
+    // this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth);
+    // for (let i = 0; i < this.projects[2].length; i++) {
+    //   this.currentMonth[2]++;
+    // }
+    //
+    // this.chartData.datasets[0].data = this.currentMonth;
 
-    this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth);
-    for (let i = 0; i < this.projects[1].length; i++) {
-      this.currentMonth[1]++;
-    }
-
-    this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth);
-    for (let i = 0; i < this.projects[2].length; i++) {
-      this.currentMonth[2]++;
-    }
-
-    this.chartData.datasets[0].data = this.currentMonth;
+    console.log(this.DashboardApi.getAllProjectDescriptions())
   },
 };
 </script>
