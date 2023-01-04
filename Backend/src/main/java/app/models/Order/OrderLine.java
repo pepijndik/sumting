@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @Table(name = OrderLine.TABLE_NAME)
@@ -119,6 +122,23 @@ public class OrderLine implements Identifiable<Integer> {
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
     private Batch batch;
+
+    public static OrderLine buildRandom() {
+        OrderLine orderLine = new OrderLine();
+        int randomInt = ThreadLocalRandom.current().nextInt();
+        double randomDouble = ThreadLocalRandom.current().nextDouble();
+        orderLine.setId(randomInt);
+        orderLine.setNotes("this is a note");
+        orderLine.setTransactionLineTotal(randomDouble);
+        orderLine.setProofName("proof");
+        orderLine.setLatitude(randomDouble);
+        orderLine.setLongitude(randomDouble);
+        orderLine.setProofSmall("small");
+        orderLine.setProofMedium("medium");
+        orderLine.setProofLarge("large");
+
+        return orderLine;
+    }
 
     @Override
     public Integer getId() {
