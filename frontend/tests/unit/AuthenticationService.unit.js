@@ -3,7 +3,7 @@ import BaseApi from "@/Services/BaseApi";
 import LoginResponse from "../mockingData/Login/LoginResponse.json";
 import LoginNeedTwoFactorResponse from "../mockingData/Login/LoginNeedTwoFactorResponse.json";
 import LoginTwoFactorVerifyResponse from "../mockingData/Login/LoginTwoFactorVerifyResponse.json";
-import GetMeResponse from "../mockingData/User/GetMeResponse.json";
+import GetMeResponse from "../mockingData/User/getMeResponse.json";
 import LoginFailedResponse from "../mockingData/Login/LoginFailedResponse.json";
 let auth = new AuthenticationService();
 

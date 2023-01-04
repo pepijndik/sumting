@@ -21,7 +21,7 @@ class AuthenticationService {
 
         return await BaseApi.post("auth", {email, password}).then(
             response => {
-                if(response.data?.authorization) {
+                if(response.headers?.authorization !== undefined) {
                     const BearToken = response.headers.authorization.slice(7);
                     localStorage.setItem('token', BearToken);
                     BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
