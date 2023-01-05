@@ -1,18 +1,21 @@
 
 package app.repositories.Project;
 
+import app.advSearch.SearchCriteria;
 import app.models.Project.Project;
 
-import app.repositories.Interfaces.CrudRepository;
+import app.repositories.Interfaces.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
-@Transactional
-public class ProjectRepository implements CrudRepository<Project, Integer> {
+@Service
+public class ProjectServiceImpl implements ProjectService {
 
 
     @Autowired
@@ -24,19 +27,10 @@ public class ProjectRepository implements CrudRepository<Project, Integer> {
     }
 
     @Override
-    public Project findById(Integer id) {
-        return em.find(Project.class,id);
+    public Optional<Project> findById(Integer id) {
+        return Optional.ofNullable(em.find(Project.class, id));
     }
 
-    @Override
-    public Iterable<Project> findAll() {
-        return em.createQuery("SELECT a FROM Project a", Project.class).getResultList();
-    }
-
-    @Override
-    public long count() {
-        return this.findAll().spliterator().getExactSizeIfKnown();
-    }
 
     @Override
     public void delete(Project entity) {

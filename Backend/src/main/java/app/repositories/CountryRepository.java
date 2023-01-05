@@ -1,7 +1,7 @@
 package app.repositories;
 
 import app.models.Country;
-import app.repositories.Interfaces.CrudRepository;
+import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public class CountryRepository implements CrudRepository<Country, Integer> {
+public class CountryRepository implements CustomCrudRepository<Country, Integer> {
 
     @Autowired
     private EntityManager em;

@@ -115,13 +115,13 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
 import "@ckeditor/ckeditor5-build-classic/build/translations/nl";
 import { ref } from "@vue/reactivity";
-//import UserIcon from "@/Components/SvgIcons/userIcon.vue";
+import UserIcon from "@/Components/SvgIcons/FileIcon.vue";
 import NumberInputWithButtons from "@/Components/Form/Input/NumberInputWithButtons.vue";
 export default {
   name: "OrderCreate",
   components: {
     NumberInputWithButtons,
-    //UserIcon,
+    UserIcon,
     OrderTotalCostSubItem,
     SearchableDropdown,
   },
@@ -166,7 +166,7 @@ export default {
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    this.clients = await this.UserApi.GetAllUsers();
+    this.clients = await this.UserApi.findAll();
     this.orderTypes = await this.OrderApi.GetOrderTypes();
     this.currencies = this.Curreny.getCurrencyList();
   },

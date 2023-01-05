@@ -10,6 +10,7 @@ import app.views.BatchView;
 import app.views.OrderLineView;
 import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 
@@ -119,8 +120,9 @@ public class OrderLine implements Identifiable<Integer> {
 
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JsonView(BatchView.Batch.class)
-    @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
+    @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     private Batch batch;
 
     public static OrderLine buildRandom() {

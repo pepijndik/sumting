@@ -1,9 +1,7 @@
 package app.repositories.Batch;
 
 import app.models.Batch.Batch;
-import app.models.Country;
-import app.models.Product.Product;
-import app.repositories.Interfaces.CrudRepository;
+import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public class BatchRepository implements CrudRepository<Batch, Integer> {
+public class BatchRepository implements CustomCrudRepository<Batch, Integer> {
 
     @Autowired
     private EntityManager em;

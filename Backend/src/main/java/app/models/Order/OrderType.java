@@ -13,6 +13,15 @@ public class OrderType implements Identifiable<Integer> {
 
     public static final String TABLE_NAME = "order_type";
 
+
+    public OrderType() {
+    }
+    public OrderType(Integer id, String description, String type) {
+        super();
+        this.id = id;
+        this.description = description;
+        this.type = type;
+    }
     @Id
     @JsonView(OrderView.Order.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

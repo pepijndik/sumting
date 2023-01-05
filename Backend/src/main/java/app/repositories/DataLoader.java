@@ -1,7 +1,9 @@
 package app.repositories;
 
 import app.models.Country;
+import app.models.Order.OrderType;
 import app.models.User.User;
+import app.repositories.Order.OrderTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -25,7 +27,7 @@ public class DataLoader implements CommandLineRunner
         System.out.println("Running CommandLine Startup");
         this.createCountries();
         this.createInitialUsers(10);
-
+        this.createOrderTypes();
         System.out.println("Injected accounts from " +(this.userRepository != null ? getUserClass(this.userRepository.getClass()).getName() : "none"));
     }
 
@@ -41,6 +43,14 @@ public class DataLoader implements CommandLineRunner
     @Autowired
     private JPAUserRepository userRepository;
 
+    @Autowired
+    private OrderTypeRepository orderTypeRepository;
+
+
+    private void createOrderTypes(){
+        this.orderTypeRepository.save(new OrderType(1,"imported by django","stripe_contribution"));
+        this.orderTypeRepository.save(new OrderType(2,"business direct order","b2b_contribution"));
+    }
     private void createInitialUsers(int amount) {
         // check whether the repo is empty
         List<User> userList = (List<User>) this.userRepository.findAll();
