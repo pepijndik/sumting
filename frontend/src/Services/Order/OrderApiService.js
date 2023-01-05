@@ -2,6 +2,7 @@ import ApiAdapter from "@/Services/ApiAdapter";
 import AuthHeader from "@/Services/AuthHeader";
 import OrderTypes from "@/Models/OrderTypes";
 import Order from "@/Models/Order";
+import OrderLine from "@/Models/OrderLine";
 import BaseApi from "@/Services/BaseApi";
 import {useToast} from 'vue-toast-notification';
 import moment from "moment";
@@ -90,6 +91,19 @@ class OrderApiService extends ApiAdapter {
     }).catch(error => {
       throw error;
     });
+  }
+
+  async getAllOrderlinesByProductId(productId) {
+    const orderlines = await BaseApi.get(this.resource + "/orderlines?productId=" + productId)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          // You can handle the error, like show a notification to the user
+          // don't forget to re-throw the error, otherwise the promise will resolve successfully
+          throw error;
+        })
+    return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
   }
 }
 

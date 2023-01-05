@@ -1,0 +1,28 @@
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOjEzMywiaXNzIjoiU3VtdGluZyIsImlhdCI6MTY3MjgxNzcwNSwiZXhwIjoxNjcyODE3NzY1fQ.kF8dA7FDKPe-BQ0tU9JM5tlvbCvvf12jCOxG-qViZxDKreyEcWAY0rGkxCOtWCnrXLDX3DowTHZfgxyniElNDw"
+  },
+  "data": {
+    "me": {
+      "id": 133,
+      "name": "admin",
+      "email": "admin@hva.nl",
+      "createdAt": "1970-01-01T00:00:00",
+      "twoFactorEnabled": false,
+      "user_type": "PERSON",
+      "country": {
+        "id": 56,
+        "name": "Belgium",
+        "imgSmall": "https://sumting.s3.eu-west-2.amazonaws.com/flags/be.png",
+        "alpha2": "BE",
+        "alpha3": "BEL"
+      },
+      "profileImage": "https://s3.eu-west-2.amazonaws.com/sumting/users/165/pf.jpeg",
+      "profileText": null,
+      "stripeId": "cus_M6vsJTWw2M5Exi",
+      "countryKey": null
+    },
+    "need_twofactor": false
+  }
+}
