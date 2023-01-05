@@ -63,43 +63,47 @@ export default {
   },
   computed: {
     firstMonth() {
-      const currentDate = new Date();
-      const firstDay = currentDate.getDay();
+      let currentDate = new Date();
+      let firstDay = currentDate.getDay();
       let firstMonth = currentDate.getMonth();
+      let firstYear = currentDate.getFullYear();
       if (firstMonth < 1){
         firstMonth = 12;
+        firstYear -= 1;
       }
-      const firstYear = currentDate.getFullYear();
       return firstYear + "-" + firstMonth + "-" + firstDay;
     },
     secondMonth() {
-      const currentDate = new Date();
-      const secondDay = currentDate.getDay();
+      let currentDate = new Date();
+      let secondDay = currentDate.getDay();
       let secondMonth = currentDate.getMonth() - 1;
+      let secondYear = currentDate.getFullYear();
       if (secondMonth === -1){
         secondMonth = 11;
+        secondYear -= 1;
       }
       if (secondMonth === 0){
         secondMonth = 12;
       }
-      console.log(secondMonth)
-      const secondYear = currentDate.getFullYear();
       return secondYear + "-" + secondMonth + "-" + secondDay;
     },
     thirdMonth() {
-      const currentDate = new Date();
-      const thirdDay = currentDate.getDay();
+      let currentDate = new Date();
+      let thirdDay = currentDate.getDay();
       let thirdMonth = currentDate.getMonth() - 2;
+      let thirdYear = currentDate.getFullYear();
       if (thirdMonth === -2){
         thirdMonth = 10;
+        thirdYear -= 1;
       }
       if (thirdMonth === -1){
         thirdMonth = 11;
+        thirdYear -= 1;
       }
       if (thirdMonth === 0){
         thirdMonth = 12;
+        thirdYear -= 1;
       }
-      const thirdYear = currentDate.getFullYear();
       return thirdYear + "-" + thirdMonth + "-" + thirdDay;
     },
   },

@@ -103,12 +103,12 @@ export default {
     // }
     //
     // this.chartData.datasets[0].data = this.currentMonth;
-    let data = await this.DashboardApi.findDescriptions();
-    data.forEach((item) => {
-      console.log(item);
-      // Do stuff with every description
-    });
-    console.log(this.DashboardApi.findDescriptions())
+    // let data = await this.DashboardApi.findDescriptions();
+    // data.forEach((item) => {
+    //   console.log(item);
+    //   // Do stuff with every description
+    // });
+    // console.log(this.DashboardApi.findDescriptions())
   },
 };
 </script>
