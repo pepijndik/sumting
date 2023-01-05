@@ -107,10 +107,40 @@ Read the <a href="#installation">Installation</a> section to get a local copy up
 
 * Docker (https://docs.docker.com/get-docker/)
 * Docker-compose (https://docs.docker.com/compose/install/)
+### Production Installation
 
+1. Download the latest release from the [releases page]() This will only be a Dockercompose file. With preconfigured settings to deploy our application.
+   Run the following command to build the latest version of the application.
+   ```sh
+   docker-compose build
+   ```
+2.
+   When the installation is done you can start the project with the following command
+   ```sh
+   docker-compose up -d
+   ```
+   This will launch the Dockercontainers and start the project on port 8080 You can now access the project frontend on :8080,
+   the backend is available on :8083.
+
+5. To stop the project use the following command
+   ```sh
+   docker-compose down
+   ```
+6. The final step is to Link these containers to a propertied domain. 
+This can be done by using a reverse proxy like Nginx. You can find a tutorial on how to do this here: https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04
+
+7. When they are linked you can access the project on your domain.
+Test backend: ```http GET *:/8083/help```
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
 ### Dev Installation
 
-1. Clone our repository with the tag @latest , and go into the directory
+1. Clone our repository with the tag @latest, and go into the directory
    
  ```sh
    git clone https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1.git
@@ -137,6 +167,7 @@ Test backend: localhost:8083/help
 
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 
@@ -151,8 +182,11 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 - [x] Mockup designs
 - [x] Create Empty frameworks frontend and backend
-- [ ] Build Layout
-- [ ] Connect Database
+- [X] Build Layout
+- [X] Connect Database
+- [X] Crud Orders
+- [ ] Crud Clients
+- [X] View Projects
 
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
@@ -162,8 +196,15 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 
 <!-- LICENSE -->
 ## License
+This application is licensed under the closed licenses. 
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+A closed license is a type of license that restricts the use, modification, and distribution of software. It is often used to protect the intellectual property rights of the software creator and ensure that the software is only used in the manner intended by the creator.
+In the case of the Sumting Admin Panel application, a closed license would likely be used to prevent unauthorized use or distribution of the software. This means that users of the Sumting Admin Panel would be required to purchase a license in order to use the software and would not be able to modify or distribute the software without permission from us.
+A closed license is often accompanied by terms and conditions that outline the specific ways in which the software can be used, as well as any penalties for misuse. These terms and conditions may include provisions for updates and maintenance, as well as limitations on the number of users or devices on which the software can be installed.
+Overall, a closed license serves to protect the rights of the software creator and ensure that the software is used responsibly. 
+
+It is important for users of the Sumting Admin Panel to carefully read and understand the terms of the closed license in order to avoid any potential legal issues. See the full license at:
+[License](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/blob/main/LICENSE)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

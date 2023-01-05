@@ -1,5 +1,6 @@
 import ProductType from "@/Models/ProductType";
 import ProjectType from "@/Models/ProjectType";
+import moment from "moment";
 
 export default class Project {
     id;
@@ -13,6 +14,7 @@ export default class Project {
     longitude;
     image;
     type;
+    static project;
 
     constructor(id, description, description_long, name, createdAt, updatedAt, latitude, longitude, image, type) {
         this.id = id;
@@ -25,9 +27,12 @@ export default class Project {
         this.longitude = longitude;
         this.image = image;
     }
-    static copyConstructor(project){
-        if(project == null) return null;
-        project = Object.assign(new Project(),project);
+    static copyConstructor(entity){
+        if(entity == null) return null;
+        var project = Object.assign(new Project(),entity);
+        project.createdAt = moment(entity.created_at);
+        project.updatedAt = moment(entity.updated_at);
+
         project.type = ProjectType.copyConstructor(project.type);
         return project;
     }

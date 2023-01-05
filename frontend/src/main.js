@@ -14,6 +14,8 @@ app.provide('axios', BaseApi)
 app.use(CKEDITOR)
 app.use(ToastPlugin);
 app.config.globalProperties.$worker = SimpleWebWorker;
+
 app.use(VueClickAway);
 app.use(Router);
 app.mount('#app')
+

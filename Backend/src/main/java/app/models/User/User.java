@@ -2,19 +2,15 @@ package app.models.User;
 
 import app.models.Country;
 import app.models.Identifiable;
-import app.models.Order.Order;
-import app.models.Order.OrderLine;
 import app.views.OrderView;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -45,7 +41,6 @@ public class User implements Identifiable<Integer> {
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         LocalDate sellDate = LocalDate.ofEpochDay(randomDay);
     }
-
 
 
     public static enum Type {
@@ -114,12 +109,10 @@ public class User implements Identifiable<Integer> {
     @Column(name = "profile_text", nullable = true)
     private String profileText;
 
+    @JsonView({UserView.User.class})
+    @Column(name = "user_stripe_id", nullable = true)
+    private String stripeId;
 
-    @Nullable
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_key", referencedColumnName = "order_user", insertable = false, updatable = false)
-    private List<Order> orders;
 
     @JsonView(UserView.User.class)
     public boolean isTwoFactorEnabled() {
@@ -235,6 +228,7 @@ public class User implements Identifiable<Integer> {
     public String toString() {
         return String.format("{ email=%s, callName=%s, id=%d, country=%s}", this.email, this.name, this.id, this.country);
     }
+
     public static User buildRandom(String uname) {
         System.out.printf("Building random user with name %s", uname);
         User user = buildRandom();
@@ -261,7 +255,15 @@ public class User implements Identifiable<Integer> {
         long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
         LocalDate created_at = LocalDate.ofEpochDay(randomDay);
         user.setCreatedAt(created_at.atStartOfDay());
-        System.out.printf("User: %s",user);
+        System.out.printf("User: %s", user);
         return user;
+    }
+
+    public String getStripeId() {
+        return stripeId;
+    }
+
+    public void setStripeId(String stripeId) {
+        this.stripeId = stripeId;
     }
 }

@@ -5,11 +5,10 @@ import app.models.Identifiable;
 import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.views.BatchView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.sun.istack.Nullable;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,22 +24,23 @@ public class Batch implements Identifiable<Integer> {
     private Integer id;
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = true, columnDefinition = "timestamp")
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "text_planned", nullable = true, columnDefinition = "varchar(255)")
+    @Column(name = "text_planned", nullable = true)
     private String textPlanned; // planned text
 
     @JsonView(BatchView.Batch.class)
-    @Column(name = "text_completed", nullable = true, columnDefinition = "varchar(255)")
+    @Column(name = "text_completed", nullable = true)
     private String textCompleted; // completed text
 
+
     @JsonView(BatchView.Batch.class)
-    @Column(name = "batch_size", nullable = false, columnDefinition = "int")
+    @Column(name = "batch_size", nullable = true, columnDefinition = "int default 0")
     private Integer batchSize; // size of batch
 
     @Column(name = "project_key", nullable = true, columnDefinition = "int default 0")
@@ -57,7 +57,6 @@ public class Batch implements Identifiable<Integer> {
     /**
      * The batched invoices
      */
-    @Nullable
     @OneToOne
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_invoice_key", referencedColumnName = "batch_invoice_key", insertable = false, updatable = false)
@@ -65,7 +64,8 @@ public class Batch implements Identifiable<Integer> {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
-    @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
+    @JsonBackReference
+    @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
     private List<OrderLine> orderLines;
     @Override
     public Integer getId() {
@@ -75,53 +75,5 @@ public class Batch implements Identifiable<Integer> {
     @Override
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getTextPlanned() {
-        return textPlanned;
-    }
-
-    public void setTextPlanned(String textPlanned) {
-        this.textPlanned = textPlanned;
-    }
-
-    public Integer getBatchSize() {
-        return batchSize;
-    }
-
-    public void setBatchSize(Integer batchSize) {
-        this.batchSize = batchSize;
-    }
-
-    public Integer getProjectKey() {
-        return projectKey;
-    }
-
-    public void setProjectKey(Integer projectKey) {
-        this.projectKey = projectKey;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public List<OrderLine> getOrderLines() {
-        return orderLines;
-    }
-
-    public void setOrderLines(List<OrderLine> orderLines) {
-        this.orderLines = orderLines;
     }
 }

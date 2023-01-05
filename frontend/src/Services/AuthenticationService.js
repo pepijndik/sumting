@@ -13,7 +13,7 @@ class AuthenticationService {
         if (process.env?.VUE_APP_ENV === 'development') {
             return true;
         }
-        return localStorage.getItem('token') !== null;
+        return localStorage.getItem('token') !== null && localStorage.getItem('user') !== null && localStorage.getItem('token') !== undefined && localStorage.getItem('user') !== undefined;
     }
 
     async login(email, password, remember = false) {
@@ -21,21 +21,24 @@ class AuthenticationService {
 
         return await BaseApi.post("auth", {email, password}).then(
             response => {
-                const BearToken = response.headers.authorization.slice(7);
-                const data = response.data.me;
-                localStorage.setItem('token', BearToken);
-                BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
-
-                if(response.data.need_twofactor) {
+                if(response.headers?.authorization !== undefined) {
+                    const BearToken = response.headers.authorization.slice(7);
+                    localStorage.setItem('token', BearToken);
+                    BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
+                }
+                if (response.data.need_twofactor) {
                     return {success: true, need_twofactor: true};
                 }
-
-                const user =new User(data.id, data.name, data.email, data.country, data.user_type)
-                user.profileImage = data.profileImage;
-                user.profileText = data.profileText;
-                user.twofactor = new Twofactor(data.twoFactorEnabled);
-                localStorage.setItem('user', JSON.stringify(user));
-                return user;
+                if(response.data?.me !== undefined) {
+                    const data = response.data.me;
+                    const user = new User(data.id, data.name, data.email, data.country, data.user_type)
+                    user.profileImage = data.profileImage;
+                    user.profileText = data.profileText;
+                    user.twofactor = new Twofactor(data.twoFactorEnabled);
+                    localStorage.setItem('user', JSON.stringify(user));
+                    return user;
+                }
+                return false;
             }
         ).catch(error => {
             console.log(error);
@@ -55,19 +58,17 @@ class AuthenticationService {
      * @param user
      * @returns {Promise<AxiosResponse<any>|boolean>}
      */
-    async verify2Fa(code,user) {
+    async verify2Fa(code, user) {
         return await BaseApi.post("auth/2fa/verify", {
             code: code,
         }, {headers: AuthHeader()}).then(
             response => {
-                if(response.data.success) {
+                if (response.data.success) {
                     user.twofactor.setEnabled(true);
                     user.twofactor.setVerified(true);
-                }else{
+                } else {
                     user.twofactor.setVerified(false);
                 }
-
-
                 return user;
             }
         ).catch(error => {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -138,6 +139,21 @@ public class OrderController {
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/orders/combinedSearch")
+    public ResponseEntity<Iterable<Order>> getOrdersByClientAndProject(
+        @RequestParam(value = "clientID", required = false) String clientId,
+        @RequestParam(value = "projectID", required = false) String projectId) {
+        if (!clientId.equals("null") && !projectId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
+        } else if (!clientId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
+        } else if (!projectId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

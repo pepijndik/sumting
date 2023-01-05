@@ -167,6 +167,7 @@
       <!--            <SubDropdownItem to="/" name="Create project" source="create.svg"/>-->
       <!--            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>-->
       <!--          </NavigationDropdownItem>-->
+      <NavigationDropdownItem to="/projects" name="Project" source="file.svg"/>
       <NavigationDropdownItem to="/clients" name="Client" source="user.svg">
         <SubDropdownItem to="/clients" name="Client's" source="user.svg" />
         <SubDropdownItem
