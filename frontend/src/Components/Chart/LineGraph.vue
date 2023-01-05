@@ -108,7 +108,7 @@ export default {
     //   console.log(item);
     //   // Do stuff with every description
     // });
-    // console.log(this.DashboardApi.findDescriptions())
+    console.log(this.DashboardApi.findDescriptions())
   },
 };
 </script>

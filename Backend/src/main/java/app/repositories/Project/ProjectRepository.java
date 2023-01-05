@@ -33,10 +33,6 @@ public class ProjectRepository implements CrudRepository<Project, Integer> {
         return em.createQuery("SELECT a FROM Project a", Project.class).getResultList();
     }
 
-    public Iterable<String> findAllDescriptions(){
-        return em.createQuery("SELECT p.description_long FROM Project p", String.class).getResultList();
-    }
-
     @Override
     public long count() {
         return this.findAll().spliterator().getExactSizeIfKnown();

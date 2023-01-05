@@ -1,6 +1,7 @@
 package app.rest;
 
 import app.models.Dashboard.Graph;
+import app.models.Project.Project;
 import app.repositories.DashboardRepository;
 import app.repositories.Project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,10 @@ import java.sql.Date;
 public class DashboardController {
 
     private final DashboardRepository dashboardRepository;
-    private final ProjectRepository projectRepository;
 
     @Autowired
-    public DashboardController(DashboardRepository dashboardRepository, ProjectRepository projectRepository) {
+    public DashboardController(DashboardRepository dashboardRepository) {
         this.dashboardRepository = dashboardRepository;
-        this.projectRepository = projectRepository;
     }
 
     @GetMapping("/orderMonths")
@@ -37,7 +36,11 @@ public class DashboardController {
 
     @GetMapping("/orderMonths/projectDescriptions")
     public ResponseEntity<Iterable<String>> getAllProjectDescriptions(){
-        return new ResponseEntity<>(projectRepository.findAllDescriptions(), HttpStatus.OK);
+        return new ResponseEntity<>(dashboardRepository.findAllDescriptions(), HttpStatus.OK);
     }
 
+    @GetMapping("/orderMonths/findByDescriptions/{description}")
+    public ResponseEntity<Iterable<Project>> getProjectByDescriptions(String description){
+        return new ResponseEntity<>(dashboardRepository.findAllByDescription(description), HttpStatus.OK);
+    }
 }
