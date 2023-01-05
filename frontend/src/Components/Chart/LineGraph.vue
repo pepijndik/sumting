@@ -104,7 +104,7 @@ export default {
     //
     // this.chartData.datasets[0].data = this.currentMonth;
 
-    console.log(this.DashboardApi.getAllProjectDescriptions())
+    console.log(this.DashboardApi.findDescriptions())
   },
 };
 </script>
