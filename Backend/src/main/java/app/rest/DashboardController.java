@@ -1,6 +1,7 @@
 package app.rest;
 
 import app.models.Dashboard.Graph;
+import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.repositories.DashboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class DashboardController {
     }
 
     @GetMapping("/orderMonths/findByDescriptions/{description}")
-    public ResponseEntity<Iterable<Project>> getProjectByDescriptions(String description){
+    public ResponseEntity<Iterable<Long>> getProjectByDescriptions(@PathVariable String description){
         return new ResponseEntity<>(dashboardRepository.findAllByDescription(description), HttpStatus.OK);
     }
 }

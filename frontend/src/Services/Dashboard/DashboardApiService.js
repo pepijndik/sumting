@@ -7,6 +7,15 @@ class DashboardApiService extends ApiAdapter {
     super("orderMonths");
     this.headers = AuthHeader();
   }
+
+  async ordersByMonth(month) {
+    return await BaseApi.get(this.resource + "/" + month).then(response => {
+      return response.data;
+    }).catch(error => {
+      throw error;
+    })
+  }
+
   async findDescriptions() {
     return await BaseApi.get(this.resource + '/projectDescriptions').then(response => {
       return response.data;
@@ -15,8 +24,8 @@ class DashboardApiService extends ApiAdapter {
     });
   }
 
-  async ordersByMonth(month) {
-    return await BaseApi.get(this.resource + "/" + month).then(response => {
+  async findOrderlineByDescription(description) {
+    return await BaseApi.get(this.resource + "/findByDescriptions/" + description).then(response => {
       return response.data;
     }).catch(error => {
       throw error;

@@ -39,7 +39,8 @@ export default {
   inject: ["DashboardApi"],
   data() {
     return {
-      projects: [0, 0, 0],
+      projectDescription: [],
+      projectsAmount: [],
       currentMonth: [0, 0, 0],
       chartData: {
         labels: ["Past 30 Days", "Past 60 Days", "Past 90 Days"],
@@ -87,28 +88,24 @@ export default {
     },
   },
   async created() {
-    // this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth);
-    // for (let i = 0; i < this.projects[0].length; i++) {
-    //   this.currentMonth[0]++;
+    let project = ["Restore a coral reef in Kenya", "Restore a coral reef in Turkey",
+      "Restore a coral reef in Netherlands"]
+    // let projectSize = [];
+    this.chartData.labels = project;
+
+    // let projects = await this.DashboardApi.findDescriptions();
+    // for (let i = 0; i < project.length.toString(); i++) {
+    //   projectSize = await this.DashboardApi.findOrderlineByDescription(project[i]);
+    //   console.log()
     // }
-    //
-    // this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth);
-    // for (let i = 0; i < this.projects[1].length; i++) {
-    //   this.currentMonth[1]++;
-    // }
-    //
-    // this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth);
-    // for (let i = 0; i < this.projects[2].length; i++) {
-    //   this.currentMonth[2]++;
-    // }
-    //
-    // this.chartData.datasets[0].data = this.currentMonth;
+
     // let data = await this.DashboardApi.findDescriptions();
     // data.forEach((item) => {
     //   console.log(item);
     //   // Do stuff with every description
     // });
-    console.log(this.DashboardApi.findDescriptions())
+    // console.log(this.DashboardApi.findDescriptions())
+    // console.log(this.DashboardApi.findOrderlineByDescription("Restore a coral reef in Kenya"))
   },
 };
 </script>

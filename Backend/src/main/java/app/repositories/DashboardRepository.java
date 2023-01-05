@@ -1,5 +1,6 @@
 package app.repositories;
 
+import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import app.models.Dashboard.Graph;
@@ -54,9 +55,9 @@ public class DashboardRepository implements CrudRepository<Graph, Integer> {
         return em.createQuery("SELECT p.description_long FROM Project p", String.class).getResultList();
     }
 
-    public Iterable<Project> findAllByDescription(String description){
-        return em.createQuery("SELECT a FROM Project a WHERE a.description_long = :description",
-                Project.class).setParameter("description", description).getResultList();
+    public Iterable<Long> findAllByDescription(String description){
+        return em.createQuery("SELECT COUNT(a) FROM OrderLine a WHERE a.notes = :description",
+                Long.class).setParameter("description", description).getResultList();
     }
 
     @Override
