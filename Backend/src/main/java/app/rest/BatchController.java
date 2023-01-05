@@ -5,7 +5,7 @@ import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.repositories.Batch.BatchRepository;
 import app.repositories.Order.OrderlineRepository;
-import app.repositories.Project.ProjectRepository;
+import app.repositories.Project.ProjectServiceImpl;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class BatchController {
     @Autowired
     private BatchRepository batchRepository;
     @Autowired
-    private ProjectRepository projectRepository;
+    private ProjectServiceImpl projectService;
     @Autowired
     private OrderlineRepository orderlineRepository;
 
@@ -46,8 +46,8 @@ public class BatchController {
             newBatch.setBatchSize(batch.get("batchSize").asInt());
             newBatch.setProjectKey(batch.get("projectKey").asInt());
 
-            Project batchProject = this.projectRepository.findById(batch.get("projectKey").asInt());
-            newBatch.setProject(batchProject);
+            Optional<Project> batchProject = this.projectService.findById(batch.get("projectKey").asInt());
+            newBatch.setProject(batchProject.get());
 
             for (int i = 0; i < batch.get("batchSize").asInt(); i++) {
                 Optional<OrderLine> batchOrderline =

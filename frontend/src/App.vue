@@ -25,6 +25,7 @@ import Currency from "@/Services/Currency";
 import FileUploadApiService from "@/Services/FileUploadService";
 import AuthHeader from "@/Services/AuthHeader";
 import BaseApi from "@/Services/BaseApi";
+import BatchApiService from "@/Services/Batch/BatchApiService";
 import {SemipolarSpinner} from "epic-spinners";
 export default {
   name: "App",
@@ -45,6 +46,7 @@ export default {
       CountryApi: new CountryApiService(),
       DashboardApi: new DashboardApiService(),
       FileUploadApi: new FileUploadApiService(),
+      BatchApi: new BatchApiService(),
     };
   },
 
