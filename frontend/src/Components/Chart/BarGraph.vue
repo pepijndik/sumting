@@ -65,37 +65,56 @@ export default {
     firstMonth() {
       const currentDate = new Date();
       const firstDay = currentDate.getDay();
-      const firstMonth = currentDate.getMonth() - 1;
+      let firstMonth = currentDate.getMonth();
+      if (firstMonth < 1){
+        firstMonth = 12;
+      }
       const firstYear = currentDate.getFullYear();
       return firstYear + "-" + firstMonth + "-" + firstDay;
     },
     secondMonth() {
       const currentDate = new Date();
       const secondDay = currentDate.getDay();
-      const secondMonth = currentDate.getMonth() - 2;
+      let secondMonth = currentDate.getMonth() - 1;
+      if (secondMonth === -1){
+        secondMonth = 11;
+      }
+      if (secondMonth === 0){
+        secondMonth = 12;
+      }
+      console.log(secondMonth)
       const secondYear = currentDate.getFullYear();
       return secondYear + "-" + secondMonth + "-" + secondDay;
     },
     thirdMonth() {
       const currentDate = new Date();
       const thirdDay = currentDate.getDay();
-      const thirdMonth = currentDate.getMonth() - 3;
+      let thirdMonth = currentDate.getMonth() - 2;
+      if (thirdMonth === -2){
+        thirdMonth = 10;
+      }
+      if (thirdMonth === -1){
+        thirdMonth = 11;
+      }
+      if (thirdMonth === 0){
+        thirdMonth = 12;
+      }
       const thirdYear = currentDate.getFullYear();
       return thirdYear + "-" + thirdMonth + "-" + thirdDay;
     },
   },
   async created() {
-    this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth);
+    let data = await this.DashboardApi.ordersByMonth(this.firstMonth);
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++;
     }
 
-    this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth);
+    this.projects[1] = await this.DashboardApi.ordersByMonth(this.secondMonth);
     for (let i = 0; i < this.projects[1].length; i++) {
       this.currentMonth[1]++;
     }
 
-    this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth);
+    this.projects[2] = await this.DashboardApi.ordersByMonth(this.thirdMonth);
     for (let i = 0; i < this.projects[2].length; i++) {
       this.currentMonth[2]++;
     }
