@@ -94,20 +94,20 @@ public class Order implements Identifiable<Integer> {
     @Transient
     public Integer payerKey;
 
-//    @Nullable
-//    @JsonView(OrderView.Order.class)
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
-//            updatable = false, insertable = false)
-//    private Project project;
-//
-//    @Nullable
-//    @JsonView(OrderView.Order.class)
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "order_user", referencedColumnName = "user_key",
-//            nullable = true,
-//            updatable = false, insertable = false)
-//    private User orderUser;
+    @Nullable
+    @JsonView(OrderView.Order.class)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
+            updatable = false, insertable = false)
+    private Project project;
+
+    @Nullable
+    @JsonView(OrderView.Order.class)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_user", referencedColumnName = "user_key",
+            nullable = true,
+            updatable = false, insertable = false)
+    private User orderUser;
 
     @Nullable
     @JsonView(OrderView.Order.class)
