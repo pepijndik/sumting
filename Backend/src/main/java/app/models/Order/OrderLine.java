@@ -117,7 +117,6 @@ public class OrderLine implements Identifiable<Integer> {
 
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
     private Batch batch;

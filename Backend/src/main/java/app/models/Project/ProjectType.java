@@ -10,6 +10,13 @@ public class ProjectType implements Identifiable<Integer> {
 
     public static final String TABLE_NAME = "project_type";
 
+
+    public ProjectType() {
+    }
+    public ProjectType(Integer id, String description) {
+        this.id = id;
+        this.description = description;
+    }
     @Id
     @Column(name = "project_type_key")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

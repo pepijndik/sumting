@@ -1,14 +1,11 @@
 package app.unit;
 
 import app.models.Order.Order;
-import app.models.Order.OrderLine;
 import app.models.User.User;
 import app.repositories.DataLoader;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.response.LoginResponse;
-import app.rest.AuthenticationControllerTests;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,19 +19,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.startsWith;
+import static com.google.common.collect.Range.greaterThan;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Import(DataLoader.class)
-public class CreateOrderTest {
+public class OrderTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -79,12 +75,32 @@ public class CreateOrderTest {
     }
 
     @Test
+    public void canRetrieveAllOrders() {
+        ResponseEntity<Order[]> response = restTemplate.getForEntity(servletContextPath + "/orders", Order[].class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Order[] responseBody = response.getBody();
+        assert responseBody != null;
+        assertThat("The order id must be 1", responseBody.length == 1);
+    }
+
+    @Test
+    public void canRetrieveOneOrders() {
+        ResponseEntity<Order> response = restTemplate.getForEntity(servletContextPath + "/orders/1", Order.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Order responseBody = response.getBody();
+        assert responseBody != null;
+        assertThat("The order id must be 1", responseBody.getId() == 1);
+        assertThat("Name must be test order", responseBody.getDescription().equals("test order"));
+    }
+    @Test
     public void canCreateOrder() {
 
         assert(userList.size() > 0);
         assert(orderTypeRepository.findAll().spliterator().getExactSizeIfKnown() > 0);
         //Create a new order
-        CreateOrderTest.CreateOrder createOrder = new CreateOrder(
+        OrderTest.CreateOrder createOrder = new CreateOrder(
                 LocalDateTime.now().toLocalDate().toString(),
                 "Test Order",
                 100,
