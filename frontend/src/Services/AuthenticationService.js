@@ -126,6 +126,22 @@ class AuthenticationService {
         });
     }
 
+    async refreshToken(){
+        return await BaseApi.post("auth/refresh-token",).then(
+            response => {
+                if(response.headers?.authorization !== undefined) {
+                    const BearToken = response.headers.authorization.slice(7);
+                    localStorage.setItem('token', BearToken);
+                    BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
+                    return true;
+                }
+            }
+        ).catch(error => {
+            console.log(error);
+            return false;
+        });
+    }
+
 }
 
 export default AuthenticationService;
