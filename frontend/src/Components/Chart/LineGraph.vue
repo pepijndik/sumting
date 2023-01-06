@@ -106,6 +106,9 @@ export default {
     // });
     // console.log(this.DashboardApi.findDescriptions())
     // console.log(this.DashboardApi.findOrderlineByDescription("Restore a coral reef in Kenya"))
+    let backend = this.DashboardApi.findOrderlineByDescription("Restore a coral reef in Kenya")
+    // let backend = this.DashboardApi.ordersByMonth("2022-10-08")
+    console.log(backend)
   },
 };
 </script>

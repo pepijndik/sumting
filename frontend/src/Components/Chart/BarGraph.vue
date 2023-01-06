@@ -108,7 +108,7 @@ export default {
     },
   },
   async created() {
-    let data = await this.DashboardApi.ordersByMonth(this.firstMonth);
+    this.projects[0] = await this.DashboardApi.ordersByMonth(this.firstMonth);
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++;
     }
