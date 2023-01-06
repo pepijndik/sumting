@@ -64,7 +64,6 @@ public class Batch implements Identifiable<Integer> {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
-    @JsonBackReference
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     private List<OrderLine> orderLines;
     @Override

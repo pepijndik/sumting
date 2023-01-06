@@ -29,9 +29,9 @@ public class OrderLine implements Identifiable<Integer> {
     private Integer id;
 
     @JsonView(OrderLineView.OrderLine.class)
-    @OneToOne(cascade = CascadeType.ALL)
     @JsonBackReference
-    @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false)
+    @OneToOne
+    @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false, nullable = false)
     private Order order;
 
     @Column(name = "order_key", nullable = true, columnDefinition = "int default 0")
@@ -117,7 +117,6 @@ public class OrderLine implements Identifiable<Integer> {
 
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     private Batch batch;

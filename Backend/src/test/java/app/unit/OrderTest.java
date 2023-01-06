@@ -1,17 +1,17 @@
 package app.unit;
 
 import app.models.Order.Order;
-import app.models.Order.OrderLine;
 import app.models.User.User;
 import app.repositories.DataLoader;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.response.LoginResponse;
-import app.rest.AuthenticationControllerTests;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -21,20 +21,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.time.LocalDate;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ActiveProfiles("test")
 @Import(DataLoader.class)
-public class CreateOrderTest {
+public class OrderTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -65,34 +60,55 @@ public class CreateOrderTest {
         public Integer payerKey;
         public String currency;
 
-        public OrderLine[] orderLines;
 
-        public CreateOrder(String date, String description, Integer transactionTotal, Integer typeKey, Integer payerKey, String currency, OrderLine[] orderLines) {
+
+        public CreateOrder(String date, String description, Integer transactionTotal, Integer typeKey, Integer payerKey, String currency) {
             this.order_date = date;
             this.description = description;
             this.transactionTotal = transactionTotal;
             this.typeKey = typeKey;
             this.payerKey = payerKey;
             this.currency = currency;
-            this.orderLines = orderLines;
+
         }
     }
 
     @Test
+    @org.junit.jupiter.api.Order(1)
+    public void canRetrieveAllOrders() {
+        ResponseEntity<Order[]> response = restTemplate.getForEntity(servletContextPath + "/orders", Order[].class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Order[] responseBody = response.getBody();
+        assert responseBody != null;
+        assertThat("The total orders must be 1 but is "+ responseBody.length, responseBody.length == 1);
+    }
+
+    @Test
+    @org.junit.jupiter.api.Order(2)
+    public void canRetrieveOneOrders() {
+        ResponseEntity<Order> response = restTemplate.getForEntity(servletContextPath + "/orders/1", Order.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Order responseBody = response.getBody();
+        assert responseBody != null;
+        assertThat("The order id must be 1", responseBody.getId() == 1);
+        assertThat("Name must be test order", responseBody.getDescription().equals("test order"));
+    }
+    @Test
+    @org.junit.jupiter.api.Order(3)
     public void canCreateOrder() {
 
         assert(userList.size() > 0);
         assert(orderTypeRepository.findAll().spliterator().getExactSizeIfKnown() > 0);
-        OrderLine[] orderLines = new OrderLine[1];
         //Create a new order
-        CreateOrderTest.CreateOrder createOrder = new CreateOrder(
+        OrderTest.CreateOrder createOrder = new CreateOrder(
                 LocalDateTime.now().toLocalDate().toString(),
                 "Test Order",
                 100,
                 1,
                 userList.get(0).getId(),
-                "EUR",
-                orderLines
+                "EUR"
         );
         ResponseEntity<Order> response = null;
         try {
