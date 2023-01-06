@@ -8,8 +8,6 @@ import com.sun.istack.Nullable;
 import jdk.jfr.Timestamp;
 import app.models.Identifiable;
 import app.models.User.User;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.*;
@@ -96,15 +94,20 @@ public class Order implements Identifiable<Integer> {
     @Transient
     public Integer payerKey;
 
-    @JsonView(OrderView.Order.class)
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "project", referencedColumnName = "project_key", updatable = true, insertable = true)
-    private Project project;
-
-    @JsonView(OrderView.Order.class)
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "order_user", referencedColumnName = "user_key", updatable = true, insertable = true)
-    private User orderUser;
+//    @Nullable
+//    @JsonView(OrderView.Order.class)
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
+//            updatable = false, insertable = false)
+//    private Project project;
+//
+//    @Nullable
+//    @JsonView(OrderView.Order.class)
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "order_user", referencedColumnName = "user_key",
+//            nullable = true,
+//            updatable = false, insertable = false)
+//    private User orderUser;
 
     @Nullable
     @JsonView(OrderView.Order.class)
@@ -133,6 +136,7 @@ public class Order implements Identifiable<Integer> {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true,nullable = true)
     private List<OrderLine> orderLines;
+
 
 
     @Override

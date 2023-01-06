@@ -1,5 +1,6 @@
 package app.models.Project;
 
+import app.models.Order.Order;
 import app.views.ProjectView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -9,6 +10,7 @@ import app.models.Identifiable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = Project.TABLE_NAME)
@@ -78,6 +80,14 @@ public class Project implements Identifiable<Integer> {
     @JoinColumn(name = "project_type_key", referencedColumnName = "project_type_key", insertable = false, updatable = false)
     private ProjectType type;
 
+
+    @Nullable
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project_key", referencedColumnName = "order_key",
+            insertable = false,
+            updatable = false)
+    private List<Order> orders;
     @Override
     @JsonIgnore
     public Integer getId() {

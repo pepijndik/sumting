@@ -13,6 +13,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import ClientCreate from "@/Pages/Client/ClientCreate";
 import ClientEdit from "@/Pages/Client/ClientEdit";
 import ClientView from "@/Pages/Client/ClientView";
+import BatchCreate from "@/Pages/Batch/BatchCreate";
 const IsAuthenticated = (to, from, next) => {
   if (to.name !== "auth:login" && !AuthenticationService.isLoggedIn())
     next({ name: "auth:login" });
@@ -143,6 +144,17 @@ const router = createRouter({
         subtitle: "Edit",
       },
       component: ClientEdit,
+    },
+    {
+      path: "/batch/create",
+      name: "admin:BatchCreate",
+      beforeEnter: IsAuthenticated,
+      meta: {
+        pageTitle: "Create batch",
+        title: "New batch",
+        subtitle: "Create",
+      },
+      component: BatchCreate,
     },
   ],
 });
