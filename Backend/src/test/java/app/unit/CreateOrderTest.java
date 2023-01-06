@@ -65,16 +65,16 @@ public class CreateOrderTest {
         public Integer payerKey;
         public String currency;
 
-        public OrderLine[] orderLines;
 
-        public CreateOrder(String date, String description, Integer transactionTotal, Integer typeKey, Integer payerKey, String currency, OrderLine[] orderLines) {
+
+        public CreateOrder(String date, String description, Integer transactionTotal, Integer typeKey, Integer payerKey, String currency) {
             this.order_date = date;
             this.description = description;
             this.transactionTotal = transactionTotal;
             this.typeKey = typeKey;
             this.payerKey = payerKey;
             this.currency = currency;
-            this.orderLines = orderLines;
+
         }
     }
 
@@ -83,7 +83,6 @@ public class CreateOrderTest {
 
         assert(userList.size() > 0);
         assert(orderTypeRepository.findAll().spliterator().getExactSizeIfKnown() > 0);
-        OrderLine[] orderLines = new OrderLine[1];
         //Create a new order
         CreateOrderTest.CreateOrder createOrder = new CreateOrder(
                 LocalDateTime.now().toLocalDate().toString(),
@@ -91,8 +90,7 @@ public class CreateOrderTest {
                 100,
                 1,
                 userList.get(0).getId(),
-                "EUR",
-                orderLines
+                "EUR"
         );
         ResponseEntity<Order> response = null;
         try {

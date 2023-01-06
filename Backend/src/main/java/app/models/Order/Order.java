@@ -110,9 +110,8 @@ public class Order implements Identifiable<Integer> {
     @Nullable
     @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true)
-    @RestResource(path = "orderlines", rel = "orderlines")
-    private List<OrderLine> orderLines = new ArrayList<>();
+    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true,nullable = true)
+    private List<OrderLine> orderLines;
 
 
     @Override
