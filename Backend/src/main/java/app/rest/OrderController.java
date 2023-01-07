@@ -17,10 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.annotation.Nullable;
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller

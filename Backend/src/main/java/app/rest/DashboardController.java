@@ -1,8 +1,6 @@
 package app.rest;
 
 import app.models.Dashboard.Graph;
-import app.models.Order.OrderLine;
-import app.models.Project.Project;
 import app.repositories.DashboardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
