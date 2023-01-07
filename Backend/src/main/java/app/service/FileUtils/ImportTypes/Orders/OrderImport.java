@@ -3,7 +3,6 @@ package app.service.FileUtils.ImportTypes.Orders;
 import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
-import app.models.Project.Project;
 import app.models.User.User;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
@@ -72,7 +71,7 @@ public class OrderImport extends CSVHelper {
 
             order.setPayer(this.userRepository.findById(Integer.valueOf(values[payerUserKeyIndex])));
 
-            if (this.orderTypeRepository.existsById(Integer.valueOf(values[orderTypeKeyIndex]))) {
+            if (this.orderTypeRepository.findById(Integer.valueOf(values[orderTypeKeyIndex])).isPresent()) {
                 order.setOrderType(this.orderTypeRepository.findById(Integer.valueOf(values[orderTypeKeyIndex])).get());
             } else {
                 OrderType orderType = new OrderType();
