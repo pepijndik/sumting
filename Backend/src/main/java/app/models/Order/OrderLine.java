@@ -126,9 +126,10 @@ public class OrderLine implements Identifiable<Integer> {
     private Batch batch;
 
     // Constructor created for tests
-    public OrderLine(String notes, double transactionLineTotal, String proofName, double latitude, double longitude,
+    public OrderLine(Integer id, String notes, double transactionLineTotal, String proofName, double latitude, double longitude,
                      String proofSmall, String proofMedium, String proofLarge, double transactionLineFee,
                      double transactionLineVat, LocalDateTime loadedDate) {
+        this.id = id;
         this.notes = notes;
         this.transactionLineTotal = transactionLineTotal;
         this.proofName = proofName;
