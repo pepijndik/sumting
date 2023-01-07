@@ -77,15 +77,37 @@ export default {
       })
 
       this.axios.interceptors.response.use((response) => {
-        this.isLoading = false
+        try{
+          this.isLoading = false;
+          // eslint-disable-next-line no-empty
+        }catch (e){
+
+        }
         return response
       }, function(error) {
-        this.isLoading = false;
-        if(error.response.status === 401) {
-          console.log("User was not logged in, redirect to login")
-          this.Auth.logout();
-        }
-        Event.$emit('error', 500, error.response.data.message)
+       const originalConfig = error.config;
+       if(error.response){
+         this.isLoading = false;
+         if(error.response.status === 401 && !originalConfig._retry) {
+           try{
+             console.log("User was not logged in, redirect to login")
+             originalConfig._retry = true;
+             this.Auth.refreshToken();
+             return this.axios(originalConfig);
+           }catch (_error){
+             if (_error.response && _error.response.data) {
+               return Promise.reject(_error.response.data);
+             }
+             return Promise.reject(_error);
+           }
+         }else if(error.response.status === 401){
+           this.Auth.logout();
+            this.$router.push({name: 'login'});
+         }
+         if (error.response.status === 403 && error.response.data) {
+           return Promise.reject(error.response.data);
+         }
+       }
         return Promise.reject(error)
       })
     },

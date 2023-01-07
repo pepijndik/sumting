@@ -6,6 +6,7 @@ import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.views.BatchView;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -66,6 +67,7 @@ public class Batch implements Identifiable<Integer> {
     @OneToMany(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
+    @JsonManagedReference(value = "batch_orderline")
     private List<OrderLine> orderLines;
     @Override
     public Integer getId() {
