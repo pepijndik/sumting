@@ -110,7 +110,7 @@ public class OrderController {
     }
 
     @PutMapping("/orderlines/editOrderlines/{id}")
-    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
+    public OrderLine editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
             Optional<OrderLine> findOrderline = orderlineRepository.findById(id);
 
@@ -130,13 +130,14 @@ public class OrderController {
                 orderlineFound.setLoadedDate(orderline.getLoadedDate());
                 orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
 
-                return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
+                return orderlineRepository.save(orderlineFound);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return null;
             }
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
