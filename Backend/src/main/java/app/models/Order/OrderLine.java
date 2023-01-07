@@ -30,6 +30,7 @@ public class OrderLine implements Identifiable<Integer> {
 
     @JsonView(OrderLineView.OrderLine.class)
     @JsonBackReference
+
     @OneToOne
     @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false, nullable = false)
     private Order order;
@@ -118,6 +119,7 @@ public class OrderLine implements Identifiable<Integer> {
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
+    @JsonBackReference("batch_orderline")
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     private Batch batch;
 

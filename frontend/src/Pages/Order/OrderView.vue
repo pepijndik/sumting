@@ -156,7 +156,7 @@ export default {
     this.users = await this.UserApi.findAll();
 
     this.orders.sort((a, b) => {
-      return a.order_date.localeCompare(b.order_date)
+      return this.compareDate(a,b);
     });
   },
   computed: {
@@ -179,16 +179,22 @@ export default {
     },
   },
   methods: {
+    compareDate(a,b){
+      if(a?.order_date != null && b?.order_date != null){
+        return a?.order_date?.localeCompare(b?.order_date);
+      }
+      return 0;
+    },
     changeListOrder() {
       if (!this.searchOrder) {
         // From Old -> New
         this.orders.sort((a, b) => {
-          return a.order_date.localeCompare(b.order_date)
+          return this.compareDate(a,b);
         });
       } else if (this.searchOrder) {
         // From New -> Old
         this.orders.sort((a, b) => {
-          return b.order_date.localeCompare(a.order_date)
+          return this.compareDate(b,a);
         });
       }
 

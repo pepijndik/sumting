@@ -176,7 +176,7 @@ export default {
   },
   computed: {
     filteredOptions() {
-      console.log(this.options);
+
       const regOption = new RegExp(this.searchFilter, "ig");
       return this.options.filter((option) => {
         return this.fields.some((field) => {
@@ -220,11 +220,11 @@ export default {
           break;
         case "object":
           this.$emit("selected", this.selected);
-          console.log(this.selected);
+          //console.log(this.selected);
           break;
         default:
           this.$emit("selected", this.selected[this.primarykey]);
-          console.log(this.selected[this.primarykey]);
+          //console.log(this.selected[this.primarykey]);
           break;
       }
     },
