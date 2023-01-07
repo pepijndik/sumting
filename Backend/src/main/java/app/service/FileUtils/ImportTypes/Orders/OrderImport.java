@@ -3,10 +3,11 @@ package app.service.FileUtils.ImportTypes.Orders;
 import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
+import app.models.Project.Project;
 import app.models.User.User;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
-import app.repositories.Project.ProjectRepository;
+import app.repositories.Project.ProjectServiceImpl;
 import app.service.FileUtils.CSVHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,14 +41,14 @@ public class OrderImport extends CSVHelper {
     private List<OrderLine> orderLines;
     private final JPAUserRepository userRepository;
     private final OrderTypeRepository orderTypeRepository;
-    private final ProjectRepository projectRepository;
+    private final ProjectServiceImpl projectService;
 
     @Autowired
     public OrderImport(JPAUserRepository userRepository, OrderTypeRepository orderTypeRepository,
-                       ProjectRepository projectRepository) {
+                       ProjectServiceImpl projectService) {
         this.userRepository = userRepository;
         this.orderTypeRepository = orderTypeRepository;
-        this.projectRepository = projectRepository;
+        this.projectService = projectService;
     }
 
     private List<Order> prepareOrdersList(String[] headers, BufferedReader br, int typeOfRequest) throws IOException {
@@ -113,7 +114,9 @@ public class OrderImport extends CSVHelper {
                     order.setUser(this.userRepository.findById(Integer.parseInt(values[userIdExtIndex])));
                 }
                 if (optionalValues.contains("Project")) {
-                    order.setProject(this.projectRepository.findById(Integer.valueOf(values[projectIndex])));
+                    if (this.projectService.findById(Integer.parseInt(values[projectIndex])).isPresent()) {
+                        order.setProject(this.projectService.findById(Integer.parseInt(values[projectIndex])).get());
+                    }
                 }
                 if (optionalValues.contains("Order User")) {
                     order.setOrderUser(this.userRepository.findById(Integer.valueOf(values[orderUserIndex])));
