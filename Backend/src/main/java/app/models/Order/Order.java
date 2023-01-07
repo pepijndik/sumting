@@ -20,6 +20,27 @@ import java.util.List;
 public class Order implements Identifiable<Integer> {
     public static final String TABLE_NAME = "\"order\"";
 
+
+    public Order() {
+    }
+    public Order(Integer id,
+                 LocalDate order_date,
+                 String description,
+                 Double transactionTotal,
+                 String currency,
+                 User payer,
+                 OrderType type,
+                 Project project) {
+        this.id = id;
+        this.order_date = order_date;
+        this.description = description;
+        this.transactionTotal = transactionTotal;
+        this.currency = currency;
+        this.payer = payer;
+        this.orderType = type;
+        this.project = project;
+    }
+
     @Id()
     @JsonView(OrderView.Order.class)
     @Column(name = "order_key", nullable = false, unique = true, updatable = false)
@@ -73,14 +94,19 @@ public class Order implements Identifiable<Integer> {
     @Transient
     public Integer payerKey;
 
+    @Nullable
     @JsonView(OrderView.Order.class)
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "project", referencedColumnName = "project_key", updatable = true, insertable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
+            updatable = false, insertable = false)
     private Project project;
 
+    @Nullable
     @JsonView(OrderView.Order.class)
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "order_user", referencedColumnName = "user_key", updatable = true, insertable = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_user", referencedColumnName = "user_key",
+            nullable = true,
+            updatable = false, insertable = false)
     private User orderUser;
 
     @Nullable
@@ -108,9 +134,9 @@ public class Order implements Identifiable<Integer> {
     @Nullable
     @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true)
-    @RestResource(path = "orderlines", rel = "orderlines")
-    private List<OrderLine> orderLines = new ArrayList<>();
+    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true,nullable = true)
+    private List<OrderLine> orderLines;
+
 
 
     @Override

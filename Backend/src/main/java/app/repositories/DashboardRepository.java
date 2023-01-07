@@ -1,6 +1,6 @@
 package app.repositories;
 
-import app.repositories.Interfaces.CrudRepository;
+import app.repositories.Interfaces.CustomCrudRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import app.models.Dashboard.Graph;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import java.sql.Date;
 
 @Repository
 @Transactional
-public class DashboardRepository implements CrudRepository<Graph, Integer> {
+public class DashboardRepository implements CustomCrudRepository<Graph, Integer> {
 
     @Autowired
     private EntityManager em;

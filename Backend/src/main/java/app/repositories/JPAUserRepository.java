@@ -1,7 +1,7 @@
 package app.repositories;
 
 import app.models.User.User;
-import app.repositories.Interfaces.CrudRepository;
+import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Repository
 @Transactional
-public class JPAUserRepository implements CrudRepository<User, Integer > {
+public class JPAUserRepository implements CustomCrudRepository<User, Integer > {
 
     @Autowired
     private EntityManager em;

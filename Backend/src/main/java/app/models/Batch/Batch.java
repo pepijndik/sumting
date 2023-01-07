@@ -65,7 +65,7 @@ public class Batch implements Identifiable<Integer> {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
-    @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = false)
+    @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     private List<OrderLine> orderLines;
     @Override
     public Integer getId() {
@@ -75,5 +75,54 @@ public class Batch implements Identifiable<Integer> {
     @Override
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getTextPlanned() {
+        return textPlanned;
+    }
+
+    public void setTextPlanned(String textPlanned) {
+        this.textPlanned = textPlanned;
+    }
+
+    public Integer getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(Integer batchSize) {
+        this.batchSize = batchSize;
+    }
+
+    public Integer getProjectKey() {
+        return projectKey;
+    }
+
+    public void setProjectKey(Integer projectKey) {
+        this.projectKey = projectKey;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLine> orderLines) {
+        this.orderLines = orderLines;
     }
 }

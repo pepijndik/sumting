@@ -158,11 +158,11 @@
           source="create.svg"
         />
       </NavigationDropdownItem>
-      <!--          <NavigationDropdownItem to="/" name="Batch" source="file.svg">-->
-      <!--            <SubDropdownItem to="/" name="Create batch" source="create.svg"/>-->
-      <!--            <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
-      <!--            <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
-      <!--          </NavigationDropdownItem>-->
+      <NavigationDropdownItem name="Batch" source="file.svg">
+        <SubDropdownItem to="/batch/create" name="Create batch" source="create.svg"/>
+<!--        <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
+<!--        <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
+      </NavigationDropdownItem>
       <!--          <NavigationDropdownItem to="/" name="Project" source="file.svg">-->
       <!--            <SubDropdownItem to="/" name="Create project" source="create.svg"/>-->
       <!--            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>-->

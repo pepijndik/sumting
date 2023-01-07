@@ -18,11 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,15 +69,15 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/orderlines")
-    public ResponseEntity<Iterable<OrderLine>> getAllOrderlines() {
-        return new ResponseEntity<>(orderlineRepository.findAll(), HttpStatus.OK);
-    }
-
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
         Optional<OrderLine> o = orderlineRepository.findById(orderlineId);
         return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/orderlines")
+    public ResponseEntity<Iterable<OrderLine>> getAllOrderlines() {
+        return new ResponseEntity<>(orderlineRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/orders")
@@ -105,6 +106,33 @@ public class OrderController {
     public ResponseEntity<Iterable<OrderType>> getTypes(){
         return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
     }
+
+    @GetMapping(value = {
+            "/orders/orderlines",
+            "/orders/orderlines/{id}" })
+    public ResponseEntity getAllOrderlinesBy(
+            @PathVariable(value = "id",required = false) Optional<String> orderlineId,
+            @RequestParam(name="productId",required=false) Integer product_id,
+            @RequestParam(name="orderId",required=false) Integer order_id
+    ) {
+        Iterable<OrderLine> lines = null;
+        if(orderlineId.isPresent()){
+            Optional<OrderLine> o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
+            return o.isPresent() ?
+                    new ResponseEntity<>(o, HttpStatus.OK) :
+                    new ResponseEntity<ModelNotFound>(
+                            new ModelNotFound("Orderline", "id", orderlineId.get()),
+                            HttpStatus.NOT_FOUND);
+        }
+        if(product_id != null || order_id != null){
+            lines = orderlineRepository.findAllBy(product_id, order_id);
+
+        }else{
+            lines = orderlineRepository.findAll();
+        }
+        return new ResponseEntity<>(lines, HttpStatus.OK);
+    }
+
     @PutMapping("/orderlines/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {

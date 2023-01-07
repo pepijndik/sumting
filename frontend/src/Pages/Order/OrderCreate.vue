@@ -17,10 +17,10 @@
             :options="clients"
         >
           <slot>
-            <!--            <UserIcon-->
-            <!--              class="w-5 h-5 text-gray-400 group-hover:text-gray-500"-->
-            <!--              aria-hidden="true"-->
-            <!--            />-->
+            <UserIcon
+                class="w-5 h-5 text-gray-400 group-hover:text-gray-500"
+                aria-hidden="true"
+            />
           </slot>
         </SearchableDropdown>
       </div>
@@ -126,16 +126,17 @@ import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
 import "@ckeditor/ckeditor5-build-classic/build/translations/nl";
-import {ref} from "@vue/reactivity";
-//import UserIcon from "@/Components/SvgIcons/userIcon.vue";
+import { ref } from "@vue/reactivity";
+import UserIcon from "@/Components/SvgIcons/FileIcon.vue";
 import NumberInputWithButtons from "@/Components/Form/Input/NumberInputWithButtons.vue";
 import FileUpload from "@/Components/Form/fileUpload.vue";
+
 
 export default {
   name: "OrderCreate",
   components: {
     NumberInputWithButtons,
-    //UserIcon,
+    UserIcon,
     OrderTotalCostSubItem,
     SearchableDropdown,
     FileUpload,
@@ -183,7 +184,7 @@ export default {
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    // this.clients = await this.UserApi.GetAllUsers();
+    this.clients = await this.UserApi.findAll();
     this.orderTypes = await this.OrderApi.GetOrderTypes();
     this.currencies = this.Curreny.getCurrencyList();
   },
@@ -286,23 +287,6 @@ export default {
             duration: 3000,
           });
         });
-
-        // const text = await new Blob([this.selectedFile], {type: this.selectedFile.type}).text();
-        // console.log("Text: ", text);
-        //
-        // if (text !== null) {
-        //   const rows = text.split("\n"), headers = rows[0].split(",");
-        //
-        //   for (let i = 1; i < rows.length; i++) {
-        //     const row = rows[i].split(","), obj = {};
-        //     // for every header, add a property to the object
-        //     for (let j = 0; j < row.length; j++) {
-        //       obj[headers[j]] = row[j];
-        //     }
-        //     console.log(obj)
-        //     // this.clients.push(obj);
-        //   }
-
       }
     }
   },
