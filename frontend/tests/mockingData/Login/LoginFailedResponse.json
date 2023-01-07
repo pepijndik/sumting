@@ -1,0 +1,11 @@
+{
+  "headers":{
+    "Content-Type": "application/json"
+  },
+  "data": {
+    "timestamp": "2023-01-04T11:28:40.364+00:00",
+    "status": 401,
+    "error": "Unauthorized",
+    "path": "/auth"
+  }
+}
