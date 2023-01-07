@@ -106,10 +106,13 @@ class OrderApiService extends ApiAdapter {
     return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
   }
 
-  async ImportCSV(file) {
+  async ImportCSV(files) {
+    this.setHeader({
+      "Content-Type": "multipart/form-data",
+    });
     let formData = new FormData();
-    formData.append("file", file);
-
+    formData.append("files", files);
+    console.log(formData.get("files"));
     return await BaseApi.post(`orders/importCSV`, formData).then(response => {
       console.log(response.data)
       return response.data;

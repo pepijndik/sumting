@@ -21,10 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -180,7 +183,26 @@ public class OrderController {
     }
 
     @PostMapping("/orders/importCSV")
-    public ResponseEntity<Order> importCSV(@RequestParam("orderFile") MultipartFile orderFile, @RequestParam("orderlineFile") MultipartFile orderlineFile) {
+    public ResponseEntity<Order> importCSV(@RequestParam("files") MultipartFile[] files) {
+        if (files.length <= 1) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        MultipartFile orderlineFile = null, orderFile = null;
+        try {
+            for (MultipartFile file : files) {
+                FileReader fileReader = new FileReader(Objects.requireNonNull(file.getOriginalFilename()));
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                if (bufferedReader.readLine() != null) {
+                    if (bufferedReader.readLine().contains("Owner User Key")) {
+                        orderlineFile = file;
+                    } else if (bufferedReader.readLine().contains("Orderline Keys")) {
+                        orderFile = file;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (orderlineFile == null || orderFile == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         List<OrderLine> orderlines = orderlineImport.CSVToOrderlines(orderlineFile);
         orderlineRepository.saveAll(orderlines);
         List<Order> orders = orderImport.CSVToOrders(orderFile, orderlines);

@@ -178,7 +178,7 @@ export default {
       orderType: "",
       products: [],
       totalCost: 0,
-      selectedFile: null,
+      selectedFiles: [],
       allowedFileTypes: ["text/csv", "text/plain", ""],
     };
   },
@@ -261,10 +261,12 @@ export default {
             console.log("Error: ", error);
           });
     },
-    selectFile(file) {
-      if (this.selectedFile !== file && file !== null && file !== undefined) {
+    selectFile(file, file2) {
+      if (this.selectedFiles[0] !== file && this.selectedFiles[1] !== file && file !== null && file !== undefined &&
+          this.selectedFiles[1] !== file2 && this.selectedFiles[1] !== file2 && file2 !== null && file2 !== undefined) {
         console.log("File selected: ", file);
-        this.selectedFile = file;
+        console.log("File selected: ", file2);
+        this.selectedFiles = [file, file2];
       }
     },
     throwError(error) {
@@ -276,12 +278,13 @@ export default {
       });
     },
     async uploadFile() {
-      if (this.selectedFile !== null) {
+      if (this.selectedFiles.length === 2) {
         console.log("File Uploading")
-        await this.OrderApi.ImportCSV(this.selectedFile).then((response) => {
+        console.log(this.selectedFiles)
+        await this.OrderApi.ImportCSV(this.selectedFiles).then((response) => {
           console.log("Response: ", response);
           this.$toast.open({
-            message: "File uploaded!",
+            message: "Files uploaded!",
             type: "success",
             position: "top-right",
             duration: 3000,

@@ -20,6 +20,7 @@
       class="hidden"
       @change="onSelectFile()"
       accept="file/*"
+      multiple
   />
 </template>
 <script>
@@ -41,6 +42,7 @@ export default {
   data() {
     return {
       fileData: null,
+      fileData2: null,
       fileName: null,
     };
   },
@@ -52,11 +54,12 @@ export default {
       const input = this.$refs.file;
       const files = input.files;
 
-      if (files && files[0]) {
+      if (files && files[0] && files[1]) {
         this.fileData = files[0];
+        this.fileData2 = files[1];
         if (this.allowedTypes.includes(this.fileData.type)) {
-          this.fileName = this.fileData.name;
-          this.$emit("selectedFile", this.fileData);
+          this.fileName = this.fileData.name + " & " + this.fileData2.name;
+          this.$emit("selectedFile", this.fileData, this.fileData2);
         } else {
           this.$emit("fileTypeError", "File type not allowed");
         }
