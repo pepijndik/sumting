@@ -110,9 +110,14 @@
   <div class="flex flex-col">
     <div class="separator-line"></div>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold pt-3">Import Orders</h3>
-    <FileUpload @selectedFile="selectFile" text="Upload CSV"
-                @fileTypeError="throwError"
-                :allowed-types="allowedFileTypes"/>
+    <div class="flex flex-row">
+      <FileUpload @selectedFile="selectOFile" text="Upload Orders CSV"
+                  @fileTypeError="throwError"
+                  :allowed-types="allowedFileTypes"></FileUpload>
+      <FileUpload @selectedFile="selectOLFile" text="Upload Orderlines CSV"
+                  @fileTypeError="throwError"
+                  :allowed-types="allowedFileTypes"></FileUpload>
+    </div>
     <button @click="uploadFile()"
             class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
             text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
@@ -178,7 +183,8 @@ export default {
       orderType: "",
       products: [],
       totalCost: 0,
-      selectedFiles: [],
+      selectedOFile: [],
+      selectedOLFile: [],
       allowedFileTypes: ["text/csv", "text/plain", ""],
     };
   },
@@ -261,12 +267,16 @@ export default {
             console.log("Error: ", error);
           });
     },
-    selectFile(file, file2) {
-      if (this.selectedFiles[0] !== file && this.selectedFiles[1] !== file && file !== null && file !== undefined &&
-          this.selectedFiles[1] !== file2 && this.selectedFiles[1] !== file2 && file2 !== null && file2 !== undefined) {
+    selectOFile(file) {
+      if (this.selectedOFile !== file && file !== null && file !== undefined) {
         console.log("File selected: ", file);
-        console.log("File selected: ", file2);
-        this.selectedFiles = [file, file2];
+        this.selectedOFile = file;
+      }
+    },
+    selectOLFile(file) {
+      if (this.selectedOLFile !== file && file !== null && file !== undefined) {
+        console.log("File selected: ", file);
+        this.selectedOLFile = file;
       }
     },
     throwError(error) {
@@ -278,10 +288,12 @@ export default {
       });
     },
     async uploadFile() {
-      if (this.selectedFiles.length === 2) {
+      if (this.selectedOFile !== null && this.selectedOFile !== undefined &&
+          this.selectedOLFile !== null && this.selectedOLFile !== undefined) {
         console.log("File Uploading")
-        console.log(this.selectedFiles)
-        await this.OrderApi.ImportCSV(this.selectedFiles).then((response) => {
+        console.log(this.selectedOFile);
+        console.log(this.selectedOLFile);
+        await this.OrderApi.ImportCSV(this.selectedOFile, this.selectedOLFile).then((response) => {
           console.log("Response: ", response);
           this.$toast.open({
             message: "Files uploaded!",

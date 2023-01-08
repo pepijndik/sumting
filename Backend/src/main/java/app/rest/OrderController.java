@@ -20,14 +20,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.annotation.Nullable;
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -89,10 +86,14 @@ public class OrderController {
             System.out.printf("order.typeKey: %s\n",order.typeKey);
             order.setCreatedAt(LocalDate.now());
 
-            OrderType type = this.orderTypeRepository.findById(order.typeKey).get();
+            if (this.orderTypeRepository.findById(order.typeKey).isPresent()) {
+                OrderType orderType = this.orderTypeRepository.findById(order.typeKey).get();
+                order.setOrderType(orderType);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             User u = this.userRepository.findById(order.payerKey);
             order.setPayer(u);
-            order.setOrderType(type);
             System.out.printf("order.type: %s\n",order.getOrderType());
             Order newOrder = this.orderRepository.save(order);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newOrder.getId()).toUri();
@@ -113,17 +114,17 @@ public class OrderController {
     @GetMapping(value = {
             "/orders/orderlines",
             "/orders/orderlines/{id}" })
-    public ResponseEntity getAllOrderlinesBy(
+    public ResponseEntity<?> getAllOrderlinesBy(
             @PathVariable(value = "id",required = false) Optional<String> orderlineId,
             @RequestParam(name="productId",required=false) Integer product_id,
             @RequestParam(name="orderId",required=false) Integer order_id
     ) {
-        Iterable<OrderLine> lines = null;
+        Iterable<OrderLine> lines;
         if(orderlineId.isPresent()){
             Optional<OrderLine> o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
-                    new ResponseEntity<ModelNotFound>(
+                    new ResponseEntity<>(
                             new ModelNotFound("Orderline", "id", orderlineId.get()),
                             HttpStatus.NOT_FOUND);
         }
@@ -183,30 +184,35 @@ public class OrderController {
     }
 
     @PostMapping("/orders/importCSV")
-    public ResponseEntity<Order> importCSV(@RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<?> importCSV(@RequestParam("files") MultipartFile[] files) {
         if (files.length <= 1) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         MultipartFile orderlineFile = null, orderFile = null;
         try {
             for (MultipartFile file : files) {
-                FileReader fileReader = new FileReader(Objects.requireNonNull(file.getOriginalFilename()));
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
-                if (bufferedReader.readLine() != null) {
-                    if (bufferedReader.readLine().contains("Owner User Key")) {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+                String line = bufferedReader.readLine();
+                System.out.println(line);
+                if (line != null) {
+                    if (line.toLowerCase().contains("Owner User Key".toLowerCase())) {
                         orderlineFile = file;
-                    } else if (bufferedReader.readLine().contains("Orderline Keys")) {
+                        System.out.println("OrderlineFile found");
+                    } else if (line.toLowerCase().contains("Orderline Keys".toLowerCase())) {
                         orderFile = file;
+                        System.out.println("OrderFile found");
                     }
                 }
+                bufferedReader.close();
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().body("Error reading files");
         }
-        if (orderlineFile == null || orderFile == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (orderlineFile == null || orderFile == null) return ResponseEntity.internalServerError().body("OrderlineFile or OrderFile not found");
 
         List<OrderLine> orderlines = orderlineImport.CSVToOrderlines(orderlineFile);
         orderlineRepository.saveAll(orderlines);
         List<Order> orders = orderImport.CSVToOrders(orderFile, orderlines);
         orderRepository.saveAll(orders);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

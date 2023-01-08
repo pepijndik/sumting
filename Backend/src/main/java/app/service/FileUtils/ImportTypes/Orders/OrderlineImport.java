@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 public class OrderlineImport extends CSVHelper {
@@ -51,15 +52,19 @@ public class OrderlineImport extends CSVHelper {
         this.batchRepository = batchRepository;
     }
 
-    private List<OrderLine> prepareOrderlinesList(String[] headers, BufferedReader br, int typeOfRequest) throws IOException {
+    private List<OrderLine> prepareOrderlinesList(String[] headers, MultipartFile multipartFile, int typeOfRequest) throws IOException {
         List<OrderLine> orderlines = new ArrayList<>();
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
         assignIndexes(headers, 0);
+        Stream<String> lines = br.lines();
 
-        while (br.readLine() != null) {
-            String[] values = br.readLine().split(",");
+        lines.forEach(line -> {
+            if (line.contains("Orderline Key")) return;
+
+            String[] values = line.split(",");
+            System.out.println(line);
             OrderLine orderline = new OrderLine();
-            if (orderlineRepository.existsById(Integer.parseInt(values[orderlineKeyIndex]))) return null;
+            if (orderlineRepository.existsById(Integer.parseInt(values[orderlineKeyIndex]))) return;
             orderline.setId(Integer.valueOf(values[orderlineKeyIndex]));
             orderline.setOrderKey(Integer.valueOf(values[orderKeyIndex]));
             orderline.setTransactionLineTotal(Double.valueOf(values[transactionLineTotalIndex]));
@@ -86,7 +91,8 @@ public class OrderlineImport extends CSVHelper {
                 if (optionalValues.contains("Orderline Stripe Id")) orderline.setStripeChargeId(values[orderlineStripeIdIndex]);
             }
             orderlines.add(orderline);
-        }
+        });
+        br.close();
 
         return orderlines;
     }
@@ -128,14 +134,15 @@ public class OrderlineImport extends CSVHelper {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String[] headers = br.readLine().split(",");
+            br.close();
             int validation = headersValidation(headers, REQ_ORDER_HEADERS, OPTIONAL_HEADERS);
 
             switch (validation) {
                 case 0 -> {
-                    return this.prepareOrderlinesList(headers, br, 1);
+                    return this.prepareOrderlinesList(headers, file, 1);
                 }
                 case 1 -> {
-                    return this.prepareOrderlinesList(headers, br, 0);
+                    return this.prepareOrderlinesList(headers, file, 0);
                 }
                 default -> {
                     System.out.println("Invalid CSV file");

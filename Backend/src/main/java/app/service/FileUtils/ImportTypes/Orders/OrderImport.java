@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 public class OrderImport extends CSVHelper {
@@ -50,13 +51,18 @@ public class OrderImport extends CSVHelper {
         this.projectService = projectService;
     }
 
-    private List<Order> prepareOrdersList(String[] headers, BufferedReader br, int typeOfRequest) throws IOException {
+    private List<Order> prepareOrdersList(String[] headers, MultipartFile multipartFile, int typeOfRequest) throws IOException {
         List<Order> orders = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+        Stream<String> lines = br.lines();
 
         assignIndexes(headers, 0);
 
-        while (br.readLine() != null) {
-            String[] values = br.readLine().split(",");
+        lines.forEach(line -> {
+            if (line.contains("Order Key")) return;
+            System.out.println(line);
+
+            String[] values = line.split(",");
             Order order = new Order();
             order.setId(Integer.parseInt(values[orderKeyIndex]));
             order.setOrderIdExt(Integer.valueOf(values[orderIdExtIndex]));
@@ -122,7 +128,8 @@ public class OrderImport extends CSVHelper {
                 }
             }
             orders.add(order);
-        }
+        });
+        br.close();
 
         return orders;
     }
@@ -162,15 +169,16 @@ public class OrderImport extends CSVHelper {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String[] headers = br.readLine().split(",");
+            br.close();
 
             switch (headersValidation(headers, REQ_ORDER_HEADERS, OPTIONAL_HEADERS)) {
                 case 0 -> {
                     this.orderLines = importedOrderlines;
-                    return this.prepareOrdersList(headers, br, 1);
+                    return this.prepareOrdersList(headers, file, 1);
                 }
                 case 1 -> {
                     this.orderLines = importedOrderlines;
-                    return this.prepareOrdersList(headers, br, 0);
+                    return this.prepareOrdersList(headers, file, 0);
                 }
                 default -> {
                     System.out.println("Invalid CSV file");
