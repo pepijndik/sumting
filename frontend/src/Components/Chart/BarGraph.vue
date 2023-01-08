@@ -71,6 +71,9 @@ export default {
         firstMonth = 12;
         firstYear -= 1;
       }
+      if(firstDay === 0){
+        firstDay = 1;
+      }
       return firstYear + "-" + firstMonth + "-" + firstDay;
     },
     secondMonth() {
@@ -84,6 +87,9 @@ export default {
       }
       if (secondMonth === 0){
         secondMonth = 12;
+      }
+      if (secondDay === 0){
+        secondDay = 1;
       }
       return secondYear + "-" + secondMonth + "-" + secondDay;
     },
@@ -103,6 +109,9 @@ export default {
       if (thirdMonth === 0){
         thirdMonth = 12;
         thirdYear -= 1;
+      }
+      if (thirdDay === 0){
+        thirdDay = 1;
       }
       return thirdYear + "-" + thirdMonth + "-" + thirdDay;
     },
