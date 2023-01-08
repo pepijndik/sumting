@@ -33,6 +33,7 @@
             />
           </NavigationDropdownItem>
           <NavigationDropdownItem name="Batch" source="file.svg">
+            <SubDropdownItem to="/batches" name="View batches" source="file.svg"/>
             <SubDropdownItem to="/batch/create" name="Create batch" source="create.svg"/>
 <!--            <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
 <!--            <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
