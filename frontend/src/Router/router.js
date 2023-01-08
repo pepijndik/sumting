@@ -107,8 +107,8 @@ const router = createRouter({
       name: "admin:projects",
       beforeEnter: IsAuthenticated,
       meta: {
-        pageTitle: "Projects",
-        title: "Project",
+        pageTitle: "View projects",
+        title: "Projects",
         subtitle: "View",
       },
       component: ListProjects,
