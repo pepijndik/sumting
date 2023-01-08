@@ -24,7 +24,6 @@
     </div>
   </button>
   <input
-    id="fileUpload"
     type="file"
     ref="file"
     class="hidden"
@@ -63,7 +62,7 @@ export default {
   },
   methods: {
     openPreview() {
-      document.getElementById("fileUpload").click();
+      this.$refs.file.click();
     },
     onSelectFile() {
       this.imagePreview = false;

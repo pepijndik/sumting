@@ -108,16 +108,14 @@
     </button>
   </div>
   <div class="flex flex-col">
-    <div class="separator-line"></div>
+    <div class="separator-line"/>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold pt-3">Import Orders</h3>
-    <div class="flex flex-row">
       <FileUpload @selectedFile="selectOFile" text="Upload Orders CSV"
                   @fileTypeError="throwError"
-                  :allowed-types="allowedFileTypes"></FileUpload>
+                  :allowed-types="allowedFileTypes" key="2"/>
       <FileUpload @selectedFile="selectOLFile" text="Upload Orderlines CSV"
                   @fileTypeError="throwError"
-                  :allowed-types="allowedFileTypes"></FileUpload>
-    </div>
+                  :allowed-types="allowedFileTypes" key="1"/>
     <button @click="uploadFile()"
             class="my-2 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
             text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
@@ -131,11 +129,10 @@ import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import OrderTotalCostSubItem from "@/Components/Form/SubItems/OrderTotalCostSubItem";
 import "@ckeditor/ckeditor5-build-classic/build/translations/nl";
-import { ref } from "@vue/reactivity";
+import {ref} from "@vue/reactivity";
 import UserIcon from "@/Components/SvgIcons/FileIcon.vue";
 import NumberInputWithButtons from "@/Components/Form/Input/NumberInputWithButtons.vue";
 import FileUpload from "@/Components/Form/fileUpload.vue";
-
 
 export default {
   name: "OrderCreate",
@@ -146,7 +143,9 @@ export default {
     SearchableDropdown,
     FileUpload,
   },
-  inject: ["ProjectApi", "ProductApi", "UserApi", "Curreny", "OrderApi"],
+  inject: ["ProjectApi", "ProductApi",
+    // "UserApi",
+    "Curreny", "OrderApi"],
   data() {
     return {
       editor: ClassicEditor,
@@ -190,7 +189,7 @@ export default {
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    this.clients = await this.UserApi.findAll();
+    // this.clients = await this.UserApi.findAll();
     this.orderTypes = await this.OrderApi.GetOrderTypes();
     this.currencies = this.Curreny.getCurrencyList();
   },
@@ -268,14 +267,18 @@ export default {
           });
     },
     selectOFile(file) {
+      console.log("OFile selected: ", file);
+
       if (this.selectedOFile !== file && file !== null && file !== undefined) {
-        console.log("File selected: ", file);
+        console.log("OFile selected: ", file);
         this.selectedOFile = file;
       }
     },
     selectOLFile(file) {
+      console.log("OLFile selected: ", file);
+
       if (this.selectedOLFile !== file && file !== null && file !== undefined) {
-        console.log("File selected: ", file);
+        console.log("OLFile selected: ", file);
         this.selectedOLFile = file;
       }
     },
