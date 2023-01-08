@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,10 +52,12 @@ public class OrderControllerTest {
     @Autowired
     private OrderlineRepository orderlineRepository;
 
+    ArrayList<OrderLine> allOrders ;
 
     @BeforeEach
     void setup() throws Exception {
         this.dataLoader.run(null);
+        this.allOrders = (ArrayList<OrderLine>) this.orderlineRepository.findAll();
         if (servletContextPath == null) {
             servletContextPath = "/";
         }
@@ -66,8 +69,7 @@ public class OrderControllerTest {
      */
     @Test
     public void FindAllReturnsAllOrders() {
-        ArrayList<OrderLine> allOrders = (ArrayList<OrderLine>) this.orderlineRepository.findAll();
-        assertNotNull(allOrders);
+        Assertions.assertTrue(this.allOrders.size() > 0);
     }
 
     /**

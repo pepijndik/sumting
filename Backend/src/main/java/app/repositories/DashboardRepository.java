@@ -22,7 +22,7 @@ public class DashboardRepository implements CrudRepository<Graph, Integer> {
 
     @Override
     public Graph save(Graph entity) {
-        return null;
+        return em.merge(entity);
     }
 
     @Override

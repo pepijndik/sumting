@@ -1,15 +1,22 @@
 package app.repositories;
 
 import app.models.Country;
+import app.models.Dashboard.Graph;
+import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
+import app.models.Project.Project;
 import app.models.User.User;
 import app.repositories.Order.OrderTypeRepository;
+import app.repositories.Order.OrderlineRepository;
+import app.repositories.Project.ProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.data.util.ProxyUtils.getUserClass;
@@ -28,6 +35,9 @@ public class DataLoader implements CommandLineRunner
         this.createCountries();
         this.createInitialUsers(10);
         this.createOrderTypes();
+        this.createOrderLines();
+        this.createOrderMonths();
+        this.createProjects();
         System.out.println("Injected accounts from " +(this.userRepository != null ? getUserClass(this.userRepository.getClass()).getName() : "none"));
     }
 
@@ -69,7 +79,44 @@ public class DataLoader implements CommandLineRunner
         }
     }
 
+    @Autowired
+    private OrderlineRepository orderlineRepository;
 
+    private void createOrderLines(){
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+    }
 
+    @Autowired
+    private DashboardRepository dashboardRepository;
+
+    public void createOrderMonths(){
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+
+    }
+
+    @Autowired
+    private ProjectServiceImpl projectService;
+
+    public void createProjects(){
+        this.projectService.save(new Project(1, "this is an description",
+                "This is an description", "Latitude", "Longitude"));
+        this.projectService.save(new Project(2, "this is an description",
+                "This is an description", "Latitude", "Longitude"));
+        this.projectService.save(new Project(3, "this is an description",
+                "This is an description", "Latitude", "Longitude"));
+        this.projectService.save(new Project(4, "this is an description",
+                "This is an description", "Latitude", "Longitude"));
+        this.projectService.save(new Project(5, "this is an description",
+                "This is an description", "Latitude", "Longitude"));
+    }
 
 }
