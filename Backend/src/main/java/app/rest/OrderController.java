@@ -12,6 +12,7 @@ import app.repositories.Order.OrderlineRepository;
 import app.views.OrderLineView;
 import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -117,6 +118,8 @@ public class OrderController {
                     new ResponseEntity<ModelNotFound>(
                             new ModelNotFound("Order", "id", orderId.toString()),
                             HttpStatus.NOT_FOUND);
+        }catch (SQLGrammarException sqlGrammarException){
+            return new ResponseEntity<>(sqlGrammarException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }catch (Exception e){
             System.out.println(e.getMessage());
             return new ResponseEntity<ModelNotFound>(new ModelNotFound("Order", "id", orderId), HttpStatus.NOT_FOUND);
