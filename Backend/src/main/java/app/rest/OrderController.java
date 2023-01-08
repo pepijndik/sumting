@@ -9,6 +9,10 @@ import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
+import app.views.OrderLineView;
+import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.exception.SQLGrammarException;
 import app.service.FileUtils.ImportTypes.Orders.OrderImport;
 import app.service.FileUtils.ImportTypes.Orders.OrderlineImport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,21 +56,8 @@ public class OrderController {
 
 
     @GetMapping("/orders")
-    public ResponseEntity<Iterable<Order>> getAllProjects() {
+    public ResponseEntity<Iterable<Order>> getAllOrders() {
         return new ResponseEntity<>(orderRepository.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping("/orders/{id}")
-    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId) {
-        Order o = orderRepository.findById(orderId);
-        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Project", "id", orderId), HttpStatus.NOT_FOUND);
-    }
-
-    @DeleteMapping("/orders/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable(value = "id") Integer orderId) {
-        Order OrderToDelete = orderRepository.findById(orderId);
-        orderRepository.delete(OrderToDelete);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/orderlines/{id}")
@@ -110,6 +101,13 @@ public class OrderController {
     public ResponseEntity<Iterable<OrderType>> getTypes(){
         return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
     }
+    @DeleteMapping("/orders/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable(value = "id") Integer orderId) {
+        Order OrderToDelete = orderRepository.findById(orderId);
+        orderRepository.delete(OrderToDelete);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @JsonView({OrderLineView.OrderLine.class})
 
     @GetMapping(value = {
             "/orders/orderlines",
@@ -121,7 +119,7 @@ public class OrderController {
     ) {
         Iterable<OrderLine> lines;
         if(orderlineId.isPresent()){
-            Optional<OrderLine> o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
+            Optional<OrderLine> o = Optional.ofNullable(orderlineRepository.findById(Integer.valueOf(orderlineId.get())));
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
                     new ResponseEntity<>(
@@ -137,10 +135,28 @@ public class OrderController {
         return new ResponseEntity<>(lines, HttpStatus.OK);
     }
 
+    @GetMapping("/orders/{id}")
+    public ResponseEntity<?> getOrder(@PathVariable(value = "id") Integer orderId) {
+        try{
+            Optional<Order> o = Optional.ofNullable(orderRepository.findById(orderId));
+            return o.isPresent() ?
+                    new ResponseEntity<>(o, HttpStatus.OK) :
+                    new ResponseEntity<>(
+                            new ModelNotFound("Order", "id", orderId.toString()),
+                            HttpStatus.NOT_FOUND);
+        }catch (SQLGrammarException sqlGrammarException){
+            return new ResponseEntity<>(sqlGrammarException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(new ModelNotFound("Order", "id", orderId), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     @PutMapping("/orderlines/editOrderlines/{id}")
     public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = orderlineRepository.findById(id);
+            Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
             if (findOrderline.isPresent()) {
                 OrderLine orderlineFound = findOrderline.get();

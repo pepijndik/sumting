@@ -23,19 +23,16 @@ public class OrderLine implements Identifiable<Integer> {
     public static final String TABLE_NAME = "orderline_contribution";
 
     @Id
-    @Column(name = "orderline_key", nullable = false)
     @JsonView(OrderLineView.OrderLine.class)
+    @Column(name = "orderline_key", nullable = false,unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonView(OrderLineView.OrderLine.class)
     @JsonBackReference
-    @OneToOne
-    @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false, nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false, nullable = true, columnDefinition = "int")
     private Order order;
-
-    @Column(name = "order_key", nullable = true, columnDefinition = "int default 0")
-    private Integer orderKey;
 
 
     @JsonView(OrderLineView.OrderLine.class)
@@ -136,9 +133,6 @@ public class OrderLine implements Identifiable<Integer> {
         return order;
     }
 
-    public Integer getOrderKey() {
-        return orderKey;
-    }
 
     public String getNotes() {
         return notes;
@@ -216,10 +210,6 @@ public class OrderLine implements Identifiable<Integer> {
         this.order = order;
     }
 
-    public void setOrderKey(Integer orderKey) {
-        this.orderKey = orderKey;
-    }
-
     public void setNotes(String notes) {
         this.notes = notes;
     }
@@ -291,4 +281,6 @@ public class OrderLine implements Identifiable<Integer> {
     public void setBatch(Batch batch) {
         this.batch = batch;
     }
+
+
 }

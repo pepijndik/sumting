@@ -3,17 +3,17 @@ package app.repositories.Order;
 import app.models.Order.OrderLine;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 @Transactional
-public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
+public class OrderlineRepository implements CustomCrudRepository<OrderLine, Integer> {
 
     @Autowired
     private EntityManager em;
@@ -23,14 +23,10 @@ public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
         return em.merge(entity);
     }
 
-    @Override
-    public <S extends OrderLine> Iterable<S> saveAll(Iterable<S> entities) {
-        return null;
-    }
 
     @Override
-    public Optional<OrderLine> findById(Integer id) {
-        return Optional.ofNullable(em.find(OrderLine.class,id));
+    public OrderLine findById(Integer id) {
+        return em.find(OrderLine.class,id);
     }
 
     @Override
@@ -39,14 +35,23 @@ public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
             return em.createQuery("SELECT o FROM OrderLine o", OrderLine.class).getResultList();
         }catch (Exception e){
             System.out.println(e);
+            return null;
         }
-        return null;
+    }
+    public List<OrderLine> findAllById(Iterable<Integer> integers) {
+
+        return  em.createQuery("SELECT o FROM OrderLine o WHERE o.id = :id", OrderLine.class).getResultList();
     }
 
-    @Override
-    public Iterable<OrderLine> findAllById(Iterable<Integer> integers) {
-        return null;
+    public List<OrderLine> findAllById(Integer id) {
+       try {
+            return em.createQuery("SELECT o FROM OrderLine o WHERE o.id = :id", OrderLine.class).getResultList();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+       return null;
     }
+
 
     public Iterable<OrderLine> findAllBy(Integer product_id, Integer order_id) {
         try {
@@ -58,7 +63,7 @@ public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
                  return query.getResultList();
              } else if (order_id != null && product_id == null) {
                  TypedQuery<OrderLine> query =
-                         em.createQuery("SELECT o FROM OrderLine o WHERE o.orderKey = :oId", OrderLine.class);
+                         em.createQuery("SELECT o FROM OrderLine o WHERE o.order.id = :oId", OrderLine.class);
                  query.setParameter("oId", order_id);
                  return query.getResultList();
              }
@@ -74,32 +79,13 @@ public class OrderlineRepository implements CrudRepository<OrderLine, Integer> {
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
-    }
-
-    @Override
     public void delete(OrderLine entity) {
 
     }
 
-    @Override
-    public void deleteAllById(Iterable<? extends Integer> integers) {
-
-    }
-
-    @Override
-    public void deleteAll(Iterable<? extends OrderLine> entities) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-
-    }
 
     @Override
     public boolean existsById(Integer primaryKey) {
-        return false;
+        return this.findById(primaryKey) != null;
     }
 }

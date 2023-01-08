@@ -93,6 +93,7 @@ public class OrderTest {
         Order responseBody = response.getBody();
         assert responseBody != null;
         assertThat("The order id must be 1", responseBody.getId() == 1);
+        assertThat("There is one orderline", responseBody.getOrderLines().size() == 1);
         assertThat("Name must be test order", responseBody.getDescription().equals("test order"));
     }
     @Test

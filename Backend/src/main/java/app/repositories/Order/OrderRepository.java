@@ -63,15 +63,15 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
     public boolean existsById(Integer primaryKey) {
 
         return em.createQuery("SELECT o FROM Order o WHERE o.id = :id", Order.class)
-            .setParameter("id", primaryKey)
-            .getResultList()
-            .size() > 0;
+                .setParameter("id", primaryKey)
+                .getResultList()
+                .size() > 0;
     }
 
     public Iterable<Order> findByClient(Integer id) {
         return em.createQuery("SELECT DISTINCT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.owner.id = :id", Order.class)
-            .setParameter("id", id)
-            .getResultList();
+                .setParameter("id", id)
+                .getResultList();
     }
 
     /**
@@ -84,8 +84,8 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
         int productID = em.createQuery("SELECT p.id FROM Product p WHERE p.project.id = :id", Integer.class).setParameter("id", projectID).getSingleResult();
 
         return em.createQuery("SELECT DISTINCT o FROM Order o FULL JOIN OrderLine ol ON ol.orderKey = o.id WHERE ol.product.id = :productID", Order.class)
-            .setParameter("productID", productID)
-            .getResultList();
+                .setParameter("productID", productID)
+                .getResultList();
     }
 
     /**
@@ -99,8 +99,8 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
         int productID = em.createQuery("SELECT p.id FROM Product p WHERE p.project.id = :id", Integer.class).setParameter("id", projectID).getSingleResult();
 
         return em.createQuery("SELECT DISTINCT o FROM Order o INNER JOIN OrderLine ol on ol.orderKey = o.id WHERE ol.owner.id = :clientID AND ol.product.id = :productID", Order.class)
-            .setParameter("clientID", clientID)
-            .setParameter("productID", productID)
-            .getResultList();
+                .setParameter("clientID", clientID)
+                .setParameter("productID", productID)
+                .getResultList();
     }
 }
