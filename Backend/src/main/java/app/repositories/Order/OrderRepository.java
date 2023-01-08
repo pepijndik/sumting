@@ -22,7 +22,7 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
 
     @Override
     public Order findById(Integer id) {
-        return em.find(Order.class, id);
+        return em.find(Order.class,id);
     }
 
     @Override

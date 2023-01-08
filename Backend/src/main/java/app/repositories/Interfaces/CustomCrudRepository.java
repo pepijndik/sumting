@@ -1,8 +1,11 @@
 package app.repositories.Interfaces;
 
 
+import app.models.Order.OrderLine;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
+
+import java.util.List;
 
 @NoRepositoryBean
 public interface CustomCrudRepository<T, ID> extends Repository<T, ID> {

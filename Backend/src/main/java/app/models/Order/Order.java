@@ -64,7 +64,8 @@ public class Order implements Identifiable<Integer> {
 
     @JsonView(OrderView.Order.class)
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "payer_user_key", columnDefinition = "int")
+
+    @JoinColumn(name = "payer_user_key", columnDefinition = "int", nullable = true)
     private User payer;
 
     @Timestamp
@@ -96,7 +97,7 @@ public class Order implements Identifiable<Integer> {
 
     @Nullable
     @JsonView(OrderView.Order.class)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
             updatable = false, insertable = false)
     private Project project;
@@ -127,15 +128,15 @@ public class Order implements Identifiable<Integer> {
     @Nullable
     @JsonView(OrderView.Order.class)
     @JoinColumn(name = "user_id_ext", columnDefinition = "int")
-    @OneToOne(cascade = CascadeType.DETACH, optional = true)
+    @OneToOne(cascade = CascadeType.DETACH, optional = true, fetch = FetchType.LAZY)
     private User user;
 
 
     @Nullable
     @JsonManagedReference
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true,nullable = true)
-    private List<OrderLine> orderLines;
+    private List<OrderLine> orderLines = new ArrayList<>();
 
 
 
@@ -232,6 +233,17 @@ public class Order implements Identifiable<Integer> {
         this.orderType = orderType;
     }
 
+
+    public void addOrderLine(OrderLine orderLine) {
+        if (orderLines == null) {
+            orderLines = new ArrayList<>();
+        }
+        orderLines.add(orderLine);
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
     public void setPayer(User payer) {
         this.payer = payer;
     }
