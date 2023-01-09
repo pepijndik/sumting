@@ -51,7 +51,7 @@ public class BatchController {
 
             for (int i = 0; i < batch.get("batchSize").asInt(); i++) {
                 Optional<OrderLine> batchOrderline =
-                        this.orderlineRepository.findById(batch.get("orderlines").get(i).get("id").asInt());
+                        Optional.ofNullable(this.orderlineRepository.findById(batch.get("orderlines").get(i).get("id").asInt()));
 
                 batchOrderline.get().setBatch(newBatch);
             }

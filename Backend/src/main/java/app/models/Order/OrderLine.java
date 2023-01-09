@@ -23,20 +23,19 @@ public class OrderLine implements Identifiable<Integer> {
     public static final String TABLE_NAME = "orderline_contribution";
 
     @Id
-    @Column(name = "orderline_key", nullable = false)
     @JsonView(OrderLineView.OrderLine.class)
+    @Column(name = "orderline_key", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonView(OrderLineView.OrderLine.class)
     @JsonBackReference
+    @OneToOne()
+    @JoinColumn(
 
-    @OneToOne
-    @JoinColumn(name = "order_key", referencedColumnName = "order_key", insertable = false, updatable = false, nullable = false)
+            name = "order_key",
+            referencedColumnName = "order_key", insertable = false, updatable = false, nullable = true, columnDefinition = "int")
     private Order order;
-
-    @Column(name = "order_key", nullable = true, columnDefinition = "int default 0")
-    private Integer orderKey;
 
 
     @JsonView(OrderLineView.OrderLine.class)
@@ -75,45 +74,45 @@ public class OrderLine implements Identifiable<Integer> {
 
     @Nullable
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name="latitude", nullable = true, columnDefinition = "double default 0.0")
+    @Column(name = "latitude", nullable = true, columnDefinition = "double default 0.0")
     private Double latitude;
 
     @Nullable
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name="longitude", nullable = true, columnDefinition = "double default 0.0")
+    @Column(name = "longitude", nullable = true, columnDefinition = "double default 0.0")
     private Double longitude;
 
     @Nullable
-    @Column(name="proof_small",nullable = true)
+    @Column(name = "proof_small", nullable = true)
     private String proofSmall;
 
     @Nullable
-    @Column(name="proof_medium",nullable = true)
+    @Column(name = "proof_medium", nullable = true)
     private String proofMedium;
 
     @Nullable
-    @Column(name="proof_large",nullable = true)
+    @Column(name = "proof_large", nullable = true)
     private String proofLarge;
 
     @Nullable
-    @Column(name="proof_uploaded_datetime",nullable = true)
+    @Column(name = "proof_uploaded_datetime", nullable = true)
     private LocalDateTime proofUploadDate;
 
     @Nullable
-    @Column(name="transaction_line_fee",nullable = true)
+    @Column(name = "transaction_line_fee", nullable = true)
     private Double transactionLineFee;
 
     @Nullable
-    @Column(name="transaction_line_vat",nullable = true)
+    @Column(name = "transaction_line_vat", nullable = true)
     private Double transactionLineVat;
 
     @Nullable
-    @Column(name="loaded_at",nullable = true)
+    @Column(name = "loaded_at", nullable = true)
     private LocalDateTime loadedDate;
 
     @Nullable
     @JsonView(OrderLineView.OrderLine.class)
-    @Column(name="orderline_stripe_id",nullable = true)
+    @Column(name = "orderline_stripe_id", nullable = true)
     private String StripeChargeId;
 
     @Nullable
@@ -137,9 +136,6 @@ public class OrderLine implements Identifiable<Integer> {
         return order;
     }
 
-    public Integer getOrderKey() {
-        return orderKey;
-    }
 
     public String getNotes() {
         return notes;
@@ -217,10 +213,6 @@ public class OrderLine implements Identifiable<Integer> {
         this.order = order;
     }
 
-    public void setOrderKey(Integer orderKey) {
-        this.orderKey = orderKey;
-    }
-
     public void setNotes(String notes) {
         this.notes = notes;
     }
@@ -292,4 +284,6 @@ public class OrderLine implements Identifiable<Integer> {
     public void setBatch(Batch batch) {
         this.batch = batch;
     }
+
+
 }

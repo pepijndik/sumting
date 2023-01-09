@@ -2,6 +2,7 @@ package app.repositories;
 
 import app.models.Country;
 import app.models.Order.Order;
+import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
 import app.models.Project.Project;
 import app.models.Project.ProjectType;
@@ -90,6 +91,7 @@ public class DataLoader implements CommandLineRunner
                 this.userRepository.findById(1),
                 this.orderTypeRepository.findById(1).get(),
                 this.projectRepository.findById(1).get());
+        order.addOrderLine(new OrderLine());
         this.orderRepository.save(order);
 
     }
