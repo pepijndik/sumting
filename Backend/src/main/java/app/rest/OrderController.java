@@ -5,10 +5,15 @@ import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
 import app.models.User.User;
+import app.repositories.Interfaces.JpaOrderRepository;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
+import app.views.OrderLineView;
+import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -25,22 +30,25 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+
+    private final JpaOrderRepository JpaorderRepository;
     private final OrderlineRepository orderlineRepository;
 
     private final OrderTypeRepository orderTypeRepository;
     private final JPAUserRepository userRepository;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository) {
+    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository, JpaOrderRepository JpaorderRepository) {
         this.orderRepository = orderRepository;
         this.orderlineRepository = orderlineRepository;
         this.orderTypeRepository = orderTypeRepository;
         this.userRepository = userRepository;
+        this.JpaorderRepository = JpaorderRepository;
     }
 
 
     @GetMapping("/orders")
-    public ResponseEntity<Iterable<Order>> getAllProjects() {
+    public ResponseEntity<Iterable<Order>> getAllOrders() {
         return new ResponseEntity<>(orderRepository.findAll(), HttpStatus.OK);
     }
 
@@ -70,30 +78,24 @@ public class OrderController {
     public ResponseEntity<Iterable<OrderType>> getTypes(){
         return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
     }
-    @GetMapping("/orders/{id}")
-    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer orderId) {
-        Order o = orderRepository.findById(orderId);
-        return orderRepository.findById(orderId) != null ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", orderId), HttpStatus.NOT_FOUND);
-    }
-
     @DeleteMapping("/orders/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable(value = "id") Integer orderId) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable(value = "id") Integer orderId) {
         Order OrderToDelete = orderRepository.findById(orderId);
         orderRepository.delete(OrderToDelete);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
+    @JsonView({OrderLineView.OrderLine.class})
     @GetMapping(value = {
             "/orders/orderlines",
             "/orders/orderlines/{id}" })
-    public ResponseEntity getAllOrderlinesBy(
+    public ResponseEntity<?> getAllOrderlinesBy(
             @PathVariable(value = "id",required = false) Optional<String> orderlineId,
             @RequestParam(name="productId",required=false) Integer product_id,
             @RequestParam(name="orderId",required=false) Integer order_id
     ) {
         Iterable<OrderLine> lines = null;
         if(orderlineId.isPresent()){
-            Optional<OrderLine> o = orderlineRepository.findById(Integer.valueOf(orderlineId.get()));
+            Optional<OrderLine> o = Optional.ofNullable(orderlineRepository.findById(Integer.valueOf(orderlineId.get())));
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
                     new ResponseEntity<ModelNotFound>(
@@ -108,11 +110,29 @@ public class OrderController {
         }
         return new ResponseEntity<>(lines, HttpStatus.OK);
     }
+    @JsonView(OrderView.Order.class)
+    @GetMapping("/orders/{id}")
+    public ResponseEntity<?> getOrder(@PathVariable(value = "id") Integer orderId) {
+        try{
+          Optional<Order> o =JpaorderRepository.findById(orderId);
+            return o.isPresent() ?
+                    new ResponseEntity<>(o, HttpStatus.OK) :
+                    new ResponseEntity<ModelNotFound>(
+                            new ModelNotFound("Order", "id", orderId.toString()),
+                            HttpStatus.NOT_FOUND);
+        }catch (SQLGrammarException sqlGrammarException){
+            return new ResponseEntity<>(sqlGrammarException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<ModelNotFound>(new ModelNotFound("Order", "id", orderId), HttpStatus.NOT_FOUND);
+        }
+
+    }
 
     @PutMapping("/orderlines/editOrderlines/{id}")
     public OrderLine editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
-            Optional<OrderLine> findOrderline = orderlineRepository.findById(id);
+            Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
             if (findOrderline.isPresent()) {
                 OrderLine orderlineFound = findOrderline.get();

@@ -2,6 +2,7 @@ package app.models.Order;
 
 import app.models.Project.Project;
 import app.views.OrderView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
@@ -19,6 +20,27 @@ import java.util.List;
 @Table(name = Order.TABLE_NAME)
 public class Order implements Identifiable<Integer> {
     public static final String TABLE_NAME = "\"order\"";
+
+
+    public Order() {
+    }
+    public Order(Integer id,
+                 LocalDate order_date,
+                 String description,
+                 Double transactionTotal,
+                 String currency,
+                 User payer,
+                 OrderType type,
+                 Project project) {
+        this.id = id;
+        this.order_date = order_date;
+        this.description = description;
+        this.transactionTotal = transactionTotal;
+        this.currency = currency;
+        this.payer = payer;
+        this.orderType = type;
+        this.project = project;
+    }
 
     @Id()
     @JsonView(OrderView.Order.class)
@@ -43,7 +65,7 @@ public class Order implements Identifiable<Integer> {
 
     @JsonView(OrderView.Order.class)
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "payer_user_key", columnDefinition = "int")
+    @JoinColumn(name = "payer_user_key", columnDefinition = "int", nullable = true)
     private User payer;
 
     @Timestamp
@@ -73,20 +95,21 @@ public class Order implements Identifiable<Integer> {
     @Transient
     public Integer payerKey;
 
-//    @Nullable
-//    @JsonView(OrderView.Order.class)
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
-//            updatable = false, insertable = false)
-//    private Project project;
-//
-//    @Nullable
-//    @JsonView(OrderView.Order.class)
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "order_user", referencedColumnName = "user_key",
-//            nullable = true,
-//            updatable = false, insertable = false)
-//    private User orderUser;
+    @Nullable
+    @JsonView(OrderView.Order.class)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
+            updatable = false, insertable = false)
+    private Project project;
+
+    @Nullable
+    @JsonView(OrderView.Order.class)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_user", referencedColumnName = "user_key",
+            nullable = true,
+            updatable = false, insertable = false)
+    @RestResource(path = "orderUser", rel="user")
+    private User orderUser;
 
     @Nullable
     @JsonView(OrderView.Order.class)
@@ -107,17 +130,15 @@ public class Order implements Identifiable<Integer> {
     @JsonView(OrderView.Order.class)
     @JoinColumn(name = "user_id_ext", columnDefinition = "int")
     @OneToOne(cascade = CascadeType.DETACH, optional = true)
+    @RestResource(path = "user", rel="user")
     private User user;
 
 
     @Nullable
     @JsonManagedReference
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true)
-    @RestResource(path = "orderlines", rel = "orderlines")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true,nullable = true)
     private List<OrderLine> orderLines = new ArrayList<>();
-
-
 
     @Override
     public Integer getId() {
@@ -126,7 +147,6 @@ public class Order implements Identifiable<Integer> {
 
     @Override
     public void setId(Integer id) {
-        System.out.println("Set id: " + id);
         this.id = id;
     }
 
@@ -212,6 +232,17 @@ public class Order implements Identifiable<Integer> {
         this.orderType = orderType;
     }
 
+
+    public void addOrderLine(OrderLine orderLine) {
+        if (orderLines == null) {
+            orderLines = new ArrayList<>();
+        }
+        orderLines.add(orderLine);
+    }
+    @JsonIgnore
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
     public void setPayer(User payer) {
         this.payer = payer;
     }

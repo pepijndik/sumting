@@ -3,6 +3,7 @@ package app.models.Batch;
 import app.models.Country;
 import app.models.Identifiable;
 import app.views.BatchView;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
@@ -34,7 +35,7 @@ public class BatchInvoice  implements Identifiable<Integer> {
     private Double invoiceUnitPrice;
 
     @OneToOne(mappedBy = "batchInvoice")
-
+    @JsonBackReference
     @JoinColumn(name = "batch_invoice_key", referencedColumnName = "batch_invoice_key", insertable = false, updatable = false)
     private Batch batch;
 
