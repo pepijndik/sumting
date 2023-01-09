@@ -5,6 +5,7 @@ import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
 import app.models.User.User;
+import app.repositories.Interfaces.JpaOrderRepository;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
@@ -35,6 +36,8 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+
+    private final JpaOrderRepository JpaorderRepository;
     private final OrderlineRepository orderlineRepository;
 
     private final OrderTypeRepository orderTypeRepository;
@@ -45,11 +48,13 @@ public class OrderController {
     @Autowired
     public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository,
                            OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository,
-                           OrderImport orderImport, OrderlineImport orderlineImport) {
+                           OrderImport orderImport, OrderlineImport orderlineImport,
+                           JpaOrderRepository JpaorderRepository) {
         this.orderRepository = orderRepository;
         this.orderlineRepository = orderlineRepository;
         this.orderTypeRepository = orderTypeRepository;
         this.userRepository = userRepository;
+        this.JpaorderRepository = JpaorderRepository;
         this.orderImport = orderImport;
         this.orderlineImport = orderlineImport;
     }
@@ -110,7 +115,6 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @JsonView({OrderLineView.OrderLine.class})
-
     @GetMapping(value = {
             "/orders/orderlines",
             "/orders/orderlines/{id}" })
@@ -119,12 +123,12 @@ public class OrderController {
             @RequestParam(name="productId",required=false) Integer product_id,
             @RequestParam(name="orderId",required=false) Integer order_id
     ) {
-        Iterable<OrderLine> lines;
+        Iterable<OrderLine> lines = null;
         if(orderlineId.isPresent()){
             Optional<OrderLine> o = Optional.ofNullable(orderlineRepository.findById(Integer.valueOf(orderlineId.get())));
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
-                    new ResponseEntity<>(
+                    new ResponseEntity<ModelNotFound>(
                             new ModelNotFound("Orderline", "id", orderlineId.get()),
                             HttpStatus.NOT_FOUND);
         }
@@ -136,11 +140,11 @@ public class OrderController {
         }
         return new ResponseEntity<>(lines, HttpStatus.OK);
     }
-
+    @JsonView(OrderView.Order.class)
     @GetMapping("/orders/{id}")
     public ResponseEntity<?> getOrder(@PathVariable(value = "id") Integer orderId) {
         try{
-            Optional<Order> o = Optional.ofNullable(orderRepository.findById(orderId));
+          Optional<Order> o = JpaorderRepository.findById(orderId);
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
                     new ResponseEntity<>(
