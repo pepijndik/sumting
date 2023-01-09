@@ -133,14 +133,14 @@
       <NavigationItem to="/" name="Dashboard">
         <template v-slot:icon>
           <svg
-            class="fill-yInMnBlue"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="17"
-            height="17"
+              class="fill-yInMnBlue"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="17"
+              height="17"
           >
             <path
-              d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 10 21 L 10 15 L 14 15 L 14 21 L 20 21 L 20 12 L 23 12 L 12
+                d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 10 21 L 10 15 L 14 15 L 14 21 L 20 21 L 20 12 L 23 12 L 12
                     2.0996094 z"
             />
           </svg>
@@ -148,32 +148,26 @@
       </NavigationItem>
       <NavigationDropdownItem name="Order" source="shopping_cart.svg">
         <SubDropdownItem
-          to="/orders"
-          name="View order"
-          source="shopping_cart.svg"
+            to="/orders"
+            name="View order"
+            source="shopping_cart.svg"
         />
         <SubDropdownItem
-          to="/orders/create"
-          name="Create order"
-          source="create.svg"
+            to="/orders/create"
+            name="Create order"
+            source="create.svg"
         />
       </NavigationDropdownItem>
       <NavigationDropdownItem name="Batch" source="file.svg">
+        <SubDropdownItem to="/batches" name="View batches" source="file.svg"/>
         <SubDropdownItem to="/batch/create" name="Create batch" source="create.svg"/>
-<!--        <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
-<!--        <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
       </NavigationDropdownItem>
-      <!--          <NavigationDropdownItem to="/" name="Project" source="file.svg">-->
-      <!--            <SubDropdownItem to="/" name="Create project" source="create.svg"/>-->
-      <!--            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>-->
-      <!--          </NavigationDropdownItem>-->
-      <NavigationDropdownItem to="/projects" name="Project" source="file.svg"/>
-      <NavigationDropdownItem to="/clients" name="Client" source="user.svg">
+      <NavigationDropdownItem name="Client" source="user.svg">
         <SubDropdownItem to="/clients" name="Client's" source="user.svg" />
         <SubDropdownItem
-          to="/clients/create"
-          name="Create client"
-          source="create.svg"
+            to="/clients/create"
+            name="Create client"
+            source="create.svg"
         />
       </NavigationDropdownItem>
     </template>

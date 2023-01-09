@@ -4,6 +4,7 @@ import BaseApi from "@/Services/BaseApi";
 import {useToast} from 'vue-toast-notification';
 import moment from "moment";
 import Batch from "@/Models/Batch";
+import OrderLine from "@/Models/OrderLine";
 
 class BatchApiService extends ApiAdapter {
     constructor() {
@@ -22,6 +23,7 @@ class BatchApiService extends ApiAdapter {
         batch.batchSize = batchSize;
         batch.projectKey = projectKey;
         batch.orderlines = orderLines;
+        batch.createdAt = moment().format("YYYY-MM-DD");
 
         await this.save(batch).then((response) => {
             return response.data;
@@ -34,6 +36,17 @@ class BatchApiService extends ApiAdapter {
            });
            throw error;
         });
+    }
+
+    async getAllBatches() {
+        const batches = await BaseApi.get(this.resource)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                throw error;
+            })
+        return batches.map(batch => Batch.copyConstructor(batch));
     }
 }
 
