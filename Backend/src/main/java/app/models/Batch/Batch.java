@@ -51,7 +51,7 @@ public class Batch implements Identifiable<Integer> {
     private Integer batchInvoiceKey;
 
     @JsonView(BatchView.Batch.class)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_key", referencedColumnName = "project_key", insertable = false, updatable = false)
     private Project project;
 
@@ -60,10 +60,11 @@ public class Batch implements Identifiable<Integer> {
      */
     @OneToOne
     @JsonView(BatchView.Batch.class)
+    @JsonManagedReference
     @JoinColumn(name = "batch_invoice_key", referencedColumnName = "batch_invoice_key", insertable = false, updatable = false)
     private BatchInvoice batchInvoice;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     @JsonManagedReference(value = "batch_orderline")
