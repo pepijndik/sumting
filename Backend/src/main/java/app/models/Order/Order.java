@@ -129,14 +129,14 @@ public class Order implements Identifiable<Integer> {
     @Nullable
     @JsonView(OrderView.Order.class)
     @JoinColumn(name = "user_id_ext", columnDefinition = "int")
-    @OneToOne(cascade = CascadeType.DETACH, optional = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH, optional = true)
     @RestResource(path = "user", rel="user")
     private User user;
 
 
     @Nullable
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_key", referencedColumnName = "order_key", updatable = true, insertable = true,nullable = true)
     private List<OrderLine> orderLines = new ArrayList<>();
 
