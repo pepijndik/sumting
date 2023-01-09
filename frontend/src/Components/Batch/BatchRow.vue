@@ -83,6 +83,7 @@
 <script>
 import moment from "moment";
 import Modal from "../Modal/index.vue";
+import modal from "@/Components/Modal";
 
 let batchDate;
 let mobile;
@@ -103,6 +104,7 @@ export default {
   methods: {
     delBatch() {
       this.$emit("deleteBatchEvent", this.batch.id);
+      this.modal = false;
       //console.log("delete" + this.order.id);
     },
     test(ding) {

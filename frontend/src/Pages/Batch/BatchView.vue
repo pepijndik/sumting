@@ -158,8 +158,26 @@ export default {
       this.searchBatch = !this.searchBatch;
     },
     deleteBatch(id) {
-      this.BatchApi.delete(id);
-      console.log("Deleted: " + id);
+      try {
+        this.BatchApi.delete(id);
+
+        this.$toast.open({
+          type: "success",
+          message: "Batch " + id + " has been deleted",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+        this.$router.push({ name: "admin:BatchView" });
+      } catch {
+        this.$toast.open({
+          type: "error",
+          message: "Something went wrong",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      }
     }
   }
 }
