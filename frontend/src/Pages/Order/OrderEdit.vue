@@ -4,34 +4,21 @@
       <div>
         <p class="font-inter text-yInMnBlue">Order line</p>
         <SearchableDropdown
-            class="mt-1"
-            placeholder="Choose an order to edit"
-            :fields="['name', 'email']"
-            :text="['name', 'email']"
+            class="mt-1 pb-4"
+            placeholder="Select project(s)"
+            :options="projects"
+            :fields="['id','description', 'type.description']"
             :primarykey="'id'"
-            :return="'primarykey'"
-            :icon="true"
-            @selected="this.selectedClient = $event"
-            :options="clients">
+            :text="['description', 'type.description']"
+            :return="'object'"
+            :cleanAfterSelect="true"
+            :max-items="20"
+            @selected="searchSelection = $event"/>
           <slot>
             <UserIcon class="w-5 h-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true"/>
           </slot>
-        </SearchableDropdown>
       </div>
-      <div>
-        <p class="font-inter text-yInMnBlue">Order type</p>
-        <SearchableDropdown
-            class="mt-1"
-            placeholder="Choose an order type"
-            :fields="['id', 'type']"
-            :text="['description']"
-            :primarykey="'id'"
-            :icon="false"
-            :return="'primarykey'"
-            @selected="orderType = $event"
-            :options="orderTypes">
-        </SearchableDropdown>
-      </div>
+
     </div>
     <h3 class="font-inter text-2xl text-yInMnBlue font-bold my-2 ">Orderline Information</h3>
     <div class="grid w-full grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
@@ -86,7 +73,6 @@ export default {
       editor: ClassicEditor,
       description: ref('<h2>Sumting order description</h2>'),
       editorConfig: {
-
         language: 'nl',
         toolbar: {
           items: [
@@ -122,9 +108,9 @@ export default {
   },
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
-    this.clients = await this.UserApi.GetAllUsers();
     this.orderTypes = await this.OrderApi.GetOrderTypes()
     this.currencies = this.Curreny.getCurrencyList();
+    this.orderLines = this.OrderApi.getAllOrderlines()
   },
   watch: {
     async searchSelection(val) {

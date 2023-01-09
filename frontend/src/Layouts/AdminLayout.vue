@@ -34,7 +34,7 @@
             <SubDropdownItem
                 to="/orders/edit"
                 name="Edit order"
-                source="create.svg"
+                source="edit.svg"
             />
           </NavigationDropdownItem>
           <NavigationDropdownItem name="Batch" source="file.svg">
@@ -48,11 +48,6 @@
           <!--          </NavigationDropdownItem>-->
           <NavigationDropdownItem name="Client" source="user.svg">
             <SubDropdownItem to="/clients" name="Client's" source="user.svg" />
-            <SubDropdownItem
-              to="/clients/create"
-              name="Create client"
-              source="create.svg"
-            />
           </NavigationDropdownItem>
         </template>
       </Navigation>

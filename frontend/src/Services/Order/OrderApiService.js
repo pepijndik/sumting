@@ -105,6 +105,21 @@ class OrderApiService extends ApiAdapter {
         })
     return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
   }
+
+  async getAllOrderlines() {
+    const Orderlines = await BaseApi.get(this.resource + "/orderlines").then((response) => {
+      return response.data;
+    })
+        .catch((error) => {
+          // You can handle the error, like show a notificaiton to the user
+
+          // dont forget to re-throw the error, otherwise the promise will resolve successfully
+          throw error;
+        });
+
+    return Orderlines.map(type => OrderLine.copyConstructor(type));
+  }
+
 }
 
 export default OrderApiService;
