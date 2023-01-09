@@ -97,7 +97,7 @@ public class Order implements Identifiable<Integer> {
 
     @Nullable
     @JsonView(OrderView.Order.class)
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project", referencedColumnName = "project_key",   nullable = true,
             updatable = false, insertable = false)
     private Project project;

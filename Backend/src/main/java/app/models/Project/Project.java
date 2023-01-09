@@ -81,13 +81,13 @@ public class Project implements Identifiable<Integer> {
     private ProjectType type;
 
 
-    @Nullable
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "project_key", referencedColumnName = "order_key",
-            insertable = false,
-            updatable = false)
-    private List<Order> orders;
+//    @Nullable
+//    @JsonIgnore
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "project_key", referencedColumnName = "order_key",
+//            insertable = false,
+//            updatable = false)
+//    private List<Order> orders;
     @Override
     @JsonIgnore
     public Integer getId() {

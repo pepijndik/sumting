@@ -23,14 +23,14 @@ import java.util.stream.Stream;
 @Component
 public class OrderlineImport extends CSVHelper {
     private static final String[] REQ_ORDER_HEADERS = {
-        "Orderline Key", "Order Key", "Transaction Line Total", "Product Key", "Owner User Key",
+        "Order Key", "Transaction Line Total", "Product Key", "Owner User Key",
     };
     private static final String[] OPTIONAL_HEADERS = {
         "Order Id Ext", "Orderline Id Ext", "Notes", "Product Id Ext", "Wallet Key", "Proof Name", "Proof Date",
         "Latitude", "Longitude", "Proof Small", "Proof Medium", "Proof Large", "Batch Key", "Proof Uploaded Datetime",
         "Transaction Line Fee", "Transaction Line VAT", "Orderline Stripe Id", "Proof Id", "Project Key", "Price"
     };
-    private static int orderlineKeyIndex = 0, orderKeyIndex = 0, transactionLineTotalIndex = 0, productKeyIndex = 0,
+    private static int orderKeyIndex = 0, transactionLineTotalIndex = 0, productKeyIndex = 0,
         ownerUserKeyIndex = 0,
     //Optional
     notesIndex = 0, proofNameIndex = 0, proofDateIndex = 0, latitudeIndex = 0, longitudeIndex = 0, proofSmallIndex = 0,
@@ -54,21 +54,30 @@ public class OrderlineImport extends CSVHelper {
         this.orderRepository = orderRepository;
     }
 
-    private List<OrderLine> prepareOrderlinesList(String[] headers, MultipartFile multipartFile, int typeOfRequest) throws IOException {
+    private List<OrderLine> prepareOrderlinesList(String[] headers, MultipartFile multipartFile, int typeOfRequest,
+                                                  int amountOfCurrentOrders, int amountOfOrdersToImport) throws IOException {
         List<OrderLine> orderlines = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
         assignIndexes(headers, 0);
         Stream<String> lines = br.lines();
 
+        List<Integer> orderKeys = new ArrayList<>();
+        for (int i = 0; i < amountOfOrdersToImport; i++) {
+            orderKeys.add(amountOfCurrentOrders + i);
+        }
+
         lines.forEach(line -> {
-            if (line.contains("Orderline Key")) return;
+            System.out.println("Pre header check OL " + line);
+
+            if (line.contains("Owner User Key")) return;
 
             String[] values = line.split(",");
             System.out.println(line);
             OrderLine orderline = new OrderLine();
-            if (orderlineRepository.existsById(Integer.parseInt(values[orderlineKeyIndex]))) return;
-            orderline.setId(Integer.valueOf(values[orderlineKeyIndex]));
-            orderline.setOrder(orderRepository.findById(Integer.valueOf(values[orderKeyIndex])));
+            if (orderKeys.contains(Integer.parseInt(values[orderKeyIndex]))) {
+                orderline.setOrder(orderRepository.findById(Integer.parseInt(values[orderKeyIndex])));
+            } else return;
+//            orderline.setOrder(orderRepository.findById(Integer.valueOf(values[orderKeyIndex])));
             orderline.setTransactionLineTotal(Double.valueOf(values[transactionLineTotalIndex]));
             if (this.productRepository.existsById(Integer.valueOf(values[productKeyIndex])))
                 orderline.setProduct(this.productRepository.findById(Integer.valueOf(values[productKeyIndex])));
@@ -102,7 +111,6 @@ public class OrderlineImport extends CSVHelper {
     private static void assignIndexes(String[] headers, int assignmentType) {
         for (int i = 0; i < headers.length; i++) {
             switch (headers[i]) {
-                case "Orderline Key" -> orderlineKeyIndex = i;
                 case "Order Key" -> orderKeyIndex = i;
                 case "Transaction Line Total" -> transactionLineTotalIndex = i;
                 case "Product Key" -> productKeyIndex = i;
@@ -130,7 +138,7 @@ public class OrderlineImport extends CSVHelper {
         }
     }
 
-    public List<OrderLine> CSVToOrderlines(MultipartFile file) {
+    public List<OrderLine> CSVToOrderlines(MultipartFile file, int amountOfOrders, int amountOfOrdersToImport) {
         if (!hasCSVFormat(file)) throw new RuntimeException("You must upload a CSV file!");
 
         try {
@@ -141,10 +149,10 @@ public class OrderlineImport extends CSVHelper {
 
             switch (validation) {
                 case 0 -> {
-                    return this.prepareOrderlinesList(headers, file, 1);
+                    return this.prepareOrderlinesList(headers, file, 1, amountOfOrders, amountOfOrdersToImport);
                 }
                 case 1 -> {
-                    return this.prepareOrderlinesList(headers, file, 0);
+                    return this.prepareOrderlinesList(headers, file, 0, amountOfOrders, amountOfOrdersToImport);
                 }
                 default -> {
                     System.out.println("Invalid CSV file");

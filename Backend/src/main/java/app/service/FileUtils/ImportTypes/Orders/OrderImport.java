@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @Component
 public class OrderImport extends CSVHelper {
     private static final String[] REQ_ORDER_HEADERS = {
-        "Order Key", "Order Id Ext", "Order Date", "Payer User Key", "Order Type Key", "Transaction Total", "Currency",
+        "Order Id Ext", "Order Date", "Payer User Key", "Order Type Key", "Transaction Total", "Currency",
         "Orderline Keys"
     };
     private static final String[] OPTIONAL_HEADERS = {
@@ -32,7 +32,7 @@ public class OrderImport extends CSVHelper {
         "Order User"
     };
 
-    private static int orderKeyIndex = 0, orderIdExtIndex = 0, orderDateIndex = 0, payerUserKeyIndex = 0,
+    private static int orderIdExtIndex = 0, orderDateIndex = 0, payerUserKeyIndex = 0,
         orderTypeKeyIndex = 0, transactionTotalIndex = 0, currencyIndex = 0, orderLinesIndex = 0,
         //Optional
         createdAtIndex = 0, paymentMethodIndex = 0, descriptionIndex = 0,
@@ -59,12 +59,13 @@ public class OrderImport extends CSVHelper {
         assignIndexes(headers, 0);
 
         lines.forEach(line -> {
-            if (line.contains("Order Key")) return;
-            System.out.println(line);
-
+            System.out.println("Pre header check ORDER " + line);
+            if (line.contains("Order Id Ext")) return;
+            System.out.println("Order: " + line);
             String[] values = line.split(",");
             Order order = new Order();
-            order.setId(Integer.parseInt(values[orderKeyIndex]));
+            if (typeOfRequest == 0) order.setCreatedAt(LocalDate.now());
+
             order.setOrderIdExt(Integer.valueOf(values[orderIdExtIndex]));
             order.setOrder_date(LocalDate.parse(values[orderDateIndex]));
             if (this.userRepository.existsById(Integer.parseInt(values[payerUserKeyIndex]))) {
@@ -137,7 +138,6 @@ public class OrderImport extends CSVHelper {
     private static void assignIndexes(String[] headers, int assignmentType) {
         for (int i = 0; i < headers.length; i++) {
             switch (headers[i]) {
-                case "Order Key" -> orderKeyIndex = i;
                 case "Order Id Ext" -> orderIdExtIndex = i;
                 case "Order Date" -> orderDateIndex = i;
                 case "Payer User Key" -> payerUserKeyIndex = i;

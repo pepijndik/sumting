@@ -13,6 +13,7 @@ import app.repositories.Order.OrderlineRepository;
 import app.views.OrderLineView;
 import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.google.common.collect.Iterators;
 import org.hibernate.exception.SQLGrammarException;
 import app.service.FileUtils.ImportTypes.Orders.OrderImport;
 import app.service.FileUtils.ImportTypes.Orders.OrderlineImport;
@@ -123,7 +124,7 @@ public class OrderController {
             @RequestParam(name="productId",required=false) Integer product_id,
             @RequestParam(name="orderId",required=false) Integer order_id
     ) {
-        Iterable<OrderLine> lines = null;
+        Iterable<OrderLine> lines;
         if(orderlineId.isPresent()){
             Optional<OrderLine> o = Optional.ofNullable(orderlineRepository.findById(Integer.valueOf(orderlineId.get())));
             return o.isPresent() ?
@@ -210,6 +211,7 @@ public class OrderController {
         if (files.length <= 1) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         MultipartFile orderlineFile = null, orderFile = null;
         try {
+            int importingXOrders = 0, importingXOrderlines = 0, amountOfCurrentOrders = Iterators.size(orderRepository.findAll().iterator());
             for (MultipartFile file : files) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream()));
                 String line = bufferedReader.readLine();
@@ -217,23 +219,32 @@ public class OrderController {
                 if (line != null) {
                     if (line.toLowerCase().contains("Owner User Key".toLowerCase())) {
                         orderlineFile = file;
-                        System.out.println("OrderlineFile found");
+                        while(bufferedReader.readLine() != null){
+                            importingXOrderlines++;
+                        }
+                        importingXOrderlines--;
+                        System.out.println("OrderlineFile found, with " + importingXOrderlines + " orderlines");
                     } else if (line.toLowerCase().contains("Orderline Keys".toLowerCase())) {
                         orderFile = file;
-                        System.out.println("OrderFile found");
+                        while(bufferedReader.readLine() != null){
+                            importingXOrders++;
+                        }
+                        importingXOrders--;
+                        System.out.println("OrderFile found, with " + importingXOrders + " orders");
                     }
                 }
                 bufferedReader.close();
             }
+            List<OrderLine> orderlines = orderlineImport.CSVToOrderlines(orderlineFile, amountOfCurrentOrders, importingXOrders);
+            orderlineRepository.saveAll(orderlines);
+            List<Order> orders = orderImport.CSVToOrders(orderFile, orderlines);
+            orderRepository.saveAll(orders);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error reading files");
         }
         if (orderlineFile == null || orderFile == null) return ResponseEntity.internalServerError().body("OrderlineFile or OrderFile not found");
 
-        List<OrderLine> orderlines = orderlineImport.CSVToOrderlines(orderlineFile);
-        orderlineRepository.saveAll(orderlines);
-        List<Order> orders = orderImport.CSVToOrders(orderFile, orderlines);
-        orderRepository.saveAll(orders);
+
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
