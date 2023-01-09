@@ -1,23 +1,19 @@
 <template>
-  <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">
-<!--    <div class="mt-3 sm:mt-0">-->
-<!--      <p class="font-inter text-yInMnBlue">Project(s)</p>-->
+<!--  <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">-->
+<!--    <div>-->
+<!--      <p class="font-inter text-yInMnBlue mb-1">Project</p>-->
 <!--      <SearchableDropdown-->
-<!--          @selected="selectedProject = $event"-->
-<!--          :options="projects"-->
-<!--          :selected-item="selectedProject"-->
-<!--          :fields="['description']"-->
+<!--          placeholder="Choose a project"-->
+<!--          :fields="['description', 'type.description']"-->
 <!--          :text="['description']"-->
 <!--          :primarykey="'id'"-->
-<!--          :disabled="false"-->
-<!--          autocomplete="off"-->
-<!--          :maxItem="10"-->
-<!--          class="mt-1"-->
-<!--          placeholder="Select project(s)"-->
+<!--          :return="'object'"-->
+<!--          :options="projects"-->
+<!--          @selected="selectedProject = $event"-->
 <!--      >-->
 <!--      </SearchableDropdown>-->
 <!--    </div>-->
-  </div>
+<!--  </div>-->
   <div class="h-80 mt-4 text-sm border-gray-300 rounded border shadow overflow-y-scroll overflow-x-hidden
     scrollbar-thin scrollbar-thumb-yInMnBlue">
     <div class="p-3 flex gap-2 border-0 border-b sm:justify-between">
@@ -93,6 +89,7 @@
 </template>
 
 <script>
+import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import BatchRow from "@/Components/Batch/BatchRow";
 
 export default {
@@ -102,12 +99,14 @@ export default {
   data() {
     return {
       batches: [],
+      // projects: [],
+      // selectedProject: null,
       searchKeyWord: '',
-      searchBatch: true,
-      limit: 10,
+      searchBatch: true
     }
   },
   async created() {
+    // this.projects = await this.ProjectApi.SearchableDropDown();
     this.batches = await this.BatchApi.getAllBatches();
 
     this.batches.sort((a, b) => {
@@ -120,7 +119,7 @@ export default {
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
 
       if (this.searchKeyWord === "") {
-        return this.limit ? this.batches.slice(0, this.limit) : this.batches;
+        return this.batches;
       }
 
       for (const batch of this.batches) {
@@ -130,7 +129,7 @@ export default {
         }
       }
 
-      return this.limit ? results.slice(0, this.limit) : results;
+      return results;
     },
   },
   methods: {
@@ -161,7 +160,7 @@ export default {
     deleteBatch(id) {
       this.BatchApi.delete(id);
       console.log("Deleted: " + id);
-    },
+    }
   }
 }
 </script>
