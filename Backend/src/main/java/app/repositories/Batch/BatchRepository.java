@@ -38,6 +38,7 @@ public class BatchRepository implements CustomCrudRepository<Batch, Integer> {
     @Override
     public void delete(Batch entity) {
         Batch toRemove = em.merge(entity);
+        toRemove.setProject(null);
         em.remove(toRemove);
     }
 

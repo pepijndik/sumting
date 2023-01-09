@@ -270,7 +270,7 @@ export default {
             dismissible: true,
             position: "top-right",
           });
-          this.$router.push({ name: "dashboard" });
+          this.$router.push({ name: "admin:BatchView" });
         } catch {
           this.$toast.open({
             type: "error",

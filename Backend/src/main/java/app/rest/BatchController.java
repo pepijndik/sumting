@@ -88,6 +88,6 @@ public class BatchController {
         }
 
         batchRepository.delete(batchToDelete);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
