@@ -14,6 +14,7 @@ import ClientCreate from "@/Pages/Client/ClientCreate";
 import ClientEdit from "@/Pages/Client/ClientEdit";
 import ClientView from "@/Pages/Client/ClientView";
 import BatchCreate from "@/Pages/Batch/BatchCreate";
+import OrderEdit from "@/Pages/Order/OrderEdit";
 const IsAuthenticated = (to, from, next) => {
   if (to.name !== "auth:login" && !AuthenticationService.isLoggedIn())
     next({ name: "auth:login" });
@@ -100,6 +101,17 @@ const router = createRouter({
         subtitle: "Create",
       },
       component: OrderCreate,
+    },
+    {
+      path: "/orders/edit",
+      name: "admin:OrderEdit",
+      beforeEnter: IsAuthenticated,
+      meta: {
+        pageTitle: "Edit Order",
+        title: "Edit order",
+        subtitle: "Edit",
+      },
+      component: OrderEdit,
     },
     {
       path: "/projects",

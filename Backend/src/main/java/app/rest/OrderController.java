@@ -134,27 +134,59 @@ public class OrderController {
         try {
             Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
-            if (findOrderline.isPresent()) {
-                OrderLine orderlineFound = findOrderline.get();
-                orderlineFound.setNotes(orderline.getNotes());
-                orderlineFound.setTransactionLineTotal(orderline.getTransactionLineTotal());
-                orderlineFound.setProofName(orderline.getProofName());
-                orderlineFound.setProofDate(orderline.getProofDate());
-                orderlineFound.setLatitude(orderline.getLatitude());
-                orderlineFound.setLongitude(orderline.getLongitude());
-                orderlineFound.setProofSmall(orderline.getProofSmall());
-                orderlineFound.setProofMedium(orderline.getProofMedium());
-                orderlineFound.setProofLarge(orderline.getProofLarge());
-                orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
-                orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
-                orderlineFound.setLoadedDate(orderline.getLoadedDate());
-                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
-
-                return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (!findOrderline.isPresent()){
+                return ResponseEntity.notFound().build();
             }
 
+            OrderLine orderlineFound = findOrderline.get();
+            if (orderline.getNotes() != null){
+                orderlineFound.setNotes(orderline.getNotes());
+            }
+            if (orderline.getTransactionLineTotal() != null){
+                orderlineFound.setTransactionLineTotal(orderline.getTransactionLineTotal());
+            }
+
+            if (orderline.getProofName() != null){
+                orderlineFound.setProofName(orderline.getProofName());
+            }
+
+            if (orderline.getLatitude() != null){
+                orderlineFound.setLatitude(orderline.getLatitude());
+            }
+
+            if (orderline.getLongitude() != null){
+                orderlineFound.setLongitude(orderline.getLongitude());
+            }
+
+            if (orderline.getProofSmall() != null){
+                orderlineFound.setProofSmall(orderline.getProofSmall());
+            }
+
+            if (orderline.getProofMedium() != null){
+                orderlineFound.setProofMedium(orderline.getProofMedium());
+            }
+
+            if (orderline.getProofLarge() != null){
+                orderlineFound.setProofLarge(orderline.getProofLarge());
+            }
+
+            if (orderline.getTransactionLineFee() != null){
+                orderlineFound.setTransactionLineFee(orderline.getTransactionLineFee());
+            }
+
+            if (orderline.getTransactionLineVat() != null){
+                orderlineFound.setTransactionLineVat(orderline.getTransactionLineVat());
+            }
+
+            if (orderline.getLoadedDate() != null){
+                orderlineFound.setLoadedDate(orderline.getLoadedDate());
+            }
+
+            if (orderline.getProofUploadDate() != null){
+                orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
+            }
+            OrderLine updatedOrderLine = orderlineRepository.save(orderlineFound);
+            return ResponseEntity.ok(updatedOrderLine);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
