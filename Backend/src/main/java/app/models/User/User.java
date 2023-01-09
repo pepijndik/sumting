@@ -2,6 +2,7 @@ package app.models.User;
 
 import app.models.Country;
 import app.models.Identifiable;
+import app.models.Order.Order;
 import app.views.OrderView;
 import app.views.UserView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -119,6 +121,8 @@ public class User implements Identifiable<Integer> {
         return twoFactorEnabled != null && twoFactorEnabled;
     }
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Order order;
     public String getEmail() {
         return email;
     }

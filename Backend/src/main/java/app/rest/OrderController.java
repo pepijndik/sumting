@@ -5,6 +5,7 @@ import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
 import app.models.User.User;
+import app.repositories.Interfaces.JpaOrderRepository;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
@@ -31,17 +32,20 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+
+    private final JpaOrderRepository JpaorderRepository;
     private final OrderlineRepository orderlineRepository;
 
     private final OrderTypeRepository orderTypeRepository;
     private final JPAUserRepository userRepository;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository) {
+    public OrderController(OrderRepository orderRepository, OrderlineRepository orderlineRepository, OrderTypeRepository orderTypeRepository, JPAUserRepository userRepository, JpaOrderRepository JpaorderRepository) {
         this.orderRepository = orderRepository;
         this.orderlineRepository = orderlineRepository;
         this.orderTypeRepository = orderTypeRepository;
         this.userRepository = userRepository;
+        this.JpaorderRepository = JpaorderRepository;
     }
 
 
@@ -108,11 +112,11 @@ public class OrderController {
         }
         return new ResponseEntity<>(lines, HttpStatus.OK);
     }
-
+    @JsonView(OrderView.Order.class)
     @GetMapping("/orders/{id}")
     public ResponseEntity<?> getOrder(@PathVariable(value = "id") Integer orderId) {
         try{
-            Optional<Order> o = Optional.ofNullable(orderRepository.findById(orderId));
+          Optional<Order> o =JpaorderRepository.findById(orderId);
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
                     new ResponseEntity<ModelNotFound>(
