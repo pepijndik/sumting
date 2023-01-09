@@ -130,7 +130,7 @@ public class OrderController {
     }
 
     @PutMapping("/orderlines/editOrderlines/{id}")
-    public OrderLine editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
+    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
         try {
             Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
@@ -150,16 +150,16 @@ public class OrderController {
                 orderlineFound.setLoadedDate(orderline.getLoadedDate());
                 orderlineFound.setProofUploadDate(orderline.getProofUploadDate());
 
-                return orderlineRepository.save(orderlineFound);
+                return new ResponseEntity<>(orderlineRepository.save(orderlineFound), HttpStatus.OK);
             } else {
-                return null;
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/orders/combinedSearch")
     public ResponseEntity<Iterable<Order>> getOrdersByClientAndProject(
