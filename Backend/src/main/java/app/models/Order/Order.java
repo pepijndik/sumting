@@ -244,12 +244,9 @@ public class Order implements Identifiable<Integer> {
     public List<OrderLine> getOrderLines() {
         return orderLines;
     }
+
     public void setPayer(User payer) {
         this.payer = payer;
-    }
-
-    public List<OrderLine> getOrderLines() {
-        return orderLines;
     }
 
     public void setOrderLines(List<OrderLine> orderLines) {

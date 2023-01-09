@@ -62,8 +62,10 @@ public class OrderController {
 
     @GetMapping("/orderlines/{id}")
     public HttpEntity<?> getOrderline(@PathVariable(value = "id") Integer orderlineId) {
-        Optional<OrderLine> o = orderlineRepository.findById(orderlineId);
-        return orderlineRepository.findById(orderlineId).isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
+        Optional<OrderLine> o = Optional.ofNullable(orderlineRepository.findById(orderlineId));
+        return o.isPresent() ? new ResponseEntity<>(o, HttpStatus.OK) :
+            new ResponseEntity<>(
+                new ModelNotFound("Orderline", "id", orderlineId), HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/orderlines")

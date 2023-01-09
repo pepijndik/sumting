@@ -3,6 +3,7 @@ package app.service.FileUtils.ImportTypes.Orders;
 import app.models.Order.OrderLine;
 import app.repositories.Batch.BatchRepository;
 import app.repositories.JPAUserRepository;
+import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderlineRepository;
 import app.repositories.ProductRepository;
 import app.service.FileUtils.CSVHelper;
@@ -29,12 +30,6 @@ public class OrderlineImport extends CSVHelper {
         "Latitude", "Longitude", "Proof Small", "Proof Medium", "Proof Large", "Batch Key", "Proof Uploaded Datetime",
         "Transaction Line Fee", "Transaction Line VAT", "Orderline Stripe Id", "Proof Id", "Project Key", "Price"
     };
-
-    private final OrderlineRepository orderlineRepository;
-    private final JPAUserRepository userRepository;
-    private final ProductRepository productRepository;
-    private final BatchRepository batchRepository;
-
     private static int orderlineKeyIndex = 0, orderKeyIndex = 0, transactionLineTotalIndex = 0, productKeyIndex = 0,
         ownerUserKeyIndex = 0,
     //Optional
@@ -42,14 +37,21 @@ public class OrderlineImport extends CSVHelper {
         proofMediumIndex = 0, proofLargeIndex = 0, batchKeyIndex = 0, proofUploadedDatetimeIndex = 0,
         transactionLineFeeIndex = 0, transactionLineVATIndex = 0, orderlineStripeIdIndex = 0;
 
+    private final OrderlineRepository orderlineRepository;
+    private final JPAUserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final BatchRepository batchRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public OrderlineImport(OrderlineRepository orderlineRepository, JPAUserRepository userRepository,
-                           ProductRepository productRepository, BatchRepository batchRepository) {
+                           ProductRepository productRepository, BatchRepository batchRepository,
+                           OrderRepository orderRepository) {
         this.orderlineRepository = orderlineRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.batchRepository = batchRepository;
+        this.orderRepository = orderRepository;
     }
 
     private List<OrderLine> prepareOrderlinesList(String[] headers, MultipartFile multipartFile, int typeOfRequest) throws IOException {
@@ -66,7 +68,7 @@ public class OrderlineImport extends CSVHelper {
             OrderLine orderline = new OrderLine();
             if (orderlineRepository.existsById(Integer.parseInt(values[orderlineKeyIndex]))) return;
             orderline.setId(Integer.valueOf(values[orderlineKeyIndex]));
-            orderline.setOrderKey(Integer.valueOf(values[orderKeyIndex]));
+            orderline.setOrder(orderRepository.findById(Integer.valueOf(values[orderKeyIndex])));
             orderline.setTransactionLineTotal(Double.valueOf(values[transactionLineTotalIndex]));
             if (this.productRepository.existsById(Integer.valueOf(values[productKeyIndex])))
                 orderline.setProduct(this.productRepository.findById(Integer.valueOf(values[productKeyIndex])));

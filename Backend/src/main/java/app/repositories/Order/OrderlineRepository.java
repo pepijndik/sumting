@@ -23,6 +23,12 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
         return em.merge(entity);
     }
 
+    public void saveAll(List<OrderLine> ols) {
+        if (ols.isEmpty()) return;
+        for (OrderLine ol : ols) {
+            em.merge(ol);
+        }
+    }
 
     @Override
     public OrderLine findById(Integer id) {
