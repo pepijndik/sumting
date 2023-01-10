@@ -86,7 +86,8 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
 
     @Override
     public void delete(OrderLine entity) {
-
+        OrderLine toRemove = em.merge(entity);
+        em.remove(toRemove);
     }
 
 

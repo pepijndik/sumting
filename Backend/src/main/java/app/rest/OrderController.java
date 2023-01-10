@@ -212,4 +212,18 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/orders/orderlines/{id}")
+    public ResponseEntity<Void> deleteOrderline(@PathVariable(value = "id") Integer orderId) {
+        OrderLine OrderLineToDelete = orderlineRepository.findById(orderId);
+//        Integer OrderKey = orderlineRepository.findById(orderId).getId();
+
+//        if (OrderKey != null){
+//            deleteOrder(OrderKey);
+//        }
+
+        orderlineRepository.delete(OrderLineToDelete);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
