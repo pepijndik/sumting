@@ -6,6 +6,7 @@ import app.models.User.User;
 import app.exceptions.UserNotFoundException;
 import app.repositories.CountryRepository;
 import app.repositories.JPAUserRepository;
+import app.response.LoginResponse;
 import app.security.JWTokenInfo;
 import app.server.Amazon.AmazonConfig;
 import app.server.Amazon.BucketNames;
@@ -18,8 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -81,9 +84,10 @@ public class UserController {
         user.setCreatedAt(userById.getCreatedAt());
         user.setEncodedPassword(userById.getHashedPassword());
 
-        userRepo.save(user);
+        User savedUser = userRepo.save(user);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedUser);
+
     }
 
     @PostMapping("/users/{id}/profile-picture")

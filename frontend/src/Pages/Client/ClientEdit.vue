@@ -165,22 +165,21 @@ export default {
       ) {
         user = await this.UserApi.updateUser(this.client);
         this.toastNotification("success", "Client updated");
-
-        //this.$router.push({ path: "/clients", replace: true });
       } else {
         this.toastNotification("error", "Please fill in all fields");
       }
 
       if (this.imgFile != null) {
         try {
-          await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+          await this.FileUploadApi.uploadIMG(user.id, this.imgFile);
         } catch (e) {
           this.toastNotification("error", "Img upload failed");
         }
+
+        this.$router.push({ path: "/clients", replace: true });
       }
     },
     selectLocation(location) {
-      console.log(location);
       this.client.country = location;
     },
     selectedImg(img) {
@@ -190,7 +189,6 @@ export default {
   async created() {
     this.locations = await this.CountryApi.findAll();
     this.user = await this.UserApi.findOne(this.$route.params.id);
-
     this.client = User.copyEntity(this.user.data);
     this.userCountry = this.user.data.country;
 
