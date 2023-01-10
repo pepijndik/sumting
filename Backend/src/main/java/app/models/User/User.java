@@ -140,6 +140,10 @@ public class User implements Identifiable<Integer> {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setType(User.Type user_type) {
         this.user_type = user_type;
     }
@@ -231,6 +235,8 @@ public class User implements Identifiable<Integer> {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+
 
     @Override
     public int hashCode() {

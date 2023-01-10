@@ -63,10 +63,6 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Integer id, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
 
-//        if(!tokenInfo.getUser()) {
-//            throw new AuthorizationException("only administrators can remove members");
-//        }
-
         User user = userRepo.findById(id);
         userRepo.delete(user);
 
@@ -82,6 +78,7 @@ public class UserController {
             throw new UserNotFoundException("id = " + user.getId());
         }
         user.setUpdatedAt(LocalDateTime.now());
+        user.setCreatedAt(userById.getCreatedAt());
         user.setEncodedPassword(userById.getHashedPassword());
 
         userRepo.save(user);
