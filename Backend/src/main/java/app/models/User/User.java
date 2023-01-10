@@ -75,7 +75,7 @@ public class User implements Identifiable<Integer> {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = true)
-    private LocalDateTime udatedAt;
+    private LocalDateTime updatedAt;
     @JsonIgnore
     @Column(name = "user_password", nullable = true, columnDefinition = "varchar(255)")
     private String encodedPassword;

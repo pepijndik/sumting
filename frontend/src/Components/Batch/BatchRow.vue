@@ -59,6 +59,7 @@
     </div>
 
     <button
+        @click="redirectToEdit"
         class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
     >
       <img
@@ -118,6 +119,9 @@ export default {
     dateFormat(inputDate) {
       return moment(inputDate).format("DD/MM/YY");
     },
+    redirectToEdit() {
+      this.$router.push({ path: '/batch/edit/' + this.batch.id });
+    }
   },
   beforeMount() {
     let createOrUpdateDate = this.batch.updatedAt == null ? this.batch.createdAt : this.batch.updatedAt;

@@ -90,4 +90,11 @@ public class BatchController {
         batchRepository.delete(batchToDelete);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @PutMapping("/batch/{id}")
+//    public ResponseEntity<Batch> editBatch(@PathVariable(value = "id") Integer batchId) {
+//
+//
+//        return new ResponseEntity<>(batchRepository.findById(batchId), HttpStatus.OK);
+//    }
 }
