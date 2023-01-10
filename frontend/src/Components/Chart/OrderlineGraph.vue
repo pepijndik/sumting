@@ -1,5 +1,5 @@
 <template>
-  <Line
+  <Bar
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -9,46 +9,41 @@
 </template>
 
 <script>
-import { Line } from "vue-chartjs";
+import { Bar } from "vue-chartjs";
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
+  BarElement,
   CategoryScale,
+  LinearScale,
 } from "chart.js";
 
 ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  CategoryScale
+    Title,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale
 );
 
 export default {
-  name: "LineGraph",
+  name: "OrderlineGraph",
   components: {
-    Line,
+    Bar,
   },
-  inject: ["DashboardApi"],
+  inject: ["DashboardApi", "ProjectApi"],
   data() {
     return {
-      projectDescription: [],
-      projectsAmount: [],
-      currentMonth: [0, 0, 0],
       chartData: {
-        labels: ["Past 30 Days", "Past 60 Days", "Past 90 Days"],
+        labels: [],
         data: this.currentMonth,
         datasets: [
           {
             data: [],
-            label: "Total orders",
+            label: "Total order lines",
             backgroundColor: "#E56B6F",
           },
         ],
@@ -61,7 +56,7 @@ export default {
   props: {
     chartId: {
       type: String,
-      default: "line-chart",
+      default: "bar-chart",
     },
   },
   computed: {
@@ -88,25 +83,15 @@ export default {
     },
   },
   async created() {
-    let project = ["Restore a coral reef in Kenya", "Restore a coral reef in Turkey",
-      "Restore a coral reef in Netherlands"]
-    // let projectSize = [];
-    this.chartData.labels = project;
+    let data = await this.ProjectApi.findAll(0,false,0);
+    let projectDescriptions = [];
+    this.chartData.labels = projectDescriptions;
 
-    // let projects = await this.DashboardApi.findDescriptions();
-    // for (let i = 0; i < project.length.toString(); i++) {
-    //   projectSize = await this.DashboardApi.findOrderlineByDescription(project[i]);
-    //   console.log()
-    // }
+    data.forEach((item) => {
+      projectDescriptions.push(item.description_long)
+    });
 
-    // let data = await this.DashboardApi.findDescriptions();
-    // data.forEach((item) => {
-    //   console.log(item);
-    //   // Do stuff with every description
-    // });
-    console.log(this.DashboardApi.findDescriptions())
-    // console.log(this.DashboardApi.findOrderlineByDescription("Restore a coral reef in Kenya"))
-    // let backend = this.DashboardApi.findOrderlineByDescription("Restore a coral reef in Kenya")
+
   },
 };
 </script>

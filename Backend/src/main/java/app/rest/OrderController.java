@@ -192,8 +192,11 @@ public class OrderController {
         }
     }
 
+    public ResponseEntity<OrderLine> getOrdelinesByNotes(@RequestParam String description){
 
-    @GetMapping("/orders/combinedSearch")
+    }
+
+        @GetMapping("/orders/combinedSearch")
     public ResponseEntity<Iterable<Order>> getOrdersByClientAndProject(
         @RequestParam(value = "clientID", required = false) String clientId,
         @RequestParam(value = "projectID", required = false) String projectId) {
