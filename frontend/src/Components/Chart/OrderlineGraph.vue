@@ -39,10 +39,10 @@ export default {
     return {
       chartData: {
         labels: [],
-        data: this.currentMonth,
+        // data: this.currentMonth,
         datasets: [
           {
-            data: [],
+            data: [20,45,45,26,75,62,45,45,12,45],
             label: "Total order lines",
             backgroundColor: "#E56B6F",
           },
@@ -57,29 +57,6 @@ export default {
     chartId: {
       type: String,
       default: "bar-chart",
-    },
-  },
-  computed: {
-    firstMonth() {
-      const currentDate = new Date();
-      const firstDay = currentDate.getDay();
-      const firstMonth = currentDate.getMonth() - 1;
-      const firstYear = currentDate.getFullYear();
-      return firstYear + "-" + firstMonth + "-" + firstDay;
-    },
-    secondMonth() {
-      const currentDate = new Date();
-      const secondDay = currentDate.getDay();
-      const secondMonth = currentDate.getMonth() - 2;
-      const secondYear = currentDate.getFullYear();
-      return secondYear + "-" + secondMonth + "-" + secondDay;
-    },
-    thirdMonth() {
-      const currentDate = new Date();
-      const thirdDay = currentDate.getDay();
-      const thirdMonth = currentDate.getMonth() - 3;
-      const thirdYear = currentDate.getFullYear();
-      return thirdYear + "-" + thirdMonth + "-" + thirdDay;
     },
   },
   async created() {

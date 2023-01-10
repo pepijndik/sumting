@@ -46,7 +46,7 @@ class OrderApiService extends ApiAdapter {
     }).catch((error) => {
       const $toast = useToast();
       $toast.error({
-        message: 'Cant create order ' +error.response.data.message,
+        message: 'Cant create order ' + error.response.data.message,
         duration: 5000,
         dismissible: true,
       });
@@ -121,16 +121,16 @@ class OrderApiService extends ApiAdapter {
   }
 
   async getAllOrderlinesByNotes(description) {
-    let Orderlines = await BaseApi.get("/orderlines/findByNotes/" + description).then((response) => {
-      return response.data;
-    })
+    const orderlines = await BaseApi.get("/orderlines/findByNotes/" + description)
+        .then((response) => {
+          return response.data;
+        })
         .catch((error) => {
-          // You can handle the error, like show a notificaiton to the user
-
-          // dont forget to re-throw the error, otherwise the promise will resolve successfully
+          // You can handle the error, like show a notification to the user
+          // don't forget to re-throw the error, otherwise the promise will resolve successfully
           throw error;
-        });
-    return Orderlines.map(type => OrderLine.copyConstructor(type));
+        })
+    return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
   }
 }
 
