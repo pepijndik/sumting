@@ -34,7 +34,7 @@ export default {
   components: {
     Bar,
   },
-  inject: ["DashboardApi", "ProjectApi"],
+  inject: ["DashboardApi", "ProjectApi", "OrderApi"],
   data() {
     return {
       chartData: {
@@ -91,7 +91,7 @@ export default {
       projectDescriptions.push(item.description_long)
     });
 
-
+    console.log(this.OrderApi.getAllOrderlinesByNotes("Plant a tree to restore rainforests in Brazil"))
   },
 };
 </script>

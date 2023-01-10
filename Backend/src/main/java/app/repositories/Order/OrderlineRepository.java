@@ -5,6 +5,7 @@ import app.models.Order.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -50,6 +51,11 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
             System.out.println(e);
         }
        return null;
+    }
+
+    public Iterable<OrderLine> getOrderLineByNotes(String description){
+        return em.createQuery("SELECT o FROM OrderLine o WHERE o.notes = :description", OrderLine.class)
+                .setParameter("description", description).getResultList();
     }
 
 

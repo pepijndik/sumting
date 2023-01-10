@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -192,8 +193,9 @@ public class OrderController {
         }
     }
 
-    public ResponseEntity<OrderLine> getOrdelinesByNotes(@RequestParam String description){
-
+    @GetMapping("/orderlines/findByNotes/{description}")
+    public ResponseEntity<Iterable<OrderLine>> getOrdelinesByNotes(@PathVariable String description){
+        return new ResponseEntity<>(orderlineRepository.getOrderLineByNotes(description), HttpStatus.OK);
     }
 
         @GetMapping("/orders/combinedSearch")

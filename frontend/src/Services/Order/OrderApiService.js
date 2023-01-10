@@ -120,8 +120,8 @@ class OrderApiService extends ApiAdapter {
     return Orderlines.map(type => OrderLine.copyConstructor(type));
   }
 
-  async getAllOrderlinesByNotes() {
-    const Orderlines = await BaseApi.get(this.resource + "/orderlines/").then((response) => {
+  async getAllOrderlinesByNotes(description) {
+    let Orderlines = await BaseApi.get("/orderlines/findByNotes/" + description).then((response) => {
       return response.data;
     })
         .catch((error) => {
@@ -130,7 +130,6 @@ class OrderApiService extends ApiAdapter {
           // dont forget to re-throw the error, otherwise the promise will resolve successfully
           throw error;
         });
-
     return Orderlines.map(type => OrderLine.copyConstructor(type));
   }
 }
