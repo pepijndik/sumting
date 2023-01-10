@@ -23,7 +23,7 @@ export default class User {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.country_key = country;
+    this.country = country;
     this.user_type = type;
     this.profileImage = profileImage;
     this.createdAt = new Date(created_at);
@@ -34,8 +34,15 @@ export default class User {
   }
 
   static copyEntity(entity) {
-    const user  = new User(entity.id, entity.name, entity.email,null, entity.type);
-    user.profileImage = entity.profileImage;
+    const user = new User(
+      entity.id,
+      entity.name,
+      entity.email,
+      entity.country,
+      entity.user_type,
+      entity.profileImage,
+      entity.created_at
+    );
     return user;
   }
 

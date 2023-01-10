@@ -74,8 +74,9 @@ public class User implements Identifiable<Integer> {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @JsonView(UserView.Update.class)
     @Column(name = "updated_at", nullable = true)
-    private LocalDateTime udatedAt;
+    private LocalDateTime updatedAt;
     @JsonIgnore
     @Column(name = "user_password", nullable = true, columnDefinition = "varchar(255)")
     private String encodedPassword;
@@ -223,10 +224,20 @@ public class User implements Identifiable<Integer> {
         this.user_key_ext = user_key_ext;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 
     @Override
     public String toString() {

@@ -1,8 +1,10 @@
 package app.rest;
 
 import app.exceptions.FileIsNotRightExtension;
+import app.models.Country;
 import app.models.User.User;
 import app.exceptions.UserNotFoundException;
+import app.repositories.CountryRepository;
 import app.repositories.JPAUserRepository;
 import app.security.JWTokenInfo;
 import app.server.Amazon.AmazonConfig;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -25,6 +28,9 @@ public class UserController {
 
     @Autowired
     private JPAUserRepository userRepo;
+
+    @Autowired
+    private CountryRepository countryRepo;
     @Autowired
     private FileStore fileStore;
     @GetMapping("/users")
@@ -71,16 +77,12 @@ public class UserController {
     @PutMapping("/users")
     @JsonView(UserView.Update.class)
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
-
-        System.out.println(user);
-
         User userById = userRepo.findById(user.getId());
-
-        userById.setCountryKey(user.getCountryKey());
-
         if(userById == null) {
             throw new UserNotFoundException("id = " + user.getId());
         }
+        user.setUpdatedAt(LocalDateTime.now());
+        user.setEncodedPassword(userById.getHashedPassword());
 
         userRepo.save(user);
 
