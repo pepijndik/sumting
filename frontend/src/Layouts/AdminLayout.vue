@@ -46,7 +46,7 @@
           </NavigationDropdownItem>
         </template>
       </Navigation>
-      <div class="w-full shadow-t-inner lg:shadow-inner">
+      <div class="w-full shadow-t-inner lg:shadow-inner relative">
         <div class="px-6 md:px-8 lg:px-12 py-8">
           <div class="mb-4">
             <h4
