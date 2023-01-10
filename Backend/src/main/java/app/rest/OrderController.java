@@ -193,9 +193,9 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/orderlines/findByNotes/{description}")
-    public ResponseEntity<Iterable<OrderLine>> getOrdelinesByNotes(@PathVariable String description){
-        return new ResponseEntity<>(orderlineRepository.getOrderLineByNotes(description), HttpStatus.OK);
+    @GetMapping("/orderlines/findByNotes/{note}")
+    public ResponseEntity<Iterable<OrderLine>> getOrdelinesByNotes(@PathVariable String note){
+        return new ResponseEntity<>(orderlineRepository.getOrderLineByNotes(note), HttpStatus.OK);
     }
 
         @GetMapping("/orders/combinedSearch")
