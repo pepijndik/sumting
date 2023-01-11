@@ -97,6 +97,8 @@ export default {
           duration: 5000,
           dismissible: true,
         });
+
+        this.$router.push({ path: "/clients", replace: true });
       } catch (error) {
         this.$toast.error({
           message: "Can't delete client",
