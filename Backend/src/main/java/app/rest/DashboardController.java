@@ -32,5 +32,4 @@ public class DashboardController {
     public ResponseEntity<Iterable<Graph>> ordersSorted(@PathVariable Date pastMonths){
         return new ResponseEntity<>(dashboardRepository.findByMonth(pastMonths), HttpStatus.OK);
     }
-
 }

@@ -1,6 +1,7 @@
 package app.repositories;
 
 import app.models.Country;
+import app.models.Dashboard.Graph;
 import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.models.Order.OrderType;
@@ -11,6 +12,7 @@ import app.repositories.Interfaces.ProjectRepository;
 import app.repositories.Interfaces.ProjectTypeRepository;
 import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
+import app.repositories.Order.OrderlineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -38,6 +40,8 @@ public class DataLoader implements CommandLineRunner {
         this.createProjects();
         this.createOrderTypes();
         this.createOrders();
+        this.createOrderLines();
+        this.createOrderMonths();
         System.out.println("Injected accounts from " + (this.userRepository != null ? getUserClass(this.userRepository.getClass()).getName() : "none"));
     }
 
@@ -133,6 +137,30 @@ public class DataLoader implements CommandLineRunner {
             a.setEncodedPassword(a.hashPassword("Test123!"));
             System.out.println("Added user: " + a + " (initial password = 'Test123!')" + (a.validateEncodedPassword("Test123!") ? " (password is valid)" : " (password is invalid)"));
         }
+    }
+
+    @Autowired
+    private OrderlineRepository orderlineRepository;
+
+    private void createOrderLines(){
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+        this.orderlineRepository.save(OrderLine.buildRandom());
+    }
+
+    @Autowired
+    private DashboardRepository dashboardRepository;
+
+    public void createOrderMonths(){
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+        this.dashboardRepository.save(Graph.buildRandom());
+
     }
 
 }
