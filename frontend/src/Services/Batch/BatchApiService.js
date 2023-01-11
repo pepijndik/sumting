@@ -44,6 +44,14 @@ class BatchApiService extends ApiAdapter {
         });
     }
 
+    /**
+     * Updates an existing Batch
+     * @param batchId
+     * @param textPlanned
+     * @param batchSize
+     * @param orderLines
+     * @returns {Promise<AxiosResponse<any>|boolean>}
+     */
     async updateBatch(
         batchId,
         textPlanned,

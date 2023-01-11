@@ -90,6 +90,12 @@ public class BatchController {
         }
     }
 
+    /**
+     * Updates existing batch
+     *
+     * @param batch the batch to be updated
+     * @return the updated batch
+     */
     @PutMapping("/batch/update")
     public ResponseEntity<Batch> editBatch(@RequestBody ObjectNode batch) {
         try {
