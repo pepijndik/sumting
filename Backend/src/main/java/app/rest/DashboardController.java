@@ -30,15 +30,4 @@ public class DashboardController {
     public ResponseEntity<Iterable<Graph>> ordersSorted(@PathVariable Date pastMonths){
         return new ResponseEntity<>(dashboardRepository.findByMonth(pastMonths), HttpStatus.OK);
     }
-
-
-    @GetMapping("/orderMonths/projectDescriptions")
-    public ResponseEntity<Iterable<String>> getAllProjectDescriptions(){
-        return new ResponseEntity<>(dashboardRepository.findAllDescriptions(), HttpStatus.OK);
-    }
-
-    @GetMapping("/orderMonths/findByDescriptions/{description}")
-    public ResponseEntity<Iterable<Long>> getProjectByDescriptions(@PathVariable String description){
-        return new ResponseEntity<>(dashboardRepository.findAllByDescription(description), HttpStatus.OK);
-    }
 }

@@ -51,15 +51,6 @@ public class DashboardRepository implements CrudRepository<Graph, Integer> {
                 Graph.class).setParameter("pastMonths", pastMonths).getResultList();
     }
 
-    public Iterable<String> findAllDescriptions(){
-        return em.createQuery("SELECT p.description_long FROM Project p", String.class).getResultList();
-    }
-
-    public Iterable<Long> findAllByDescription(String description){
-        return em.createQuery("SELECT COUNT(a) FROM OrderLine a WHERE a.notes = :description",
-                Long.class).setParameter("description", description).getResultList();
-    }
-
     @Override
     public long count() {
         return 0;
