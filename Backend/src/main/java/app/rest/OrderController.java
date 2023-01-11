@@ -269,6 +269,11 @@ public class OrderController {
     }
 
 
+    /**
+     *
+     * @param orderId is the id of the order that is going to be deleted
+     * @return a response entity that is empty
+     */
     @DeleteMapping("/orders/orderlines/{id}")
     public ResponseEntity<Void> deleteOrderline(@PathVariable(value = "id") Integer orderId) {
         OrderLine OrderLineToDelete = orderlineRepository.findById(orderId);
