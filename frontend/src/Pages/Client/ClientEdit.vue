@@ -29,12 +29,12 @@
             <div class="flex flex-col lg:mr-16">
               <div class="relative">
                 <input
-                    class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-10 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter cursor-pointer"
-                    v-model="client.type"
-                    :readonly="readonly"
-                    :placeholder="'Type of Client'"
-                    @focus="showType()"
-                    @blur="showType()"
+                  class="rounded text-yInMnBlue focus:outline-none dark:border-gray-700 bg-white font-normal w-full sm:w-40 h-10 flex focus:border-yInMnBlue focus:border items-center px-3 text-sm border-gray-300 focus:rounded-none focus:rounded-t-md border shadow font-inter cursor-pointer"
+                  v-model="client.user_type"
+                  :readonly="readonly"
+                  :placeholder="'Type of Client'"
+                  @focus="showType()"
+                  @blur="showType()"
                 />
               </div>
             </div>
@@ -64,25 +64,28 @@
           <div>
             <p class="font-inter text-yInMnBlue">Location</p>
             <SearchableDropdown
-                :primarykey="'id'"
-                :options="locations"
-                :fields="['name']"
-                autocomplete="off"
-                placeholder="Search for a location"
-                :optionHasIcon="true"
-                :text="['name', 'alpha2']"
-                :selectedItem="userCountry"
-                :max-items="249"
-                return="primarykey"
-                @selected="selectLocation"
-                :icon="true"
-                :imgField="'imgSmall'"
+              :primarykey="'id'"
+              :options="locations"
+              :fields="['name']"
+              autocomplete="off"
+              placeholder="Search for a location"
+              :optionHasIcon="true"
+              :text="['name', 'alpha2']"
+              :selectedItem="userCountry"
+              :max-items="249"
+              return="object"
+              @selected="selectLocation"
+              :icon="true"
+              :imgField="'imgSmall'"
             />
           </div>
         </div>
       </div>
       <!--IMG upload-->
-      <ImgUpload @selectedFile="selectedImg" :previewImg="this.client.img"/>
+      <ImgUpload
+        @selectedFile="selectedImg"
+        :previewImg="this.client.profileImage"
+      />
     </div>
 
     <button
@@ -97,10 +100,11 @@
 <script>
 import ImgUpload from "@/Components/Form/imgUpload.vue";
 import SearchableDropdown from "@/Components/Form/SearchableDropdown.vue";
+import User from "@/Models/User.js";
 
 export default {
-  name: "clientCreate",
-  components: {ImgUpload, SearchableDropdown},
+  name: "clientEdit",
+  components: { ImgUpload, SearchableDropdown },
   inject: ["UserApi", "CountryApi", "FileUploadApi"],
   data() {
     return {
@@ -108,9 +112,9 @@ export default {
         id: "",
         name: "",
         email: "",
-        type: "",
-        location: "",
-        img: "",
+        user_type: "",
+        country: "",
+        profileImage: "",
       },
       clicked: false,
       readonly: true,
@@ -122,9 +126,25 @@ export default {
     };
   },
   methods: {
-    /**
-     * Toggles the type
-     */
+    toastNotification(type, message) {
+      if (type === "error") {
+        this.$toast.open({
+          type: "error",
+          message: message,
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      } else {
+        this.$toast.open({
+          type: "success",
+          message: message,
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      }
+    },
     showType() {
       this.optionsShown = this.optionsShown === false;
     },
@@ -133,57 +153,33 @@ export default {
      * @param option
      */
     selectOption(option) {
-      this.client.type = option;
+      this.client.user_type = option;
     },
     /**
      * Updates the client
      */
     async updateClient() {
       let user;
-      console.log(this.client);
-      if (this.client.name != "" &&
-          this.client.email != "" &&
-          this.client.type != "" &&
-          this.client.location != "") {
-
-        user = await this.UserApi.updateUser(
-            this.client.id,
-            this.client.name,
-            this.client.email,
-            this.client.location,
-            this.client.type,
-            this.client.img
-        );
-
-        this.$toast.open({
-          type: "success",
-          message: "Client Updated",
-          duration: 5000,
-          dismissible: true,
-          position: "top-right",
-        });
+      if (
+        this.client.name != "" &&
+        this.client.email != "" &&
+        this.client.user_type != "" &&
+        this.client.country_key != ""
+      ) {
+        user = await this.UserApi.updateUser(this.client);
+        this.toastNotification("success", "Client updated");
       } else {
-        this.$toast.open({
-          type: "error",
-          message: "Please fill in all fields",
-          duration: 5000,
-          dismissible: true,
-          position: "top-right",
-        });
+        this.toastNotification("error", "Please fill in all fields");
       }
 
       if (this.imgFile != null) {
         try {
-          await this.FileUploadApi.uploadIMG(user.me.id, this.imgFile);
+          await this.FileUploadApi.uploadIMG(user.id, this.imgFile);
         } catch (e) {
-          this.$toast.open({
-            type: "error",
-            message: "Img upload failed",
-            duration: 5000,
-            dismissible: true,
-            position: "top-right",
-          });
+          this.toastNotification("error", "Img upload failed");
         }
+
+        this.$router.push({ path: "/clients", replace: true });
       }
     },
     /**
@@ -191,8 +187,7 @@ export default {
      * @param location
      */
     selectLocation(location) {
-      console.log(location);
-      this.client.location = location;
+      this.client.country = location;
     },
     /**
      * Selects the img
@@ -209,18 +204,14 @@ export default {
   async created() {
     this.locations = await this.CountryApi.findAll();
     this.user = await this.UserApi.findOne(this.$route.params.id);
-    console.log(this.user);
-    this.client.id = this.user.data.id;
-    this.client.name = this.user.data.name;
-    this.client.email = this.user.data.email;
-    this.client.type = this.user.data.user_type;
-    this.client.location = this.user.data.country.id;
-
+    this.client = User.copyEntity(this.user.data);
     this.userCountry = this.user.data.country;
+
     if (this.user.data.profileImage != null) {
-      this.client.img = this.user.data.profileImage;
+      this.client.profileImage = this.user.data.profileImage;
+    } else {
+      this.client.profileImage = "";
     }
-    this.selectedLocation = this.client.location;
   },
 };
 </script>
