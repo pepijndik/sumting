@@ -121,7 +121,7 @@ class OrderApiService extends ApiAdapter {
   }
 
   async getAllOrderlinesByNotes(description) {
-    const orderlines = await BaseApi.get("/orderlines/findByNotes/" + description)
+    return await BaseApi.get("/orderlines/findByNotes/" + description)
         .then((response) => {
           return response.data;
         })
@@ -130,7 +130,7 @@ class OrderApiService extends ApiAdapter {
           // don't forget to re-throw the error, otherwise the promise will resolve successfully
           throw error;
         })
-    return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
+    // return orderlines.map(orderline => OrderLine.copyConstructor(orderline));
   }
 }
 

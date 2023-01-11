@@ -68,6 +68,7 @@ export default {
       projectDescriptions.push(item.description_long)
     });
 
+    let projectSize = [];
     console.log(this.OrderApi.getAllOrderlinesByNotes("Plant a tree to restore rainforests in Brazil"))
   },
 };

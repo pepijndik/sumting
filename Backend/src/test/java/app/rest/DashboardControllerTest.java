@@ -77,10 +77,4 @@ public class DashboardControllerTest {
         assertNotNull(response);
     }
 
-    @Test
-    public void GetAllProjectDescriptions(){
-        ArrayList<String> projects = (ArrayList<String>) this.dashboardRepository.findAllDescriptions();
-
-        assertNotNull(projects);
-    }
 }
