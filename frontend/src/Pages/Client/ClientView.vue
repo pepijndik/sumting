@@ -61,6 +61,10 @@ export default {
     this.users = await this.UserApi.findAll();
   },
   computed: {
+    /**
+     * computedObj for the search function
+     * @returns {*[]|*|[]|*[]}
+     */
     computedObj() {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, "ig");
@@ -79,6 +83,10 @@ export default {
     },
   },
   methods: {
+    /**
+     * Deletes the given client from the database
+     * @param client
+     */
     deleteUser(client) {
       try {
         this.UserApi.delete(client.id);
@@ -87,7 +95,7 @@ export default {
           type: "success",
           message: client.name + " deleted",
           duration: 5000,
-          dissmisable: true,
+          dismissible: true,
         });
 
         this.$router.push({ path: "/clients", replace: true });
@@ -95,7 +103,7 @@ export default {
         this.$toast.error({
           message: "Can't delete client",
           duration: 5000,
-          dissmisable: true,
+          dismissible: true,
         });
       }
     },

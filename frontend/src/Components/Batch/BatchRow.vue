@@ -12,7 +12,7 @@
           class="focus:outline-none mb-5 text-sm text-yInMnBlue dark:text-gray-400 text-center font-normal"
       >
         You are about to delete batch
-        <span class="text-candyPink"> {{ batch.id }} </span>,<br />
+        <span class="text-candyPink"> {{ batch.id }} </span>,<br/>
         this action is not reversible.
       </p>
     </template>
@@ -83,13 +83,13 @@
 <script>
 import moment from "moment";
 import Modal from "../Modal/index.vue";
-import modal from "@/Components/Modal";
 
 let batchDate;
 let mobile;
 export default {
   name: "BatchRow",
   props: ["batch"],
+  components: {Modal},
   emits: ["deleteBatchEvent"],
   data() {
     return {
@@ -102,19 +102,35 @@ export default {
     },
   },
   methods: {
+    /**
+     * Creates a delete event for the batch and closes the modal
+     */
     delBatch() {
       this.$emit("deleteBatchEvent", this.batch.id);
       this.modal = false;
       //console.log("delete" + this.order.id);
     },
+    /**
+     * Opens the modal
+     *
+     * @param ding
+     */
     test(ding) {
       this.modal = ding;
     },
+    /**
+     * Asks for confirmation before deleting the batch by opening the modal
+     */
     confirmDelete() {
       this.modal = true;
       console.log(this.modal, this.batch.id);
       console.log("deleted");
     },
+    /**
+     * Formats the date of the batch
+     * @param inputDate
+     * @returns {string}
+     */
     dateFormat(inputDate) {
       return moment(inputDate).format("DD/MM/YY");
     },
@@ -122,17 +138,10 @@ export default {
   beforeMount() {
     let createOrUpdateDate = this.batch.updatedAt == null ? this.batch.createdAt : this.batch.updatedAt;
     this.batchDate = this.dateFormat(createOrUpdateDate);
-    this.mobile = window.innerWidth < 640 ? true : false;
+    this.mobile = window.innerWidth < 640;
   },
-  components: { Modal },
 };
 </script>
 
 <style scoped>
-.divider {
-  /*border-left: 2px solid rgb(55 65 81);*/
-  border-right: 1px solid rgb(209 213 219);
-  height: 26px;
-  margin: 0 10px;
-}
 </style>

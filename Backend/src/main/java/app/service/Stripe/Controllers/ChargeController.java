@@ -10,14 +10,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * This controller handles the charge requests
+ *
+ * @author Pepijn Dik
+ */
 @Controller
 public class ChargeController {
     @Autowired
     private StripeService paymentsService;
 
+    /**
+     * Handles the charge request
+     *
+     * @param chargeRequest Charge request
+     * @param model         Model
+     * @return Charge result
+     * @throws StripeException if the charge fails
+     */
     @PostMapping("/payments/charge")
     public String charge(ChargeRequest chargeRequest, Model model)
-            throws StripeException {
+        throws StripeException {
         chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(ChargeRequest.Currency.EUR);
         Charge charge = paymentsService.charge(chargeRequest);
@@ -29,6 +42,13 @@ public class ChargeController {
         return "result";
     }
 
+    /**
+     * Handles errors that occur during the charge request
+     *
+     * @param model Model
+     * @param ex    The exception
+     * @return Error page
+     */
     @ExceptionHandler(StripeException.class)
     public String handleError(Model model, StripeException ex) {
         model.addAttribute("error", ex.getMessage());

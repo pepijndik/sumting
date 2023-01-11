@@ -1,15 +1,15 @@
 <template>
   <Line
-    :chart-options="chartOptions"
-    :chart-data="chartData"
-    :chart-id="chartId"
-    :width="150"
-    :height="50"
+      :chart-options="chartOptions"
+      :chart-data="chartData"
+      :chart-id="chartId"
+      :width="150"
+      :height="50"
   />
 </template>
 
 <script>
-import { Line } from "vue-chartjs";
+import {Line} from "vue-chartjs";
 import {
   Chart as ChartJS,
   Title,
@@ -22,13 +22,13 @@ import {
 } from "chart.js";
 
 ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  CategoryScale
+    Title,
+    Tooltip,
+    Legend,
+    LineElement,
+    LinearScale,
+    PointElement,
+    CategoryScale
 );
 
 export default {
@@ -64,6 +64,10 @@ export default {
     },
   },
   computed: {
+    /**
+     * Returns the total number of orders of the past 30 days
+     * @returns {string}
+     */
     firstMonth() {
       const currentDate = new Date();
       const firstDay = currentDate.getDay();
@@ -71,6 +75,11 @@ export default {
       const firstYear = currentDate.getFullYear();
       return firstYear + "-" + firstMonth + "-" + firstDay;
     },
+
+    /**
+     * Returns the total number of orders of 2 months prior over the span of 30 days
+     * @returns {string}
+     */
     secondMonth() {
       const currentDate = new Date();
       const secondDay = currentDate.getDay();
@@ -78,6 +87,11 @@ export default {
       const secondYear = currentDate.getFullYear();
       return secondYear + "-" + secondMonth + "-" + secondDay;
     },
+
+    /**
+     * Returns the total number of orders of 3 months prior over the span of 30 days
+     * @returns {string}
+     */
     thirdMonth() {
       const currentDate = new Date();
       const thirdDay = currentDate.getDay();
@@ -87,21 +101,39 @@ export default {
     },
   },
   async created() {
+    /**
+     * Fetches the total number of orders of the past 30 days
+     *
+     * @type {*}
+     */
     this.projects[0] = await this.DashboardApi.findByMonth(this.firstMonth);
     for (let i = 0; i < this.projects[0].length; i++) {
       this.currentMonth[0]++;
     }
 
+    /**
+     * Fetches the total number of orders of 2 months prior over the span of 30 days
+     * @type {*}
+     */
     this.projects[1] = await this.DashboardApi.findByMonth(this.secondMonth);
     for (let i = 0; i < this.projects[1].length; i++) {
       this.currentMonth[1]++;
     }
 
+    /**
+     * Fetches the total number of orders of 3 months prior over the span of 30 days
+     * @type {*}
+     */
     this.projects[2] = await this.DashboardApi.findByMonth(this.thirdMonth);
     for (let i = 0; i < this.projects[2].length; i++) {
       this.currentMonth[2]++;
     }
 
+    /**
+     * Adds the current month data to the chart data
+     *
+     * @type {number[]}
+     */
     this.chartData.datasets[0].data = this.currentMonth;
   },
 };

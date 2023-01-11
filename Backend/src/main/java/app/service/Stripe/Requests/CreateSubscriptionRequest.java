@@ -3,8 +3,10 @@ package app.service.Stripe.Requests;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.List;
 
+/**
+ * This class represents a subscription request
+ */
 @Data
 public class CreateSubscriptionRequest
 {

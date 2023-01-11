@@ -1,6 +1,6 @@
 <template>
   <div id="otp" class="flex flex-row justify-center text-center px-2 mt-5">
-    <input v-for="(num,index) in maxNumers"
+    <input v-for="(num,index) in maxNumbers"
            v-on:keyup="focusNext($event.target)"
            ref="digitinput"
            class="m-2 border h-10 w-10 text-center form-control rounded focus:ring-yInMnBlue text-candyPink"
@@ -21,13 +21,17 @@ export default {
       default: () => [],
       required: false
     },
-    maxNumers: {
+    maxNumbers: {
       type: Number,
       default: 6,
       required: false
     }
   },
   computed: {
+    /**
+     * Returns the otp data as a string
+     * @returns {string}
+     */
     otp() {
       return this.otpData.map((number) => number).join("");
     }
@@ -38,6 +42,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Focuses the next input field
+     * @param el the sibling element of the next input field
+     */
     focusNext(el) {
       if (el.value.length === 1) {
         el.nextElementSibling?.focus();

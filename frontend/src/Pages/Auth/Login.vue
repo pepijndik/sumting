@@ -45,7 +45,6 @@
 <script>
 import InputComponent from "@/Components/Form/InputComponent";
 import Checkbox from "@/Components/Form/Checkbox";
-import router from "@/Router/router";
 
 export default {
   name: "Login",
@@ -59,6 +58,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * Login the user
+     * @returns {Promise<void>}
+     */
     async login() {
       const user = await this.Auth.login(this.email, this.password, this.remember);
       const borders = () => {
@@ -68,10 +71,9 @@ export default {
 
       if (!user) {
         borders();
-      }else if (user?.need_twofactor) {
+      } else if (user?.need_twofactor) {
         this.$router.push({name: 'auth:verify'});
-      }
-      else{
+      } else {
         this.$router.push({name: "dashboard"});
       }
     }

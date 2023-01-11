@@ -21,7 +21,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.*;
 
 /**
- * Handles the  projects related requests
+ * Handles the projects related requests
  *
  * @author Pepijn dik
  * @version 1.0
@@ -53,8 +53,8 @@ public class ProjectController {
             @RequestParam(defaultValue = "false") boolean all) {
         try {
             if (!all) {
-                List<Project> projects = new ArrayList<Project>();
-                Pageable paging = (Pageable) PageRequest.of(page, size);
+                List<Project> projects;
+                Pageable paging = PageRequest.of(page, size);
                 Page<Project> pageProjects = projectRepository.findAll(paging);
                 projects = pageProjects.getContent();
                 Map<String, Object> response = new HashMap<>();
@@ -82,7 +82,7 @@ public class ProjectController {
     @GetMapping("/projects/{id}")
     public HttpEntity<?> getProject(@PathVariable(value = "id") Integer projectId) {
         Optional<Project> p = projectServiceImpl.findById(projectId);
-        return projectServiceImpl.findById(projectId) != null ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", projectId), HttpStatus.NOT_FOUND);
+        return projectServiceImpl.findById(projectId).isPresent() ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Project", "id", projectId), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ProjectController {
     @DeleteMapping("/projects/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable Integer projectId) {
         Optional<Project> projectToDelete = projectServiceImpl.findById(projectId);
-        projectServiceImpl.delete(projectToDelete.get());
+        projectToDelete.ifPresent(projectServiceImpl::delete);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

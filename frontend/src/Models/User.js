@@ -5,7 +5,7 @@
  * @constructor
  */
 import Twofactor from "@/Models/Twofactor";
-import moment from "moment";
+
 export default class User {
   profileImage = "";
   profileText = "";
@@ -33,7 +33,12 @@ export default class User {
     this.profileText = profileText;
   }
 
-  static copyEntity(entity) {
+    /**
+     * Makes a new User object from a given entity
+     * @param entity
+     * @returns {User}
+     */
+    static copyEntity(entity) {
     const user = new User(
       entity.id,
       entity.name,
@@ -46,11 +51,17 @@ export default class User {
     return user;
   }
 
-  static equal(otherA, otherB) {
-    return (
-      otherB.id === otherA.id &&
-      otherB.name === otherA.name &&
-      otherB.email === otherA.email
-    );
-  }
+    /**
+     * Checks if the users are equal to each other
+     * @param otherA
+     * @param otherB
+     * @returns {boolean}
+     */
+    static equal(otherA, otherB) {
+        return (
+            otherB.id === otherA.id &&
+            otherB.name === otherA.name &&
+            otherB.email === otherA.email
+        );
+    }
 }

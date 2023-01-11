@@ -13,6 +13,11 @@ export default class OrderTypes
         this.esExt=esExt;
     }
 
+    /**
+     * Makes a new OrderTypes object from a given object
+     * @param type
+     * @returns {any|null}
+     */
     static copyConstructor(type){
         if(type == null) return null;
         return Object.assign(new OrderTypes(), type);

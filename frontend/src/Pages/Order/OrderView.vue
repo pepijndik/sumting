@@ -127,6 +127,11 @@ export default {
     };
   },
   watch: {
+    /**
+     * Watch for changes in the selected user and project and search for the orders
+     * @param val
+     * @param old_val
+     */
     selectedProject: function (val, old_val) {
       if (val !== old_val && val !== null && val !== undefined) {
         if (val.id !== null && val.id !== undefined) {
@@ -138,6 +143,11 @@ export default {
         }
       }
     },
+    /**
+     * Watch for changes in the selected user and project and search for the orders
+     * @param val
+     * @param old_val
+     */
     selectedUser: function (val, old_val) {
       if (val !== old_val && val !== null && val !== undefined) {
         if (val.id !== null && val.id !== undefined) {
@@ -150,6 +160,10 @@ export default {
       }
     },
   },
+  /**
+   * Data initialization and sorting of the orders
+   * @returns {Promise<void>}
+   */
   async created() {
     this.projects = await this.ProjectApi.SearchableDropDown();
     this.orders = await this.OrderApi.findAll();
@@ -160,6 +174,10 @@ export default {
     });
   },
   computed: {
+    /**
+     * Computed object for the search function
+     * @returns {*[]|[]|*[]}
+     */
     computedObj() {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
@@ -179,12 +197,21 @@ export default {
     },
   },
   methods: {
+    /**
+     * Function to compare dates
+     * @param a
+     * @param b
+     * @returns {number|undefined|number}
+     */
     compareDate(a,b){
       if(a?.order_date != null && b?.order_date != null){
         return a?.order_date?.localeCompare(b?.order_date);
       }
       return 0;
     },
+    /**
+     * Function to change the list order from old -> new and vice versa
+     */
     changeListOrder() {
       if (!this.searchOrder) {
         // From Old -> New
@@ -200,10 +227,20 @@ export default {
 
       this.searchOrder = !this.searchOrder;
     },
+    /**
+     * Function to delete an order with the given id
+     * @param id
+     */
     deleteOrder(id) {
       this.OrderApi.delete(id);
       console.log("Deleted: " + id);
     },
+    /**
+     * Does a combined search for the orders depending on the given data
+     * @param project
+     * @param client
+     * @returns {Promise<void>}
+     */
     async getOrdersCombinedSearch(project, client) {
       if (project === undefined && client === undefined) {
         this.orders = await this.OrderApi.findAll();

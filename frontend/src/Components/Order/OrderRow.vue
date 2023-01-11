@@ -90,6 +90,7 @@ let mobile;
 export default {
   name: "OrderRow",
   props: ["order"],
+  components: { Modal },
   emits: ["deleteOrderEvent"],
   data() {
     return {
@@ -102,27 +103,46 @@ export default {
     },
   },
   methods: {
+    /**
+     * Emits a deleteOrderEvent for the given order
+     */
     delOrder() {
       this.$emit("deleteOrderEvent", this.order.id);
       //console.log("delete" + this.order.id);
     },
+
+    /**
+     * Opens the modal or closes it depending on what ding is equal to
+     * @param ding
+     */
     test(ding) {
       this.modal = ding;
     },
+
+    /**
+     * Confirms the deletion of the order in the modal
+     */
     confirmDelete() {
       this.modal = true;
       console.log(this.modal, this.order.id);
       console.log("deleted");
     },
+
+    /**
+     * Formats the date of the order
+     * @returns {string}
+     */
     dateFormat(inputDate) {
       return moment(inputDate).format("DD/MM/YY");
     },
   },
   beforeMount() {
+    /**
+     * Formats the date of the order and checks if the screen is mobile`
+     */
     this.orderDate = this.dateFormat(this.order.order_date);
-    this.mobile = window.innerWidth < 640 ? true : false;
+    this.mobile = window.innerWidth < 640;
   },
-  components: { Modal },
 };
 </script>
 

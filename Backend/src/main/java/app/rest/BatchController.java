@@ -18,6 +18,9 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Handles the Endpoints belonging to a batch
+ */
 @Controller
 public class BatchController {
 
@@ -28,16 +31,33 @@ public class BatchController {
     @Autowired
     private OrderlineRepository orderlineRepository;
 
+    /**
+     * Gets all batches
+     *
+     * @return all batches
+     */
     @GetMapping("/batch")
     public ResponseEntity<Iterable<Batch>> getAllBatches() {
         return new ResponseEntity<>(batchRepository.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Gets a batch by id
+     *
+     * @param batchId the id of the batch
+     * @return the batch
+     */
     @GetMapping("/batch/{id}")
     public ResponseEntity<Batch> getBatch(@PathVariable(value = "id") Integer batchId) {
         return new ResponseEntity<>(batchRepository.findById(batchId), HttpStatus.OK);
     }
 
+    /**
+     * Creates a batch
+     *
+     * @param batch the batch to be created
+     * @return the created batch
+     */
     @PostMapping("/batch")
     public ResponseEntity<Batch> createBatch(@RequestBody ObjectNode batch) {
         try {
@@ -49,13 +69,13 @@ public class BatchController {
             newBatch.setProjectKey(batch.get("projectKey").asInt());
 
             Optional<Project> batchProject = this.projectService.findById(batch.get("projectKey").asInt());
-            newBatch.setProject(batchProject.get());
+            if (batchProject.isPresent()) newBatch.setProject(batchProject.get());
 
             for (int i = 0; i < batch.get("batchSize").asInt(); i++) {
                 Optional<OrderLine> batchOrderline =
                         Optional.ofNullable(this.orderlineRepository.findById(batch.get("orderlines").get(i).get("id").asInt()));
 
-                batchOrderline.get().setBatch(newBatch);
+                if (batchOrderline.isPresent()) batchOrderline.get().setBatch(newBatch);
             }
 
             newBatch = this.batchRepository.save(newBatch);
@@ -70,12 +90,23 @@ public class BatchController {
         }
     }
 
+    /**
+     * Uploads a batch
+     *
+     * @return the updated batch
+     */
     @PostMapping("/batch/upload")
     public ResponseEntity<String> uploadBatch() {
        // AmazonConfig.bucketSettings.proof
         return new ResponseEntity<>("Batch upload", HttpStatus.OK);
     }
 
+    /**
+     * Deletes a batch
+     *
+     * @param batchId the id of the batch to be deleted
+     * @return the deleted batch
+     */
     @DeleteMapping("/batch/{id}")
     public ResponseEntity<Void> deleteBatch(@PathVariable(value = "id") Integer batchId) {
         Batch batchToDelete = batchRepository.findById(batchId);
