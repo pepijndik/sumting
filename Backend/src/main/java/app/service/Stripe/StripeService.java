@@ -19,15 +19,17 @@ import java.util.*;
 /**
  * Stripe wrapper class
  *
- * @Author: Pepijn dik
- * @Since 6-12-2022
+ * @author Pepijn dik
+ * @since 6-12-2022
  */
-
 @Service
 public class StripeService {
     @Autowired
     private StripeConfig stripeConfig;
 
+    /**
+     * Initializes the stripe service
+     */
     @PostConstruct
     public void init() {
         Stripe.setAppInfo("Sumting Admin panel", "1.0", "https://sumting.pdik.nl");
@@ -36,6 +38,7 @@ public class StripeService {
 
     /**
      * Charge a credit card
+     *
      * @param chargeRequest Charge request
      * @return Charge object
      * @throws StripeException if the charge fails
@@ -51,6 +54,7 @@ public class StripeService {
 
     /**
      * Create a stripe customer
+     *
      * @param user user
      * @return Customer stripe customer
      * @throws StripeException stripe exception
@@ -64,48 +68,51 @@ public class StripeService {
 
     /**
      * Get webhook
-     * @param payload
-     * @param sigHeader
+     *
+     * @param payload the payload
+     * @param sigHeader the signature header
      * @return Event
-     * @throws StripeException
+     * @throws StripeException stripe exception
      */
     public Event getEvent(String payload, String sigHeader) throws StripeException {
         return Webhook.constructEvent(payload, sigHeader, stripeConfig.getWebhookSecret());
     }
+
     /**
      * Enable webhooks for stipe
      *
      * @throws StripeException stripe exception
      */
     public void EnableWebhook() throws StripeException {
-        Map<String, Object> ExtraParms = new HashMap<>();
-        ExtraParms.put("live_mode", stripeConfig.isLive());
+        Map<String, Object> ExtraParams = new HashMap<>();
+        ExtraParams.put("live_mode", stripeConfig.isLive());
         WebhookEndpointCreateParams params =
-                WebhookEndpointCreateParams.builder()
-                        .setUrl(stripeConfig.getWebhookUrl())
-                        .addAllEnabledEvent(Arrays.asList(
-                                WebhookEndpointCreateParams.EnabledEvent.CHARGE__FAILED,
-                                WebhookEndpointCreateParams.EnabledEvent.CHARGE__SUCCEEDED,
-                                WebhookEndpointCreateParams.EnabledEvent.PRODUCT__CREATED,
-                                WebhookEndpointCreateParams.EnabledEvent.PRODUCT__UPDATED,
-                                WebhookEndpointCreateParams.EnabledEvent.PRODUCT__DELETED,
-                                WebhookEndpointCreateParams.EnabledEvent.PLAN__CREATED,
-                                WebhookEndpointCreateParams.EnabledEvent.PLAN__UPDATED,
-                                WebhookEndpointCreateParams.EnabledEvent.PLAN__DELETED,
-                                WebhookEndpointCreateParams.EnabledEvent.CUSTOMER__UPDATED,
-                                WebhookEndpointCreateParams.EnabledEvent.CUSTOMER__CREATED))
-                        .putAllExtraParam(ExtraParms)
-                        .build();
-       WebhookEndpoint.create(params);
+            WebhookEndpointCreateParams.builder()
+                .setUrl(stripeConfig.getWebhookUrl())
+                .addAllEnabledEvent(Arrays.asList(
+                    WebhookEndpointCreateParams.EnabledEvent.CHARGE__FAILED,
+                    WebhookEndpointCreateParams.EnabledEvent.CHARGE__SUCCEEDED,
+                    WebhookEndpointCreateParams.EnabledEvent.PRODUCT__CREATED,
+                    WebhookEndpointCreateParams.EnabledEvent.PRODUCT__UPDATED,
+                    WebhookEndpointCreateParams.EnabledEvent.PRODUCT__DELETED,
+                    WebhookEndpointCreateParams.EnabledEvent.PLAN__CREATED,
+                    WebhookEndpointCreateParams.EnabledEvent.PLAN__UPDATED,
+                    WebhookEndpointCreateParams.EnabledEvent.PLAN__DELETED,
+                    WebhookEndpointCreateParams.EnabledEvent.CUSTOMER__UPDATED,
+                    WebhookEndpointCreateParams.EnabledEvent.CUSTOMER__CREATED))
+                .putAllExtraParam(ExtraParams)
+                .build();
+        WebhookEndpoint.create(params);
     }
 
 
     /**
      * Subscription class
      */
-    public static class Subscription{
+    public static class Subscription {
         /**
          * Create a subscription
+         *
          * @param subscriptionRequest subscription requests
          * @return Subscription Subscription
          * @throws StripeException stripe exception
@@ -119,6 +126,7 @@ public class StripeService {
 
         /**
          * Cancel the subscription
+         *
          * @param subscriptionId subscription id
          * @return Subscription Subscription
          * @throws StripeException stripe exception
@@ -130,7 +138,8 @@ public class StripeService {
 
         /**
          * Update the subscription
-         * @param subscriptionId subscription id
+         *
+         * @param subscriptionId      subscription id
          * @param subscriptionRequest subscription request
          * @return Subscription Subscription
          * @throws StripeException stripe exception

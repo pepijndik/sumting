@@ -1,5 +1,8 @@
 package app.views;
 
+/**
+ * The view class for the User entity.
+ */
 public class UserView {
 
     /**

@@ -1,6 +1,5 @@
 package app.security;
 
-import app.enums.UserRole;
 import app.models.User.User;
 
 import java.util.Date;
@@ -8,7 +7,7 @@ import java.util.Date;
 /**
  * Class with useful information of token
  *
- * Author: Pepijn dik
+ * @author Pepijn dik
  */
 
 public class JWTokenInfo {
