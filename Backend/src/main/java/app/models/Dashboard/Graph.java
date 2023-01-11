@@ -6,6 +6,8 @@ import app.models.Identifiable;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Random;
 
 @Entity
 @Table(name = Order.TABLE_NAME)
@@ -29,6 +31,20 @@ public class Graph implements Identifiable<Integer> {
     @Timestamp
     @Column(name = "created_at", columnDefinition = "timestamp")
     private Date createdAt;
+
+    public static Graph buildRandom() {
+        Graph graph = new Graph();
+        Random random = new Random();
+        int minDay = (int) LocalDate.of(2020, 1, 1).toEpochDay();
+        int maxDay = (int) LocalDate.of(2022, 1, 1).toEpochDay();
+        long randomDay = minDay + random.nextInt(maxDay - minDay);
+        Date randomDate = Date.valueOf(LocalDate.ofEpochDay(randomDay));
+        Date currentDate = Date.valueOf(LocalDate.now());
+
+        graph.setCreatedAt(currentDate);
+
+        return graph;
+    }
 
     @Override
     public Integer getId() {

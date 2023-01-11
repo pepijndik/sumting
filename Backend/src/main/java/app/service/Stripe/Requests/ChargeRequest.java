@@ -2,11 +2,16 @@ package app.service.Stripe.Requests;
 
 import lombok.Data;
 
+/**
+ * This class represents a charge request
+ *
+ * @author Pepijn Dik
+ */
 @Data
 public class ChargeRequest {
     public enum Currency {
         EUR,
-        USD;
+        USD
     }
     private String description;
     private int amount;

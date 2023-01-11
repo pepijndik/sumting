@@ -1,11 +1,13 @@
 package app.rest;
 
 import app.exceptions.FileIsNotRightExtension;
+import app.models.Country;
 import app.models.User.User;
 import app.exceptions.UserNotFoundException;
+import app.repositories.CountryRepository;
 import app.repositories.JPAUserRepository;
+import app.response.LoginResponse;
 import app.security.JWTokenInfo;
-import app.server.Amazon.AmazonConfig;
 import app.server.Amazon.BucketNames;
 import app.service.FileStore;
 import app.views.UserView;
@@ -16,12 +18,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  * Handles all requests related to users
+ *
  * @author Pepijn dik
  * @version 1.0
  */
@@ -30,17 +36,21 @@ public class UserController {
 
     @Autowired
     private JPAUserRepository userRepo;
+
+    @Autowired
+    private CountryRepository countryRepo;
     @Autowired
     private FileStore fileStore;
 
     /**
      * Gets all users
-     * @return ResponseEntity<Iterable<User>> all users
+     *
+     * @return ResponseEntity<Iterable < User>> all users
      */
     @GetMapping("/users")
-    public  ResponseEntity<Iterable<User>> getAllUsers(@RequestParam(value = "email",required = false) String email) {
+    public ResponseEntity<Iterable<User>> getAllUsers(@RequestParam(value = "email", required = false) String email) {
 
-        if(email != null) {
+        if (email != null) {
             System.out.println(email);
             List<User> users = userRepo.findByEmail(email);
             if (users.size() == 0) {
@@ -54,15 +64,16 @@ public class UserController {
 
     /**
      * Get a user by id
+     *
      * @param id User id
      * @return User user
      */
     @GetMapping("/users/{id}")
     public User getUserByEmail(
-            @PathVariable Integer id) {
+        @PathVariable Integer id) {
         User userById = userRepo.findById(id);
-        if(userById == null) {
-            throw new UserNotFoundException("id = " + id );
+        if (userById == null) {
+            throw new UserNotFoundException("id = " + id);
         }
         return userById;
     }
@@ -70,7 +81,8 @@ public class UserController {
 
     /**
      * Delete a user by id
-     * @param id user id
+     *
+     * @param id        user id
      * @param tokenInfo token info
      * @return ResponseEntity<User>
      */
@@ -81,60 +93,59 @@ public class UserController {
         userRepo.delete(user);
 
         return ResponseEntity.ok(user);
-
     }
 
     /**
      * Update a user
+     *
      * @param user user body
      * @return ResponseEntity<Object>
      */
     @PutMapping("/users")
     @JsonView(UserView.Update.class)
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
-
-        System.out.println(user);
-
         User userById = userRepo.findById(user.getId());
-
-        userById.setCountryKey(user.getCountryKey());
-
         if(userById == null) {
             throw new UserNotFoundException("id = " + user.getId());
         }
+        user.setUpdatedAt(LocalDateTime.now());
+        user.setCreatedAt(userById.getCreatedAt());
+        user.setEncodedPassword(userById.getHashedPassword());
 
-        userRepo.save(user);
+        User savedUser = userRepo.save(user);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedUser);
+
     }
 
     /**
      * Upload a profile picture
-     * @param id user id
-     * @param file profilepicture
+     *
+     * @param id   user id
+     * @param file profile-picture
      * @return ResponseEntity<Object> user
      * @throws FileUploadException FileUploadException
      */
     @PostMapping("/users/{id}/profile-picture")
     @JsonView(UserView.User.class)
-    public ResponseEntity<Object> uplaudProfile(@PathVariable Integer id,@RequestParam("file")MultipartFile file) throws FileUploadException {
+    public ResponseEntity<Object> uploadProfile(@PathVariable Integer id, @RequestParam("file") MultipartFile file) throws FileUploadException {
 
-        if(!fileStore.isImage(file)) {
+        if (!fileStore.isImage(file)) {
             //check if the file is an image
             throw new FileIsNotRightExtension("File must be an image");
         }
 
-        String path = String.format("%s/%s/%d", BucketNames.BASE.getBucketName(), "users",id);
+        String path = String.format("%s/%s/%d", BucketNames.BASE.getBucketName(), "users", id);
         String fileName = String.format("%s", file.getOriginalFilename());
-        String relpath= "";
-        try{
+        String relpath = "";
+        try {
             //Path format /{bucket-name}/{id}/{file-name}
-            relpath= fileStore.upload(path, fileName, Optional.of(fileStore.prepareUplaud(file)), file.getInputStream(),true);
+            relpath = fileStore.upload(path, fileName, Optional.of(fileStore.prepareUpload(file)), file.getInputStream(), true);
         } catch (IOException e) {
             throw new FileUploadException("Failed to upload file", e);
         }
 
-        User r = userRepo.uplaudProfilePictureForUser(relpath,id);
+        User r = userRepo.uploadProfilePictureForUser(relpath, id);
         return ResponseEntity.accepted().body(r);
     }
 }

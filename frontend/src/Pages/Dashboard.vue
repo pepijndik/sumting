@@ -5,7 +5,7 @@
 
 <script>
 import BarGraph from "@/Components/Chart/BarGraph";
-import LineGraph from "@/Components/Chart/LineGraph";
+import LineGraph from "@/Components/Chart/OrderlineGraph";
 
 export default {
   name: "Dashboard",

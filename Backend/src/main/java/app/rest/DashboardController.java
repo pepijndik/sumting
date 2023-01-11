@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.sql.Date;
 
-
+/**
+ * Handles all requests related to dashboards
+ */
 @Controller
 public class DashboardController {
 
@@ -30,5 +32,4 @@ public class DashboardController {
     public ResponseEntity<Iterable<Graph>> ordersSorted(@PathVariable Date pastMonths){
         return new ResponseEntity<>(dashboardRepository.findByMonth(pastMonths), HttpStatus.OK);
     }
-
 }

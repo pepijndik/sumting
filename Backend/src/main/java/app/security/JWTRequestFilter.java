@@ -28,14 +28,23 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
     // path prefixes that will be protected by the authentication filter
 
-    private static final Set<String> SECURED_PATHS = Set.of("/auth/2fa","/auth/me", "/users");
+    private static final Set<String> SECURED_PATHS = Set.of("/auth/2fa", "/auth/me", "/users");
 
 
+    /**
+     * Check if the request is secured and if so, check if the token is valid
+     *
+     * @param req   The request
+     * @param res   The response
+     * @param chain The filter chain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain)
-                                        throws ServletException, IOException {
+        throws ServletException, IOException {
 
         String encodedToken = null;
 
@@ -45,7 +54,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
             // OPTIONS requests and non-secured area should pass through without check
             if (HttpMethod.OPTIONS.matches(req.getMethod()) ||
-                    SECURED_PATHS.stream().noneMatch(path::startsWith)) {
+                SECURED_PATHS.stream().noneMatch(path::startsWith)) {
                 chain.doFilter(req, res);
                 return;
             }
@@ -53,7 +62,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             // get the encoded token string from the authorization request header
             encodedToken = req.getHeader(HttpHeaders.AUTHORIZATION);
 
-            if(encodedToken == null) {
+            if (encodedToken == null) {
                 // avoid giving clues to the caller (do not say that header is not present, for example)
                 throw new AuthenticationException("authentication problem");
             }
@@ -62,17 +71,16 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             encodedToken = encodedToken.replace("Bearer ", "");
             System.out.println(encodedToken);
             // get a representation of the token for future usage
-            JWTokenInfo tokenInfo = tokenUtils.decode(encodedToken,false);
+            JWTokenInfo tokenInfo = tokenUtils.decode(encodedToken, false);
 
             // Future chain members might use token info (see the example that tries to delete a user)
-            req.setAttribute(tokenInfo.KEY,tokenInfo);
+            req.setAttribute(JWTokenInfo.KEY, tokenInfo);
 
             // proceed with the chain
             chain.doFilter(req, res);
-        } catch(AuthenticationException e ) {
+        } catch (AuthenticationException e) {
             // aborting the chain
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
-            return;
         }
 
     }

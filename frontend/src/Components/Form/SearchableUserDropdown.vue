@@ -58,7 +58,7 @@ import FileIcon from "@/Components/SvgIcons/FileIcon";
 
 
 export default {
-  name: 'SearchableDropDown',
+  name: 'SearchableUserDropdown',
   components: {FileIcon},
   template: 'Dropdown',
 
@@ -118,42 +118,61 @@ export default {
     this.$emit('selected', this.selected);
   },
   computed: {
+    /**
+     * Filter the options based on the search filter
+     * @returns {*[]}
+     */
     filteredOptions() {
       const filtered = [];
       const regOption = new RegExp(this.searchFilter, 'ig');
-        for (const option of this.options) {
-          //Double For loop to find the option in the fields
-          this.Fields.forEach(field => {
-            if (this.searchFilter.length < 1 || option[field].match(regOption)) {
-              if (filtered.length < this.maxItem) filtered.push(option);
-            }
-          });
+      for (const option of this.options) {
+        //Double For loop to find the option in the fields
+        this.Fields.forEach(field => {
+          if (this.searchFilter.length < 1 || option[field].match(regOption)) {
+            if (filtered.length < this.maxItem) filtered.push(option);
+          }
+        });
 
-        }
+      }
 
       return filtered;
     },
   },
   methods: {
+    /**
+     * Show the options
+     * @param option
+     * @returns {string}
+     */
     populateFields(option) {
-      var finalString = "";
+      let finalString = "";
       this.Fields.forEach(field => {
-        finalString += this.extractFieldValue(option,field);
+        finalString += this.extractFieldValue(option, field);
         //Check if not the last field then append space with separator
-        if(this.Fields.indexOf(field) !== this.Fields.length -1)
-        {
+        if (this.Fields.indexOf(field) !== this.Fields.length - 1) {
           finalString += " | "
         }
       });
       return finalString
     },
-    extractFieldValue(option,prop) {
+
+    /**
+     * Extract the value of the field
+     * @param option
+     * @param prop
+     * @returns {*}
+     */
+    extractFieldValue(option, prop) {
       // eslint-disable-next-line no-prototype-builtins
-      if(Object.hasOwn(option,prop))
-      {
+      if (Object.hasOwn(option, prop)) {
         return option[prop];
       }
     },
+
+    /**
+     * Show the options
+     * @param option
+     */
     selectOption(option) {
       this.selected = option;
       this.optionsShown = false;
@@ -161,12 +180,20 @@ export default {
       this.searchFilter = this.selected[this.Fields[0]]; //Set the search filter to the first field
       this.$emit('selected', this.selected);
     },
+
+    /**
+     * Show the options
+     */
     showOptions() {
       if (!this.disabled) {
         this.searchFilter = '';
         this.optionsShown = true;
       }
     },
+
+    /**
+     * Exit the dropdown
+     */
     exit() {
       if (!this.selected[this.primaryKey]) {
         this.selected = {};
@@ -184,6 +211,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * Watch for the search filter to change and adjust the options to it
+     */
     searchFilter() {
       if (this.filteredOptions.length === 0) {
         this.selected = {};

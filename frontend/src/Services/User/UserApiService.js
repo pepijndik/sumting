@@ -31,11 +31,16 @@ class UserApiService extends ApiAdapter {
         return false;
       });
   }
-  async updateUser(id, name, email, country, type, img) {
-    if (!id || !name || !email || !country || !type) return false;
-
-    let user = new User(id, name, email, country, type, img);
-
+  async updateUser(user) {
+    if (
+      !user.id ||
+      !user.name ||
+      !user.email ||
+      !user.country ||
+      !user.user_type
+    ) {
+      return false;
+    }
     return await BaseApi.put(`${this.resource}`, user)
       .then((response) => {
         return response.data;

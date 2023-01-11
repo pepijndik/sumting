@@ -31,6 +31,11 @@
               name="Create order"
               source="create.svg"
             />
+            <SubDropdownItem
+                to="/orders/edit"
+                name="Edit order"
+                source="edit.svg"
+            />
           </NavigationDropdownItem>
           <NavigationDropdownItem name="Batch" source="file.svg">
             <SubDropdownItem to="/batches" name="View batches" source="file.svg"/>
@@ -38,11 +43,6 @@
           </NavigationDropdownItem>
           <NavigationDropdownItem name="Client" source="user.svg">
             <SubDropdownItem to="/clients" name="Client's" source="user.svg" />
-            <SubDropdownItem
-              to="/clients/create"
-              name="Create client"
-              source="create.svg"
-            />
           </NavigationDropdownItem>
         </template>
       </Navigation>
@@ -79,9 +79,7 @@ import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
 import { SemipolarSpinner  } from 'epic-spinners'
-import router from "@/Router/router";
-import BaseApi from "@/Services/BaseApi";
-import AuthHeader from "@/Services/AuthHeader";
+
 export default {
   name: "DashboardLayout",
   inject: ["Auth"],

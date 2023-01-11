@@ -50,6 +50,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Open the dropdown item
+     */
     openTab() {
       if (this.transformValue === "rotate(0deg)") {
         this.transformValue = "rotate(180deg)";
@@ -59,6 +62,10 @@ export default {
         this.dropdownOpen = false;
       }
     },
+    /**
+     * Check if the dropdown item has a sub item
+     * @type {boolean}
+     */
     showSub(){
       const slots= useSlots();
       return !!slots.default

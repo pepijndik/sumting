@@ -169,15 +169,28 @@ export default {
     this.projects = await this.ProjectApi.SearchableDropDown();
   },
   watch: {
+    /**
+     * Watch for changes in the selected project and find the product that belongs to the project
+     * @param project
+     * @returns {Promise<void>}
+     */
     async selectedProject(project) {
       //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
       if (project !== null && project !== undefined) {
         await this.findProductOfProject(project);
       }
     },
+    /**
+     * Watch for changes in the selected product and find the orderlines that belong to the product
+     * @returns {Promise<void>}
+     */
     async selectedProjectsProduct() {
       await this.findOrderlinesByProduct();
     },
+    /**
+     * Watch for changes in the orderlines and sort the data
+     * @returns {Promise<void>}
+     */
     orderlines() {
       this.orderlines.sort((a,b) => {
         return a.loadedDate.localeCompare(b.loadedDate)
@@ -189,6 +202,10 @@ export default {
     }
   },
   computed: {
+    /**
+     * Get the computed object of the orderlines
+     * @returns {[]}
+     */
     computedObj() {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
@@ -208,6 +225,11 @@ export default {
     },
   },
   methods: {
+    /**
+     * Find the product that belongs to the selected project
+     * @param project
+     * @returns {Promise<void>}
+     */
     async findProductOfProject(project) {
       if (project.id !== undefined) {
         const data = await this.ProductApi.findProductByProjectId(project.id);
@@ -216,6 +238,10 @@ export default {
         });
       }
     },
+    /**
+     * Find the orderlines that belong to the selected product
+     * @returns {Promise<void>}
+     */
     async findOrderlinesByProduct() {
       let currentOrderlines = [];
       const data = await this.OrderApi.getAllOrderlinesByProductId(this.selectedProjectsProduct.id);
@@ -225,8 +251,13 @@ export default {
 
       this.orderlines = currentOrderlines;
     },
+    /**
+     * Checks if the object has no properties
+     * @param obj
+     * @returns {boolean}
+     */
     isEmpty(obj) {
-      for(var prop in obj) {
+      for(const prop in obj) {
         if(Object.prototype.hasOwnProperty.call(obj, prop)) {
           return false;
         }
@@ -234,6 +265,9 @@ export default {
 
       return JSON.stringify(obj) === JSON.stringify({});
     },
+    /**
+     * Changes the order of the list from old -> new and vice versa
+     */
     changeListOrder() {
       if (!this.searchOrderline) {
         // From Old -> New
@@ -249,11 +283,19 @@ export default {
 
       this.searchOrderline = !this.searchOrderline;
     },
+    /**
+     * If the checkbox is checked it will add the orderline to the list of checked orderlines
+     * @param event
+     */
     handleCheckboxChange(event) {
       if (!event.target.checked) {
         this.checkedOrderlines = this.checkedOrderlines.filter(orderline => orderline !== event.target.value)
       }
     },
+    /**
+     * Create a batch
+     * @returns {Promise<void>}
+     */
     async createBatch() {
       let batch
       if (

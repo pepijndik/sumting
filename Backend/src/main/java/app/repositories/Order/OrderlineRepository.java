@@ -6,6 +6,7 @@ import app.models.Order.OrderLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import app.repositories.Interfaces.CustomCrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -53,6 +54,11 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
        return null;
     }
 
+    public Long getOrderLineByNotes(String note){
+        return em.createQuery("SELECT COUNT(o) FROM OrderLine o WHERE o.notes = :note", Long.class)
+                .setParameter("note", note).getSingleResult();
+    }
+
 
     public Iterable<OrderLine> findAllBy(Integer product_id, Integer order_id) {
         try {
@@ -94,7 +100,8 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
 
     @Override
     public void delete(OrderLine entity) {
-
+        OrderLine toRemove = em.merge(entity);
+        em.remove(toRemove);
     }
 
 

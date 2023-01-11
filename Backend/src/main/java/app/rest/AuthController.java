@@ -1,21 +1,18 @@
 package app.rest;
 
+import app.exceptions.AuthenticationException;
 import app.exceptions.AuthorizationException;
 import app.exceptions.TwofactorSetup;
-import app.models.Country;
-import app.repositories.CountryRepository;
-import app.response.LoginResponse;
-import app.service.Stripe.StripeService;
-import app.views.UserView;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import app.exceptions.UserNotFoundException;
+import app.models.Country;
 import app.models.User.User;
+import app.repositories.CountryRepository;
 import app.repositories.JPAUserRepository;
-import app.exceptions.AuthenticationException;
+import app.response.LoginResponse;
 import app.security.JWTokenInfo;
 import app.security.JWTokenUtils;
-import app.security.PasswordEncoder;
+import app.service.Stripe.StripeService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.stripe.exception.StripeException;
 import dev.samstevens.totp.code.CodeVerifier;
 import dev.samstevens.totp.exceptions.QrGenerationException;
@@ -34,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +38,8 @@ import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
 /**
  * Set of endpoints used to sign-up and sign-in users
- * Author: Pepijn dik
+ *
+ * @author Pepijn dik
  */
 @RestController
 public class AuthController {
@@ -76,6 +73,7 @@ public class AuthController {
 
     /**
      * Endpoint used to sign up a user
+     *
      * @param signupInfo The user to sign-up
      * @return The signed-up user
      */
@@ -94,9 +92,9 @@ public class AuthController {
         User user = new User();
         user.setEmail(email);
         user.setName(name);
-        try{
+        try {
             user.setStripeId(stripeService.createCustomer(user).getId());
-        }catch (StripeException  e){
+        } catch (StripeException e) {
             System.out.printf("Error creating stripe customer: %s", e.getMessage());
         }
 
@@ -106,7 +104,7 @@ public class AuthController {
         } else {
             user.setType(User.Type.PERSON);
         }
-        if(c != null) {
+        if (c != null) {
             user.setCountry(c);
         }
         user.setCountryKey(countryId);
@@ -116,8 +114,8 @@ public class AuthController {
             User savedUser = userRepo.save(user);
             loginResponse.setMe(savedUser);
             URI location = ServletUriComponentsBuilder.
-                    fromCurrentRequest().path("/{id}").
-                    buildAndExpand(savedUser.getId()).toUri();
+                fromCurrentRequest().path("/{id}").
+                buildAndExpand(savedUser.getId()).toUri();
             return ResponseEntity.created(location).body(loginResponse);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(new UserNotFoundException("Could not create user", e));
@@ -126,10 +124,11 @@ public class AuthController {
 
     /**
      * Refresh the JWT token
-     * @param request
-     * @param response
-     * @return
-     * @throws AuthenticationException
+     *
+     * @param request The request
+     * @param response The response
+     * @return The new JWT token
+     * @throws AuthenticationException If the token is invalid
      */
     @PostMapping(path = "/auth/refresh-token", produces = "application/json")
     public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -159,13 +158,14 @@ public class AuthController {
 
     /**
      * Verify the 2FA code
-     * @param provided
-     * @param tokenInfo
-     * @return
+     *
+     * @param provided The provided code
+     * @param tokenInfo The token info
+     * @return The user
      */
     @PostMapping("/auth/2fa/verify")
     @ResponseBody
-    public ResponseEntity verify(@RequestBody ObjectNode provided, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
+    public ResponseEntity<?> verify(@RequestBody ObjectNode provided, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
         // secret is fetched from some storage
         User user = tokenInfo.getUser();
         String code = "";
@@ -190,9 +190,10 @@ public class AuthController {
 
 
     /**
-     * Get the current loggedin user
-     * @param tokenInfo
-     * @return
+     * Get the current logged-in user
+     *
+     * @param tokenInfo The token info
+     * @return The user
      */
     @GetMapping("/auth/me")
     public ResponseEntity<User> getUser(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
@@ -205,7 +206,8 @@ public class AuthController {
 
     /**
      * Setup 2FA for the user and return the QR code
-     * @param tokenInfo
+     *
+     * @param tokenInfo The token info
      * @return body
      */
     @PostMapping("/auth/2fa/setup")
@@ -222,16 +224,16 @@ public class AuthController {
         userRepo.save(user);
 
         QrData data = qrDataFactory.newBuilder()
-                .label(user.getEmail())
-                .secret(secret)
-                .issuer("Sumting")
-                .build();
+            .label(user.getEmail())
+            .secret(secret)
+            .issuer("Sumting")
+            .build();
 
         // Generate the QR code image data as a base64 string which
         // can be used in an <img> tag:
         String qrCodeImage = getDataUriForImage(
-                qrGenerator.generate(data),
-                qrGenerator.getImageMimeType()
+            qrGenerator.generate(data),
+            qrGenerator.getImageMimeType()
         );
 
         URI location = ServletUriComponentsBuilder.fromPath("/auth/2fa/verify").build().toUri();
@@ -247,18 +249,19 @@ public class AuthController {
 
     /**
      * Login a user
-     * @param signOnInfo
-     * @param request
-     * @param response
+     *
+     * @param signOnInfo The sign on info
+     * @param request The request
+     * @param response The response
      * @return LoginResponse
      * @throws AuthenticationException authentication failed
      */
     @PostMapping(path = "/auth", produces = "application/json")
     public ResponseEntity<LoginResponse> authenticateUser(
-            @RequestBody ObjectNode signOnInfo,
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws AuthenticationException {
+        @RequestBody ObjectNode signOnInfo,
+        HttpServletRequest request,
+        HttpServletResponse response)
+        throws AuthenticationException {
 
         String userEmail = signOnInfo.get("email").asText();
         String password = signOnInfo.get("password").asText();

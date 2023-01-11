@@ -8,14 +8,13 @@ import app.models.User.User;
 import app.models.Wallet;
 import app.views.BatchView;
 import app.views.OrderLineView;
-import app.views.OrderView;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.istack.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @Entity
 @Table(name = OrderLine.TABLE_NAME)
@@ -122,6 +121,52 @@ public class OrderLine implements Identifiable<Integer> {
     @JsonBackReference("batch_orderline")
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     private Batch batch;
+
+
+    // Constructor created for tests
+    public OrderLine(Integer id, String notes, double transactionLineTotal, String proofName, double latitude, double longitude,
+                     String proofSmall, String proofMedium, String proofLarge, double transactionLineFee,
+                     double transactionLineVat, LocalDateTime loadedDate) {
+        this.id = id;
+        this.notes = notes;
+        this.transactionLineTotal = transactionLineTotal;
+        this.proofName = proofName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.proofSmall = proofSmall;
+        this.proofMedium = proofMedium;
+        this.proofLarge = proofLarge;
+        this.transactionLineFee = transactionLineFee;
+        this.transactionLineVat = transactionLineVat;
+        this.loadedDate = loadedDate;
+    }
+
+    public OrderLine() {
+
+    }
+
+    public static OrderLine buildRandom() {
+        OrderLine orderLine = new OrderLine();
+        Random random = new Random();
+        random.setSeed(1234567890);
+        int randomInt = random.nextInt(100);
+        double randomDouble = random.nextDouble(100.00);
+
+        orderLine.setId(randomInt);
+        orderLine.setNotes("this is a dummy note");
+        orderLine.setTransactionLineTotal(randomDouble);
+        orderLine.setProofName("Dummy proof");
+        orderLine.setLatitude(randomDouble);
+        orderLine.setLongitude(randomDouble);
+        orderLine.setProofSmall("smallDummy");
+        orderLine.setProofMedium("mediumDummy");
+        orderLine.setProofLarge("largeDummy");
+        orderLine.setTransactionLineFee(randomDouble);
+        orderLine.setTransactionLineVat(randomDouble);
+        orderLine.setLoadedDate(LocalDateTime.now());
+
+        return orderLine;
+    }
 
     @Override
     public Integer getId() {

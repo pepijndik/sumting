@@ -56,9 +56,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * Increments the value by the step
+     */
     increment() {
       this.data = this.data + this.step;
     },
+    /**
+     * Decrements the value by the step
+     */
     decrement() {
       this.data = this.data - this.step;
     }

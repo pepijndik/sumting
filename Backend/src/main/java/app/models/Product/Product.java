@@ -42,7 +42,6 @@ public class Product implements Identifiable<Integer> {
     private String stripe_id;
 
     @OneToOne(cascade = CascadeType.DETACH)
-
     @JsonView(ProductView.Overview.class)
     @JoinColumn(name = "project_key", columnDefinition = "int", nullable = true, updatable = false, insertable = false)
     private Project project;
