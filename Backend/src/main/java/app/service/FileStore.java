@@ -20,11 +20,21 @@ import static org.apache.http.entity.ContentType.*;
 
 @AllArgsConstructor
 @Service
+/**
+ * This class is used to store and retrieve files from AWS S3
+ * @Author: Pepijn dik
+ * @since 20/11/2022
+ */
 public class FileStore {
     @Autowired
     private final AmazonS3 amazonS3;
 
 
+    /**
+     * Checks if the file is an image
+     * @param file file
+     * @return boolean if the file is an image
+     */
     public boolean isImage(MultipartFile file){
         if (file.isEmpty()) {
             return false;
@@ -36,6 +46,11 @@ public class FileStore {
         return true;
     }
 
+    /**
+     * Prepare the file to be stored in AWS S3 and set metadeta
+     * @param file file
+     * @return Map<String,String>
+     */
     public Map<String,String> prepareUplaud(MultipartFile file){
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
@@ -43,6 +58,14 @@ public class FileStore {
         return metadata;
     }
 
+    /**
+     * Upload the file to AWS S3
+     * @param path path to the file
+     * @param fileName filename
+     * @param optionalMetaData optional metadata
+     * @param inputStream input stream
+     * @return String the path to the file
+     */
     public String upload(String path,
                        String fileName,
                        Optional<Map<String, String>> optionalMetaData,
@@ -60,6 +83,16 @@ public class FileStore {
             throw new IllegalStateException("Failed to upload the file", e);
         }
     }
+
+    /**
+     * Upload the file to AWS S3 as a public file
+     * @param path path to the file
+     * @param fileName filename
+     * @param optionalMetaData optional metadata
+     * @param inputStream input stream
+     * @param isPublic boolean if the file is public
+     * @return String path name
+     */
     public String upload(String path,
                          String fileName,
                          Optional<Map<String, String>> optionalMetaData,
@@ -83,7 +116,12 @@ public class FileStore {
     }
 
 
-
+    /**
+     * Download a file from AWS S3
+     * @param path path of the file
+     * @param key key of the file
+     * @return byte[] the file
+     */
 
     public byte[] download(String path, String key) {
         try {

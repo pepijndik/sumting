@@ -33,14 +33,9 @@
             />
           </NavigationDropdownItem>
           <NavigationDropdownItem name="Batch" source="file.svg">
+            <SubDropdownItem to="/batches" name="View batches" source="file.svg"/>
             <SubDropdownItem to="/batch/create" name="Create batch" source="create.svg"/>
-<!--            <SubDropdownItem to="/" name="Edit batch" source="edit.svg"/>-->
-<!--            <SubDropdownItem to="/" name="Upload proof" source="upload.svg"/>-->
           </NavigationDropdownItem>
-          <!--          <NavigationDropdownItem to="/" name="Project" source="file.svg">-->
-          <!--            <SubDropdownItem to="/" name="Create project" source="create.svg"/>-->
-          <!--            <SubDropdownItem to="/" name="Edit project" source="edit.svg"/>-->
-          <!--          </NavigationDropdownItem>-->
           <NavigationDropdownItem name="Client" source="user.svg">
             <SubDropdownItem to="/clients" name="Client's" source="user.svg" />
             <SubDropdownItem

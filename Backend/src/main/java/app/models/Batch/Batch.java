@@ -6,6 +6,7 @@ import app.models.Order.OrderLine;
 import app.models.Project.Project;
 import app.views.BatchView;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = Batch.TABLE_NAME)
 public class Batch implements Identifiable<Integer> {
     public static final String TABLE_NAME = "\"batch\"";
@@ -51,7 +53,7 @@ public class Batch implements Identifiable<Integer> {
     private Integer batchInvoiceKey;
 
     @JsonView(BatchView.Batch.class)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_key", referencedColumnName = "project_key", insertable = false, updatable = false)
     private Project project;
 
@@ -64,7 +66,7 @@ public class Batch implements Identifiable<Integer> {
     @JoinColumn(name = "batch_invoice_key", referencedColumnName = "batch_invoice_key", insertable = false, updatable = false)
     private BatchInvoice batchInvoice;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL)
     @JsonView(BatchView.Batch.class)
     @JoinColumn(name = "batch_key", referencedColumnName = "batch_key", insertable = false, updatable = true)
     @JsonManagedReference(value = "batch_orderline")

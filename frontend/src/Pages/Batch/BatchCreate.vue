@@ -80,7 +80,7 @@
       </div>
       <p v-if="isEmpty(selectedProject)" v-text="defaultListText" class="text-yInMnBlue font-inter p-3"></p>
       <form v-else class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
-            v-for="orderline in computedObj"
+            v-for="(orderline, index) in computedObj"
             :key="orderline.id"
       >
         <div class="w-full lg:h-10 md:h-20 flex text-sm border-gray-300 border-b font-Alatsi items-center">
@@ -88,9 +88,9 @@
             <div class="h-5 lg:h-10 items-center flex w-[26px] text-xs md:text-sm border-r-2 mr-1">
               <input type="checkbox"
                      v-model="checkedOrderlines"
-                     :id="orderline.id"
-                     :name="orderline.id"
-                     :value="orderline">
+                     :value="orderline"
+                     :checked="index < defaultContributionAmount"
+                     @change="handleCheckboxChange">
             </div>
             <div class="float-left items-left flex w-[80px] md:w-[100px] lg:w-[200px] items-center border-r-2 pr-1 mr-1">
               <img
@@ -171,7 +171,7 @@ export default {
   watch: {
     async selectedProject(project) {
       //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
-      if (project !== null) {
+      if (project !== null && project !== undefined) {
         await this.findProductOfProject(project);
       }
     },
@@ -182,6 +182,7 @@ export default {
       this.orderlines.sort((a,b) => {
         return a.loadedDate.localeCompare(b.loadedDate)
       });
+      this.checkedOrderlines = this.computedObj.slice(0, this.defaultContributionAmount);
     },
     checkedOrderlines() {
       console.log(this.checkedOrderlines);
@@ -248,6 +249,11 @@ export default {
 
       this.searchOrderline = !this.searchOrderline;
     },
+    handleCheckboxChange(event) {
+      if (!event.target.checked) {
+        this.checkedOrderlines = this.checkedOrderlines.filter(orderline => orderline !== event.target.value)
+      }
+    },
     async createBatch() {
       let batch
       if (
@@ -270,7 +276,7 @@ export default {
             dismissible: true,
             position: "top-right",
           });
-          this.$router.push({ name: "dashboard" });
+          this.$router.push({ name: "admin:BatchView" });
         } catch {
           this.$toast.open({
             type: "error",
