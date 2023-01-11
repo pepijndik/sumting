@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Product controller to handle product endpoints
+ * @author Pepijn dik
+ */
 @Controller
 public class ProductController {
     private final ProductRepository productRepository;
@@ -19,17 +23,31 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Get all products
+     * @return ResponseEntity<>
+     */
     @GetMapping("/products")
     @JsonView(ProductView.Overview.class)
     public ResponseEntity<Iterable<Product>> getAllProducts() {
         return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Get a product by id
+     * @param productId
+     * @return
+     */
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable(value = "id") Integer productId) {
         return new ResponseEntity<>(productRepository.findById(productId), HttpStatus.OK);
     }
 
+    /**
+     * Delete a product by id
+     * @param productId product id
+     * @return ResponseEntity<>
+     */
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Integer productId) {
         Product productToDelete = productRepository.findById(productId);
@@ -37,6 +55,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Find a product by project id
+     * @param id project id
+     * @return ResponseEntity<>
+     */
     @GetMapping("/products/findByProjectId")
     public ResponseEntity<Iterable<Product>> getProductsByProjectId(@RequestParam(value = "id") Integer id) {
         return new ResponseEntity<>(productRepository.findByProjectId(id), HttpStatus.OK);

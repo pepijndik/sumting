@@ -28,6 +28,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/**
+ * Handles the Endpoints belonging to an order
+ *
+ * @author Pepijn dik, Kaan, Colin, Dia
+ * @version 1.2
+ * @see Order
+ * @see OrderRepository
+ * @see OrderlineRepository
+ * @see OrderTypeRepository
+ * @since 08/11/2022
+ */
 @Controller
 public class OrderController {
 
@@ -49,22 +60,33 @@ public class OrderController {
     }
 
 
+    /**
+     * Gets all orders
+     *
+     * @return ResponseEntity<Order [ ]>
+     */
     @GetMapping("/orders")
     public ResponseEntity<Iterable<Order>> getAllOrders() {
         return new ResponseEntity<>(orderRepository.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Create a new order
+     *
+     * @param order
+     * @return ResponseEntity<Order>
+     */
     @PostMapping("/orders")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         try {
-            System.out.printf("order.typeKey: %s\n",order.typeKey);
+            System.out.printf("order.typeKey: %s\n", order.typeKey);
             order.setCreatedAt(LocalDate.now());
 
-            OrderType type = (OrderType)this.orderTypeRepository.findById(order.typeKey).get();
-            User u = (User)this.userRepository.findById(order.payerKey);
+            OrderType type = (OrderType) this.orderTypeRepository.findById(order.typeKey).get();
+            User u = (User) this.userRepository.findById(order.payerKey);
             order.setPayer(u);
             order.setOrderType(type);
-            System.out.printf("order.type: %s\n",order.getOrderType());
+            System.out.printf("order.type: %s\n", order.getOrderType());
             Order newOrder = this.orderRepository.save(order);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newOrder.getId()).toUri();
             return ResponseEntity.created(location).body(newOrder);
@@ -75,28 +97,46 @@ public class OrderController {
         }
     }
 
-
+    /**
+     * Get all order types
+     *
+     * @return ResponseEntity<OrderType [ ]>
+     */
     @GetMapping("/orders/types")
-    public ResponseEntity<Iterable<OrderType>> getTypes(){
+    public ResponseEntity<Iterable<OrderType>> getTypes() {
         return new ResponseEntity<>(orderTypeRepository.findAll(), HttpStatus.OK);
     }
+
+    /**
+     * Delete an order by id
+     * @param orderId
+     * @return ResponseEntity<Order>
+     */
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable(value = "id") Integer orderId) {
         Order OrderToDelete = orderRepository.findById(orderId);
         orderRepository.delete(OrderToDelete);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Get all orderlines or the orderlines by id,productid or a orderID
+     * @param orderlineId
+     * @param product_id
+     * @param order_id
+     * @return ResponseEntity<OrderLine [ ]>
+     */
     @JsonView({OrderLineView.OrderLine.class})
     @GetMapping(value = {
             "/orders/orderlines",
-            "/orders/orderlines/{id}" })
+            "/orders/orderlines/{id}"})
     public ResponseEntity<?> getAllOrderlinesBy(
-            @PathVariable(value = "id",required = false) Optional<String> orderlineId,
-            @RequestParam(name="productId",required=false) Integer product_id,
-            @RequestParam(name="orderId",required=false) Integer order_id
+            @PathVariable(value = "id", required = false) Optional<String> orderlineId,
+            @RequestParam(name = "productId", required = false) Integer product_id,
+            @RequestParam(name = "orderId", required = false) Integer order_id
     ) {
         Iterable<OrderLine> lines = null;
-        if(orderlineId.isPresent()){
+        if (orderlineId.isPresent()) {
             Optional<OrderLine> o = Optional.ofNullable(orderlineRepository.findById(Integer.valueOf(orderlineId.get())));
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
@@ -104,35 +144,47 @@ public class OrderController {
                             new ModelNotFound("Orderline", "id", orderlineId.get()),
                             HttpStatus.NOT_FOUND);
         }
-        if(product_id != null || order_id != null){
+        if (product_id != null || order_id != null) {
             lines = orderlineRepository.findAllBy(product_id, order_id);
 
-        }else{
+        } else {
             lines = orderlineRepository.findAll();
         }
         return new ResponseEntity<>(lines, HttpStatus.OK);
     }
+
+    /**
+     * Get a order by id
+     * @param orderId
+     * @return
+     */
     @JsonView(OrderView.Order.class)
     @GetMapping("/orders/{id}")
     public ResponseEntity<?> getOrder(@PathVariable(value = "id") Integer orderId) {
-        try{
-          Optional<Order> o =JpaorderRepository.findById(orderId);
+        try {
+            Optional<Order> o = JpaorderRepository.findById(orderId);
             return o.isPresent() ?
                     new ResponseEntity<>(o, HttpStatus.OK) :
                     new ResponseEntity<ModelNotFound>(
                             new ModelNotFound("Order", "id", orderId.toString()),
                             HttpStatus.NOT_FOUND);
-        }catch (SQLGrammarException sqlGrammarException){
+        } catch (SQLGrammarException sqlGrammarException) {
             return new ResponseEntity<>(sqlGrammarException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<ModelNotFound>(new ModelNotFound("Order", "id", orderId), HttpStatus.NOT_FOUND);
         }
 
     }
 
+    /**
+     * Update a orderlines by id
+     * @param id
+     * @param orderline
+     * @return ResponseEntity<OrderLine>
+     */
     @PutMapping("/orderlines/editOrderlines/{id}")
-    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline){
+    public ResponseEntity<OrderLine> editOrder(@PathVariable Integer id, @RequestBody OrderLine orderline) {
         try {
             Optional<OrderLine> findOrderline = Optional.ofNullable(orderlineRepository.findById(id));
 
@@ -162,10 +214,16 @@ public class OrderController {
         }
     }
 
+    /**
+     * Combined search for an order
+     * @param clientId client id
+     * @param projectId project id
+     * @return ResponseEntity<Order [ ]> or ResponseEntity<ModelNotFound>
+     */
     @GetMapping("/orders/combinedSearch")
     public ResponseEntity<Iterable<Order>> getOrdersByClientAndProject(
-        @RequestParam(value = "clientID", required = false) String clientId,
-        @RequestParam(value = "projectID", required = false) String projectId) {
+            @RequestParam(value = "clientID", required = false) String clientId,
+            @RequestParam(value = "projectID", required = false) String projectId) {
         if (!clientId.equals("null") && !projectId.equals("null")) {
             return new ResponseEntity<>(orderRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
         } else if (!clientId.equals("null")) {

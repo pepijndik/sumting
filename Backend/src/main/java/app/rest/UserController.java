@@ -20,6 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Handles all requests related to users
+ * @author Pepijn dik
+ * @version 1.0
+ */
 @RestController
 public class UserController {
 
@@ -27,6 +32,11 @@ public class UserController {
     private JPAUserRepository userRepo;
     @Autowired
     private FileStore fileStore;
+
+    /**
+     * Gets all users
+     * @return ResponseEntity<Iterable<User>> all users
+     */
     @GetMapping("/users")
     public  ResponseEntity<Iterable<User>> getAllUsers(@RequestParam(value = "email",required = false) String email) {
 
@@ -42,7 +52,11 @@ public class UserController {
     }
 
 
-
+    /**
+     * Get a user by id
+     * @param id User id
+     * @return User user
+     */
     @GetMapping("/users/{id}")
     public User getUserByEmail(
             @PathVariable Integer id) {
@@ -54,12 +68,14 @@ public class UserController {
     }
 
 
+    /**
+     * Delete a user by id
+     * @param id user id
+     * @param tokenInfo token info
+     * @return ResponseEntity<User>
+     */
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Integer id, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
-
-//        if(!tokenInfo.getUser()) {
-//            throw new AuthorizationException("only administrators can remove members");
-//        }
 
         User user = userRepo.findById(id);
         userRepo.delete(user);
@@ -68,6 +84,11 @@ public class UserController {
 
     }
 
+    /**
+     * Update a user
+     * @param user user body
+     * @return ResponseEntity<Object>
+     */
     @PutMapping("/users")
     @JsonView(UserView.Update.class)
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
@@ -87,6 +108,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Upload a profile picture
+     * @param id user id
+     * @param file profilepicture
+     * @return ResponseEntity<Object> user
+     * @throws FileUploadException FileUploadException
+     */
     @PostMapping("/users/{id}/profile-picture")
     @JsonView(UserView.User.class)
     public ResponseEntity<Object> uplaudProfile(@PathVariable Integer id,@RequestParam("file")MultipartFile file) throws FileUploadException {

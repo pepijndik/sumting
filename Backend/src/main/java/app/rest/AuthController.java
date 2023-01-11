@@ -42,7 +42,6 @@ import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
 /**
  * Set of endpoints used to sign-up and sign-in users
- * <p>
  * Author: Pepijn dik
  */
 @RestController
@@ -75,6 +74,11 @@ public class AuthController {
     @Autowired
     private StripeService stripeService;
 
+    /**
+     * Endpoint used to sign up a user
+     * @param signupInfo The user to sign-up
+     * @return The signed-up user
+     */
     @PostMapping("/auth/users")
     public ResponseEntity<Object> createUser(@RequestBody ObjectNode signupInfo) {
 
@@ -120,6 +124,13 @@ public class AuthController {
         }
     }
 
+    /**
+     * Refresh the JWT token
+     * @param request
+     * @param response
+     * @return
+     * @throws AuthenticationException
+     */
     @PostMapping(path = "/auth/refresh-token", produces = "application/json")
     public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String encodedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -146,6 +157,12 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString).build();
     }
 
+    /**
+     * Verify the 2FA code
+     * @param provided
+     * @param tokenInfo
+     * @return
+     */
     @PostMapping("/auth/2fa/verify")
     @ResponseBody
     public ResponseEntity verify(@RequestBody ObjectNode provided, @RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
@@ -172,6 +189,11 @@ public class AuthController {
     }
 
 
+    /**
+     * Get the current loggedin user
+     * @param tokenInfo
+     * @return
+     */
     @GetMapping("/auth/me")
     public ResponseEntity<User> getUser(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) {
         if (tokenInfo.getUser() == null) {
@@ -181,6 +203,11 @@ public class AuthController {
     }
 
 
+    /**
+     * Setup 2FA for the user and return the QR code
+     * @param tokenInfo
+     * @return body
+     */
     @PostMapping("/auth/2fa/setup")
     public ResponseEntity<Object> setupDevice(@RequestAttribute(value = JWTokenInfo.KEY) JWTokenInfo tokenInfo) throws QrGenerationException, TwofactorSetup {
         if (tokenInfo.twoFactorEnabled()) {
@@ -218,6 +245,14 @@ public class AuthController {
     }
 
 
+    /**
+     * Login a user
+     * @param signOnInfo
+     * @param request
+     * @param response
+     * @return LoginResponse
+     * @throws AuthenticationException authentication failed
+     */
     @PostMapping(path = "/auth", produces = "application/json")
     public ResponseEntity<LoginResponse> authenticateUser(
             @RequestBody ObjectNode signOnInfo,
