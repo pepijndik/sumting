@@ -111,7 +111,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {ref} from "@vue/reactivity";
 export default {
   name: "BatchEdit",
-  inject: ["ProjectApi", "ProductApi", "OrderApi", "BatchApi"],
+  inject: ["ProjectApi", "OrderApi", "BatchApi"],
   data() {
     return {
       id: this.$route.params.id,
@@ -229,6 +229,47 @@ export default {
     },
     backToView() {
       this.$router.push({ path: '/batches' });
+    },
+    async editBatch() {
+      let batch;
+
+      if (
+      this.description !== "" &&
+      this.checkedOrderlines.length > 0)
+      {
+        try {
+          batch = await this.BatchApi.updateBatch(
+              this.id,
+              this.description,
+              this.checkedOrderlines.length,
+              this.checkedOrderlines
+          );
+
+          this.$toast.open({
+            type: "success",
+            message: "Batch " + this.id + " updated",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        } catch {
+          this.$toast.open({
+            type: "error",
+            message: "Something went wrong",
+            duration: 5000,
+            dismissible: true,
+            position: "top-right",
+          });
+        }
+      } else {
+        this.$toast.open({
+          type: "error",
+          message: "Please fill in all fields",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      }
     }
   }
 }

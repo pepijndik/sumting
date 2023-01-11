@@ -70,6 +70,23 @@ public class BatchController {
         }
     }
 
+    @PutMapping("/batch/update")
+    public ResponseEntity<Batch> editBatch(@RequestBody ObjectNode batch) {
+        try {
+            System.out.println(batch);
+            Batch updatedBatch = new Batch();
+            updatedBatch.setId(batch.get("id").asInt());
+
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(updatedBatch.getId()).toUri();
+            return ResponseEntity.created(location).body(updatedBatch);
+        } catch (Exception e) {
+            Batch errBatch = new Batch();
+            System.out.printf(e.getMessage());
+            return ResponseEntity.internalServerError().body(errBatch);
+        }
+    }
+
     @PostMapping("/batch/upload")
     public ResponseEntity<String> uploadBatch() {
        // AmazonConfig.bucketSettings.proof
@@ -90,11 +107,4 @@ public class BatchController {
         batchRepository.delete(batchToDelete);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-//    @PutMapping("/batch/{id}")
-//    public ResponseEntity<Batch> editBatch(@PathVariable(value = "id") Integer batchId) {
-//
-//
-//        return new ResponseEntity<>(batchRepository.findById(batchId), HttpStatus.OK);
-//    }
 }
