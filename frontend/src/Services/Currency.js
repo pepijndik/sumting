@@ -1,6 +1,9 @@
 export default class Currency {
     list = [];
 
+    /**
+     * Sets up the default currency list
+     */
     constructor() {
         this.list = [
             {name: 'Euro', code: 'EUR', symbol: '€'},
@@ -56,18 +59,37 @@ export default class Currency {
         ];
     }
 
+    /**
+     * Gets currencies by their code
+     * @param code
+     * @returns {*}
+     */
     getCurrencyByCode(code) {
         return this.list.find((currency) => currency.code === code);
     }
 
+    /**
+     * Gets currencies by their symbol
+     * @param symbol
+     * @returns {*}
+     */
     getCurrencyBySymbol(symbol) {
         return this.list.find((currency) => currency.symbol === symbol);
     }
 
+    /**
+     * Gets currencies by their name
+     * @param name
+     * @returns {*}
+     */
     getCurrencyByName(name) {
         return this.list.find((currency) => currency.name === name);
     }
 
+    /**
+     * Gets all currencies from this model
+     * @returns {*[]}
+     */
     getCurrencyList() {
         return this.list;
     }

@@ -1,7 +1,6 @@
 package app.rest;
 
 
-import app.server.Amazon.AmazonConfig;
 import app.server.Amazon.BucketNames;
 import app.service.FileStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,35 +21,34 @@ import static org.apache.http.entity.ContentType.*;
 
 /**
  * @author Pepijn dik
- * FileUplauding
- * Hanldes file uplauding and retrieving
+ * FileUploading
+ * Handles file uploading and retrieving
  */
 @Controller
-public class FileUplauding
-{
+public class FileUploading {
     @Autowired
     FileStore fileStore;
 
-    @PostMapping(
-            path = "/upload",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
     /**
      * Uploads a file to aws s3 bucket
+     *
      * @param file the file to be uploaded
      * @return a response entity with the file url
      */
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file)
-    {
+    @PostMapping(
+        path = "/upload",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
         //Check if the file is an image
         if (!Arrays.asList(IMAGE_PNG.getMimeType(),
-                IMAGE_BMP.getMimeType(),
-                IMAGE_GIF.getMimeType(),
-                IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
+            IMAGE_BMP.getMimeType(),
+            IMAGE_GIF.getMimeType(),
+            IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
             throw new IllegalStateException("FIle uploaded is not an image");
         }
         //get file metadata
@@ -70,8 +68,9 @@ public class FileUplauding
 
     /**
      * Gets a file from the aws s3 bucket
-     * @param name
-     * @return
+     *
+     * @param name the name of the file
+     * @return a response entity with the file
      */
     @GetMapping(value = "/file/{name}/download")
     public byte[] downloadTodoImage(@PathVariable("name") String name) {

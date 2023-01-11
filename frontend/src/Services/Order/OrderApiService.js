@@ -30,8 +30,8 @@ class OrderApiService extends ApiAdapter {
                payer,
                totalAmount,
                tax,
-               orderType
-  ) {
+               orderType) {
+
     const order = new Order();
     order.description = description;
     order.orderLines = orderLines;

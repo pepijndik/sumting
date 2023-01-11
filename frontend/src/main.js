@@ -8,8 +8,11 @@ import SimpleWebWorker from 'simple-web-worker'
 
 import ToastPlugin from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
-const app = createApp(App);
+
 import BaseApi from "@/Services/BaseApi";
+
+const app = createApp(App);
+
 app.provide('axios', BaseApi)
 app.use(CKEDITOR)
 app.use(ToastPlugin);

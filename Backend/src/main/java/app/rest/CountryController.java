@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * Handles all requests related to countries
+ *
  * @author Pepijn dik, Fenne
  * @since 19-11-2022
  */
-
 @Controller
 public class CountryController {
-
 
     private final CountryRepository countryRepository;
 
@@ -29,8 +28,9 @@ public class CountryController {
     }
 
     /**
-     * get all countries
-     * @return ResponseEntity<Iterable<Country>> all countries
+     * Get all countries
+     *
+     * @return ResponseEntity<Iterable < Country>> all countries
      */
     @GetMapping("/countries")
     public ResponseEntity<Iterable<Country>> getAllProjects() {
@@ -39,13 +39,14 @@ public class CountryController {
 
     /**
      * Get a country by id
+     *
      * @param countryID Country id
      * @return HttpEntity<?> country
      */
     @GetMapping("/countries/{id}")
     public HttpEntity<?> getProject(@PathVariable(value = "id") Integer countryID) {
         Country p = countryRepository.findById(countryID);
-        return countryRepository.findById(countryID) != null ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", countryID), HttpStatus.NOT_FOUND);
+        return countryRepository.findById(countryID) != null ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<>(new ModelNotFound("Project", "id", countryID), HttpStatus.NOT_FOUND);
     }
 }
 

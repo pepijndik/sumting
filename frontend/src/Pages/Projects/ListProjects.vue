@@ -106,6 +106,10 @@ export default {
   name: "ListProjects",
   inject: ["ProjectApi"],
   computed: {
+    /**
+     * Filter projects by search keyword
+     * @returns {[]|*[]}
+     */
     filter() {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
@@ -125,6 +129,10 @@ export default {
     },
 
   },
+  /**
+   * Gets all project from the database
+   * @returns {Promise<void>}
+   */
   async created() {
     await this.getProjects()
 
@@ -150,10 +158,18 @@ export default {
     ProjectRow
   },
   methods: {
+    /**
+     * Goes to the next page of projects
+     * @param page
+     * @returns {Promise<void>}
+     */
     async showMore(page) {
       this.currentPage = page;
       await this.getProjects()
     },
+    /**
+     * Changes the project list from old to new and vice versa
+     */
     changeListOrder() {
       if (!this.searchOrder) {
         // From Old -> New
@@ -169,10 +185,19 @@ export default {
 
       this.searchOrder = !this.searchOrder;
     },
+    /**
+     * Deletes a project with the given id
+     * @param id
+     */
     deleteProject(id) {
       this.ProjectApi.delete(id);
       console.log("Deleted: " + id);
     },
+    /**
+     * Gets all projects from the database with pagination
+     * @param limit
+     * @returns {Promise<void>}
+     */
     async getProjects(limit) {
       if(limit > 0){
         this.perPage = limit;
@@ -189,12 +214,15 @@ export default {
       this.total = page.totalItems;
       this.projects = page.data;
     },
+    /**
+     * @returns {*[]}
+     */
     maxLimit() {
       let items =[]
       const lowerNumber = 0;
       const higherNumber = this.total;
 
-      //Get a array of
+      //Get an array of
       for (let i = lowerNumber; i <= higherNumber; i++) {
         let flag = 0;
 

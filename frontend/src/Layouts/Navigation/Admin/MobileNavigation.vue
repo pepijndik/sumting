@@ -28,6 +28,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Toggle the mobile navigation
+     */
     toggle() {
       this.mobileOpen = !this.mobileOpen;
     },

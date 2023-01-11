@@ -2,7 +2,6 @@ package app.service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -18,13 +17,15 @@ import java.util.*;
 
 import static org.apache.http.entity.ContentType.*;
 
-@AllArgsConstructor
-@Service
+
 /**
  * This class is used to store and retrieve files from AWS S3
- * @Author: Pepijn dik
+ *
+ * @author Pepijn dik
  * @since 20/11/2022
  */
+@AllArgsConstructor
+@Service
 public class FileStore {
     @Autowired
     private final AmazonS3 amazonS3;
@@ -32,26 +33,25 @@ public class FileStore {
 
     /**
      * Checks if the file is an image
+     *
      * @param file file
      * @return boolean if the file is an image
      */
-    public boolean isImage(MultipartFile file){
+    public boolean isImage(MultipartFile file) {
         if (file.isEmpty()) {
             return false;
         }
         //Check if the file is an image
-        if (!Arrays.asList(IMAGE_PNG.getMimeType(), IMAGE_BMP.getMimeType(), IMAGE_GIF.getMimeType(), IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
-                return false;
-        }
-        return true;
+        return Arrays.asList(IMAGE_PNG.getMimeType(), IMAGE_BMP.getMimeType(), IMAGE_GIF.getMimeType(), IMAGE_JPEG.getMimeType()).contains(file.getContentType());
     }
 
     /**
-     * Prepare the file to be stored in AWS S3 and set metadeta
+     * Prepare the file to be stored in AWS S3 and set metadata
+     *
      * @param file file
-     * @return Map<String,String>
+     * @return Map<String, String>
      */
-    public Map<String,String> prepareUplaud(MultipartFile file){
+    public Map<String, String> prepareUpload(MultipartFile file) {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
@@ -60,16 +60,17 @@ public class FileStore {
 
     /**
      * Upload the file to AWS S3
-     * @param path path to the file
-     * @param fileName filename
+     *
+     * @param path             path to the file
+     * @param fileName         filename
      * @param optionalMetaData optional metadata
-     * @param inputStream input stream
+     * @param inputStream      input stream
      * @return String the path to the file
      */
     public String upload(String path,
-                       String fileName,
-                       Optional<Map<String, String>> optionalMetaData,
-                       InputStream inputStream) {
+                         String fileName,
+                         Optional<Map<String, String>> optionalMetaData,
+                         InputStream inputStream) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         optionalMetaData.ifPresent(map -> {
             if (!map.isEmpty()) {
@@ -78,7 +79,7 @@ public class FileStore {
         });
         try {
             amazonS3.putObject(path, fileName, inputStream, objectMetadata);
-           return amazonS3.getUrl(path, fileName).toString(); // return url
+            return amazonS3.getUrl(path, fileName).toString(); // return url
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to upload the file", e);
         }
@@ -86,11 +87,12 @@ public class FileStore {
 
     /**
      * Upload the file to AWS S3 as a public file
-     * @param path path to the file
-     * @param fileName filename
+     *
+     * @param path             path to the file
+     * @param fileName         filename
      * @param optionalMetaData optional metadata
-     * @param inputStream input stream
-     * @param isPublic boolean if the file is public
+     * @param inputStream      input stream
+     * @param isPublic         boolean if the file is public
      * @return String path name
      */
     public String upload(String path,
@@ -106,7 +108,7 @@ public class FileStore {
         });
         try {
             amazonS3.putObject(path, fileName, inputStream, objectMetadata);
-            if(isPublic){
+            if (isPublic) {
                 amazonS3.setObjectAcl(path, fileName, com.amazonaws.services.s3.model.CannedAccessControlList.PublicRead);
             }
             return amazonS3.getUrl(path, fileName).toString(); // return url
@@ -118,8 +120,9 @@ public class FileStore {
 
     /**
      * Download a file from AWS S3
+     *
      * @param path path of the file
-     * @param key key of the file
+     * @param key  key of the file
      * @return byte[] the file
      */
 

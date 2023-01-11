@@ -7,7 +7,7 @@
           color="#E56B6F"
       />
     </div>
-    <component :is="layout" />
+    <component :is="layout"/>
   </div>
 </template>
 
@@ -24,9 +24,9 @@ import DashboardApiService from "./Services/Dashboard/DashboardApiService";
 import Currency from "@/Services/Currency";
 import FileUploadApiService from "@/Services/FileUploadService";
 import AuthHeader from "@/Services/AuthHeader";
-import BaseApi from "@/Services/BaseApi";
 import BatchApiService from "@/Services/Batch/BatchApiService";
 import {SemipolarSpinner} from "epic-spinners";
+
 export default {
   name: "App",
   components: {
@@ -41,7 +41,7 @@ export default {
       Auth: new AuthenticationService(),
       ProjectApi: new ProjectApiService(),
       UserApi: new UserApiService(),
-      Curreny: new Currency(),
+      CurrencyApi: new Currency(),
       ProductApi: new ProductApiService(),
       CountryApi: new CountryApiService(),
       DashboardApi: new DashboardApiService(),
@@ -62,7 +62,10 @@ export default {
   unmounted() {
     //this.disableInterceptor();
   },
-  methods:{
+  methods: {
+    /**
+     * Enable interceptor
+     */
     enableInterceptor() {
       this.axiosInterceptor = this.axios.interceptors.request.use((config) => {
         //Intercept request and add token
@@ -77,41 +80,44 @@ export default {
       })
 
       this.axios.interceptors.response.use((response) => {
-        try{
+        try {
           this.isLoading = false;
           // eslint-disable-next-line no-empty
-        }catch (e){
+        } catch (e) {
 
         }
         return response
-      }, function(error) {
-       const originalConfig = error.config;
-       if(error.response){
-         this.isLoading = false;
-         if(error.response.status === 401 && !originalConfig._retry) {
-           try{
-             console.log("User was not logged in, redirect to login")
-             originalConfig._retry = true;
-             this.Auth.refreshToken();
-             return this.axios(originalConfig);
-           }catch (_error){
-             if (_error.response && _error.response.data) {
-               return Promise.reject(_error.response.data);
-             }
-             return Promise.reject(_error);
-           }
-         }else if(error.response.status === 401){
-           this.Auth.logout();
+      }, function (error) {
+        const originalConfig = error.config;
+        if (error.response) {
+          this.isLoading = false;
+          if (error.response.status === 401 && !originalConfig._retry) {
+            try {
+              console.log("User was not logged in, redirect to login")
+              originalConfig._retry = true;
+              this.Auth.refreshToken();
+              return this.axios(originalConfig);
+            } catch (_error) {
+              if (_error.response && _error.response.data) {
+                return Promise.reject(_error.response.data);
+              }
+              return Promise.reject(_error);
+            }
+          } else if (error.response.status === 401) {
+            this.Auth.logout();
             this.$router.push({name: 'login'});
-         }
-         if (error.response.status === 403 && error.response.data) {
-           return Promise.reject(error.response.data);
-         }
-       }
+          }
+          if (error.response.status === 403 && error.response.data) {
+            return Promise.reject(error.response.data);
+          }
+        }
         return Promise.reject(error)
       })
     },
 
+    /**
+     * Disable interceptor
+     */
     disableInterceptor() {
       this.axios.interceptors.request.eject(this.axiosInterceptor)
     },

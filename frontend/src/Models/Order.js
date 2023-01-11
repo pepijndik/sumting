@@ -18,6 +18,12 @@ export default class Order
     orderlines = []; // OrderLine[]
     constructor() {
     }
+
+    /**
+     * Create a new Order from an object
+     * @param order
+     * @returns {any|null}
+     */
     static copyConstructor(order){
         if(order == null) return null;
         let c = Object.assign(new Order(),order);
