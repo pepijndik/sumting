@@ -63,22 +63,22 @@ export default {
     let data = await this.ProjectApi.findAll(0,false,0);
     let projectDescriptions = [];
     let projectPerNote = [];
-    let projectSize = [];
-    // let projectSize = [20,45,45,26,75,62,45,45,12,45];
+    // let projectSize = [];
+    let projectSize = [2,5,12,10,16,5,2,1,4,2];
 
     data.forEach((item) => {
       projectDescriptions.push(item.description_long)
     });
 
-    projectDescriptions.forEach((async item => {
-      projectPerNote.push(await this.OrderApi.getAllOrderlinesByNotes(item));
-    }))
+    // projectDescriptions.forEach((async item => {
+    //   projectPerNote.push(await this.OrderApi.getAllOrderlinesByNotes(item));
+    // }))
 
-    projectPerNote.forEach((item => {
-      projectSize.push(item.length)
-    }))
+    // projectPerNote.forEach((item => {
+    //   projectSize.push(item.length)
+    // }))
 
-    console.log(await this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forests in Portugal"))
+    console.log(this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forest in Portugal"))
 
     this.chartData.labels = projectDescriptions;
     this.chartData.datasets[0].data = projectSize;
