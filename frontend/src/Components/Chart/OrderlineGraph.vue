@@ -42,7 +42,7 @@ export default {
         // data: this.currentMonth,
         datasets: [
           {
-            data: [20,45,45,26,75,62,45,45,12,45],
+            data: [],
             label: "Total order lines",
             backgroundColor: "#E56B6F",
           },
@@ -62,14 +62,26 @@ export default {
   async created() {
     let data = await this.ProjectApi.findAll(0,false,0);
     let projectDescriptions = [];
-    this.chartData.labels = projectDescriptions;
+    let projectPerNote = [];
+    // let projectSize = [20,45,45,26,75,62,45,45,12,45];
+    let projectSize = [20,45,45,26,75,62,45,45,12,45];
 
     data.forEach((item) => {
       projectDescriptions.push(item.description_long)
     });
 
-    let projectSize = [];
-    console.log(this.OrderApi.getAllOrderlinesByNotes("Plant a tree to restore rainforests in Brazil"))
+    // projectDescriptions.forEach((item =>{
+    //   projectPerNote.push(this.OrderApi.getAllOrderlinesByNotes(item));
+    // }))
+    //
+    // projectPerNote.forEach((item => {
+    //   projectSize.push(item.length)
+    // }))
+
+    console.log(this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forests in Portugal"))
+
+    this.chartData.labels = projectDescriptions;
+    this.chartData.datasets[0].data = projectSize;
   },
 };
 </script>
