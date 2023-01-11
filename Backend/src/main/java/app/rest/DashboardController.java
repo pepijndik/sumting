@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.sql.Date;
 
-
+/**
+ * Handles all requests related to dashboards
+ */
 @Controller
 public class DashboardController {
 

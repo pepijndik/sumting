@@ -96,6 +96,7 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
 
     /**
      * This method is used to find all orders by a specific user.
+     * @author Colin Laan
      *
      * @param id The id of the user.
      * @return A list of all the orders linked to the user.
@@ -108,6 +109,7 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
 
     /**
      * Gets orderlines by product id, using project id to search for a product id
+     * @author Colin Laan
      *
      * @param projectID the project id
      * @return the orderlines found by project
@@ -122,6 +124,7 @@ public class OrderRepository implements CustomCrudRepository<Order, Integer> {
 
     /**
      * Gets orders by client id and product id, using project id to search for a product id
+     * @author Colin Laan
      *
      * @param clientID  the client id
      * @param projectID the project id
