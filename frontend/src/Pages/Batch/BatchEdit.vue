@@ -252,6 +252,7 @@ export default {
             dismissible: true,
             position: "top-right",
           });
+          this.backToView();
         } catch {
           this.$toast.open({
             type: "error",

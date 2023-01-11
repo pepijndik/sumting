@@ -73,9 +73,30 @@ public class BatchController {
     @PutMapping("/batch/update")
     public ResponseEntity<Batch> editBatch(@RequestBody ObjectNode batch) {
         try {
-            System.out.println(batch);
-            Batch updatedBatch = new Batch();
-            updatedBatch.setId(batch.get("id").asInt());
+            Batch updatedBatch = this.batchRepository.findById(batch.get("id").asInt());
+            // Add the new data of the batch to the Batch variables.
+            updatedBatch.setTextPlanned(batch.get("textPlanned").asText());
+            updatedBatch.setBatchSize(batch.get("batchSize").asInt());
+            updatedBatch.setUpdatedAt(LocalDateTime.now());
+
+            // Looks for every orderline of updatedBatch and sets the Batch to null.
+            if (orderlineRepository.findAllByBatch(updatedBatch) != null) {
+                for (OrderLine orderLine : orderlineRepository.findAllByBatch(updatedBatch)) {
+                    orderLine.setBatch(null);
+                    orderlineRepository.save(orderLine);
+                }
+            }
+
+            // Loops through all orderlines of the Batch from the RequestBody, and adds the Batch to each orderline.
+            for (int i = 0; i < batch.get("batchSize").asInt(); i++) {
+                OrderLine batchOrderline =
+                        this.orderlineRepository.findById(batch.get("orderlines").get(i).get("id").asInt());
+
+                batchOrderline.setBatch(updatedBatch);
+                orderlineRepository.save(batchOrderline);
+            }
+
+            updatedBatch = this.batchRepository.save(updatedBatch);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(updatedBatch.getId()).toUri();

@@ -90,6 +90,14 @@ public class Batch implements Identifiable<Integer> {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public String getTextPlanned() {
         return textPlanned;
     }
@@ -129,4 +137,6 @@ public class Batch implements Identifiable<Integer> {
     public void setOrderLines(List<OrderLine> orderLines) {
         this.orderLines = orderLines;
     }
+
+
 }

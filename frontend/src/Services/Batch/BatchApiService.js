@@ -4,7 +4,6 @@ import BaseApi from "@/Services/BaseApi";
 import {useToast} from 'vue-toast-notification';
 import moment from "moment";
 import Batch from "@/Models/Batch";
-import OrderLine from "@/Models/OrderLine";
 
 class BatchApiService extends ApiAdapter {
     constructor() {
@@ -49,7 +48,6 @@ class BatchApiService extends ApiAdapter {
         batch.textPlanned = textPlanned;
         batch.batchSize = batchSize;
         batch.orderlines = orderLines;
-        batch.updatedAt = moment().format("YYYY-MM-DD");
 
         return await BaseApi.put(`${this.resource}/update`, batch)
             .then((response) => {
