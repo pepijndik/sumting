@@ -139,6 +139,7 @@ export default {
       },
       orderlines: [],
       checkedOrderlines: [],
+      remainingOrderlines: [],
       batch: null,
       batchProject: null,
       projectDescription: '',
@@ -149,10 +150,16 @@ export default {
   async created() {
     this.batch = await this.BatchApi.findOne(this.id);
     this.batchProject = await this.ProjectApi.findOne(this.batch.data.projectKey);
+    this.remainingOrderlines = await this.OrderApi.getAllOrderlinesByProductId(
+        this.batch.data.orderLines.at(0).product.id);
 
     for (let i = 0; i < this.batch.data.orderLines.length; i++) {
       this.orderlines.push(this.batch.data.orderLines.at(i));
       this.checkedOrderlines.push(this.batch.data.orderLines.at(i));
+    }
+
+    for (let i = 0; i < this.remainingOrderlines.length; i++) {
+      this.orderlines.push(this.remainingOrderlines.at(i));
     }
 
     this.fillBatchData();
