@@ -70,15 +70,15 @@ export default {
       projectDescriptions.push(item.description_long)
     });
 
-    projectDescriptions.forEach((item =>{
-      projectPerNote.push(this.OrderApi.getAllOrderlinesByNotes(item));
+    projectDescriptions.forEach((async item => {
+      projectPerNote.push(await this.OrderApi.getAllOrderlinesByNotes(item));
     }))
 
     projectPerNote.forEach((item => {
       projectSize.push(item.length)
     }))
 
-    console.log(this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forests in Portugal"))
+    console.log(await this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forests in Portugal"))
 
     this.chartData.labels = projectDescriptions;
     this.chartData.datasets[0].data = projectSize;
