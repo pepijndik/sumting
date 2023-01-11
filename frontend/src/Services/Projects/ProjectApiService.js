@@ -8,9 +8,14 @@ class ProjectApiService extends ApiAdapter {
         super('projects');
     }
 
-    async findAll({
-                      page = 0, size = 10, pagination = false
-                  }) {
+    /**
+     * Finds all projects
+     * @param page
+     * @param size
+     * @param pagination
+     * @returns {Promise<AxiosResponse<any>>}
+     */
+    async findAll({page = 0, size = 10, pagination = false}) {
         let url = `/${this.resource}`;
         if (pagination === false) {
             url = this.updateQueryStringParameter(url, 'all', true);
@@ -28,9 +33,9 @@ class ProjectApiService extends ApiAdapter {
                 //return response.data;
             })
             .catch((error) => {
-                // You can handle the error, like show a notificaiton to the user
+                // You can handle the error, like show a notification to the user
 
-                // dont forget to re-throw the error, otherwise the promise will resolve successfully
+                // don't forget to re-throw the error, otherwise the promise will resolve successfully
                 throw error;
             });
         if (pagination === false) {
@@ -42,6 +47,11 @@ class ProjectApiService extends ApiAdapter {
         return projects
     }
 
+    /**
+     * Finds all projects without pagination
+     * @returns {Promise<AxiosResponse<*>|*>}
+     * @constructor
+     */
     async SearchableDropDown() {
         return await this.findAll({
             pagination: false

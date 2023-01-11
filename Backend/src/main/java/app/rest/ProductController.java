@@ -35,8 +35,8 @@ public class ProductController {
 
     /**
      * Get a product by id
-     * @param productId
-     * @return
+     * @param productId Product id
+     * @return ResponseEntity<>
      */
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable(value = "id") Integer productId) {

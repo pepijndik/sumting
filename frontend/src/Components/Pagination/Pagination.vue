@@ -125,6 +125,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * @returns {number}
+     */
     startPage() {
       if (this.currentPage === 0) {
         return 0;
@@ -136,12 +139,21 @@ export default {
 
       return this.currentPage - 1;
     },
+
+    /**
+     * @returns {number}
+     */
     endPage() {
       return Math.min(
           this.startPage + this.maxVisibleButtons - 1,
           this.totalPages
       );
     },
+
+    /**
+     * Check the amount of pages
+     * @returns {*[]}
+     */
     pages() {
       const range = [];
 
@@ -154,29 +166,57 @@ export default {
 
       return range;
     },
+    /**
+     * Check if the current page is the first page
+     * @returns {boolean}
+     */
     isInFirstPage() {
       return this.currentPage === 0;
     },
+    /**
+     * Check if the current page is the last page
+     * @returns {boolean}
+     */
     isInLastPage() {
       return this.currentPage === this.totalPages;
     }
   },
   methods: {
+    /**
+     * Emits change the page to the next page
+     */
     onClickFirstPage() {
       this.$emit("pagechanged", 1);
     },
+    /**
+     * Emits change the page to the previous page
+     */
     onClickPreviousPage() {
       this.$emit("pagechanged", this.currentPage - 1);
     },
+    /**
+     * Emits change the page to the page number clicked
+     */
     onClickPage(page) {
       this.$emit("pagechanged", page);
     },
+    /**
+     * Emits change the page to the next page
+     */
     onClickNextPage() {
       this.$emit("pagechanged", this.currentPage + 1);
     },
+    /**
+     * Emits change the page to the last page
+     */
     onClickLastPage() {
       this.$emit("pagechanged", this.totalPages);
     },
+    /**
+     * Checks if the page is active
+     * @param {number} page
+     * @returns {boolean}
+     */
     isPageActive(page) {
       return this.currentPage === page;
     }

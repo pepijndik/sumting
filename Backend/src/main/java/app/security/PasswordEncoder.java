@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Yet another password encoder helper (uses SHA256)
  *
- * Author: Pepijn dik
+ * @author Pepijn dik
  *
  */
 @Component

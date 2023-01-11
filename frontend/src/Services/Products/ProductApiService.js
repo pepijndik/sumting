@@ -9,10 +9,11 @@ class ProductApiService extends ApiAdapter {
         this.setHeader(AuthHeader());
     }
 
-    async SearchableDropDown() {
-        return await this.findAll();
-    }
-
+    /**
+     * Finds a product by the given project id
+     * @param id
+     * @returns {Promise<*>}
+     */
     async findProductByProjectId(id) {
         const Response = await BaseApi.get('products/findByProjectId?id=' + id).then(response => {
             return response.data;

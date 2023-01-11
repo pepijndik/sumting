@@ -5,6 +5,9 @@ import org.springframework.core.env.Environment;
 
 import java.io.PrintStream;
 
+/**
+ * Custom banner for the application.
+ */
 public class CustomBanner implements Banner {
     @Override
     public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {

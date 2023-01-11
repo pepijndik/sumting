@@ -9,6 +9,10 @@ class AuthenticationService {
 
     }
 
+    /**
+     * Get whether the user is logged in or not
+     * @returns {boolean}
+     */
     static isLoggedIn() {
         if (process.env?.VUE_APP_ENV === 'development') {
             return true;
@@ -16,12 +20,19 @@ class AuthenticationService {
         return localStorage.getItem('token') !== null && localStorage.getItem('user') !== null && localStorage.getItem('token') !== undefined && localStorage.getItem('user') !== undefined;
     }
 
+    /**
+     * Login the user
+     * @param email
+     * @param password
+     * @param remember
+     * @returns {Promise<AxiosResponse<any>|boolean>}
+     */
     async login(email, password, remember = false) {
         if (!email || !password) return false;
 
         return await BaseApi.post("auth", {email, password}).then(
             response => {
-                if(response.headers?.authorization !== undefined) {
+                if (response.headers?.authorization !== undefined) {
                     const BearToken = response.headers.authorization.slice(7);
                     localStorage.setItem('token', BearToken);
                     BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;
@@ -29,7 +40,7 @@ class AuthenticationService {
                 if (response.data.need_twofactor) {
                     return {success: true, need_twofactor: true};
                 }
-                if(response.data?.me !== undefined) {
+                if (response.data?.me !== undefined) {
                     const data = response.data.me;
                     const user = new User(data.id, data.name, data.email, data.country, data.user_type)
                     user.profileImage = data.profileImage;
@@ -46,6 +57,9 @@ class AuthenticationService {
         });
     }
 
+    /**
+     * Logs out the user by clearing the local storage
+     */
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -117,6 +131,11 @@ class AuthenticationService {
             });
     }
 
+    /**
+     * Register a new user
+     * @param user
+     * @returns {Promise<AxiosResponse<any>>}
+     */
     async register(user = {}) {
         return BaseApi.post('users', {
             username: user?.username ?? '',
@@ -126,10 +145,14 @@ class AuthenticationService {
         });
     }
 
-    async refreshToken(){
+    /**
+     * Refreshes the users token
+     * @returns {Promise<AxiosResponse<any>|boolean>}
+     */
+    async refreshToken() {
         return await BaseApi.post("auth/refresh-token",).then(
             response => {
-                if(response.headers?.authorization !== undefined) {
+                if (response.headers?.authorization !== undefined) {
                     const BearToken = response.headers.authorization.slice(7);
                     localStorage.setItem('token', BearToken);
                     BaseApi.defaults.headers['Authorization'] = 'Bearer ' + BearToken;

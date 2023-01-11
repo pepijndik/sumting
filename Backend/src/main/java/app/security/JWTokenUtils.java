@@ -1,6 +1,5 @@
 package app.security;
 
-import app.models.User.User;
 import app.repositories.JPAUserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
@@ -16,9 +15,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * An Utility class used to encode and decote JWT tokens
+ * A utility class used to encode and decode JWT tokens
  *
- * Author: Pepijn dik
+ * @author Pepijn dik
  */
 @Component
 public class JWTokenUtils {
@@ -60,20 +59,20 @@ public class JWTokenUtils {
 
     /**
      * Get the secret key
-     * @param passPhrase
-     * @return
+     * @param passPhrase the passphrase
+     * @return the key
      */
     private Key getKey(String passPhrase) {
-        byte hmacKey[] = passPhrase.getBytes(StandardCharsets.UTF_8);
+        byte[] hmacKey = passPhrase.getBytes(StandardCharsets.UTF_8);
         Key key = new SecretKeySpec(hmacKey, SignatureAlgorithm.HS512.getJcaName());
         return key;
     }
 
     /**
      * Decode the given token, returning an object with useful token data
-     * @param encodedToken
-     * @param expirationLenient
-     * @return
+     * @param encodedToken the token
+     * @param expirationLenient if true, the expiration date is ignored
+     * @return the token data
      * @throws AuthenticationException for expired, malformed tokens
      */
     public JWTokenInfo decode(String encodedToken, boolean expirationLenient) throws AuthenticationException {

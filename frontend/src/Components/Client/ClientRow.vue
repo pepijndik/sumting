@@ -13,7 +13,7 @@
       >
         You are about to delete client
         <span class="text-candyPink"> {{ client.name }} </span>,<br />
-        this action is not reversable.
+        this action is not reversible.
       </p>
     </template>
 
@@ -99,41 +99,52 @@ import moment from "moment";
 export default {
   name: "ClientRow",
   props: ["client"],
+  components: { Index },
   emits: ["deleteOrderEvent"],
   data() {
     return {
       modal: false,
     };
   },
+
   methods: {
+    /**
+     * Closes the modal and emits the delete event for the client
+     */
     delClient() {
       this.$emit("deleteOrderEvent", this.client);
       this.modal = false;
     },
+    /**
+     * Sends the user to the edit page for the corresponding client
+     */
     editClient() {
       this.$router.push("clients/edit/" + this.client.id);
     },
+    /**
+     * Opens the modal where the user can confirm the deletion of the client
+     */
     confirmDelete() {
       this.modal = true;
     },
+    /**
+     * Closes the modal
+     */
     closeModal() {
       this.modal = false;
     },
+    /**
+     * Formats the date to a more readable format
+     * @param inputDate
+     * @returns {string}
+     */
     dateFormat(inputDate) {
       //parse the input date
       return moment(inputDate).format("DD/MM/YY");
     },
   },
-
-  components: { Index },
 };
 </script>
 
 <style scoped>
-.divider {
-  /*border-left: 2px solid rgb(55 65 81);*/
-  border-right: 1px solid rgb(209 213 219);
-  height: 26px;
-  margin: 0 10px;
-}
 </style>
