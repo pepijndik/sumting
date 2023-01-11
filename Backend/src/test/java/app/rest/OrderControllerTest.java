@@ -124,40 +124,4 @@ public class OrderControllerTest {
         // Checks if the order line is actually changed
         Assertions.assertNotEquals("proofLarge", savedOrderLine.getProofLarge());
     }
-
-    /**
-     * Author: Kaan Ugur
-     * Description: The test fails because the expected value is the old value and not the updated value
-     */
-    @Test
-    public void WrongInputWhileUpdate() {
-        // Created dummy data
-        OrderLine orderLineDummy = new OrderLine(155, "Notes", 22.0, "proof name"
-                , 45.0, 56.0, "proofSmall", "proofMedium",
-                "proofLarge", 13.0, 14.0, null);
-        LocalDateTime updatedLoadedDate = LocalDateTime.of(2022, 2, 22, 14, 12);
-
-        // Updated the dummy data
-        orderLineDummy.setLoadedDate(updatedLoadedDate);
-        orderLineDummy.setNotes("This is an updated note");
-        orderLineDummy.setProofName("This is an edited proof name");
-        orderLineDummy.setProofSmall("This is an edited small proof name");
-        orderLineDummy.setProofMedium("This is an edited medium proof name");
-        orderLineDummy.setProofLarge("This is an edited large proof name");
-
-        // Saved the updated dummy data
-        OrderLine savedOrderLine = orderlineRepository.save(orderLineDummy);
-
-        // Checks if the loadedDate is updated by checking it if it is not null
-        assertNotNull(savedOrderLine.getLoadedDate());
-
-        // check updated attributes
-        Assertions.assertEquals("This is an updated note", savedOrderLine.getNotes());
-        Assertions.assertEquals("This is an edited proof name", savedOrderLine.getProofName());
-        Assertions.assertEquals("This is an edited small proof name", savedOrderLine.getProofSmall());
-        Assertions.assertEquals("This is an edited medium proof name", savedOrderLine.getProofMedium());
-
-        // Checks if the order line is actually changed
-        Assertions.assertEquals("proofLarge", savedOrderLine.getProofLarge());
-    }
 }
