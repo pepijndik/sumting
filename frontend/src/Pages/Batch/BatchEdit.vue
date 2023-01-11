@@ -91,16 +91,16 @@
     </div>
     <div class="flex flex-col sm:flex-row sm:gap-5">
       <button
+          @click="backToView"
+          class="mt-6 w-full sm:w-80 bg-yInMnBlue transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+          text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+        Cancel
+      </button>
+      <button
           v-on:click="editBatch"
           class="mt-6 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
         Edit batch
-      </button>
-      <button
-          @click="backToView"
-          class="mt-6 w-full sm:w-80 bg-yInMnBlue transition duration-150 ease-in-out hover:bg-indigo-600 rounded
-    text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-        Cancel
       </button>
     </div>
   </div>
