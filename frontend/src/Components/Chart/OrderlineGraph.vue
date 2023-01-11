@@ -78,7 +78,7 @@ export default {
     //   projectSize.push(item.length)
     // }))
 
-    console.log(this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forest in Portugal"))
+    // console.log(this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forest in Portugal"))
 
     this.chartData.labels = projectDescriptions;
     this.chartData.datasets[0].data = projectSize;

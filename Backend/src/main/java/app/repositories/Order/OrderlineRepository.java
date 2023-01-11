@@ -53,9 +53,9 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
        return null;
     }
 
-    public Iterable<OrderLine> getOrderLineByNotes(String note){
-        return em.createQuery("SELECT o FROM OrderLine o WHERE o.notes = :note", OrderLine.class)
-                .setParameter("note", note).getResultList();
+    public Long getOrderLineByNotes(String note){
+        return em.createQuery("SELECT COUNT(o) FROM OrderLine o WHERE o.notes = :note", Long.class)
+                .setParameter("note", note).getSingleResult();
     }
 
 
