@@ -4,10 +4,6 @@
       <p class="font-inter text-yInMnBlue mb-1">Project</p>
       <p>{{ projectDescription }}</p>
     </div>
-<!--    <div>-->
-<!--      <p class="font-inter text-yInMnBlue mb-1">Batch</p>-->
-<!--      <p>{{ batch }}</p>-->
-<!--    </div>-->
   </div>
 
   <div class="mt-3">
@@ -153,7 +149,10 @@ export default {
   async created() {
     this.batch = await this.BatchApi.findOne(this.id);
     this.batchProject = await this.ProjectApi.findOne(this.batch.data.projectKey);
-    this.projects = await this.ProjectApi.SearchableDropDown();
+
+    for (let i = 0; i < this.batch.data.orderLines.length; i++) {
+      this.orderlines.push(this.batch.data.orderLines.at(i));
+    }
 
     this.fillBatchData();
   },
