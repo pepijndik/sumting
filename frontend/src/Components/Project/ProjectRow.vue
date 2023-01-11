@@ -12,8 +12,8 @@
           class="focus:outline-none mb-5 text-sm text-yInMnBlue dark:text-gray-400 text-center font-normal"
       >
         You are about to delete Project
-        <span class="text-candyPink"> {{ project.id }} </span>,<br />
-        this action is not reversable.
+        <span class="text-candyPink"> {{ project.id }} </span>,<br/>
+        this action is not reversible.
       </p>
     </template>
 
@@ -79,9 +79,11 @@
 import Modal from "../Modal/index.vue";
 import moment from "moment";
 import Project from "@/Models/Project";
+
 let mobile;
 export default {
   name: "ProductRow",
+  components: {Modal},
   props: {
     project: {
       type: Project,
@@ -92,7 +94,7 @@ export default {
   data() {
     return {
       modal: false,
-      projectDate:""
+      projectDate: ""
     };
   },
   watch: {
@@ -101,18 +103,33 @@ export default {
     },
   },
   methods: {
+    /**
+     * Emits a deleteProjectEvent for the given project id
+     */
     delProj() {
       this.$emit("deleteProjectEvent", this.project.id);
       //console.log("delete" + this.order.id);
     },
+    /**
+     * Opens or closes the modal
+     * @param ding Whether or not to open or close the modal
+     */
     test(ding) {
       this.modal = ding;
     },
+    /**
+     * Asks the user to confirm the deletion of the project
+     */
     confirmDelete() {
       this.modal = true;
       console.log(this.modal, this.project.id);
       console.log("deleted");
     },
+    /**
+     * Formats the date to a more readable format
+     * @param inputDate
+     * @returns {string}
+     */
     dateFormat(inputDate) {
       //parse the input date
       const date = new Date(inputDate);
@@ -121,17 +138,10 @@ export default {
   },
   beforeMount() {
     this.projectDate = this.dateFormat(this.project.createdAt);
-    this.mobile = window.innerWidth < 640 ? true : false;
+    this.mobile = window.innerWidth < 640;
   },
-  components: { Modal },
 };
 </script>
 
 <style scoped>
-.divider {
-  /*border-left: 2px solid rgb(55 65 81);*/
-  border-right: 1px solid rgb(209 213 219);
-  height: 26px;
-  margin: 0 10px;
-}
 </style>

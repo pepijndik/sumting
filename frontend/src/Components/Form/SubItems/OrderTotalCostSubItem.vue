@@ -16,7 +16,6 @@
 <script>
 import OrderSubItem from "@/Components/Form/SubItems/OrderSubItem";
 
-
 export default {
   name: "OrderTotalCostSubItem",
   components: {OrderSubItem},
@@ -41,11 +40,11 @@ export default {
     updateOrderLine(event) {
       const {index, OrderLine} = event;
 
-      if(this.orderLines[index] === undefined){
+      if (this.orderLines[index] === undefined) {
         console.log("OrderLine added");
         this.orderLines.push(OrderLine);
-      }else{
-         this.orderLines[index] = OrderLine;
+      } else {
+        this.orderLines[index] = OrderLine;
       }
       this.updateTotal(index);
       this.$emit('update', this.orderLines);

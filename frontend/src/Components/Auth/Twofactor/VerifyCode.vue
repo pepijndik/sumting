@@ -1,6 +1,6 @@
 <template>
   <div class="mt-8 space-y-6">
-    <p class="ml-40 font-medium text-yInMnBlue">Tweestap verificatie</p>
+    <p class="ml-40 font-medium text-yInMnBlue">Tweestapsverificatie</p>
     <div class="w-50 m-5">
       <div class="mb-4 text-sm text-gray-600 " v-show="! recovery">
         Bevestig de toegang tot uw account door de authenticatiecode in te voeren die door uw authenticatietoepassing is
@@ -64,7 +64,6 @@
 
 import DigitInput from "@/Components/Auth/Twofactor/otp/DigitInput";
 import Button from "@/Components/Form/Button";
-import User from "@/Models/User";
 
 export default {
   name: "VerifyCode",
@@ -79,11 +78,16 @@ export default {
   },
   methods: {
     async login() {
+      /**
+       * Sends the code to the backend to verify it
+       *
+       * @type {User|{}}
+       */
       this.user = await this.Auth.getMe();
       await this.Auth.verify2Fa(this.code, this.user);
       if (this.user.twofactor.verified) {
         this.$router.push({name: 'dashboard'})
-      }else{
+      } else {
         this.error = true;
       }
     }
