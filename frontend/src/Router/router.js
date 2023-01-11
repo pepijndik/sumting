@@ -15,6 +15,7 @@ import ClientEdit from "@/Pages/Client/ClientEdit";
 import ClientView from "@/Pages/Client/ClientView";
 import BatchCreate from "@/Pages/Batch/BatchCreate";
 import BatchView from "@/Pages/Batch/BatchView";
+import BatchEdit from "@/Pages/Batch/BatchEdit";
 const IsAuthenticated = (to, from, next) => {
   if (to.name !== "auth:login" && !AuthenticationService.isLoggedIn())
     next({ name: "auth:login" });
@@ -168,6 +169,17 @@ const router = createRouter({
       },
       component: BatchView,
     },
+    {
+      path: "/batch/edit/:id",
+      name: "admin:BatchEdit",
+      beforeEnter: IsAuthenticated,
+      meta: {
+        pageTitle: "Edit batch",
+        title: "Batch",
+        subtitle: "Edit",
+      },
+      component: BatchEdit,
+    }
   ],
 });
 

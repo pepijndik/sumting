@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="modalOpen"
-    class="py-48 bg-gray-700/50 dark:bg-gray-900/50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0"
+    class="py-48 bg-gray-700/50 dark:bg-gray-900/50 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0 h-screen"
   >
     <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-lg">
       <div

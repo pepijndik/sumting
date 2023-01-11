@@ -45,9 +45,40 @@ class BatchApiService extends ApiAdapter {
     }
 
     /**
-     * Finds all batches
-     * @returns {Promise<*>}
+     * Updates an existing Batch
+     * @param batchId
+     * @param textPlanned
+     * @param batchSize
+     * @param orderLines
+     * @returns {Promise<AxiosResponse<any>|boolean>}
      */
+    async updateBatch(
+        batchId,
+        textPlanned,
+        batchSize,
+        orderLines
+    ) {
+        const batch = new Batch();
+        batch.id = batchId;
+        batch.textPlanned = textPlanned;
+        batch.batchSize = batchSize;
+        batch.orderlines = orderLines;
+
+        return await BaseApi.put(`${this.resource}/update`, batch)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                const $toast = useToast();
+                $toast.error({
+                    message: "Can't update batch " + error.response.data.message,
+                    duration: 5000,
+                    dismissible: true,
+                });
+                return false;
+            });
+    }
+
     async getAllBatches() {
         const batches = await BaseApi.get(this.resource)
             .then((response) => {
