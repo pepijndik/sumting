@@ -63,20 +63,20 @@ export default {
     let data = await this.ProjectApi.findAll(0,false,0);
     let projectDescriptions = [];
     let projectPerNote = [];
+    let projectSize = [];
     // let projectSize = [20,45,45,26,75,62,45,45,12,45];
-    let projectSize = [20,45,45,26,75,62,45,45,12,45];
 
     data.forEach((item) => {
       projectDescriptions.push(item.description_long)
     });
 
-    // projectDescriptions.forEach((item =>{
-    //   projectPerNote.push(this.OrderApi.getAllOrderlinesByNotes(item));
-    // }))
-    //
-    // projectPerNote.forEach((item => {
-    //   projectSize.push(item.length)
-    // }))
+    projectDescriptions.forEach((item =>{
+      projectPerNote.push(this.OrderApi.getAllOrderlinesByNotes(item));
+    }))
+
+    projectPerNote.forEach((item => {
+      projectSize.push(item.length)
+    }))
 
     console.log(this.OrderApi.getAllOrderlinesByNotes("Restoring kelp forests in Portugal"))
 
