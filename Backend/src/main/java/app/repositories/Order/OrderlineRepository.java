@@ -1,5 +1,6 @@
 package app.repositories.Order;
 
+import app.models.Batch.Batch;
 import app.models.Order.OrderLine;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,19 @@ public class OrderlineRepository implements CustomCrudRepository<OrderLine, Inte
                  query.setParameter("oId", order_id);
                  return query.getResultList();
              }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public Iterable<OrderLine> findAllByBatch(Batch batch) {
+        try {
+            TypedQuery<OrderLine> query =
+                    em.createQuery("SELECT o FROM OrderLine o " +
+                            "WHERE o.batch = :batch", OrderLine.class);
+            query.setParameter("batch", batch);
+            return query.getResultList();
         }catch (Exception e){
             System.out.println(e);
         }

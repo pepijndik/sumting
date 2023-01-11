@@ -106,6 +106,7 @@ public class OrderLine implements Identifiable<Integer> {
     private Double transactionLineVat;
 
     @Nullable
+    @JsonView(OrderLineView.OrderLine.class)
     @Column(name = "loaded_at", nullable = true)
     private LocalDateTime loadedDate;
 

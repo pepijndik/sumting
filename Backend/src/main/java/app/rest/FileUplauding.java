@@ -20,6 +20,11 @@ import java.util.*;
 
 import static org.apache.http.entity.ContentType.*;
 
+/**
+ * @author Pepijn dik
+ * FileUplauding
+ * Hanldes file uplauding and retrieving
+ */
 @Controller
 public class FileUplauding
 {
@@ -31,6 +36,11 @@ public class FileUplauding
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    /**
+     * Uploads a file to aws s3 bucket
+     * @param file the file to be uploaded
+     * @return a response entity with the file url
+     */
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file)
     {
         if (file.isEmpty()) {
@@ -58,6 +68,11 @@ public class FileUplauding
         return new ResponseEntity<>("File Uploaded", HttpStatus.OK);
     }
 
+    /**
+     * Gets a file from the aws s3 bucket
+     * @param name
+     * @return
+     */
     @GetMapping(value = "/file/{name}/download")
     public byte[] downloadTodoImage(@PathVariable("name") String name) {
         String Path = String.format("%s/%s", "sumting", name);

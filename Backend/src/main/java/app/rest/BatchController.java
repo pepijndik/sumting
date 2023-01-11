@@ -11,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -34,6 +31,11 @@ public class BatchController {
     @GetMapping("/batch")
     public ResponseEntity<Iterable<Batch>> getAllBatches() {
         return new ResponseEntity<>(batchRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/batch/{id}")
+    public ResponseEntity<Batch> getBatch(@PathVariable(value = "id") Integer batchId) {
+        return new ResponseEntity<>(batchRepository.findById(batchId), HttpStatus.OK);
     }
 
     @PostMapping("/batch")
@@ -72,5 +74,20 @@ public class BatchController {
     public ResponseEntity<String> uploadBatch() {
        // AmazonConfig.bucketSettings.proof
         return new ResponseEntity<>("Batch upload", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/batch/{id}")
+    public ResponseEntity<Void> deleteBatch(@PathVariable(value = "id") Integer batchId) {
+        Batch batchToDelete = batchRepository.findById(batchId);
+
+        if (orderlineRepository.findAllByBatch(batchToDelete) != null) {
+            for (OrderLine orderLine : orderlineRepository.findAllByBatch(batchToDelete)) {
+                orderLine.setBatch(null);
+                orderlineRepository.save(orderLine);
+            }
+        }
+
+        batchRepository.delete(batchToDelete);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
