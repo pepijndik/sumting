@@ -11,6 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+/**
+ * Handles all requests related to countries
+ * @author Pepijn dik, Fenne
+ * @since 19-11-2022
+ */
 
 @Controller
 public class CountryController {
@@ -23,15 +28,24 @@ public class CountryController {
         this.countryRepository = countryRepository;
     }
 
+    /**
+     * get all countries
+     * @return ResponseEntity<Iterable<Country>> all countries
+     */
     @GetMapping("/countries")
     public ResponseEntity<Iterable<Country>> getAllProjects() {
         return new ResponseEntity<>(countryRepository.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Get a country by id
+     * @param countryID Country id
+     * @return HttpEntity<?> country
+     */
     @GetMapping("/countries/{id}")
-    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer projectId) {
-        Country p = countryRepository.findById(projectId);
-        return countryRepository.findById(projectId) != null ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", projectId), HttpStatus.NOT_FOUND);
+    public HttpEntity<?> getProject(@PathVariable(value = "id") Integer countryID) {
+        Country p = countryRepository.findById(countryID);
+        return countryRepository.findById(countryID) != null ? new ResponseEntity<>(p, HttpStatus.OK) : new ResponseEntity<ModelNotFound>(new ModelNotFound("Project", "id", countryID), HttpStatus.NOT_FOUND);
     }
 }
 
