@@ -2,29 +2,12 @@
   <div class="flex flex-col sm:flex-row sm:justify-between xl:justify-start">
     <div>
       <p class="font-inter text-yInMnBlue mb-1">Project</p>
-      <SearchableDropdown
-          placeholder="Choose a project"
-          :fields="['description', 'type.description']"
-          :text="['description']"
-          :primarykey="'id'"
-          :return="'object'"
-          :options="projects"
-          @selected="selectedProject = $event"
-      >
-      </SearchableDropdown>
+      <p>{{ projectDescription }}</p>
     </div>
-    <div class="mt-3 sm:mt-0">
-      <p class="font-inter text-yInMnBlue mb-1">Amount of contributions</p>
-      <div class="flex">
-        <input type="number"
-               class="w-9/12 sm:w-80 h-10 text-sm text-yInMnBlue font-normal font-inter bg-white
-             focus:outline-none rounded focus:border-yInMnBlue focus:border border-gray-300 shadow"
-               :disabled="isEmpty(selectedProject)"
-               v-bind:class="{'bg-gray-200': isEmpty(selectedProject)}"
-               :value="isEmpty(selectedProject) ? '' : defaultContributionAmount">
-        <p class="w-3/12 ml-3 my-auto">of <span v-text="isEmpty(selectedProject) ? '0' : orderlines.length" /></p>
-      </div>
-    </div>
+<!--    <div>-->
+<!--      <p class="font-inter text-yInMnBlue mb-1">Batch</p>-->
+<!--      <p>{{ batch }}</p>-->
+<!--    </div>-->
   </div>
 
   <div class="mt-3">
@@ -78,8 +61,7 @@
           </p>
         </div>
       </div>
-      <p v-if="isEmpty(selectedProject)" v-text="defaultListText" class="text-yInMnBlue font-inter p-3"></p>
-      <form v-else class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
+      <form class="px-3 w-full h-15 lg:h-10 items-center text-sm snap-y snap-mandatory"
             v-for="orderline in computedObj"
             :key="orderline.id"
       >
@@ -111,27 +93,32 @@
         </div>
       </form>
     </div>
-    <button
-        v-on:click="createBatch"
-        class="mt-6 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+    <div class="flex flex-col sm:flex-row sm:gap-5">
+      <button
+          v-on:click="editBatch"
+          class="mt-6 w-full sm:w-80 bg-candyPink transition duration-150 ease-in-out hover:bg-indigo-600 rounded
     text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-      Create batch
-    </button>
+        Edit batch
+      </button>
+      <button
+          @click="backToView"
+          class="mt-6 w-full sm:w-80 bg-yInMnBlue transition duration-150 ease-in-out hover:bg-indigo-600 rounded
+    text-white font-inter px-8 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+        Cancel
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
-import SearchableDropdown from "@/Components/Form/SearchableDropdown";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {ref} from "@vue/reactivity";
 export default {
   name: "BatchEdit",
-  components: {
-    SearchableDropdown
-  },
   inject: ["ProjectApi", "ProductApi", "OrderApi", "BatchApi"],
   data() {
     return {
+      id: this.$route.params.id,
       editor: ClassicEditor,
       description: ref(''),
       editorConfig: {
@@ -156,27 +143,21 @@ export default {
       },
       orderlines: [],
       checkedOrderlines: [],
-      selectedProject: null,
-      selectedProjectsProduct: null,
-      defaultListText: "No project selected",
-      defaultContributionAmount: 5,
+      batch: null,
+      batchProject: null,
+      projectDescription: '',
       searchKeyWord: '',
       searchOrderline: true,
     }
   },
   async created() {
+    this.batch = await this.BatchApi.findOne(this.id);
+    this.batchProject = await this.ProjectApi.findOne(this.batch.data.projectKey);
     this.projects = await this.ProjectApi.SearchableDropDown();
+
+    this.fillBatchData();
   },
   watch: {
-    async selectedProject(project) {
-      //When the dropdown selection changes it adds the value obtained from this event to the list of projects selected.
-      if (project !== null) {
-        await this.findProductOfProject(project);
-      }
-    },
-    async selectedProjectsProduct() {
-      await this.findOrderlinesByProduct();
-    },
     orderlines() {
       this.orderlines.sort((a,b) => {
         return a.loadedDate.localeCompare(b.loadedDate)
@@ -206,22 +187,9 @@ export default {
     },
   },
   methods: {
-    async findProductOfProject(project) {
-      if (project.id !== undefined) {
-        const data = await this.ProductApi.findProductByProjectId(project.id);
-        data.forEach((product) => {
-          this.selectedProjectsProduct = product;
-        });
-      }
-    },
-    async findOrderlinesByProduct() {
-      let currentOrderlines = [];
-      const data = await this.OrderApi.getAllOrderlinesByProductId(this.selectedProjectsProduct.id);
-      data.forEach((orderline) => {
-        currentOrderlines.push(orderline);
-      });
-
-      this.orderlines = currentOrderlines;
+    fillBatchData() {
+      this.projectDescription = this.batchProject.data.description_long;
+      this.description = this.batch.data.textPlanned;
     },
     isEmpty(obj) {
       for(var prop in obj) {
@@ -247,48 +215,8 @@ export default {
 
       this.searchOrderline = !this.searchOrderline;
     },
-    async createBatch() {
-      let batch
-      if (
-          this.description !== "" &&
-          !this.isEmpty(this.selectedProject) &&
-          this.checkedOrderlines.length > 0) {
-
-        try {
-          batch = await this.BatchApi.create(
-              this.description,
-              this.checkedOrderlines.length,
-              this.selectedProject.id,
-              this.checkedOrderlines
-          );
-
-          this.$toast.open({
-            type: "success",
-            message: "Batch created",
-            duration: 5000,
-            dismissible: true,
-            position: "top-right",
-          });
-          this.$router.push({ name: "admin:BatchView" });
-        } catch {
-          this.$toast.open({
-            type: "error",
-            message: "Something went wrong",
-            duration: 5000,
-            dismissible: true,
-            position: "top-right",
-          });
-        }
-
-      } else {
-        this.$toast.open({
-          type: "error",
-          message: "Please fill in all fields",
-          duration: 5000,
-          dismissible: true,
-          position: "top-right",
-        });
-      }
+    backToView() {
+      this.$router.push({ path: '/batches' });
     }
   }
 }
