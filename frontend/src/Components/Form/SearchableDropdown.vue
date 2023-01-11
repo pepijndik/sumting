@@ -71,6 +71,7 @@
 
 <script>
 import FileIcon from "@/Components/SvgIcons/FileIcon";
+import {DIM_COLOR} from "jest-matcher-utils";
 
 export default {
   name: "SearchableDropdown",
