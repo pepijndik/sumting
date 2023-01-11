@@ -25,6 +25,12 @@ export default class Product{
         this.id_ext = id_ext;
         this.active = active;
     }
+
+    /**
+     * Makes a new Product object from a given object
+     * @param product
+     * @returns {*|null}
+     */
     static copyConstructor(product){
         if(product == null) return null;
         product = Object.assign(new Product(),product);

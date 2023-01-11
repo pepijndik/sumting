@@ -106,6 +106,10 @@ export default {
     }
   },
   async created() {
+    /**
+     * Gets al batches and sorts them by date
+     * @type {Batch[]}
+     */
     // this.projects = await this.ProjectApi.SearchableDropDown();
     this.batches = await this.BatchApi.getAllBatches();
 
@@ -114,6 +118,10 @@ export default {
     });
   },
   computed: {
+    /**
+     * Returns the batches that match the search keyword
+     * @returns {[]|*[]}
+     */
     computedObj() {
       const results = [];
       const regKeyWord = new RegExp(this.searchKeyWord, 'ig');
@@ -133,6 +141,12 @@ export default {
     },
   },
   methods: {
+    /**
+     * Compares two dates
+     * @param a
+     * @param b
+     * @returns {number}
+     */
     compareDate(a,b){
       let aDate = a.updateAt == null ? a.createdAt : a.updateAt;
       let bDate = b.updateAt == null ? b.createdAt : b.updateAt;
@@ -142,6 +156,9 @@ export default {
       }
       return 0;
     },
+    /**
+     * Changes the order of the batch list from old -> new and vice versa
+     */
     changeBatchList() {
       if (!this.searchBatch) {
         // From Old -> New
@@ -157,6 +174,10 @@ export default {
 
       this.searchBatch = !this.searchBatch;
     },
+    /**
+     * Deletes a batch
+     * @param id
+     */
     deleteBatch(id) {
       try {
         this.BatchApi.delete(id);

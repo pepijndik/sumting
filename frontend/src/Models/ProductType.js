@@ -12,6 +12,12 @@ export default class ProductType {
         this.frequency = frequency;
         this.createdAt = createdAt;
     }
+
+    /**
+     * Makes a new ProductType object from a given object
+     * @param type
+     * @returns {any|null}
+     */
     static copyConstructor(type){
         if(type == null) return null;
         return Object.assign(new ProductType(), type);

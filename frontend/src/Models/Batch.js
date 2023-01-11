@@ -13,6 +13,11 @@ export default class Batch
 
     constructor() {}
 
+    /**
+     * Create a new Batch from an object
+     * @param batch
+     * @returns {any|null}
+     */
     static copyConstructor(batch) {
         if (batch == null) return null;
         return Object.assign(new Batch(), batch);

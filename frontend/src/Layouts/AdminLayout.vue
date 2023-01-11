@@ -79,9 +79,7 @@ import NavigationItem from "@/Layouts/Navigation/Admin/NavigationItem";
 import NavigationDropdownItem from "@/Layouts/Navigation/Admin/NavigationDropdownItem";
 import SubDropdownItem from "@/Layouts/Navigation/Admin/SubDropdownItem";
 import { SemipolarSpinner  } from 'epic-spinners'
-import router from "@/Router/router";
-import BaseApi from "@/Services/BaseApi";
-import AuthHeader from "@/Services/AuthHeader";
+
 export default {
   name: "DashboardLayout",
   inject: ["Auth"],

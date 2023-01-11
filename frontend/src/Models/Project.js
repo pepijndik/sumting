@@ -1,4 +1,3 @@
-import ProductType from "@/Models/ProductType";
 import ProjectType from "@/Models/ProjectType";
 import moment from "moment";
 
@@ -27,9 +26,15 @@ export default class Project {
         this.longitude = longitude;
         this.image = image;
     }
+
+    /**
+     * Makes a new Project object from a given object
+     * @param entity
+     * @returns {any|null}
+     */
     static copyConstructor(entity){
         if(entity == null) return null;
-        var project = Object.assign(new Project(),entity);
+        let project = Object.assign(new Project(),entity);
         project.createdAt = moment(entity.created_at);
         project.updatedAt = moment(entity.updated_at);
 
