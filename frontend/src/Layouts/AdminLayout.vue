@@ -31,11 +31,6 @@
               name="Create order"
               source="create.svg"
             />
-            <SubDropdownItem
-                to="/orders/edit"
-                name="Edit order"
-                source="edit.svg"
-            />
           </NavigationDropdownItem>
           <NavigationDropdownItem name="Batch" source="file.svg">
             <SubDropdownItem to="/batches" name="View batches" source="file.svg"/>
