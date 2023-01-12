@@ -18,9 +18,10 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-<!-- [![Issues][issues-shield]][issues-url] -->
+[![Latest Release](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/badges/release.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/releases)
+[![coverage report](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/badges/main/coverage.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/commits/main)
 [![MIT License][license-shield]][license-url]
+[![pipeline status](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/badges/main/pipeline.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/commits/main)
 
 
 
@@ -237,15 +238,13 @@ Project Link: [SumTing admin panel](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [contributors-url]: https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/project_members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
 [issues-shield]: https://img.shields.io/gitlab/issues/open/se-ewa/2022-2023-1/sum-1?gitlab_url=https%3A%2F%2Fgitlab.fdmci.hva.nl
 
 [issues-url]: https://img.shields.io/gitlab/issues/open:se-ewa/2022-2023-1/sum-1?gitlab_url=https://gitlab.fdmci.hva.nl/
 
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1
+[license-url]: https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/blob/main/LICENSE
 
 [product-screenshot]: https://uploads-ssl.webflow.com/61b75f7704ba6b6a2966c019/62ecefa33da29e9074f95292_PlanetVFF.png
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
