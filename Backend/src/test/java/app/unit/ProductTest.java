@@ -72,7 +72,6 @@ public class ProductTest {
     void testGetAllProducts() {
         ResponseEntity<Product[]> response = restTemplate.getForEntity(servletContextPath + "/products", Product[].class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        Arrays.stream(response.getBody()).forEach(p -> System.out.println(p.getName()));
         assertEquals(products.size(), response.getBody().length);
     }
 
@@ -88,6 +87,14 @@ public class ProductTest {
     @org.junit.jupiter.api.Order(3)
     void testGetProductByIdNotFound() {
         ResponseEntity<Product> response = restTemplate.getForEntity(servletContextPath + "/products/" + 999999, Product.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    @org.junit.jupiter.api.Order(4)
+    void testDeleteProductById() {
+        restTemplate.delete(servletContextPath + "/products/" + products.get(0).getId());
+        ResponseEntity<Product> response = restTemplate.getForEntity(servletContextPath + "/products/" + products.get(0).getId(), Product.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }
