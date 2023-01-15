@@ -1,10 +1,7 @@
 package app.unit;
 
-import app.models.Order.OrderLine;
 import app.models.Product.Product;
 import app.repositories.DataLoader;
-import app.repositories.Order.OrderRepository;
-import app.repositories.Order.OrderlineRepository;
 import app.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -21,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
