@@ -1,7 +1,11 @@
 package app.rest;
 
+import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.repositories.DataLoader;
+import app.repositories.JPAUserRepository;
+import app.repositories.Order.OrderRepository;
+import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +26,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +57,15 @@ public class OrderControllerTest {
     @Autowired
     private OrderlineRepository orderlineRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private JPAUserRepository userRepository;
+
+    @Autowired
+    private OrderTypeRepository orderTypeRepository;
+
     ArrayList<OrderLine> allOrders ;
 
     @BeforeEach
@@ -64,7 +78,7 @@ public class OrderControllerTest {
     }
 
     /**
-     * Author: Kaan Ugur
+     * @author Kaan Ugur
      * Description: Tests if all orders are returned
      */
     @Test
@@ -73,7 +87,7 @@ public class OrderControllerTest {
     }
 
     /**
-     * Author: Kaan Ugur
+     * @author Kaan Ugur
      * Description: Checks if "/orders" return an ok response
      *
      * @throws Exception if response is not ok
@@ -90,7 +104,7 @@ public class OrderControllerTest {
 
 
     /**
-     * Author: Kaan Ugur
+     * @author Kaan Ugur
      * Description: Updates an existing order line
      */
     @Test
@@ -124,4 +138,57 @@ public class OrderControllerTest {
         // Checks if the order line is actually changed
         Assertions.assertNotEquals("proofLarge", savedOrderLine.getProofLarge());
     }
+
+    /**
+     * @author Colin Laan
+     * Description: Tests if combinedSearch returns the correckt orders
+     */
+//    @Test
+//    public void CombinedSearchReturnsCorrectOrders() {
+//        // Create dummy data
+//        OrderLine orderLineDummy = new OrderLine(155, "Notes", 22.0, "proof name"
+//                , 45.0, 56.0, "proofSmall", "proofMedium",
+//                "proofLarge", 13.0, 14.0, null);
+//        LocalDateTime updatedLoadedDate = LocalDateTime.of(2022, 2, 22, 14, 12);
+//
+//        // Update the dummy data
+//        orderLineDummy.setLoadedDate(updatedLoadedDate);
+//        orderLineDummy.setNotes("This is an updated note");
+//        orderLineDummy.setProofName("This is an edited proof name");
+//        orderLineDummy.setProofSmall("This is an edited small proof name");
+//        orderLineDummy.setProofMedium("This is an edited medium proof name");
+//        orderLineDummy.setProofLarge("This is an edited large proof name");
+//        orderLineDummy.setOwner(userRepository.findById(1));
+//        orderLineDummy.setProduct(orderTypeRepository.findById(1).get());
+//
+//        // Save the updated dummy data
+//        OrderLine savedOrderLine = orderlineRepository.save(orderLineDummy);
+//
+//        // Make a new order with the savedOrderline
+//        Order order = new Order();
+//        order.addOrderLine(savedOrderLine);
+//        order.setId(1);
+//        order.setOrder_date(LocalDate.now());
+//        order.setCurrency("EUR");
+//        order.setPayer(userRepository.findById(1));
+//        if (orderTypeRepository.findById(1).isPresent()) {
+//            order.setOrderType(orderTypeRepository.findById(1).get());
+//        }
+//
+//        savedOrderLine.setOrder(order);
+//        orderlineRepository.save(savedOrderLine);
+//
+//        // Search for the orderline with the updated dummy data
+//        Iterable<Order> orders = orderRepository.findByClientAndProject(savedOrderLine.getOwner().getId(),
+//                                                                            savedOrderLine.getProduct().getId());
+//
+//        assertNotNull(orders);
+//        if (orders.iterator().hasNext()) {
+//            Order orderFromIterator = orders.iterator().next();
+//            // Check if the orderline is the same as the savedOrderLine
+//            Assertions.assertEquals(order, orderFromIterator);
+//        }
+//
+//
+//    }
 }
