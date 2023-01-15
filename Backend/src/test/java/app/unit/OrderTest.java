@@ -159,6 +159,7 @@ public class OrderTest {
 //            );
 //            System.out.println(o.getId());
 //            System.out.println(o.getPayer().getId());
+//            orderRepository.save(o);
 //        }
 //
 //        System.out.println(orderRepository.findAll());
@@ -167,8 +168,10 @@ public class OrderTest {
 //            System.out.println(or.getPayer().getId());
 //            System.out.println(or.getOrderType().getType());
 //        }
-//        ResponseEntity<Order[]> response = restTemplate.getForEntity(servletContextPath + "orders/combinedSearch?clientID=2", Order[].class);
+//
+//        ResponseEntity<Order> response = restTemplate.getForEntity(servletContextPath + "orders/combinedSearch?clientID=1&projectID=null", Order.class);
 //        //assertEquals(HttpStatus.OK, response.getStatusCode());
-//        System.out.println(response.getStatusCode());
+////        System.out.println(response.getStatusCode());
+//        System.out.println(response.getBody().getId());
 //    }
 }
