@@ -84,4 +84,10 @@ public class ProductTest {
         assertEquals(products.get(0).getId(), response.getBody().getId());
     }
 
+    @Test
+    @org.junit.jupiter.api.Order(3)
+    void testGetProductByIdNotFound() {
+        ResponseEntity<Product> response = restTemplate.getForEntity(servletContextPath + "/products/" + 999999, Product.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 }
