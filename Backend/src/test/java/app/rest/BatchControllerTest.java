@@ -112,12 +112,11 @@ public class BatchControllerTest {
     /**
      * Creates a new batch
      *
-     * @throws Exception if response is not created or if ID does not exists.
+     * @throws Exception if response is not created or if ID does not exist.
      * @author Dia Fortmeier
      */
     @Test
-    public void createBatchTwo() throws Exception {
-
+    public void CreateBatchTwo() throws Exception {
         ObjectNode requestBody = objectMapper.createObjectNode();
         requestBody.put("id", "2");
         requestBody.put("textPlanned", "Batch two");
@@ -131,5 +130,48 @@ public class BatchControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
+    }
+
+    /**
+     * Updating batch two from the Repository,
+     * changing the batchSize, and adding two orderlines.
+     *
+     * @author Dia Fortmeier
+     */
+    @Test
+    public void UpdateBatchSizeAndOrderLinesOfBatchTwo() {
+        // Create dummy batch with no orderlines
+        Batch batch = new Batch(2, LocalDateTime.now(), "Batch two", 0, 1);
+        this.batchRepository.save(batch);
+
+        // Find the dummy batch that was just created
+        Batch updateBatch = this.batchRepository.findById(2);
+        Assertions.assertNotNull(updateBatch);
+
+        // Create 2 dummy orderlines
+        OrderLine orderline1 = OrderLine.buildRandom();
+        orderline1.setBatch(updateBatch);
+        this.orderlineRepository.save(orderline1);
+        Assertions.assertEquals(updateBatch, orderline1.getBatch());
+
+        OrderLine orderline2 = OrderLine.buildRandom();
+        orderline2.setBatch(updateBatch);
+        this.orderlineRepository.save(orderline2);
+        Assertions.assertEquals(updateBatch, orderline2.getBatch());
+
+        // Create orderlineList and add the two dummy orderlines
+        List<OrderLine> orderlineList = new ArrayList<>();
+        orderlineList.add(orderline1);
+        orderlineList.add(orderline2);
+        Assertions.assertEquals(2, orderlineList.size());
+
+        // Update batchSize to 2
+        updateBatch.setBatchSize(2);
+        Assertions.assertEquals(2, updateBatch.getBatchSize());
+
+        // Update batch orderlines with the orderlineList
+        updateBatch.setOrderLines(orderlineList);
+        this.batchRepository.save(updateBatch);
+        Assertions.assertEquals(2, updateBatch.getOrderLines().size());
     }
 }
