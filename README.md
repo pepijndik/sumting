@@ -19,6 +19,8 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 [![Latest Release](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/badges/release.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/releases)
+
+
 [![coverage report](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/badges/main/coverage.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/commits/main)
 [![MIT License][license-shield]][license-url]
 [![pipeline status](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/badges/main/pipeline.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/commits/main)

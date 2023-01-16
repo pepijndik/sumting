@@ -22,6 +22,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
+import java.util.Objects;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -96,6 +98,7 @@ public class OrderTest {
         assertThat("There are no orderline", responseBody.getOrderLines().size() == 0);
         assertThat("Name must be test order", responseBody.getDescription().equals("test order"));
     }
+
     @Test
     @org.junit.jupiter.api.Order(3)
     public void canCreateOrder() {
@@ -125,5 +128,18 @@ public class OrderTest {
         Order order = response.getBody();
         assert order != null;
         assertEquals(createOrder.order_date, order.getOrder_date().toString(), "The order date should be " + createOrder.order_date + ", but was " + order.getOrder_date());
+    }
+
+    @Test
+    @org.junit.jupiter.api.Order(4)
+    public void createEmptyOrderTrowsBadRequest(){
+        assert(userList.size() > 0);
+        assert(orderTypeRepository.findAll().spliterator().getExactSizeIfKnown() > 0);
+
+        ResponseEntity<Order> response = null;
+        response = this.restTemplate.postForEntity("/orders", null, Order.class);
+        assert response != null;
+        assertThat("Status is incorrect",response.getStatusCode() == HttpStatus.BAD_REQUEST);
+        assertThat("Body is same as provided", response.getBody() != null);
     }
 }
