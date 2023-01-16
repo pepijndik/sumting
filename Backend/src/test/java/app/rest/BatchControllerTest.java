@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 
@@ -88,5 +89,21 @@ public class BatchControllerTest {
                         .accept(MediaType.APPLICATION_JSON)) // Only accepts Json as a response
                 .andDo(print()) // Print the result
                 .andExpect(status().isOk()); // Expects that the response is ok
+    }
+
+    /**
+     * Gets the batch by its ID, and checks if the resulting batch has the given id.
+     *
+     * @throws Exception if response is not ok or if the id does not match the expectedValue.
+     * @author Dia Fortmeier
+     */
+    @Test
+    public void GetBatchOneById() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                .get("/batch/{id}", 1)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
     }
 }
