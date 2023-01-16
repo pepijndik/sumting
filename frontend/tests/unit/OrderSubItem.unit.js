@@ -66,5 +66,6 @@ describe('OrderSubItem', () => {
         await wrapper.find('[name=custom_note]').trigger('update');
 
         expect(wrapper.vm.customNote).toBeTruthy();
+        expect(wrapper.vm.product.notes).toBe('test product description');
     });
 });
