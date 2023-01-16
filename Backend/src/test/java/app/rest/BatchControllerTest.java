@@ -5,6 +5,8 @@ import app.models.Order.OrderLine;
 import app.repositories.Batch.BatchRepository;
 import app.repositories.DataLoader;
 import app.repositories.Order.OrderlineRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +27,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,19 +44,17 @@ public class BatchControllerTest {
     private MockMvc mvc;
     @Mock
     private OrderLine orderLine;
-    @InjectMocks
-    @Autowired
-    private BatchController batchController;
     @Autowired
     CommandLineRunner dataLoader;
-    @Autowired
-    private TestRestTemplate restTemplate;
     @Value("${server.servlet.context-path}")
     private String servletContextPath;
     @Autowired
     private OrderlineRepository orderlineRepository;
     @Autowired
     private BatchRepository batchRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     ArrayList<Batch> batchList;
 
@@ -105,5 +107,29 @@ public class BatchControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1));
+    }
+
+    /**
+     * Creates a new batch
+     *
+     * @throws Exception if response is not created or if ID does not exists.
+     * @author Dia Fortmeier
+     */
+    @Test
+    public void createBatchTwo() throws Exception {
+
+        ObjectNode requestBody = objectMapper.createObjectNode();
+        requestBody.put("id", "2");
+        requestBody.put("textPlanned", "Batch two");
+        requestBody.put("batchSize", "0");
+        requestBody.put("projectKey", "1");
+
+        mvc.perform(MockMvcRequestBuilders
+                .post("/batch")
+                .content(objectMapper.writeValueAsString(requestBody))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
     }
 }
