@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -96,7 +97,7 @@ public class BatchControllerTest {
     /**
      * Gets the batch by its ID, and checks if the resulting batch has the given id.
      *
-     * @throws Exception if response is not ok or if the id does not match the expectedValue.
+     * @throws Exception if response is not ok or if the ID does not match the expectedValue.
      * @author Dia Fortmeier
      */
     @Test
@@ -173,5 +174,19 @@ public class BatchControllerTest {
         updateBatch.setOrderLines(orderlineList);
         this.batchRepository.save(updateBatch);
         Assertions.assertEquals(2, updateBatch.getOrderLines().size());
+    }
+
+    /**
+     * Deletes the batch with ID 1
+     *
+     * @throws Exception if response is not ok or if the ID exists
+     * @author Dia Fortmeier
+     */
+    @Test
+    public void DeleteBatchOne() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                        .delete("/batch/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").doesNotExist());
     }
 }
