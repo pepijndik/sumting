@@ -65,6 +65,22 @@ public class BatchControllerTest {
         }
     }
 
+    /**
+     * Checks if batchList has more than zero batches.
+     *
+     * @author Dia Fortmeier
+     */
+    @Test
+    public void BatchListHasMoreThenZeroBatches() {
+        Assertions.assertTrue(this.batchList.size() > 0);
+    }
+
+    /**
+     * Checks if getAllBatches"/batch"
+     *
+     * @throws Exception if response is not ok
+     * @author Dia Fortmeier
+     */
     @Test
     public void GetAllBatchesResponseEntityReturnsOk() throws Exception {
         mvc.perform(MockMvcRequestBuilders
