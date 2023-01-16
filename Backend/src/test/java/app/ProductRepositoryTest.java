@@ -42,32 +42,33 @@ public class ProductRepositoryTest {
 
         return product;
     }
+
     @Autowired
     private TestEntityManager entityManager;
     @Autowired
     private ProductRepository productRepository;
 
     @Test
+    @org.junit.jupiter.api.Order(1)
+    public void should_find_a_product_by_id() {
+        Product product = GenerateProduct(1, "Cool testing name");
+        this.productRepository.save(product);
+        Assertions.assertEquals(this.productRepository.findById(product.getId()).getId(), product.getId());
+    }
+
+    @Test
+    @org.junit.jupiter.api.Order(2)
     public void should_find_none_if_repository_is_empty() {
         Iterable<Product> products = productRepository.findAll();
         assertThat(products).isEmpty();
     }
 
     @Test
+    @org.junit.jupiter.api.Order(3)
     public void should_store_a_product() {
         Product product = GenerateProduct(1, "Cool testing name");
         Product savedProduct = this.productRepository.save(product);
         assertThat(savedProduct).hasFieldOrPropertyWithValue("price", 100.00);
         assertThat(savedProduct).hasFieldOrPropertyWithValue("name", "Cool testing name");
-    }
-
-    @Test
-    public void should_find_a_product_by_id() {
-        Product product = GenerateProduct(1, "Cool testing name");
-        this.productRepository.save(product);
-
-        Product foundProduct = this.productRepository.findById(product.getId());
-
-        Assertions.assertEquals(foundProduct.getId(), product.getId());
     }
 }
