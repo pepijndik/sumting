@@ -1,7 +1,8 @@
 import {shallowMount, mount} from '@vue/test-utils';
 import OrderSubItem from '@/Components/Form/SubItems/OrderSubItem.vue';
 import Product from "@/Models/Product";
-import {computed} from "vue"; // name of your Vue component
+import {computed} from "vue";
+import OrderLine from "@/Models/OrderLine"; // name of your Vue component
 
 let wrapper;
 const factory = (computed = {}) => {
@@ -68,4 +69,20 @@ describe('OrderSubItem', () => {
         expect(wrapper.vm.customNote).toBeTruthy();
         expect(wrapper.vm.product.notes).toBe('test product description');
     });
+    test("CanEmitDeleteSelf", async () => {
+       wrapper = factory();
+
+       await wrapper.find('close-icon-stub').trigger('click');
+
+       expect(wrapper.emitted().deleteProduct).toHaveLength(1);
+    });
+    test("InputContainsCorrectPrefilledValue", async () => {
+        wrapper = factory();
+
+        console.log(wrapper.find('input-component-numeric-stub').html());
+
+        expect(wrapper.find('input-component-numeric-stub').html()).toContain("name=\"amount\"");
+        expect(wrapper.find('input-component-numeric-stub').html()).toContain("inputdata=\"1\"");
+    });
+
 });
