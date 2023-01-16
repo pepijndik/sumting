@@ -51,4 +51,28 @@ describe('Searchable dropdown', () => {
         expect(wrapper.emitted().selected).toHaveLength(2);
         expect(wrapper.emitted().selected[1][0].id).toBe(1);
     });
+
+    test("searchableDropdownFieldsAdjustAble", async () => {
+        wrapper = factory();
+        await wrapper.setProps({
+            fields: ['id', 'name'],
+
+        });
+        const field = await wrapper.find('.options p');
+        expect(field.text()).toBe('1 | test');
+    });
+
+    test("TextAdjustAble", async () => {
+        wrapper = factory();
+        await wrapper.setProps({
+            text: ['id'],
+        });
+        await wrapper.findAll('.options')[0].trigger('mousedown',
+            {
+                id: 1,
+                name: 'test'
+            });
+        const field = await wrapper.find('input[name=testdropdown]').element.value;
+        expect(field).toBe('1 | ');
+    });
 });
