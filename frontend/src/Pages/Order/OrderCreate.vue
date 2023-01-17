@@ -12,6 +12,7 @@
             :text="['name', 'email']"
             :primarykey="'id'"
             :return="'primarykey'"
+            :name="'select_client'"
             :icon="true"
             @selected="this.selectedClient = $event"
             :options="clients"
