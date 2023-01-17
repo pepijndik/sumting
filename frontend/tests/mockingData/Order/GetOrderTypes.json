@@ -1,0 +1,20 @@
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOjEzMywiaXNzIjoiU3VtdGluZyIsImlhdCI6MTY3MjgxNzcwNSwiZXhwIjoxNjcyODE3NzY1fQ.kF8dA7FDKPe-BQ0tU9JM5tlvbCvvf12jCOxG-qViZxDKreyEcWAY0rGkxCOtWCnrXLDX3DowTHZfgxyniElNDw"
+  },
+  "data": [
+    {
+      "id": 1,
+      "description": "imported by django",
+      "type": "stripe_contribution",
+      "isExt": 1
+    },
+    {
+      "id": 2,
+      "description": "business direct order",
+      "type": "b2b_contribution",
+      "isExt": 1
+    }
+  ]
+}
