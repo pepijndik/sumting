@@ -59,7 +59,7 @@ public class ProductRepository implements CustomCrudRepository<Product, Integer>
      * @return The amount of products in the database.
      */
     public Iterable<Product> findByProjectId(int projectId) {
-        return em.createQuery("SELECT a FROM Product a WHERE project_key = :id", Product.class)
+        return em.createQuery("SELECT a FROM Product a WHERE project.id = :id", Product.class)
                 .setParameter("id", projectId).getResultList();
     }
 
