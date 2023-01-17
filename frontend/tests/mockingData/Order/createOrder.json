@@ -1,5 +1,6 @@
 {
   "order_date":"2022-12-16",
+  "createdAt": "2022-12-16",
   "description": "test",
   "transactionTotal": 30,
   "typeKey": 1,
