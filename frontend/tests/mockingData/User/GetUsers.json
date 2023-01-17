@@ -1,0 +1,68 @@
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOjEzMywiaXNzIjoiU3VtdGluZyIsImlhdCI6MTY3MjgxNzcwNSwiZXhwIjoxNjcyODE3NzY1fQ.kF8dA7FDKPe-BQ0tU9JM5tlvbCvvf12jCOxG-qViZxDKreyEcWAY0rGkxCOtWCnrXLDX3DowTHZfgxyniElNDw"
+  },
+  "data": [
+    {
+      "id": 2,
+      "name": "admin",
+      "email": "admin@hva.nl",
+      "createdAt": "2022-10-03T12:40:00.717726",
+      "updatedAt": "2022-10-03T12:40:00.905749",
+      "twoFactorEnabled": false,
+      "user_type": "PERSON",
+      "country": {
+        "id": 528,
+        "name": "Netherlands",
+        "imgSmall": "https://sumting.s3.eu-west-2.amazonaws.com/flags/nl.png",
+        "alpha2": "NL",
+        "alpha3": "NLD"
+      },
+      "profileImage": null,
+      "profileText": null,
+      "stripeId": "cus_MXteleU0BRiT8U",
+      "countryKey": null
+    },
+    {
+      "id": 3,
+      "name": "pepijn",
+      "email": "pepijn.dik@hva.nl",
+      "createdAt": "2022-08-24T16:06:59.000033",
+      "updatedAt": "2022-09-15T21:05:00.723288",
+      "twoFactorEnabled": false,
+      "user_type": "PERSON",
+      "country": {
+        "id": 528,
+        "name": "Netherlands",
+        "imgSmall": "https://sumting.s3.eu-west-2.amazonaws.com/flags/nl.png",
+        "alpha2": "NL",
+        "alpha3": "NLD"
+      },
+      "profileImage": null,
+      "profileText": null,
+      "stripeId": "cus_LcwwJHTAFC9zS2",
+      "countryKey": null
+    },
+    {
+      "id": 4,
+      "name": "Martijn van den Noort",
+      "email": "info@sumting.org",
+      "createdAt": "2022-08-24T16:05:23.324363",
+      "updatedAt": "2022-08-24T16:05:23.492728",
+      "twoFactorEnabled": false,
+      "user_type": "PERSON",
+      "country": {
+        "id": 528,
+        "name": "Netherlands",
+        "imgSmall": "https://sumting.s3.eu-west-2.amazonaws.com/flags/nl.png",
+        "alpha2": "NL",
+        "alpha3": "NLD"
+      },
+      "profileImage": null,
+      "profileText": null,
+      "stripeId": "cus_LtQbpU0oXMlKu1",
+      "countryKey": null
+    }
+  ]
+}

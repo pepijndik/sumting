@@ -19,6 +19,8 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 [![Latest Release](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/badges/release.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/releases)
+
+
 [![coverage report](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/badges/main/coverage.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/commits/main)
 [![MIT License][license-shield]][license-url]
 [![pipeline status](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/badges/main/pipeline.svg)](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/commits/main)
@@ -192,6 +194,31 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- User stories and methodes made by members -->
+## User stories and methodes made by members
+
+ ## Pepijn
+
+| Userstory | Method |
+| ----------- | ----------- |
+| As developer i wanted to have a search component | Frontend: Searchabledropdown |
+| As admin i wanted to secure my account trough 2fa  | Frontend: VerifyCode, Backend Rest: Authcontroller  
+| As admin i wanted a global overview of my projects  | Frontend: ListProjects, Backend Rest: ProjectController  
+| As develpor i wanted to have a paginated view for the project table | Frontend: ListProjects & Pagination, Backend Rest: ProjectController & Project interface
+
+ ## Kaan
+
+| Userstory | Method |
+| ----------- | ----------- |
+| As an admin, I want to be able to see all the order lines in the dasboard, so i have an clear overview on the orderlines.| Frontend: Dashboard,   BarGraph,DashboardServiceApi, Backend: DashboardController, DashboardRepository, Graph model
+| As an admin I want to be able to edit my orders so I can fix any mistakes I made | Backend: OrderController
+| As an admin I want to be able to delete my orders so i can remove orders from the database. | Backend: OrderController, OrderLineRepository
+| As an administrator, I want to be able to see an overview of the statistics of all the orders, so I can estimate how well things are going|Frontend: Dashboard, OrderLineGraph, DashboardServiceApi, Backend: DashboardController, OrderLineRepository
+
+
+
+See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
 
 

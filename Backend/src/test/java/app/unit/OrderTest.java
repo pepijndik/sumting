@@ -1,11 +1,9 @@
 package app.unit;
 
 import app.models.Order.Order;
-import app.models.Project.Project;
 import app.models.User.User;
 import app.repositories.DataLoader;
 import app.repositories.JPAUserRepository;
-import app.repositories.Order.OrderRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.response.LoginResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +23,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,10 +44,6 @@ public class OrderTest {
     private JPAUserRepository userRepo;
     @Autowired
     private OrderTypeRepository orderTypeRepository;
-
-    @Autowired
-    private OrderRepository orderRepository;
-
     private List<User> userList;
     @BeforeEach
     void setup() throws Exception {
@@ -102,6 +98,7 @@ public class OrderTest {
         assertThat("There are no orderline", responseBody.getOrderLines().size() == 0);
         assertThat("Name must be test order", responseBody.getDescription().equals("test order"));
     }
+
     @Test
     @org.junit.jupiter.api.Order(3)
     public void canCreateOrder() {
@@ -132,46 +129,17 @@ public class OrderTest {
         assert order != null;
         assertEquals(createOrder.order_date, order.getOrder_date().toString(), "The order date should be " + createOrder.order_date + ", but was " + order.getOrder_date());
     }
-//    /**
-//     * Can retrieve orders by user
-//     */
-//    @Test
-//    @org.junit.jupiter.api.Order(4)
-//    public void canRetrieveOrderByClientID() {
-//        //Save two new orders for testing
-//
-//        Project project = new Project();
-//        project.setId(1);
-//
-//        System.out.println(userList.get(0).getId());
-//        System.out.println(project.getId());
-//
-//        if (userList.size() > 0 && orderTypeRepository.findById(1).isPresent()) {
-//            Order o = new Order(
-//                2,
-//                LocalDateTime.now().toLocalDate(),
-//                "Test Order",
-//                100.0,
-//                "EUR",
-//                userList.get(0),
-//                orderTypeRepository.findById(1).get(),
-//                project
-//            );
-//            System.out.println(o.getId());
-//            System.out.println(o.getPayer().getId());
-//            orderRepository.save(o);
-//        }
-//
-//        System.out.println(orderRepository.findAll());
-//        for (Order or : orderRepository.findAll()) {
-//            System.out.println(or.getId());
-//            System.out.println(or.getPayer().getId());
-//            System.out.println(or.getOrderType().getType());
-//        }
-//
-//        ResponseEntity<Order> response = restTemplate.getForEntity(servletContextPath + "orders/combinedSearch?clientID=1&projectID=null", Order.class);
-//        //assertEquals(HttpStatus.OK, response.getStatusCode());
-////        System.out.println(response.getStatusCode());
-//        System.out.println(response.getBody().getId());
-//    }
+
+    @Test
+    @org.junit.jupiter.api.Order(4)
+    public void createEmptyOrderTrowsBadRequest(){
+        assert(userList.size() > 0);
+        assert(orderTypeRepository.findAll().spliterator().getExactSizeIfKnown() > 0);
+
+        ResponseEntity<Order> response = null;
+        response = this.restTemplate.postForEntity("/orders", null, Order.class);
+        assert response != null;
+        assertThat("Status is incorrect",response.getStatusCode() == HttpStatus.BAD_REQUEST);
+        assertThat("Body is same as provided", response.getBody() != null);
+    }
 }
