@@ -1,6 +1,5 @@
 package app.rest;
 
-import app.models.Order.Order;
 import app.models.Order.OrderLine;
 import app.repositories.DataLoader;
 import app.repositories.JPAUserRepository;
@@ -26,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -138,57 +136,4 @@ public class OrderControllerTest {
         // Checks if the order line is actually changed
         Assertions.assertNotEquals("proofLarge", savedOrderLine.getProofLarge());
     }
-
-    /**
-     * @author Colin Laan
-     * Description: Tests if combinedSearch returns the correckt orders
-     */
-//    @Test
-//    public void CombinedSearchReturnsCorrectOrders() {
-//        // Create dummy data
-//        OrderLine orderLineDummy = new OrderLine(155, "Notes", 22.0, "proof name"
-//                , 45.0, 56.0, "proofSmall", "proofMedium",
-//                "proofLarge", 13.0, 14.0, null);
-//        LocalDateTime updatedLoadedDate = LocalDateTime.of(2022, 2, 22, 14, 12);
-//
-//        // Update the dummy data
-//        orderLineDummy.setLoadedDate(updatedLoadedDate);
-//        orderLineDummy.setNotes("This is an updated note");
-//        orderLineDummy.setProofName("This is an edited proof name");
-//        orderLineDummy.setProofSmall("This is an edited small proof name");
-//        orderLineDummy.setProofMedium("This is an edited medium proof name");
-//        orderLineDummy.setProofLarge("This is an edited large proof name");
-//        orderLineDummy.setOwner(userRepository.findById(1));
-//        orderLineDummy.setProduct(orderTypeRepository.findById(1).get());
-//
-//        // Save the updated dummy data
-//        OrderLine savedOrderLine = orderlineRepository.save(orderLineDummy);
-//
-//        // Make a new order with the savedOrderline
-//        Order order = new Order();
-//        order.addOrderLine(savedOrderLine);
-//        order.setId(1);
-//        order.setOrder_date(LocalDate.now());
-//        order.setCurrency("EUR");
-//        order.setPayer(userRepository.findById(1));
-//        if (orderTypeRepository.findById(1).isPresent()) {
-//            order.setOrderType(orderTypeRepository.findById(1).get());
-//        }
-//
-//        savedOrderLine.setOrder(order);
-//        orderlineRepository.save(savedOrderLine);
-//
-//        // Search for the orderline with the updated dummy data
-//        Iterable<Order> orders = orderRepository.findByClientAndProject(savedOrderLine.getOwner().getId(),
-//                                                                            savedOrderLine.getProduct().getId());
-//
-//        assertNotNull(orders);
-//        if (orders.iterator().hasNext()) {
-//            Order orderFromIterator = orders.iterator().next();
-//            // Check if the orderline is the same as the savedOrderLine
-//            Assertions.assertEquals(order, orderFromIterator);
-//        }
-//
-//
-//    }
 }

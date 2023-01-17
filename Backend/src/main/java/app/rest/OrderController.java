@@ -263,45 +263,15 @@ public class OrderController {
     public ResponseEntity<Iterable<Order>> getOrdersByClientAndProject(
         @RequestParam(value = "clientID", required = false) String clientId,
         @RequestParam(value = "projectID", required = false) String projectId) {
-        if (clientId == null && projectId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        if (clientId != null && projectId != null) {
-            if (!clientId.equals("null") && !projectId.equals("null")) {
-                return new ResponseEntity<>(orderRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
-            } else if (!clientId.equals("null") && projectId.equals("null")) {
-                return new ResponseEntity<>(orderRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
-            } else if (clientId.equals("null") && !projectId.equals("null")) {
-                return new ResponseEntity<>(orderRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        } else if (clientId != null) {
-            if (!clientId.equals("null")) {
-                return new ResponseEntity<>(orderRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-        } else if (projectId != null) {
-            if (!projectId.equals("null")) {
-                return new ResponseEntity<>(orderRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+        if (!clientId.equals("null") && !projectId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
+        } else if (!clientId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
+        } else if (!projectId.equals("null")) {
+            return new ResponseEntity<>(orderRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-//        if (!clientId.equals("null") && !projectId.equals("null")) {
-//            return new ResponseEntity<>(orderRepository.findByClientAndProject(Integer.parseInt(clientId), Integer.parseInt(projectId)), HttpStatus.OK);
-//        } else if (!clientId.equals("null")) {
-//            return new ResponseEntity<>(orderRepository.findByClient(Integer.parseInt(clientId)), HttpStatus.OK);
-//        } else if (!projectId.equals("null")) {
-//            return new ResponseEntity<>(orderRepository.findByProject(Integer.parseInt(projectId)), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
     }
 
 
