@@ -1,6 +1,7 @@
 import {shallowMount, mount} from '@vue/test-utils';
 import OrderSubItem from '@/Components/Form/SubItems/OrderSubItem.vue';
 import Product from "@/Models/Product";
+import {computed} from "vue";
 import Checkbox from "@/Components/Form/Checkbox.vue"; // name of your Vue component
 
 let wrapper;
