@@ -38,7 +38,7 @@
             alt="File icon"
             width="24"
         />
-        <p class="text-yInMnBlue">ID {{ batch.id }}</p>
+        <p class="bId text-yInMnBlue">ID {{ batch.id }}</p>
       </div>
 
       <div class="flex flex-row">
@@ -46,14 +46,14 @@
             class="h-5 lg:h-10 items-center flex lg:w-[200px] md:w-[180px] w-[95px] text-xs md:text-sm border-r-2 mr-1"
         >
           <p class="text-yInMnBlue">Batch size:&nbsp;</p>
-          <p class="text-candyPink">{{ batch.batchSize }}</p>
+          <p class="bSize text-candyPink">{{ batch.batchSize }}</p>
         </div>
 
         <div
             class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[120px] w-[95px] font-Alatsi text-xs md:text-sm"
         >
           <p class="text-yInMnBlue">Date:&nbsp;</p>
-          <p class="text-candyPink">{{ batchDate }}</p>
+          <p class="bDate text-candyPink">{{ batchDate }}</p>
         </div>
       </div>
     </div>
