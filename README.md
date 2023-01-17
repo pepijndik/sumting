@@ -195,8 +195,8 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- User stories and methodes made by members -->
-## User stories and methodes made by members
+<!-- User stories and methods made by members -->
+## User stories and methods made by members
 
  ## Pepijn
 
@@ -216,6 +216,14 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 | As an admin I want to be able to delete my orders so i can remove orders from the database. | Backend: OrderController, OrderLineRepository
 | As an administrator, I want to be able to see an overview of the statistics of all the orders, so I can estimate how well things are going|Frontend: Dashboard, OrderLineGraph, DashboardServiceApi, Backend: DashboardController, OrderLineRepository
 
+
+ ## Colin
+
+| Userstory | Method |
+| ----------- | ----------- |
+| As an admin, I want to be able to select one or multiple projects when creating an order | Frontend: OrderSubItem, OrderTotalCostSubItem & OrderCreate |
+| As an admin, I want to be able to search for an order by its client and project  | Frontend: OrderView, Backend Rest: OrderController, OrderRepository |
+| As an admin I want a neat application, so that I have a clear overview of the application | Frontend: NavigationDropdownItem, SubDropdownitem, NavigationItem & AdminLayout |
 
 
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
