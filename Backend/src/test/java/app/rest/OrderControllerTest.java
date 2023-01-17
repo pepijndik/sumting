@@ -2,6 +2,9 @@ package app.rest;
 
 import app.models.Order.OrderLine;
 import app.repositories.DataLoader;
+import app.repositories.JPAUserRepository;
+import app.repositories.Order.OrderRepository;
+import app.repositories.Order.OrderTypeRepository;
 import app.repositories.Order.OrderlineRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +27,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,6 +55,15 @@ public class OrderControllerTest {
     @Autowired
     private OrderlineRepository orderlineRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private JPAUserRepository userRepository;
+
+    @Autowired
+    private OrderTypeRepository orderTypeRepository;
+
     ArrayList<OrderLine> allOrders ;
 
     @BeforeEach
@@ -64,7 +76,7 @@ public class OrderControllerTest {
     }
 
     /**
-     * Author: Kaan Ugur
+     * @author Kaan Ugur
      * Description: Tests if all orders are returned
      */
     @Test
@@ -73,7 +85,7 @@ public class OrderControllerTest {
     }
 
     /**
-     * Author: Kaan Ugur
+     * @author Kaan Ugur
      * Description: Checks if "/orders" return an ok response
      *
      * @throws Exception if response is not ok
@@ -90,7 +102,7 @@ public class OrderControllerTest {
 
 
     /**
-     * Author: Kaan Ugur
+     * @author Kaan Ugur
      * Description: Updates an existing order line
      */
     @Test

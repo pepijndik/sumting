@@ -246,4 +246,8 @@ public class Order implements Identifiable<Integer> {
     public void setPayer(User payer) {
         this.payer = payer;
     }
+
+    public User getPayer() {
+        return payer;
+    }
 }
