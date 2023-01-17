@@ -1,0 +1,19 @@
+{
+  "id": 4,
+  "textPlanned": "Batch for is created using create",
+  "batchSize": 2,
+  "projectKey": 1,
+  "orderLines": [
+    {
+      "notes": "Orderline 1 of batch 4",
+      "transaction_line_total": 20,
+      "product_key": 1
+    },
+    {
+      "notes": "Orderline 2 of batch 4",
+      "transaction_line_total": 10,
+      "product_key": 1
+    }
+  ],
+  "createdAt": "2023-01-17 13:33:10.586573 +00:00"
+}
