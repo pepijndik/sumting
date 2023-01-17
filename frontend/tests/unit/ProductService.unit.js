@@ -6,8 +6,8 @@ jest.mock('@/Services/BaseApi', () => {
     }
 });
 
-import ProductApiService from "@/Services/Products/ProductApiService";
-import mockProducts from '../mockingData/Product/listOfProducts.json'
+import ProductApiService from '@/Services/Products/ProductApiService';
+import mockProducts from '../mockingData/Product/listOfProducts.json';
 
 describe('ProductApiService', () => {
     let productApiService;
@@ -18,11 +18,14 @@ describe('ProductApiService', () => {
 
     describe('getAllProducts', () => {
         it('should return all products', async () => {
+            // Arrange
+            const expectedProducts = mockProducts.map(product => Product.copyConstructor(product));
+
             // Act
-            const actualProducts = await productApiService.getAllBatches();
+            const actualProducts = await productApiService.findAll();
 
             // Assert
-            expect(actualProducts).toEqual(mockProducts.map(product => Product.copyConstructor(product)));
+            expect(actualProducts).toEqual(expectedProducts);
             expect(BaseApi.get).toHaveBeenCalled();
             expect(BaseApi.get).toHaveBeenCalledWith(productApiService.resource);
         });
