@@ -3,13 +3,15 @@ import Batch from "@/Models/Batch";
 jest.mock('@/Services/BaseApi', () => {
     return {
         get: jest.fn(() => Promise.resolve({data: mockBatches})),
-        post: jest.fn(() => Promise.resolve({data: mockBatch}))
+        post: jest.fn(() => Promise.resolve({data: mockBatch})),
+        put: jest.fn(() => Promise.resolve({data: mockUpdateBatch}))
     }
 });
 
-import BatchApiService from '@/Services/Batch/BatchApiService'
-import mockBatches from '../mockingData/Batch/listOfBatches.json'
-import mockBatch from '../mockingData/Batch/batch.json'
+import BatchApiService from '@/Services/Batch/BatchApiService';
+import mockBatches from '../mockingData/Batch/listOfBatches.json';
+import mockBatch from '../mockingData/Batch/batch.json';
+import mockUpdateBatch from '../mockingData/Batch/updateBatch.json';
 import moment from "moment";
 
 describe('BatchApiService', () => {
@@ -59,6 +61,33 @@ describe('BatchApiService', () => {
             projectKey: mockBatch.projectKey,
             orderlines: mockBatch.orderlines,
             createdAt: moment().format("YYYY-MM-DD")
+        });
+    });
+
+    it('should update an existing batch', async () => {
+        // Arrange
+        const expectedBatch = {
+            id: mockBatch.id,
+            textPlanned: "Batch from created that has been updated",
+            batchSize: mockBatch.batchSize,
+            orderlines: mockBatch.orderlines
+        };
+
+        // Act
+        const result = await batchApiService.updateBatch(
+            mockBatch.id,
+            expectedBatch.textPlanned,
+            expectedBatch.batchSize,
+            expectedBatch.orderlines
+        );
+
+        // Assert
+        expect(result).toMatchObject(expectedBatch);
+        expect(BaseApi.put).toHaveBeenCalledWith(`${batchApiService.resource}/update`, {
+            id: mockBatch.id,
+            textPlanned: "Batch from created that has been updated",
+            batchSize: mockBatch.batchSize,
+            orderlines: mockBatch.orderlines
         });
     });
 });
