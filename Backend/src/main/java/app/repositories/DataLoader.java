@@ -1,5 +1,6 @@
 package app.repositories;
 
+import app.models.Batch.Batch;
 import app.models.Country;
 import app.models.Dashboard.Graph;
 import app.models.Order.Order;
@@ -8,6 +9,7 @@ import app.models.Order.OrderType;
 import app.models.Project.Project;
 import app.models.Project.ProjectType;
 import app.models.User.User;
+import app.repositories.Batch.BatchRepository;
 import app.repositories.Interfaces.ProjectRepository;
 import app.repositories.Interfaces.ProjectTypeRepository;
 import app.repositories.Order.OrderRepository;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.data.util.ProxyUtils.getUserClass;
@@ -42,6 +46,7 @@ public class DataLoader implements CommandLineRunner {
         this.createOrders();
         this.createOrderLines();
         this.createOrderMonths();
+        this.createBatch();
         System.out.println("Injected accounts from " + (this.userRepository != null ? getUserClass(this.userRepository.getClass()).getName() : "none"));
     }
 
@@ -71,6 +76,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private BatchRepository batchRepository;
 
     /**
      * Adds order-types to the order-type repository.
@@ -114,6 +122,32 @@ public class DataLoader implements CommandLineRunner {
             this.orderRepository.save(order);
         }
 
+    }
+
+    /**
+     * Adds a batch to the batch repository.
+     *
+     * @author Dia Fortmeier
+     */
+    private void createBatch() {
+        if (this.projectRepository.findById(1).isPresent()) {
+            List<OrderLine> orderLineList = new ArrayList<>();
+            OrderLine orderLine = new OrderLine();
+            orderLineList.add(orderLine);
+
+            Batch batch = new Batch(
+                    1,
+                    LocalDateTime.now(),
+                    "Test batch",
+                    1,
+                    1
+            );
+
+            orderLine.setBatch(batch);
+            this.orderlineRepository.save(orderLine);
+            batch.setOrderLines(orderLineList);
+            this.batchRepository.save(batch);
+        }
     }
 
     /**

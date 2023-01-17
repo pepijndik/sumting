@@ -20,6 +20,24 @@ import java.util.List;
 public class Batch implements Identifiable<Integer> {
     public static final String TABLE_NAME = "\"batch\"";
 
+    public Batch() {
+
+    }
+
+    public Batch(
+            Integer id,
+            LocalDateTime createdAt,
+            String textPlanned,
+            Integer batchSize,
+            Integer projectKey
+            ) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.textPlanned = textPlanned;
+        this.batchSize = batchSize;
+        this.projectKey = projectKey;
+    }
+
     @Id
     @Column(name = "batch_key", nullable = false)
     @JsonView(BatchView.Batch.class)

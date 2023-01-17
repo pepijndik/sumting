@@ -1,7 +1,6 @@
 import ApiAdapter from "@/Services/ApiAdapter";
 import AuthHeader from "@/Services/AuthHeader";
 import BaseApi from "@/Services/BaseApi";
-import {useToast} from 'vue-toast-notification';
 import moment from "moment";
 import Batch from "@/Models/Batch";
 
@@ -17,7 +16,7 @@ class BatchApiService extends ApiAdapter {
      * @param batchSize
      * @param projectKey
      * @param orderLines
-     * @returns {Promise<void>}
+     * @returns {Promise<T>}
      */
     async create(textPlanned,
                  batchSize,
@@ -31,17 +30,8 @@ class BatchApiService extends ApiAdapter {
         batch.orderlines = orderLines;
         batch.createdAt = moment().format("YYYY-MM-DD");
 
-        await this.save(batch).then((response) => {
-            return response.data;
-        }).catch((error) => {
-            const $toast = useToast();
-            $toast.error({
-                message: "Can't create batch " + error.response.data.message,
-                duration: 5000,
-                dismissible: true,
-            });
-            throw error;
-        });
+        const response = await this.save(batch);
+        return response.data;
     }
 
     /**
@@ -50,35 +40,31 @@ class BatchApiService extends ApiAdapter {
      * @param textPlanned
      * @param batchSize
      * @param orderLines
-     * @returns {Promise<AxiosResponse<any>|boolean>}
+     * @returns {Promise<any>}
      */
-    async updateBatch(
-        batchId,
-        textPlanned,
-        batchSize,
-        orderLines
-    ) {
-        const batch = new Batch();
-        batch.id = batchId;
-        batch.textPlanned = textPlanned;
-        batch.batchSize = batchSize;
-        batch.orderlines = orderLines;
+    async updateBatch(batchId, textPlanned, batchSize, orderLines) {
+        try {
+            // Arrange
+            const batch = new Batch();
+            batch.id = batchId;
+            batch.textPlanned = textPlanned;
+            batch.batchSize = batchSize;
+            batch.orderlines = orderLines;
 
-        return await BaseApi.put(`${this.resource}/update`, batch)
-            .then((response) => {
-                return response.data;
-            })
-            .catch((error) => {
-                const $toast = useToast();
-                $toast.error({
-                    message: "Can't update batch " + error.response.data.message,
-                    duration: 5000,
-                    dismissible: true,
-                });
-                return false;
-            });
+            // Act
+            const response = await BaseApi.put(`${this.resource}/update`, batch);
+
+            // Assert
+            return response.data;
+        } catch (error) {
+            throw new Error("Can't update batch " + error.response.data.message);
+        }
     }
 
+    /**
+     * Gets all batches
+     * @returns {Promise<*>}
+     */
     async getAllBatches() {
         const batches = await BaseApi.get(this.resource)
             .then((response) => {

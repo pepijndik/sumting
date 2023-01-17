@@ -38,7 +38,7 @@
             alt="File icon"
             width="24"
         />
-        <p class="text-yInMnBlue">ID {{ batch.id }}</p>
+        <p class="bId text-yInMnBlue">ID {{ batch.id }}</p>
       </div>
 
       <div class="flex flex-row">
@@ -46,21 +46,21 @@
             class="h-5 lg:h-10 items-center flex lg:w-[200px] md:w-[180px] w-[95px] text-xs md:text-sm border-r-2 mr-1"
         >
           <p class="text-yInMnBlue">Batch size:&nbsp;</p>
-          <p class="text-candyPink">{{ batch.batchSize }}</p>
+          <p class="bSize text-candyPink">{{ batch.batchSize }}</p>
         </div>
 
         <div
             class="h-5 lg:h-10 items-center flex lg:w-[150px] md:w-[120px] w-[95px] font-Alatsi text-xs md:text-sm"
         >
           <p class="text-yInMnBlue">Date:&nbsp;</p>
-          <p class="text-candyPink">{{ batchDate }}</p>
+          <p class="bDate text-candyPink">{{ batchDate }}</p>
         </div>
       </div>
     </div>
 
     <button
         @click="redirectToEdit"
-        class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
+        class="bEdit items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
     >
       <img
           :src="require(`@/Assets/img/icons/edit.svg`)"
@@ -70,7 +70,7 @@
     </button>
     <button
         @click="confirmDelete"
-        class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
+        class="bDelete items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
     >
       <img
           :src="require(`@/Assets/img/icons/delete.svg`)"
