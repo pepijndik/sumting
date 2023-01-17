@@ -19,50 +19,46 @@ describe('BatchApiService', () => {
         batchApiService = new BatchApiService();
     });
 
-    describe('getAllBatches', () => {
-        it('should return all batches', async () => {
-            // Arrange
-            const expectedBatches = mockBatches.map(batch => Batch.copyConstructor(batch));
+    it('should return all batches', async () => {
+        // Arrange
+        const expectedBatches = mockBatches.map(batch => Batch.copyConstructor(batch));
 
-            // Act
-            const actualBatches = await batchApiService.getAllBatches();
+        // Act
+        const actualBatches = await batchApiService.getAllBatches();
 
-            // Assert
-            expect(actualBatches).toEqual(expectedBatches);
-            expect(BaseApi.get).toHaveBeenCalled();
-            expect(BaseApi.get).toHaveBeenCalledWith(batchApiService.resource);
-        });
+        // Assert
+        expect(actualBatches).toEqual(expectedBatches);
+        expect(BaseApi.get).toHaveBeenCalled();
+        expect(BaseApi.get).toHaveBeenCalledWith(batchApiService.resource);
     });
 
-    describe('create', () => {
-        it('creates a batch', async () => {
-            // Arrange
-            const expectedBatch = {
-                id: mockBatch.id,
-                textPlanned: mockBatch.textPlanned,
-                batchSize: mockBatch.batchSize,
-                projectKey: mockBatch.projectKey,
-                orderlines: mockBatch.orderlines,
-                createdAt: mockBatch.createdAt
-            };
+    it('should create a batch', async () => {
+        // Arrange
+        const expectedBatch = {
+            id: mockBatch.id,
+            textPlanned: mockBatch.textPlanned,
+            batchSize: mockBatch.batchSize,
+            projectKey: mockBatch.projectKey,
+            orderlines: mockBatch.orderlines,
+            createdAt: mockBatch.createdAt
+        };
 
-            // Act
-            const result = await batchApiService.create(
-                mockBatch.textPlanned,
-                mockBatch.batchSize,
-                mockBatch.projectKey,
-                mockBatch.orderlines
-            );
+        // Act
+        const result = await batchApiService.create(
+            mockBatch.textPlanned,
+            mockBatch.batchSize,
+            mockBatch.projectKey,
+            mockBatch.orderlines
+        );
 
-            // Assert
-            expect(result).toEqual(expectedBatch);
-            expect(BaseApi.post).toHaveBeenCalledWith('/batch', {
-                textPlanned: mockBatch.textPlanned,
-                batchSize: mockBatch.batchSize,
-                projectKey: mockBatch.projectKey,
-                orderlines: mockBatch.orderlines,
-                createdAt: moment().format("YYYY-MM-DD")
-            });
+        // Assert
+        expect(result).toEqual(expectedBatch);
+        expect(BaseApi.post).toHaveBeenCalledWith('/batch', {
+            textPlanned: mockBatch.textPlanned,
+            batchSize: mockBatch.batchSize,
+            projectKey: mockBatch.projectKey,
+            orderlines: mockBatch.orderlines,
+            createdAt: moment().format("YYYY-MM-DD")
         });
     });
 });
