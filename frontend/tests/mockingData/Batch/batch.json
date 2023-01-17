@@ -3,7 +3,7 @@
   "textPlanned": "Batch for is created using create",
   "batchSize": 2,
   "projectKey": 1,
-  "orderLines": [
+  "orderlines": [
     {
       "notes": "Orderline 1 of batch 4",
       "transaction_line_total": 20,
