@@ -36,6 +36,7 @@ describe('BatchApiService', () => {
 
     describe('create', () => {
         it('creates a batch', async () => {
+            // Arrange
             const expectedBatch = {
                 id: mockBatch.id,
                 textPlanned: mockBatch.textPlanned,
@@ -45,6 +46,7 @@ describe('BatchApiService', () => {
                 createdAt: mockBatch.createdAt
             };
 
+            // Act
             const result = await batchApiService.create(
                 mockBatch.textPlanned,
                 mockBatch.batchSize,
@@ -52,6 +54,7 @@ describe('BatchApiService', () => {
                 mockBatch.orderlines
             );
 
+            // Assert
             expect(result).toEqual(expectedBatch);
             expect(BaseApi.post).toHaveBeenCalledWith('/batch', {
                 textPlanned: mockBatch.textPlanned,
