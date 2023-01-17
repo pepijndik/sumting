@@ -195,8 +195,8 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- User stories and methodes made by members -->
-## User stories and methodes made by members
+<!-- User stories and methods made by members -->
+## User stories and methods made by members
 
  ## Pepijn
 
@@ -207,7 +207,12 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 | As admin i wanted a global overview of my projects  | Frontend: ListProjects, Backend Rest: ProjectController  
 | As develpor i wanted to have a paginated view for the project table | Frontend: ListProjects & Pagination, Backend Rest: ProjectController & Project interface  
 
+ ## Colin
 
+| Userstory | Method |
+| ----------- | ----------- |
+| As an admin, I want to be able to select one or multiple projects when creating an order | Frontend: OrderSubItem, OrderTotalCostSubItem & OrderCreate |
+| As an admin, I want to be able to search for an order by its client and project  | Frontend: OrderView, Backend Rest: OrderController, OrderRepository |
 
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
