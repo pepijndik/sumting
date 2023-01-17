@@ -11,8 +11,14 @@ describe('BatchRow', () => {
     }
     beforeEach(() => {
         wrapper = shallowMount(BatchRow, {
-            propsData: { batch }
-        })
+            propsData: { batch },
+            mocks: {
+                $router: {
+                    push: jest.fn()
+                }
+            }
+        });
+        wrapper.vm.redirectToEdit = jest.fn();
     });
 
     it('renders the batch id in the template', () => {
@@ -58,5 +64,16 @@ describe('BatchRow', () => {
 
         // Assert
         expect(wrapper.vm.confirmDelete).toHaveBeenCalled();
+    });
+
+    it('redirects to the edit page when the edit button is clicked', () => {
+        // Arrange
+        const editBtn = wrapper.find('.bEdit');
+
+        // Act
+        editBtn.trigger('click');
+
+        // Assert
+        expect(wrapper.vm.redirectToEdit).toHaveBeenCalled();
     });
 });
