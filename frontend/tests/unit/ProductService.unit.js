@@ -1,10 +1,30 @@
+import BaseApi from '@/Services/BaseApi';
+import Product from "@/Models/Product";
+jest.mock('@/Services/BaseApi', () => {
+    return {
+        get: jest.fn(() => Promise.resolve({data: mockProducts}))
+    }
+});
+
 import ProductApiService from "@/Services/Products/ProductApiService";
+import mockProducts from '../mockingData/Product/listOfProducts.json'
 
-let pApi = new ProductApiService();
+describe('ProductApiService', () => {
+    let productApiService;
+    beforeEach(() => {
+        jest.clearAllMocks();
+        productApiService = new ProductApiService();
+    });
 
-describe('AuthenticationService', () => {
-    it("Can retrieve all products", async () => {
-        let products = await pApi.findAll();
-        expect(products.length).toBe(2);
+    describe('getAllProducts', () => {
+        it('should return all products', async () => {
+            // Act
+            const actualProducts = await productApiService.getAllBatches();
+
+            // Assert
+            expect(actualProducts).toEqual(mockProducts.map(product => Product.copyConstructor(product)));
+            expect(BaseApi.get).toHaveBeenCalled();
+            expect(BaseApi.get).toHaveBeenCalledWith(productApiService.resource);
+        });
     });
 });
