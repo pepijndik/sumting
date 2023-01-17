@@ -6,7 +6,6 @@ import app.repositories.DataLoader;
 import app.repositories.JPAUserRepository;
 import app.repositories.Order.OrderTypeRepository;
 import app.response.LoginResponse;
-import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -21,6 +20,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +43,6 @@ public class OrderTest {
     @Autowired
     private JPAUserRepository userRepo;
     @Autowired
-
     private OrderTypeRepository orderTypeRepository;
     private List<User> userList;
     @BeforeEach

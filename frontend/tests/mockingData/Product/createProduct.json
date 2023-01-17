@@ -1,0 +1,28 @@
+{
+  "id": "1",
+  "name": "test product",
+  "description": "test product description",
+  "price": 1,
+  "project": {
+    "id": "1",
+    "name": "test project",
+    "description": "a test project",
+    "description_long": "a long description",
+    "createdAt": "2019-01-01T00:00:00.000Z",
+    "updatedAt": "2019-01-01T00:00:00.000Z",
+    "longitude": 1,
+    "latitude": 1,
+    "image": null
+  },
+  "type": {
+    "id": "1",
+    "product_type_name": "test product name",
+    "description": "test product description",
+    "frequency": 1,
+    "createdAt": "2019-01-01T00:00:00.000Z"
+  },
+  "createdAt": "2019-01-01T00:00:00.000Z",
+  "updatedAt": "2019-01-01T00:00:00.000Z",
+  "id_ext": null,
+  "active": true
+}
