@@ -31,17 +31,8 @@ class BatchApiService extends ApiAdapter {
         batch.orderlines = orderLines;
         batch.createdAt = moment().format("YYYY-MM-DD");
 
-        await this.save(batch).then((response) => {
-            return response.data;
-        }).catch((error) => {
-            const $toast = useToast();
-            $toast.error({
-                message: "Can't create batch " + error.response.data.message,
-                duration: 5000,
-                dismissible: true,
-            });
-            throw error;
-        });
+        const response = await this.save(batch);
+        return response.data;
     }
 
     /**
