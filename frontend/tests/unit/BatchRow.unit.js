@@ -1,35 +1,62 @@
-import { shallowMount } from '@vue/test-utils'
-import BatchRow from '@/Components/Batch/BatchRow'
-import moment from 'moment'
+import { shallowMount } from '@vue/test-utils';
+import BatchRow from "@/Components/Batch/BatchRow";
+import moment from 'moment';
 
 describe('BatchRow', () => {
     let wrapper;
-
+    let batch = {
+        id: 1,
+        batchSize: 100,
+        date: new Date()
+    }
     beforeEach(() => {
         wrapper = shallowMount(BatchRow, {
-            propsData: {
-                batch: {
-                    id: '1',
-                    batchSize: '10',
-                    createdAt: '2022-01-01'
-                }
-            }
-        });
+            propsData: { batch }
+        })
     });
 
-    it('displays the batch id', () => {
-        expect(wrapper.find('.bId').text()).toContain('ID 1');
+    it('renders the batch id in the template', () => {
+        // Arrange
+        const expectedId = `ID ${batch.id}`;
+
+        // Act
+        const idElement = wrapper.find('.bId');
+
+        // Assert
+        expect(idElement.text()).toBe(expectedId);
     });
 
-    it('displays the batch size', () => {
-        expect(wrapper.find('.bSize').text()).toContain('10');
+    it('renders the batch size in the template', () => {
+        // Arrange
+        const expectedSize = batch.batchSize.toString();
+
+        // Act
+        const sizeElement = wrapper.find('.bSize');
+
+        // Assert
+        expect(sizeElement.text()).toBe(expectedSize);
     });
 
-    it('displays the batch date', () => {
-        expect(wrapper.find('.bDate').text()).toContain(wrapper.vm.batchDate);
+    it('renders the formatted batch date in the template', () => {
+        // Arrange
+        const expectedDate = moment(batch.date).format('DD/MM/YY');
+
+        // Act
+        const dateElement = wrapper.find('.bDate');
+
+        // Assert
+        expect(dateElement.text()).toBe(expectedDate);
     });
 
-    it('displays the edit button', () => {
-        expect(wrapper.find('img[alt="Edit icon"]').exists()).toBe(true);
+    it('calls confirmDelete method when delete button is clicked', () => {
+        // Arrange
+        const deleteBtn = wrapper.find('.bDelete');
+        wrapper.vm.confirmDelete = jest.fn();
+
+        // Act
+        deleteBtn.trigger('click');
+
+        // Assert
+        expect(wrapper.vm.confirmDelete).toHaveBeenCalled();
     });
 });

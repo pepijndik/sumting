@@ -60,7 +60,7 @@
 
     <button
         @click="redirectToEdit"
-        class="items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
+        class="bEdit items-center flex bg-yInMnBlue hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px] mr-2 md:mr-4"
     >
       <img
           :src="require(`@/Assets/img/icons/edit.svg`)"
@@ -70,7 +70,7 @@
     </button>
     <button
         @click="confirmDelete"
-        class="items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
+        class="bDelete items-center flex bg-candyPink hover:bg-champagnePink rounded-md lg:w-[150px] md:w-[100px] w-[50px] justify-center h-[32px]"
     >
       <img
           :src="require(`@/Assets/img/icons/delete.svg`)"
