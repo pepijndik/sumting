@@ -101,7 +101,14 @@ class AuthenticationService {
             .then(
                 response => {
                     const data = response.data;
-                    return new User(data.id, data.name, data.email, data.createdAt, data.TwoFactorEnabled, data.profileImage, data.profileText, data.user_type);
+                    return new User(data.id,
+                        data.name,
+                        data.email,
+                        data.country,
+                        data.profileImage,
+                        data.createdAt,
+                        data.twoFactorEnabled,
+                        data.profileText);
                 }
             ).catch(error => {
                 console.log("User was not logged in, redirect to login")
