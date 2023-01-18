@@ -240,6 +240,15 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 | As an admin, I want to be able to input an description for the batch that I'm creating, so that the email that goes to the clients has content | Frontend: BatchCreate |
 
 
+## Fenne
+
+| Userstory | Method                                                                     |
+| ----------- |----------------------------------------------------------------------------|
+| As an admin, I want to be able to create a client, so that new clients have their own account.| Frontend: ClientCreate, UserApiService, Backend: UserController            |
+| As an admin, I want to be able to edit a client, so that I can change any data stored from said client | Frontend: ClientEdit, UserApiService, Backend: UserController              |
+| As an admin, I want to be able to view all clients, so that I can search for a specific one | Frontend: ClientView, UserApiService, Backend: UserController              |
+| As an admin I want to be able to delete orders, so that unneeded orders don't fill up the orders list | Frontend: OrderView, OrderApiService, Backend: OrderController, OrderMdeol |
+
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
 
