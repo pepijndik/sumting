@@ -226,6 +226,20 @@ See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/iss
 | As an admin I want a neat application, so that I have a clear overview of the application | Frontend: NavigationDropdownItem, SubDropdownitem, NavigationItem & AdminLayout |
 
 
+## Dia
+
+| Userstory | Method                |
+| ----------- |-----------------------|
+| As an admin, I want to be able to edit a Batch, so that I can change any data stored from said batch | Frontend: BatchEdit, BatchApiService Backend: BatchController |
+| As an admin, I want to be able to select a project when creating a batch, so that I can see create a batch of that specific project | Frontend: BatchCreate |
+| As an admin, I want to be able to view all batches, so that I can search for a specific one | Frontend: BatchView, BatchRow, BatchApiService Backend: BatchController |
+| As an admin, I want to have a delete button on each batch when viewing them all, so that I can delete a batch that I don't need anymore | Frontend: BatchView, BatchRow, BatchApiService Backend: BatchController |
+| As an admin, I want to see a list of all the order lines from the selected project for the batch that I'm making, so that I can select or deselect individual orders lines | Frontend: BatchCreate, OrderApiService Backend: OrderController |
+| As an admin, I want to be able to create a Batch by filling in the Create batch page, so that I have a new batch to work on | Frontend: BatchCreate, BatchApiService Backend: BatchController |
+| As an admin, I want be able to input the amount of contributions I want for the batch that I'm creating so that I don't have to select all orders individually | Frontend: BatchCreate |
+| As an admin, I want to be able to input an description for the batch that I'm creating, so that the email that goes to the clients has content | Frontend: BatchCreate |
+
+
 See the [open issues](https://gitlab.fdmci.hva.nl/se-ewa/2022-2023-1/sum-1/-/issues) for a full list of proposed features (and known issues).
 
 
